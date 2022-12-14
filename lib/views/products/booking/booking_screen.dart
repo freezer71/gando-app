@@ -1,0 +1,876 @@
+import 'package:csc_picker/csc_picker.dart';
+import 'package:datepicker_dropdown/datepicker_dropdown.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:gando/config/textstyle.dart';
+import 'package:gando/views/home/home.dart';
+import 'package:get/get.dart';
+import 'package:text_form_field_wrapper/text_form_field_wrapper.dart';
+
+class BookingScreen extends StatefulWidget {
+  BookingScreen({Key? key}) : super(key: key);
+
+  @override
+  State<BookingScreen> createState() => _BookingScreenState();
+}
+
+class _BookingScreenState extends State<BookingScreen> {
+  final TextEditingController etNameController = TextEditingController();
+
+  final TextEditingController etLastNameController = TextEditingController();
+
+  final TextEditingController drivingIdController = TextEditingController();
+
+  final TextEditingController obtainingDateController = TextEditingController();
+
+  String obtainingCountryController = 'Pays d\'obtention';
+
+  final formKey = Get.key;
+  final key = GlobalKey<FormState>();
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: AppTheme.backgroundColor.withOpacity(0.9),
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        centerTitle: true,
+        automaticallyImplyLeading: true,
+        leading: Icon(Icons.arrow_back, color: AppTheme.darkColor),
+        title: Text(
+          'Réserver le véhicule',
+          style: Theme.of(context).textTheme.bodyText2!.copyWith(
+                fontWeight: FontWeight.w900,
+                fontSize: 18,
+                color: AppTheme.darkColor,
+                overflow: TextOverflow.ellipsis,
+              ),
+        ),
+      ),
+      body: Stack(
+        children: [
+          Container(
+            child: ListView(
+              padding: const EdgeInsets.all(16),
+              children: [
+                buildRowMenu(context),
+                Divider(
+                  height: Get.height / 12,
+                  color: AppTheme.darkColor,
+                ),
+                ..._buildBody(context),
+                SizedBox(
+                  height: Get.height / 8,
+                )
+              ],
+            ),
+          ),
+          _buldFloatBar(),
+        ],
+      ),
+    );
+  }
+
+  Widget _buldFloatBar() {
+    buildAddCard() => Container(
+          height: 58,
+          width: Get.width / 1.2,
+          decoration: BoxDecoration(
+            borderRadius: const BorderRadius.all(Radius.circular(29)),
+            color: AppTheme.primaryColor,
+            boxShadow: [
+              BoxShadow(
+                offset: const Offset(4, 8),
+                blurRadius: 20,
+                color: const Color(0xFF101010).withOpacity(0.25),
+              ),
+            ],
+          ),
+          child: Material(
+            color: Colors.transparent,
+            child: InkWell(
+              borderRadius: const BorderRadius.all(Radius.circular(29)),
+              // splashColor: const Color(0xFFEEEEEE),
+              onTap: () {
+                //got to next page
+                Get.to(() => BookingScreen());
+              },
+              child: const Center(
+                child: Text(
+                  'Réserver',
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 18,
+                    color: Colors.white,
+                  ),
+                ),
+              ),
+            ),
+          ),
+        );
+
+    return Positioned(
+      bottom: 0,
+      left: 0,
+      right: 0,
+      child: Container(
+        color: Colors.white,
+        height: 110,
+        padding: const EdgeInsets.symmetric(horizontal: 24),
+        child: Column(
+          children: [
+            const SizedBox(height: 5),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                InkWell(
+                  onTap: () {
+                    // go to signalisation page
+                  },
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(
+                        Icons.flag,
+                        color: AppTheme.redColor,
+                      ),
+                      const Text('Signaler l\'annonce',
+                          style: TextStyle(
+                              color: Color(0xFF757575), fontSize: 12)),
+                    ],
+                  ),
+                ),
+                const SizedBox(height: 12),
+                buildAddCard()
+              ],
+            ),
+            // const SizedBox(height: 36),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget buildRowMenu(context) {
+    return Container(
+      width: Get.width,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          GestureDetector(
+            child: Column(
+              children: [
+                Center(
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text('Départ',
+                        style: Theme.of(context).textTheme.bodyText2!.copyWith(
+                            color: AppTheme.darkColor,
+                            fontSize: 16,
+                            fontWeight: FontWeight.w900)),
+                  ),
+                ),
+                Container(
+                  decoration: BoxDecoration(
+                    color: AppTheme.backgroundColor,
+                    borderRadius: const BorderRadius.all(
+                      Radius.circular(20),
+                    ),
+                  ),
+                  height: Get.height / 5,
+                  width: Get.width / 2.3,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      Text('Lundi',
+                          style: Theme.of(context)
+                              .textTheme
+                              .bodyText2!
+                              .copyWith(
+                                  color: AppTheme.darkColor,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w900)),
+                      Text('09',
+                          style: Theme.of(context)
+                              .textTheme
+                              .bodyText2!
+                              .copyWith(
+                                  color: AppTheme.darkColor,
+                                  fontSize: 32,
+                                  fontWeight: FontWeight.w900)),
+                      Text('Septembre',
+                          style: Theme.of(context)
+                              .textTheme
+                              .bodyText2!
+                              .copyWith(
+                                  color: AppTheme.darkColor,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w900)),
+                      Container(
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 4, horizontal: 16),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.all(Radius.circular(8)),
+                          color: AppTheme.darkColor,
+                        ),
+                        child: Text('14 : 30',
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodyText2!
+                                .copyWith(
+                                    color: AppTheme.backgroundColor,
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.w900)),
+                      )
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+          GestureDetector(
+            child: Column(
+              children: [
+                Center(
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text('Retour',
+                        style: Theme.of(context).textTheme.bodyText2!.copyWith(
+                            color: AppTheme.darkColor,
+                            fontSize: 16,
+                            fontWeight: FontWeight.w900)),
+                  ),
+                ),
+                Container(
+                  decoration: BoxDecoration(
+                    color: AppTheme.backgroundColor,
+                    borderRadius: const BorderRadius.all(
+                      Radius.circular(20),
+                    ),
+                  ),
+                  height: Get.height / 5,
+                  width: Get.width / 2.3,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      Text('Jour',
+                          style: Theme.of(context)
+                              .textTheme
+                              .bodyText2!
+                              .copyWith(
+                                  color: AppTheme.darkColor,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w900)),
+                      Text('XX',
+                          style: Theme.of(context)
+                              .textTheme
+                              .bodyText2!
+                              .copyWith(
+                                  color: AppTheme.darkColor,
+                                  fontSize: 32,
+                                  fontWeight: FontWeight.w900)),
+                      Text('Mois',
+                          style: Theme.of(context)
+                              .textTheme
+                              .bodyText2!
+                              .copyWith(
+                                  color: AppTheme.darkColor,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w900)),
+                      Container(
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 4, horizontal: 16),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.all(Radius.circular(8)),
+                          color: AppTheme.darkColor,
+                        ),
+                        child: Text('12 : 00',
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodyText2!
+                                .copyWith(
+                                    color: AppTheme.backgroundColor,
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.w900)),
+                      )
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _createListMenu(context, String menuTitle, page, IconData icon) {
+    return GestureDetector(
+      behavior: HitTestBehavior.translucent,
+      onTap: () {
+        Get.to(() => page);
+      },
+      child: Container(
+        margin: const EdgeInsets.fromLTRB(0, 18, 0, 8),
+        child: Center(
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              ElevatedButton(
+                  style: ButtonStyle(
+                    backgroundColor: MaterialStateProperty.resolveWith<Color>(
+                      (Set<MaterialState> states) =>
+                          states.contains(MaterialState.disabled)
+                              ? AppTheme.primaryColor
+                              : AppTheme.darkColor,
+                    ),
+                    overlayColor: MaterialStateProperty.all(Colors.transparent),
+                    shape: MaterialStateProperty.all(RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20.0),
+                    )),
+                  ),
+                  onPressed: () {},
+                  child: SizedBox(
+                    width: Get.width / 1.5,
+                    height: 50,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(menuTitle,
+                            style: TextStyle(
+                                fontSize: 15, color: AppTheme.backgroundColor)),
+                        Icon(icon,
+                            color: AppTheme.backgroundColor.withOpacity(0.9)),
+                      ],
+                    ),
+                  ))
+
+              // Icon(Icons.chevron_right, size: 20, color: AppTheme.secondaryColor),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  List<Widget> _buildBody(context) {
+    return [
+      Container(
+        width: Get.width / 22,
+        child: Column(
+          children: [
+            Text('Adresse de départ et de retour',
+                style: Theme.of(context).textTheme.bodyText2!.copyWith(
+                    color: AppTheme.darkColor,
+                    fontSize: 14,
+                    fontWeight: FontWeight.w900)),
+            const SizedBox(height: 8),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Icon(
+                  Icons.location_pin,
+                  color: AppTheme.darkColor,
+                ),
+                const SizedBox(width: 10),
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text('11 Adile Maret Sainte-Anne, 97180',
+                        style: Theme.of(context).textTheme.bodyText2!.copyWith(
+                            color: AppTheme.darkColor,
+                            fontSize: 14,
+                            fontWeight: FontWeight.w900)),
+                    Text('Click for directions',
+                        style: Theme.of(context).textTheme.bodyText2!.copyWith(
+                            color: AppTheme.darkColor,
+                            fontSize: 12,
+                            fontWeight: FontWeight.w500)),
+                  ],
+                ),
+              ],
+            ),
+            Divider(
+              height: Get.height / 12,
+              color: AppTheme.darkColor,
+            ),
+            section1(context),
+          ],
+        ),
+      )
+    ];
+  }
+
+  Widget section1(BuildContext context) {
+    return SizedBox(
+      height: Get.height / 0.93,
+      child: Column(
+        children: [
+          SizedBox(
+            child: Form(
+              key: key,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  Row(
+                    verticalDirection: VerticalDirection.down,
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      Container(
+                        width: 150,
+                        child: TextFormFieldWrapper(
+                          borderFocusedColor: AppTheme.primaryColor,
+                          formField: TextFormField(
+                            controller: etNameController,
+                            keyboardType: TextInputType.text,
+                            autofocus: false,
+                            decoration: InputDecoration(
+                                border: InputBorder.none,
+                                hintText: 'Nom',
+                                hintStyle: TextStyle(
+                                    color: AppTheme.secondaryColor
+                                        .withOpacity(0.5))),
+                          ),
+                          position: TextFormFieldPosition.alone,
+                        ),
+                      ),
+                      Container(
+                        width: 150,
+                        child: TextFormFieldWrapper(
+                          borderFocusedColor: AppTheme.primaryColor,
+                          formField: TextFormField(
+                            controller: etLastNameController,
+                            keyboardType: TextInputType.text,
+                            autofocus: false,
+                            decoration: InputDecoration(
+                                border: InputBorder.none,
+                                hintText: 'Prénom',
+                                hintStyle: TextStyle(
+                                    color:
+                                        AppTheme.darkColor.withOpacity(0.5))),
+                          ),
+                          position: TextFormFieldPosition.alone,
+                        ),
+                      ),
+                    ],
+                  ),
+                  Container(
+                    width: Get.width - 40,
+                    padding: EdgeInsets.only(bottom: 10, top: 20),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Pays D\'obtention',
+                          style: Theme.of(context)
+                              .textTheme
+                              .bodyText2!
+                              .copyWith(
+                                  color: AppTheme.darkColor,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w500),
+                          textAlign: TextAlign.left,
+                        ),
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        CSCPicker(
+                          showCities: false,
+                          showStates: false,
+                          countryDropdownLabel: obtainingCountryController,
+                          defaultCountry: DefaultCountry.France,
+                          flagState: CountryFlag.DISABLE,
+                          selectedItemStyle: Theme.of(context)
+                              .textTheme
+                              .bodyText2!
+                              .copyWith(
+                                  color: AppTheme.darkColor,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w500),
+                          dropdownDecoration: BoxDecoration(
+                              borderRadius:
+                                  const BorderRadius.all(Radius.circular(10)),
+                              color: AppTheme.backgroundColor,
+                              border: Border.all(
+                                  color: Colors.grey.shade300, width: 1)),
+                          countrySearchPlaceholder: "Selectionner un Pays",
+
+                          ///Disabled Dropdown box decoration to style your dropdown selector [OPTIONAL PARAMETER]  (USE with disabled dropdownDecoration)
+                          disabledDropdownDecoration: BoxDecoration(
+                              borderRadius:
+                                  const BorderRadius.all(Radius.circular(10)),
+                              color: Colors.grey.shade300,
+                              border: Border.all(
+                                  color: Colors.grey.shade300, width: 1)),
+                          dropdownItemStyle: Theme.of(context)
+                              .textTheme
+                              .bodyText2!
+                              .copyWith(
+                                  color: AppTheme.backgroundColor,
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w500),
+                          onCountryChanged: (value) async {
+                            setState(() {
+                              obtainingCountryController = value;
+                            });
+
+                            printInfo(info: obtainingCountryController);
+                          },
+                        ),
+                      ],
+                    ),
+                  ),
+                  Container(
+                    width: Get.width - 40,
+                    padding: EdgeInsets.only(bottom: 10),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text('Numéro de Permis',
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodyText2!
+                                .copyWith(
+                                    color: AppTheme.darkColor,
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w500)),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        TextFormFieldWrapper(
+                          formField: TextFormField(
+                            controller: drivingIdController,
+                            keyboardType: TextInputType.number,
+                            autofocus: false,
+                            decoration: InputDecoration(
+                                border: InputBorder.none,
+                                hintText: 'Numéro de Permis',
+                                hintStyle: TextStyle(
+                                    color:
+                                        AppTheme.darkColor.withOpacity(0.5))),
+                          ),
+                          position: TextFormFieldPosition.alone,
+                        ),
+                      ],
+                    ),
+                  ),
+                  Container(
+                    width: Get.width - 40,
+                    padding: EdgeInsets.only(bottom: 10, top: 10),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Date du D\'obtention',
+                          style: Theme.of(context)
+                              .textTheme
+                              .bodyText2!
+                              .copyWith(
+                                  color: AppTheme.darkColor,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w500),
+                          textAlign: TextAlign.left,
+                        ),
+                        const SizedBox(
+                          height: 10,
+                        ),
+
+                        // DropdownDatePicker(
+                        //   inputDecoration: InputDecoration(
+                        //     enabledBorder: const OutlineInputBorder(
+                        //       borderSide: BorderSide(color: Colors.grey, width: 1.0),
+                        //     ),
+                        //     border: OutlineInputBorder(
+                        //       borderRadius: BorderRadius.circular(10),
+                        //     ),
+                        //   ),
+                        //   // optional
+                        //   isDropdownHideUnderline: false,
+                        //   // optional
+                        //   isFormValidator: true,
+                        //   // optional
+                        //   startYear:
+                        //       DateTime.parse('1969-07-20 20:18:04Z').year,
+                        //   // optional
+                        //   endYear: DateTime.now().year,
+                        //   // optional
+                        //   width: 10,
+                        //   // optional
+                        //   selectedDay: DateTime.now().day,
+                        //   // optional
+                        //   // selectedMonth: 12, // optional
+                        //   selectedYear: DateTime.now().year,
+                        //   selectedMonth: DateTime.now().month,
+                        //   showMonth: true,
+                        //   // optional
+                        //   onChangedDay: (value) =>
+                        //       print('onChangedDay: $value'),
+                        //   onChangedMonth: (value) =>
+                        //       print('onChangedMonth: $value'),
+                        //   onChangedYear: (value) =>
+                        //       print('onChangedYear: $value'),
+                        //   //boxDecoration: BoxDecoration(
+                        //   // border: Border.all(color: Colors.grey, width: 1.0)), // optional
+                        //   // showDay: false,// optional
+                        //   // dayFlex: 2,// optional
+                        //   // locale: "it_IT",// optional
+                        //   // hintDay: 'Day', // optional
+                        //   // hintMonth: 'Month', // optional
+                        //   // hintYear: 'Year', // optional
+                        //   // hintTextStyle: TextStyle(color: Colors.grey), // optional
+                        // ),
+
+                        TextButton(
+                            style: ButtonStyle(
+                              backgroundColor:
+                                  MaterialStateProperty.resolveWith<Color>(
+                                (Set<MaterialState> states) =>
+                                    states.contains(MaterialState.disabled)
+                                        ? AppTheme.primaryColor
+                                        : AppTheme.backgroundColor,
+                              ),
+                              overlayColor:
+                                  MaterialStateProperty.all(Colors.transparent),
+                              shape: MaterialStateProperty.all(
+                                RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10.0),
+                                ),
+                              ),
+                            ),
+                            onPressed: () async {
+                              Get.dialog(DatePickerDialog(
+                                  initialDate: DateTime.now(),
+                                  firstDate: DateTime.now(),
+                                  lastDate: DateTime.now()));
+                            },
+                            child: SizedBox(
+                              width: Get.width,
+                              height: 30,
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Text('Date du D\'obtention',
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .bodyText2!
+                                          .copyWith(
+                                              color: AppTheme.darkColor,
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.w500)),
+                                  Icon(
+                                    Icons.calendar_month,
+                                    color: AppTheme.darkColor,
+                                  )
+                                ],
+                              ),
+                            )),
+                        // TextFormFieldWrapper(
+                        //   formField: TextFormField(
+                        //     controller: drivingIdController,
+                        //     keyboardType: TextInputType.datetime,
+                        //     autofocus: false,
+                        //     decoration: InputDecoration(
+                        //         border: InputBorder.none,
+                        //         hintText: 'Date du D\'obtention',
+                        //         hintStyle: TextStyle(
+                        //             color: AppTheme.darkColor.withOpacity(0.5)
+                        //         )
+                        //     ),
+                        //   ),
+                        //   position: TextFormFieldPosition.alone,
+                        // ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+          Divider(
+            height: Get.height / 12,
+            color: AppTheme.darkColor,
+          ),
+          _buildResultForm(context),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildResultForm(BuildContext context) {
+    if (1==1) {
+      return Container(
+        height: Get.height / 2.2,
+        margin: const EdgeInsets.symmetric(vertical: 10),
+        decoration: BoxDecoration(
+          borderRadius: const BorderRadius.all(Radius.circular(29)),
+          color: AppTheme.backgroundColor,
+          boxShadow: [
+            BoxShadow(
+              offset: const Offset(4, 8),
+              blurRadius: 20,
+              color: const Color(0xFF101010).withOpacity(0.25),
+            ),
+          ],
+        ),
+
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+        child: Column(
+          children: [
+            Text('Detail de la location ',
+                style: Theme.of(context).textTheme.bodyText2!.copyWith(
+                  fontWeight: FontWeight.w900,
+                  fontSize: 18,
+                  color: AppTheme.darkColor,
+                  overflow: TextOverflow.ellipsis,
+                )),
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 12.0),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text('Durée de la location',
+                      style: Theme.of(context).textTheme.bodyText2!.copyWith(
+                            fontWeight: FontWeight.w500,
+                            fontSize: 14,
+                            color: AppTheme.darkColor,
+                            overflow: TextOverflow.ellipsis,
+                          )),
+                  Text('1 jour',
+                      style: Theme.of(context).textTheme.bodyText2!.copyWith(
+                            fontWeight: FontWeight.w900,
+                            fontSize: 18,
+                            color: AppTheme.darkColor,
+                            overflow: TextOverflow.ellipsis,
+                          )),
+                ],
+              ),
+            ),
+            Divider(
+              height: 10,
+              color: AppTheme.darkColor,
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 12.0),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text('Kilometrage inclus',
+                      style: Theme.of(context).textTheme.bodyText2!.copyWith(
+                        fontWeight: FontWeight.w500,
+                        fontSize: 14,
+                        color: AppTheme.darkColor,
+                        overflow: TextOverflow.ellipsis,
+                      )),
+                  Text('200 Km',
+                      style: Theme.of(context).textTheme.bodyText2!.copyWith(
+                            fontWeight: FontWeight.w900,
+                            fontSize: 18,
+                            color: AppTheme.darkColor,
+                            overflow: TextOverflow.ellipsis,
+                          )),
+                ],
+              ),
+            ),
+            Divider(
+              height: 10,
+              color: AppTheme.darkColor,
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 12.0),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text('Montant (hors option)',
+                      style: Theme.of(context).textTheme.bodyText2!.copyWith(
+                        fontWeight: FontWeight.w500,
+                        fontSize: 14,
+                        color: AppTheme.darkColor,
+                        overflow: TextOverflow.ellipsis,
+                      )),
+                  Text('15 \$',
+                      style: Theme.of(context).textTheme.bodyText2!.copyWith(
+                        fontWeight: FontWeight.w900,
+                        fontSize: 18,
+                        color: AppTheme.darkColor,
+                        overflow: TextOverflow.ellipsis,
+                      )),
+                ],
+              ),
+            ),
+            Divider(
+              height: 10,
+              color: AppTheme.darkColor,
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 12.0),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text('Suplément jeune conducteur',
+                      style: Theme.of(context).textTheme.bodyText2!.copyWith(
+                        fontWeight: FontWeight.w500,
+                        fontSize: 14,
+                        color: AppTheme.darkColor,
+                        overflow: TextOverflow.ellipsis,
+                      )),
+                  Text('2.25 \$',
+                      style: Theme.of(context).textTheme.bodyText2!.copyWith(
+                        fontWeight: FontWeight.w900,
+                        fontSize: 18,
+                        color: AppTheme.darkColor,
+                        overflow: TextOverflow.ellipsis,
+                      )),
+                ],
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 12.0),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text('Montant total',
+                      style: Theme.of(context).textTheme.bodyText2!.copyWith(
+                        fontWeight: FontWeight.w900,
+                        fontSize: 18,
+                        color: AppTheme.darkColor,
+                        overflow: TextOverflow.ellipsis,
+                      )),
+                  Text('2.25 \$',
+                      style: Theme.of(context).textTheme.bodyText2!.copyWith(
+                        fontWeight: FontWeight.w900,
+                        fontSize: 18,
+                        color: AppTheme.primaryColor,
+                        overflow: TextOverflow.ellipsis,
+                      )),
+                ],
+              ),
+            ),
+          ],
+        ),
+      );
+    } else {
+      return Container();
+    }
+  }
+}
