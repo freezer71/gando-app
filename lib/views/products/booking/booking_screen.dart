@@ -713,7 +713,7 @@ class _BookingScreenState extends State<BookingScreen> {
   }
 
   Widget _buildResultForm(BuildContext context) {
-    if (1==1) {
+    if (2==2) {
       return Container(
         height: Get.height / 2.2,
         margin: const EdgeInsets.symmetric(vertical: 10),
