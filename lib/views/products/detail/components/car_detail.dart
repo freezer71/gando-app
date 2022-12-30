@@ -149,12 +149,24 @@ class _CarDetailPageState extends State<CarDetailPage> {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           FittedBox(
-            child: Text(
-              car.brand,
-              style: TextStyle(
-                  fontWeight: FontWeight.w900,
-                  fontSize: 32,
-                  color: AppTheme.darkColor),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  car.brand,
+                  style: TextStyle(
+                      fontWeight: FontWeight.w900,
+                      fontSize: 32,
+                      color: AppTheme.darkColor),
+                ),
+                Text(
+                  car.model,
+                  style: TextStyle(
+                      fontWeight: FontWeight.w500,
+                      fontSize: 14,
+                      color: AppTheme.darkColor),
+                ),
+              ],
             ),
           ),
           Container(
@@ -209,7 +221,7 @@ class _CarDetailPageState extends State<CarDetailPage> {
   }
 
   Widget _buildLine() {
-    return Container(height: 1, color: AppTheme.darkColor);
+    return Container(height: 1, color: AppTheme.darkColor.withOpacity(0.3));
   }
 
   List<Widget> _buildEquipment() {
@@ -223,18 +235,32 @@ class _CarDetailPageState extends State<CarDetailPage> {
                   fontWeight: FontWeight.w900)),
         ],
       ),
-      const SizedBox(height: 8),
+      const SizedBox(height: 22),
       Container(
-        height: 80,
-        child: ListView.builder(
+        child: GridView.builder(
+            padding: EdgeInsets.zero,
+            key: Get.keys[2],
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
             itemCount: equipmentsList.length,
-            physics: const ClampingScrollPhysics(),
-            scrollDirection: Axis.horizontal,
-            itemBuilder: (context, index) => Padding(
-                padding: EdgeInsets.only(right: 15),
-                child: Chip(
-                  label: Text(equipmentsList[index]['name']),
-                ))),
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 3,
+              mainAxisSpacing: 10,
+              crossAxisSpacing: 5,
+                childAspectRatio: 2
+            ),
+            itemBuilder: (context, index) => Container(
+              decoration: BoxDecoration(
+                  color: AppTheme.backgroundColor,
+                borderRadius: BorderRadius.circular(10)
+              ),
+              child: Center(
+                child: Text(equipmentsList[index]['name'], style: Theme.of(context).textTheme.bodyText2!.copyWith(
+                    color: AppTheme.darkColor,
+                    fontSize: 12,
+                    fontWeight: FontWeight.w900), textAlign: TextAlign.center,),
+              ),
+            )),
       ),
     ];
   }
@@ -249,7 +275,6 @@ class _CarDetailPageState extends State<CarDetailPage> {
         color: AppTheme.backgroundColor,
       ),
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 12),
-
       child: Container(
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -351,21 +376,13 @@ class _CarDetailPageState extends State<CarDetailPage> {
 
   List<Widget> _buildFeatures() {
     Widget buildBox(index) => Container(
-          width: 100,
-          height: 80,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.all(Radius.circular(10)),
             color: AppTheme.backgroundColor,
           ),
           padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 12),
-          margin: EdgeInsets.only(right: 10),
           child: Column(
             children: [
-              Icon(
-                featuresList[index]['icon'],
-                color: AppTheme.darkColor,
-              ),
-              _buildSpacerWidth(10.0),
               Text(featuresList[index]['name'],
                   style: Theme.of(context).textTheme.bodyText2!.copyWith(
                       color: AppTheme.darkColor,
@@ -376,8 +393,9 @@ class _CarDetailPageState extends State<CarDetailPage> {
                 child: _buildLine(),
               ),
               Text(featuresList[index]['value'], style: Theme.of(context).textTheme.bodyText2!.copyWith(
-                  color: AppTheme.redColor,
-                  fontSize: 8,
+                  color: AppTheme.primaryColor,
+                  fontSize: 13,
+                  overflow: TextOverflow.ellipsis,
                   fontWeight: FontWeight.w900))
             ],
           ),
@@ -390,13 +408,19 @@ class _CarDetailPageState extends State<CarDetailPage> {
               fontSize: 20,
               fontWeight: FontWeight.w900)),
       const SizedBox(height: 22),
-      Container(
-        height: 80,
-        child: ListView.builder(
-          scrollDirection: Axis.horizontal,
-          itemCount: featuresList.length,
-          itemBuilder: (context, index) => buildBox(index),
+      GridView.builder(
+        padding: EdgeInsets.zero,
+        key: Get.keys[3],
+        shrinkWrap: true,
+        physics: const NeverScrollableScrollPhysics(),
+        itemCount: featuresList.length,
+        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 3,
+            mainAxisSpacing: 10,
+            crossAxisSpacing: 5,
+            childAspectRatio: 1.7
         ),
+        itemBuilder: (context, index) => buildBox(index),
       ),
     ];
   }
@@ -425,7 +449,7 @@ class _CarDetailPageState extends State<CarDetailPage> {
         style: Theme.of(context).textTheme.bodyText2!.copyWith(
             color: AppTheme.darkColor,
             fontSize: 14,
-            fontWeight: FontWeight.w600),
+            fontWeight: FontWeight.w400),
         collapseText: ' Voir moins',
         linkStyle: Theme.of(context).textTheme.bodyText2!.copyWith(
             color: AppTheme.redColor,
@@ -636,11 +660,11 @@ class _CarDetailPageState extends State<CarDetailPage> {
               // splashColor: const Color(0xFFEEEEEE),
               onTap: () {
                 //got to next page
-                Get.to(() => BookingScreen());
+                Get.to(() => BookingScreen(car: car,));
               },
-              child: const Center(
+              child: Center(
                 child: Text(
-                  'Continuer',
+                  'Continuer'.toUpperCase(),
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 18,

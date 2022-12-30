@@ -6,23 +6,22 @@ import 'package:gando/config/config.dart';
 import 'package:gando/models/car.dart';
 import 'package:gando/views/products/detail/widget/car_detail_infomation.dart';
 import 'package:gando/views/products/detail/widget/my_appbar.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class CarDetailScreen extends StatelessWidget {
   final Car car;
 
   CarDetailScreen(this.car);
 
-  GoogleMapController? mapController;
+  // GoogleMapController? mapController;
 
   //contrller for Google map
-  CameraPosition? cameraPosition;
+  // CameraPosition? cameraPosition;
 
   String location = "Tapez une adresse";
 
-  late LatLng newlatlang = Config.latLng;
+  // late LatLng newlatlang = Config.latLng;
 
-  Map<MarkerId, Marker> markers = <MarkerId, Marker>{};
+  // Map<MarkerId, Marker> markers = <MarkerId, Marker>{};
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +30,7 @@ class CarDetailScreen extends StatelessWidget {
       body: Container(
         child: Stack(
           children: [
-            GoogleMap(
+         /*   GoogleMap(
               mapToolbarEnabled: false,
               zoomControlsEnabled: false,
               rotateGesturesEnabled: true,
@@ -50,7 +49,7 @@ class CarDetailScreen extends StatelessWidget {
                 //method called when map is created
                 mapController = controller;
               },
-            ),
+            ),*/
             MyAppbar(),
             Positioned(
               left: 24,

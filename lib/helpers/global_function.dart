@@ -100,15 +100,15 @@ class GlobalFunction {
         case 'USD':
           final value = rate;
           return '$symbol ' + formatter.format(value).replaceAll(',', '.');
-        case 'CDF':
+        case 'GPB':
           final value = rate;
-          return formatter.format(value).replaceAll(',', '.') + ' $symbol';
+          return '$symbol ' + formatter.format(value).replaceAll(',', '.');
         default:
-          return formatter.format(v).replaceAll(',', '.') + ' XAF';
+          return formatter.format(v).replaceAll(',', '.') + ' $symbol';
       }
     }
 
-    return formatter.format(v).replaceAll(',', '.') + ' XAF';
+    return formatter.format(v).replaceAll(',', '.') + ' $symbol';
   }
 }
 

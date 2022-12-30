@@ -13,6 +13,17 @@ class ForgotPasswordScreen extends StatelessWidget {
       extendBody: true,
       extendBodyBehindAppBar: true,
       backgroundColor: AppTheme.backgroundColor,
+      appBar: AppBar(
+        backwardsCompatibility: true,
+        elevation: 0,
+        backgroundColor: Colors.transparent,
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back, color: AppTheme.darkColor,),
+          onPressed: (){
+            Get.back();
+          },
+        ),
+      ),
       body: InkWell(
         focusColor: Colors.transparent,
         highlightColor: Colors.transparent,
@@ -131,7 +142,8 @@ class ForgotPasswordScreen extends StatelessWidget {
               ),
           enabled: true,
           decoration: InputDecoration(
-            fillColor: AppTheme.backgroundColor,
+            filled: true,
+            fillColor: AppTheme.light,
             prefixIconColor: AppTheme.backgroundColor,
             prefixIcon: const Padding(
               padding: EdgeInsets.only(right: 18.0, left: 18),
@@ -190,7 +202,7 @@ class ForgotPasswordScreen extends StatelessWidget {
             return null;
           },
           autovalidateMode: AutovalidateMode.onUserInteraction,
-          autofocus: true,
+          autofocus: false,
           inputFormatters: [
             // FilteringTextInputFormatter.deny(
             //   RegExp(r"^((5000)|([0-4]?[0-9]{1,3}))$"),

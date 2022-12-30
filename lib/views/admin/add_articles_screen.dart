@@ -18,10 +18,14 @@ class AddArticlesScreen extends GetView<AddArticlesController> {
   Widget buildBody(context) => Scaffold(
     backgroundColor: AppTheme.backgroundColor,
     appBar: AppBar(
-      backgroundColor: AppTheme.primaryColor,
+      backgroundColor: Colors.transparent,
+      centerTitle: true,
+      elevation: 0,
       automaticallyImplyLeading: true,
-      centerTitle: false,
-      shape: RoundedRectangleBorder(
+      leading: IconButton(onPressed: (){
+        Get.back();
+      }, icon: Icon(Icons.arrow_back_ios_outlined, color: AppTheme.darkColor,),),
+      shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(
           bottom: Radius.circular(30),
         ),
@@ -41,7 +45,7 @@ class AddArticlesScreen extends GetView<AddArticlesController> {
               fontWeight: FontWeight.w600,
               fontSize: 22,
               overflow: TextOverflow.visible,
-              color: AppTheme.backgroundColor,
+              color: AppTheme.darkColor,
             ),
           ),
         ),
@@ -76,7 +80,7 @@ class AddArticlesScreen extends GetView<AddArticlesController> {
           controlsBuilder: (context, controls) {
             return Container(
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.only(
+                borderRadius: const BorderRadius.only(
                     bottomLeft: Radius.circular(20),
                     bottomRight: Radius.circular(20)),
                 color: AppTheme.redColor,

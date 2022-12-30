@@ -12,8 +12,10 @@ class AppTheme {
   static Color light = Color(0xFFFFFFFF);
   static Color buttonColor = Color(0xFF292F36);
 
-  static Color primaryColor = Color(0xFF40ac9c);
-  static Color redColor = Color(0xFFCC5656);
+  static Color primaryColor = Color(0xff4ecdc4);
+  // static Color primaryColor = Color(0xFF40ac9c);
+  // static Color redColor = Color(0xFFCC5656);
+  static Color redColor = Color(0xFFFF6B6B);
   static Color secondaryColor = Color(0xFF203e5a);
   static Color darkColor = Color(0xff2c2c2c);
 

@@ -1,7 +1,8 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_google_places_hoc081098/flutter_google_places_hoc081098.dart';
+import 'package:flutter_map/flutter_map.dart';
+import 'package:flutter_map_marker_cluster/flutter_map_marker_cluster.dart';
 import 'package:gando/config/config.dart';
 import 'package:gando/config/constants.dart';
 import 'package:gando/config/textstyle.dart';
@@ -12,9 +13,7 @@ import 'package:gando/views/home/filters/date_filter_range.dart';
 import 'package:gando/views/products/available/available_car_screen.dart';
 import 'package:gando/views/products/detail/widget/car_detail_infomation.dart';
 import 'package:get/get.dart';
-import 'package:google_api_headers/google_api_headers.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:google_maps_webservice/places.dart';
+import 'package:latlong2/latlong.dart';
 
 import '../products/available/widget/car_list_item.dart';
 
@@ -29,19 +28,35 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen>
     with SingleTickerProviderStateMixin {
-  GoogleMapController? mapController;
   SingingCharacter? _character = SingingCharacter.map;
 
   late TabController tabController;
 
   late bool activeTab = false;
+  final scrollController = ScrollController();
 
-  //contrller for Google map
-  CameraPosition? cameraPosition;
   String location = "Tapez une adresse";
-  late LatLng newlatlang = Config.latLng;
-  Map<MarkerId, Marker> markers = <MarkerId, Marker>{};
   late AnimationController _topColorAnimationController;
+
+  //map
+  final PopupController _popupController = PopupController();
+  final _mapController = MapController();
+  final double _zoom = 7;
+  final List<LatLng> _latLngList = [
+    LatLng(13, 77.5),
+    LatLng(13.02, 77.51),
+    LatLng(13.05, 77.53),
+    LatLng(13.055, 77.54),
+    LatLng(13.059, 77.55),
+    LatLng(13.07, 77.55),
+    LatLng(13.1, 77.5342),
+    LatLng(13.12, 77.51),
+    LatLng(13.015, 77.53),
+    LatLng(13.155, 77.54),
+    LatLng(13.159, 77.55),
+    LatLng(13.17, 77.55),
+  ];
+  List<Marker> _markers = [];
 
   Car car = carList[3];
 
@@ -49,12 +64,22 @@ class _HomeScreenState extends State<HomeScreen>
   void initState() {
     super.initState();
     tabController = TabController(length: 2, vsync: this);
+    _markers = _latLngList
+        .map((point) => Marker(
+      point: point,
+      width: 60,
+      height: 60,
+      builder: (context) => const Icon(
+        Icons.pin_drop,
+        size: 60,
+        color: Colors.blueAccent,
+      ),
+    )).toList();
   }
+
 
   @override
   void dispose() {
-    markers.clear();
-    mapController!.dispose();
     super.dispose();
   }
 
@@ -73,7 +98,7 @@ class _HomeScreenState extends State<HomeScreen>
               automaticallyImplyLeading: false,
               bottom: TabBar(
                 controller: tabController,
-                indicatorColor: AppTheme.darkColor,
+                indicatorColor: AppTheme.light,
                 tabs: [
                   Tab(
                     child: Row(
@@ -81,7 +106,7 @@ class _HomeScreenState extends State<HomeScreen>
                       children: [
                         Icon(
                           Icons.map_outlined,
-                          color: AppTheme.darkColor.withOpacity(0.5),
+                          color: AppTheme.light.withOpacity(0.5),
                         ),
                         const SizedBox(
                           width: 10,
@@ -94,7 +119,7 @@ class _HomeScreenState extends State<HomeScreen>
                               .copyWith(
                                   fontWeight: FontWeight.w900,
                                   fontSize: 18,
-                                  color: AppTheme.darkColor),
+                                  color: AppTheme.light),
                         ),
                       ],
                     ),
@@ -105,7 +130,7 @@ class _HomeScreenState extends State<HomeScreen>
                       children: [
                         Icon(
                           Icons.format_list_bulleted_rounded,
-                          color: AppTheme.darkColor.withOpacity(0.5),
+                          color: AppTheme.light.withOpacity(0.5),
                         ),
                         const SizedBox(
                           width: 10,
@@ -118,7 +143,7 @@ class _HomeScreenState extends State<HomeScreen>
                               .copyWith(
                                   fontWeight: FontWeight.w900,
                                   fontSize: 18,
-                                  color: AppTheme.darkColor),
+                                  color: AppTheme.light),
                         ),
                       ],
                     ),
@@ -127,120 +152,80 @@ class _HomeScreenState extends State<HomeScreen>
               ),
             ),
           ),
-          // appBar: PreferredSize(
-          //   preferredSize: const Size.fromHeight(70.0),
-          //   child: AppBar(
-          //     shape: const RoundedRectangleBorder(
-          //       borderRadius: BorderRadius.only(bottomRight: Radius.circular(25), bottomLeft: Radius.circular(25)),
-          //     ),
-          //     backgroundColor: AppTheme.primaryColor,
-          //     // brightness: _statusIconBrightness,
-          //     elevation: 16,
-          //     automaticallyImplyLeading: false,
-          //     // title: Container(
-          //     //   decoration: BoxDecoration(
-          //     //     color: AppTheme.primaryColor,
-          //     //     borderRadius: const BorderRadius.only(topLeft: Radius.circular(20), topRight: Radius.circular(20)),
-          //     //   ),
-          //     //   child: TextButton(
-          //     //       style: ButtonStyle(
-          //     //         padding:  MaterialStateProperty.all(const EdgeInsets.symmetric(vertical: 12)),
-          //     //         backgroundColor:
-          //     //         MaterialStateProperty.resolveWith<Color>(
-          //     //               (Set<MaterialState> states) => AppTheme.backgroundColor,
-          //     //         ),
-          //     //         overlayColor:
-          //     //         MaterialStateProperty.all(Colors.transparent),
-          //     //         shape: MaterialStateProperty.all(
-          //     //             RoundedRectangleBorder(
-          //     //               borderRadius: BorderRadius.circular(30.0),
-          //     //             )),
-          //     //       ),
-          //     //       onPressed: () {
-          //     //         // Navigator.push(
-          //     //         //     context,
-          //     //         //     MaterialPageRoute(
-          //     //         //         builder: (context) => SearchPage()));
-          //     //       },
-          //     //       child: Row(
-          //     //         children: [
-          //     //           const SizedBox(width: 8),
-          //     //           const Icon(
-          //     //             Icons.search,
-          //     //             color: Colors.grey,
-          //     //           ),
-          //     //           SizedBox(
-          //     //             width: 100,
-          //     //             child: Text(
-          //     //               'Rechercher une adresse',
-          //     //               maxLines: 1,
-          //     //               style: TextStyle(
-          //     //                   color: Colors.grey[500],
-          //     //                   fontSize: 14,
-          //     //                   overflow: TextOverflow.ellipsis,
-          //     //                   fontWeight: FontWeight.normal),
-          //     //             ),
-          //     //           ),
-          //     //         ],
-          //     //       )),
-          //     // ),
-          //     actions: [
-          //       ClipRRect(
-          //         child: Container(
-          //             width: 55,
-          //             height: 50,
-          //             decoration: BoxDecoration(
-          //               borderRadius: BorderRadius.circular(50),
-          //               color: AppTheme.redColor,
-          //             ),
-          //             child: IconButton(onPressed: (){
-          //               Get.bottomSheet(showFilterDateBottomSheet(context));
-          //             }, icon: Icon(Icons.calendar_month,size: 25, color: AppTheme.backgroundColor.withOpacity(0.9)))),
-          //       ),
-          //       IconButton(
-          //         padding: EdgeInsets.zero,
-          //         // icon: _globalWidget.customNotifIcon(8, AppTheme.secondaryColor.withOpacity(0.5)),
-          //           icon: Icon(Icons.sort_outlined, size: 30, color: AppTheme.backgroundColor.withOpacity(0.9)),
-          //           onPressed: () {
-          //             Get.bottomSheet(showFilterBottomSheet(context));
-          //             // Navigator.push(context, MaterialPageRoute(builder: (context) => NotificationPage()));
-          //           }),
-          //       Container(
-          //         padding: const EdgeInsets.only(right: 5),
-          //       )
-          //     ],
-          //     leadingWidth: 40,
-          //     leading: Container(),
-          //   ),
-          // ),
           body: tabView(context, car),
         ),
       );
 
-  Widget tabView(BuildContext context, car) {
+  Widget tabView(BuildContext context, Car car) {
     return TabBarView(
       controller: tabController,
       children: [
         Stack(
           clipBehavior: Clip.none,
           children: [
-            GoogleMap(
-              mapToolbarEnabled: false,
-              zoomControlsEnabled: false,
-              rotateGesturesEnabled: true,
-              initialCameraPosition: CameraPosition(
-                target: newlatlang,
-                zoom: 14,
+            Container(
+              foregroundDecoration: const BoxDecoration(
+                gradient: LinearGradient(
+                  colors: [Colors.black, Colors.transparent, Colors.transparent, Colors.black],
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  stops: [0.0032, 0.3, 0.85, 4],
+                ),
               ),
-              gestureRecognizers: Set()
-                ..add(Factory<EagerGestureRecognizer>(
-                    () => EagerGestureRecognizer())),
-              mapType: MapType.normal,
-              markers: Set<Marker>.of(markers.values),
-              onMapCreated: (controller) {
-                //method called when map is created
-                mapController = controller;
-              },
+              child: FlutterMap(
+                mapController: _mapController,
+                options: MapOptions(
+                  zoom: 13.0,
+                  maxZoom: 18.0,
+                  center: car.latLng,
+                  // rotation: 180.0,
+                  keepAlive: true,
+                  enableScrollWheel: true,
+                  scrollWheelVelocity: 0.005,
+                  // onPositionChanged: (MapPosition position, bool hasGesture) {
+                  //   // Your logic here. `hasGesture` dictates whether the change
+                  //   // was due to a user interaction or something else. `position` is
+                  //   // the new position of the map.
+                  // },
+                ),
+                children: [
+                  TileLayer(
+                    urlTemplate: "https://api.mapbox.com/styles/v1/caviaros/clc1ppt3l000714p9rtrajii2/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1IjoiY2F2aWFyb3MiLCJhIjoiY2xjMW90MWx3MTFhajNwbXpmaXlreHI5diJ9.mPwJumFFjJCjq45E-17_QQ",
+                    userAgentPackageName: 'com.gando.rentcar.app',
+                    additionalOptions: const {
+                      'accessToken' : 'pk.eyJ1IjoiY2F2aWFyb3MiLCJhIjoiY2xjMW90MWx3MTFhajNwbXpmaXlreHI5diJ9.mPwJumFFjJCjq45E-17_QQ',
+                      'id' : 'mapbox.mapbox-streets-v8'
+                    },
+                    retinaMode: MediaQuery.of(context).devicePixelRatio > 1.0,
+                    // tileBounds: LatLngBounds(
+                    //   LatLng(32.2934590056236, 24.328924534719548),
+                    //   LatLng(21.792152188247265, 37.19854583903912),
+                    // ),
+                    errorImage: const NetworkImage('https://tile.openstreetmap.org/18/0/0.png'),
+                    // tileBuilder: (context, widget, tile) =>
+                    //     Stack(
+                    //       fit: StackFit.passthrough,
+                    //       children: [
+                    //         widget,
+                    //         Center(
+                    //           child:
+                    //           Text('${tile.coords.x.floor()} : ${tile.coords.y.floor()} : ${tile.coords.z.floor()}'),
+                    //         ),
+                    //       ],
+                    //     )
+                  ),
+                  MarkerLayer(
+                    markers: [
+                      ...List.generate(carList.length, (index) => Marker(
+                        point: carList[index].latLng!,
+                        width: 120,
+                        height: 120,
+                        builder: (context) => const Icon(Icons.location_history, color: Colors.deepOrange,),
+                      ),),
+                    ],
+                  ),
+                ],
+              ),
             ),
             Positioned(
               left: 0,
@@ -257,11 +242,18 @@ class _HomeScreenState extends State<HomeScreen>
                   //   duration: const Duration(milliseconds: 500),
                   // );
                 },
-                child: SingleChildScrollView(
-                  clipBehavior: Clip.antiAlias,
-                  scrollDirection: Axis.horizontal,
-                  child: Row(
-                    children: List.generate(carList.length, (index) => HomeCardCar(index,)),
+                child: Container(
+                  height: Get.height / 3.5,
+                  // margin: const EdgeInsets.only(top: 80.0),
+                  child: ListView.builder(
+                    controller: scrollController,
+                    physics: const BouncingScrollPhysics(),
+                    scrollDirection: Axis.horizontal,
+                    itemCount: carList.length,
+                    itemBuilder: (context, index) {
+                      scrollController.position.context.axisDirection.index == 0;
+                      return HomeCardCar(index);
+                    },
                   ),
                 ),
               ),
@@ -273,11 +265,21 @@ class _HomeScreenState extends State<HomeScreen>
           clipBehavior: Clip.none,
           children: [
             Container(
-              margin: const EdgeInsets.only(top: 120.0),
+              margin: const EdgeInsets.only(top: 0.0),
+              foregroundDecoration: const BoxDecoration(
+                gradient: LinearGradient(
+                  colors: [Colors.black, Colors.transparent, Colors.transparent, Colors.black],
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  stops: [0.0032, 0.3, 2.0, 90],
+                ),
+              ),
               child: ListView.builder(
                 physics: const BouncingScrollPhysics(),
+                scrollDirection: Axis.vertical,
+                padding: const EdgeInsets.only(top: 180, bottom: 80),
                 itemCount: carList.length,
-                itemBuilder: (context, index) => CarListItem(index),
+                itemBuilder: (context, index) => HomeCardCar(index,),
               ),
             ),
             buildAppBar()
@@ -322,7 +324,7 @@ class _HomeScreenState extends State<HomeScreen>
                           // icon: _globalWidget.customNotifIcon(8, AppTheme.secondaryColor.withOpacity(0.5)),
                           icon: Icon(Icons.dehaze,
                               size: 30,
-                              color: AppTheme.darkColor),
+                              color: AppTheme.light),
                           onPressed: () {
                             Get.bottomSheet(
                                 showFilterBottomSheet(context));
@@ -356,10 +358,7 @@ class _HomeScreenState extends State<HomeScreen>
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceAround,
                               children: [
-                                const Icon(
-                                  Icons.search,
-                                  color: Colors.grey,
-                                ),
+
                                 SizedBox(
                                   width: 180,
                                   child: Text(
@@ -371,6 +370,10 @@ class _HomeScreenState extends State<HomeScreen>
                                         overflow: TextOverflow.ellipsis,
                                         fontWeight: FontWeight.normal),
                                   ),
+                                ),
+                                const Icon(
+                                  Icons.search,
+                                  color: Colors.grey,
                                 ),
                               ],
                             )),
@@ -407,71 +410,7 @@ class _HomeScreenState extends State<HomeScreen>
       top: 120,
       child: InkWell(
         onTap: () async {
-          var place = await PlacesAutocomplete.show(
-              context: context,
-              apiKey: Config.googleApikey,
-              mode: Mode.overlay,
-              types: [],
-              hint: 'Trouver l\'adresse',
-              strictbounds: false,
-              cursorColor: AppTheme.backgroundColor,
-              textDecoration: InputDecoration(
-                fillColor: AppTheme.backgroundColor,
-                prefixIconColor: AppTheme.backgroundColor,
-                enabled: true,
-                enabledBorder: OutlineInputBorder(
-                  borderSide: const BorderSide(
-                    width: 2.0,
-                    color: Colors.black,
-                  ),
-                  borderRadius: BorderRadius.circular(16.0),
-                  gapPadding: 8.0,
-                ),
-              ),
-              components: [Component(Component.country, 'fr')],
-              //google_map_webservice package
-              onError: (err) {
-                // print(err);
-              });
 
-          if (place != null) {
-            setState(() {
-              location = place.description.toString();
-            });
-            //form google_maps_webservice package
-            final plist = GoogleMapsPlaces(
-              apiKey: Config.googleApikey,
-              apiHeaders: await GoogleApiHeaders().getHeaders(),
-              //from google_api_headers package
-            );
-            String placeid = place.placeId ?? "0";
-            final detail = await plist.getDetailsByPlaceId(placeid);
-            final geometry = detail.result.geometry!;
-            final lat = geometry.location.lat;
-            final lang = geometry.location.lng;
-
-            setState(() {
-              newlatlang = LatLng(lat, lang);
-              var markerIdVal = lat + lang;
-              final MarkerId markerId = MarkerId(markerIdVal.toString());
-              // creating a new MARKER
-              final Marker marker = Marker(
-                markerId: markerId,
-                position: newlatlang,
-                infoWindow:
-                    InfoWindow(title: markerIdVal.toString(), snippet: '*'),
-                onTap: () {
-                  // _onMarkerTapped(markerId);
-                },
-              );
-              // adding a new marker to map
-              markers[markerId] = marker;
-
-              //move map camera to selected place with animation
-              mapController?.animateCamera(CameraUpdate.newCameraPosition(
-                  CameraPosition(target: newlatlang, zoom: 17)));
-            });
-          }
         },
         child: Padding(
           padding: const EdgeInsets.all(15),

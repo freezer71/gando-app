@@ -25,21 +25,29 @@ class HomeCardCar extends StatelessWidget {
           ),
         );
       },
-      child: Container(
-        margin: EdgeInsets.symmetric(horizontal: 30),
-        child: Stack(
-          children: [
-            CarDetailInfomation(car: car),
-            Positioned(
-              right: 10,
-              top: 10,
-              child: Image.asset(
-                car.image,
-                height: 90,
-              ),
-            )
-          ],
-        ),
+      child: _buildNextHomeCardCar(context, car),
+    );
+  }
+
+  Widget _buildNextHomeCardCar(BuildContext context, car) {
+    return CarDetailInfomation(car: car);
+  }
+
+  Widget _buildOldHomeCardCar(BuildContext context, car) {
+    return Container(
+      margin: const EdgeInsets.symmetric(horizontal: 30),
+      child: Stack(
+        children: [
+          CarDetailInfomation(car: car),
+          // Positioned(
+          //   right: 10,
+          //   top: 10,
+          //   child: Image.asset(
+          //     car.image,
+          //     height: 90,
+          //   ),
+          // )
+        ],
       ),
     );
   }

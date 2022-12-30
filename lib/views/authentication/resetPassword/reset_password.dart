@@ -19,6 +19,17 @@ class ResetRecoveryOtpScreen extends StatelessWidget {
       extendBody: true,
       extendBodyBehindAppBar: true,
       backgroundColor: AppTheme.backgroundColor,
+      appBar: AppBar(
+        backwardsCompatibility: true,
+        elevation: 0,
+        backgroundColor: Colors.transparent,
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back, color: AppTheme.darkColor,),
+          onPressed: (){
+            Get.back();
+          },
+        ),
+      ),
       body: InkWell(
         focusColor: Colors.transparent,
         highlightColor: Colors.transparent,
@@ -120,7 +131,7 @@ class ResetRecoveryOtpScreen extends StatelessWidget {
           height: 32,
         ),
         Pinput(
-          autofocus: true,
+          autofocus: false,
           onCompleted: (value) {
             if(value == '1234'){
               Get.toNamed(Routes.newPwd);

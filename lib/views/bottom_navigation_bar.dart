@@ -7,7 +7,7 @@ import 'package:gando/views/home/home.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_snake_navigationbar/flutter_snake_navigationbar.dart';
 import 'package:gando/views/products/available/available_car_screen.dart';
-import 'package:gando/views/settings/settings_screen.dart';
+import 'package:gando/views/settings/mygando_screen.dart';
 import 'package:get/get.dart';
 
 import 'admin/articles_list_screen.dart';
@@ -58,13 +58,13 @@ class _BottomNavigationBarPage extends State<BottomNavigationBarPage> {
   EdgeInsets padding = EdgeInsets.zero;
 
   final int _selectedItemPosition = 0;
-  SnakeShape snakeShape = SnakeShape.circle;
+  SnakeShape snakeShape = SnakeShape.indicator;
 
   bool showSelectedLabels = false;
   bool showUnselectedLabels = true;
 
-  Color selectedColor = AppTheme.primaryColor;
-  Color unselectedColor = AppTheme.secondaryColor;
+  Color selectedColor = AppTheme.redColor;
+  Color unselectedColor = Colors.transparent;
 
   Gradient selectedGradient =
   const LinearGradient(colors: [Colors.red, Colors.amber]);
@@ -84,9 +84,17 @@ class _BottomNavigationBarPage extends State<BottomNavigationBarPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       extendBody: true,
-      extendBodyBehindAppBar: true,
       // backgroundColor: HexColor(AppTheme.secondaryColorString!).withOpacity(0.4),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      body: GetX<TabScreenController>(
+        init: tabController,
+        builder: (tabController) => tabController.pageIndex.value == 0
+            ? HomeScreen()
+            : tabController.pageIndex.value == 1
+            ? const ArticleListScreen()
+            : tabController.pageIndex.value == 2
+            ? ChatScreen()
+            : const MyGandoScreen(),
+      ),
       bottomNavigationBar: SnakeNavigationBar.color(
         height: 65,
         behaviour: snakeBarStyle,
@@ -102,25 +110,15 @@ class _BottomNavigationBarPage extends State<BottomNavigationBarPage> {
         elevation: 16,
         currentIndex: tabController.pageIndex.value,
         onTap: (index) => setState(() => tabController.pageIndex.value = index),
-        items: const [
-          BottomNavigationBarItem(icon: Icon(Icons.home_filled, size: 30)),
-          BottomNavigationBarItem(icon: Icon(Icons.bookmark_outline_outlined, size: 30)),
-          BottomNavigationBarItem(icon: Icon(Icons.mail_outlined, size: 30)),
+        items:  [
+          BottomNavigationBarItem(icon: Icon(Icons.home_filled , size: 30, color: tabController.pageIndex.value == 0 ? AppTheme.redColor : AppTheme.secondaryColor.withOpacity(0.6),)),
+          BottomNavigationBarItem(icon: Icon(Icons.bookmark_outline_outlined, size: 30, color: tabController.pageIndex.value == 1 ? AppTheme.redColor : AppTheme.secondaryColor.withOpacity(0.6))),
+          BottomNavigationBarItem(icon: Icon(Icons.mail_outlined, size: 30, color: tabController.pageIndex.value == 2 ? AppTheme.redColor : AppTheme.secondaryColor.withOpacity(0.6))),
           BottomNavigationBarItem(
-              icon: Icon(Icons.settings, size: 25,)),
+              icon: Icon(Icons.settings, size: 25, color: tabController.pageIndex.value == 3 ? AppTheme.redColor : AppTheme.secondaryColor.withOpacity(0.6))),
         ],
         selectedLabelStyle: const TextStyle(fontSize: 14),
         unselectedLabelStyle: const TextStyle(fontSize: 10),
-      ),
-      body: GetX<TabScreenController>(
-        init: tabController,
-        builder: (tabController) => tabController.pageIndex.value == 0
-            ? HomeScreen()
-            : tabController.pageIndex.value == 1
-            ? const ArticleListScreen()
-            : tabController.pageIndex.value == 2
-            ? ChatScreen()
-            : const SettingsScreen(),
       ),
     );
   }

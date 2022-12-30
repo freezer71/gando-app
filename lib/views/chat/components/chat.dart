@@ -1,22 +1,25 @@
 
 import 'package:flutter/material.dart';
+import 'package:gando/services/chat/chat_service.dart';
+import 'package:get/get.dart';
 
 import '../../../config/textstyle.dart';
-import '../conversations.dart';
+import '../widget/channel_list_page.dart';
 
 class ChatTabScreen extends StatelessWidget {
-  const ChatTabScreen({Key? key}) : super(key: key);
+  ChatTabScreen({Key? key}) : super(key: key);
+
+  final controller = Get.put(ChatService());
 
   @override
   Widget build(BuildContext context) {
-    return Container(child:  Center(
-      child: Text(
-        'Messages',
-        style: Theme.of(context).textTheme.bodyText2!.copyWith(
-            fontWeight: FontWeight.w900,
-            fontSize: 22,
-            color: AppTheme.primaryColor),
+
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      builder: (context, child) => Container(
+        child: child,
       ),
-    ),);
+      home: ChannelListPage(controller: controller),
+    );
   }
 }

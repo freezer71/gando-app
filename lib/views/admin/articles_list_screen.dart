@@ -1,9 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:gando/config/textstyle.dart';
 import 'package:gando/views/admin/add_articles_screen.dart';
+import 'package:gando/views/admin/calendar_screen.dart';
 import 'package:get/get.dart';
+import 'package:latlong2/latlong.dart';
 
+import '../../config/constants.dart';
+import '../../models/car.dart';
+import '../../models/profile_seller.dart';
 import 'components/add_articles_stepper.dart';
+import 'edit_article_screen.dart';
 
 class ArticleListScreen extends StatefulWidget {
   const ArticleListScreen({Key? key}) : super(key: key);
@@ -20,6 +26,20 @@ class _ArticleListScreenState extends State<ArticleListScreen> {
     {'image': 'assets/images/maserati.png'},
     {'image': 'assets/images/rolls_royce.png'},
   ];
+  late Car car;
+  @override
+  void initState() {
+    super.initState();
+    car = Car(
+      'assets/images/rolls_royce.png',
+      800,
+      'lorem ipsum rem ipsum  ',
+      'maseratti',
+      'co2',
+      '2 L',
+      LatLng(13.05, 77.53),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -29,25 +49,17 @@ class _ArticleListScreenState extends State<ArticleListScreen> {
   Widget buildBody()=> Scaffold(
     backgroundColor: AppTheme.backgroundColor,
     appBar: AppBar(
-      backgroundColor: AppTheme.primaryColor,
+      backgroundColor: Colors.transparent,
+      centerTitle: true,
       automaticallyImplyLeading: false,
-      title: Container(
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(20),
-          color: AppTheme.darkColor,
-        ),
-        child: Padding(
-          padding:
-          const EdgeInsets.symmetric(horizontal: 80.0, vertical: 6),
-          child: Text(
-            'Mes annonces',
-            style: Theme.of(context).textTheme.bodyText2!.copyWith(
-              fontWeight: FontWeight.w600,
-              fontSize: 22,
-              overflow: TextOverflow.ellipsis,
-              color: AppTheme.backgroundColor,
-            ),
-          ),
+      elevation: 0,
+      title: Text(
+        'Mes annonces',
+        style: Theme.of(context).textTheme.bodyText2!.copyWith(
+            fontWeight: FontWeight.w900,
+            fontSize: 18,
+            overflow: TextOverflow.ellipsis,
+            color: AppTheme.darkColor
         ),
       ),
     ),
@@ -151,9 +163,14 @@ class _ArticleListScreenState extends State<ArticleListScreen> {
                           child: Column(
                             mainAxisAlignment:
                             MainAxisAlignment.spaceAround,
-                            children: const [
-                              Icon(Icons.edit),
-                              Icon(Icons.calendar_month),
+                            children: [
+                              IconButton( onPressed: (){
+                                Get.to(() => EditArticleScreen(article: car,));
+                              }, icon: const Icon(Icons.edit)),
+
+                              IconButton( onPressed: (){
+                                Get.to(() => CalendarScreen());
+                              }, icon: const Icon(Icons.calendar_month)),
                             ],
                           ),
                         ),

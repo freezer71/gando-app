@@ -18,6 +18,17 @@ class SignUpScreen extends GetView<SignUpController> {
         extendBody: true,
         extendBodyBehindAppBar: true,
         backgroundColor: AppTheme.backgroundColor,
+        appBar: AppBar(
+          backwardsCompatibility: true,
+          elevation: 0,
+          backgroundColor: Colors.transparent,
+          leading: IconButton(
+            icon: Icon(Icons.arrow_back, color: AppTheme.darkColor,),
+            onPressed: (){
+              Get.back();
+            },
+          ),
+        ),
         body: InkWell(
           focusColor: Colors.transparent,
           highlightColor: Colors.transparent,
@@ -139,7 +150,7 @@ class SignUpScreen extends GetView<SignUpController> {
         ),
         overlayColor: MaterialStateProperty.all(Colors.transparent),
         shape: MaterialStateProperty.all(RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(10.0),
+          borderRadius: BorderRadius.circular(30.0),
         )),
       ),
       child: Container(
@@ -187,7 +198,8 @@ class SignUpScreen extends GetView<SignUpController> {
           ),
           enabled: true,
           decoration: InputDecoration(
-            fillColor: AppTheme.backgroundColor,
+            filled: true,
+            fillColor: AppTheme.light,
             prefixIconColor: AppTheme.backgroundColor,
             prefixIcon: const Padding(
               padding: EdgeInsets.only(right: 18.0, left: 18),
@@ -199,7 +211,7 @@ class SignUpScreen extends GetView<SignUpController> {
                 width: 2.0,
                 color: Colors.black,
               ),
-              borderRadius: BorderRadius.circular(16.0),
+              borderRadius: BorderRadius.circular(30.0),
               gapPadding: 8.0,
             ),
             hintText: "Votre prénom",
@@ -229,21 +241,21 @@ class SignUpScreen extends GetView<SignUpController> {
                   color: Colors.black,
                   width: 2.0,
                 ),
-                borderRadius: BorderRadius.circular(16.0),
+                borderRadius: BorderRadius.circular(30.0),
                 gapPadding: 8.0),
             errorBorder: OutlineInputBorder(
                 borderSide: BorderSide(
                   color: Colors.red.withOpacity(0.4),
                   width: 2.0,
                 ),
-                borderRadius: BorderRadius.circular(16.0),
+                borderRadius: BorderRadius.circular(30.0),
                 gapPadding: 8.0),
             focusedBorder: OutlineInputBorder(
                 borderSide: const BorderSide(
                   color: Colors.black,
                   width: 2.0,
                 ),
-                borderRadius: BorderRadius.circular(16.0),
+                borderRadius: BorderRadius.circular(30.0),
                 gapPadding: 8.0),
           ),
           validator: (value) {
@@ -253,7 +265,7 @@ class SignUpScreen extends GetView<SignUpController> {
             return null;
           },
           autovalidateMode: AutovalidateMode.onUserInteraction,
-          autofocus: true,
+          autofocus: false,
           inputFormatters: [
             LengthLimitingTextInputFormatter(60),
             FilteringTextInputFormatter.singleLineFormatter
@@ -295,7 +307,8 @@ class SignUpScreen extends GetView<SignUpController> {
           ),
           enabled: true,
           decoration: InputDecoration(
-            fillColor: AppTheme.backgroundColor,
+            filled: true,
+            fillColor: AppTheme.light,
             prefixIconColor: AppTheme.backgroundColor,
             prefixIcon: const Padding(
               padding: EdgeInsets.only(right: 18.0, left: 18),
@@ -307,7 +320,7 @@ class SignUpScreen extends GetView<SignUpController> {
                 width: 2.0,
                 color: Colors.black,
               ),
-              borderRadius: BorderRadius.circular(16.0),
+              borderRadius: BorderRadius.circular(30.0),
               gapPadding: 8.0,
             ),
             hintText: "Votre nom",
@@ -337,21 +350,21 @@ class SignUpScreen extends GetView<SignUpController> {
                   color: Colors.black,
                   width: 2.0,
                 ),
-                borderRadius: BorderRadius.circular(16.0),
+                borderRadius: BorderRadius.circular(30.0),
                 gapPadding: 8.0),
             errorBorder: OutlineInputBorder(
                 borderSide: BorderSide(
                   color: Colors.red.withOpacity(0.4),
                   width: 2.0,
                 ),
-                borderRadius: BorderRadius.circular(16.0),
+                borderRadius: BorderRadius.circular(30.0),
                 gapPadding: 8.0),
             focusedBorder: OutlineInputBorder(
                 borderSide: const BorderSide(
                   color: Colors.black,
                   width: 2.0,
                 ),
-                borderRadius: BorderRadius.circular(16.0),
+                borderRadius: BorderRadius.circular(30.0),
                 gapPadding: 8.0),
           ),
           validator: (value) {
@@ -362,7 +375,7 @@ class SignUpScreen extends GetView<SignUpController> {
             return null;
           },
           autovalidateMode: AutovalidateMode.onUserInteraction,
-          autofocus: true,
+          autofocus: false,
           inputFormatters: [
             // FilteringTextInputFormatter.deny(
             //   RegExp(r"^((5000)|([0-4]?[0-9]{1,3}))$"),
@@ -407,7 +420,8 @@ class SignUpScreen extends GetView<SignUpController> {
           ),
           enabled: true,
           decoration: InputDecoration(
-            fillColor: AppTheme.backgroundColor,
+            filled: true,
+            fillColor: AppTheme.light,
             prefixIconColor: AppTheme.backgroundColor,
             prefixIcon: const Padding(
               padding: EdgeInsets.only(right: 18.0, left: 18),
@@ -419,7 +433,7 @@ class SignUpScreen extends GetView<SignUpController> {
                 width: 2.0,
                 color: Colors.black,
               ),
-              borderRadius: BorderRadius.circular(16.0),
+              borderRadius: BorderRadius.circular(30.0),
               gapPadding: 8.0,
             ),
             hintText: "Votre email",
@@ -449,21 +463,21 @@ class SignUpScreen extends GetView<SignUpController> {
                   color: Colors.black,
                   width: 2.0,
                 ),
-                borderRadius: BorderRadius.circular(16.0),
+                borderRadius: BorderRadius.circular(30.0),
                 gapPadding: 8.0),
             errorBorder: OutlineInputBorder(
                 borderSide: BorderSide(
                   color: Colors.red.withOpacity(0.4),
                   width: 2.0,
                 ),
-                borderRadius: BorderRadius.circular(16.0),
+                borderRadius: BorderRadius.circular(30.0),
                 gapPadding: 8.0),
             focusedBorder: OutlineInputBorder(
                 borderSide: const BorderSide(
                   color: Colors.black,
                   width: 2.0,
                 ),
-                borderRadius: BorderRadius.circular(16.0),
+                borderRadius: BorderRadius.circular(30.0),
                 gapPadding: 8.0),
           ),
           validator: (value) {
@@ -474,7 +488,7 @@ class SignUpScreen extends GetView<SignUpController> {
             return null;
           },
           autovalidateMode: AutovalidateMode.onUserInteraction,
-          autofocus: true,
+          autofocus: false,
           inputFormatters: [
             // FilteringTextInputFormatter.deny(
             //   RegExp(r"^((5000)|([0-4]?[0-9]{1,3}))$"),
@@ -520,6 +534,8 @@ class SignUpScreen extends GetView<SignUpController> {
           ),
           enabled: true,
           decoration: InputDecoration(
+            filled: true,
+            fillColor: AppTheme.light,
             suffixIcon: const Padding(
               padding: EdgeInsets.only(right: 18.0, left: 18),
               child: InkWell(
@@ -527,7 +543,6 @@ class SignUpScreen extends GetView<SignUpController> {
                 child: Icon(Icons.remove_red_eye_sharp),
               ),
             ),
-            fillColor: AppTheme.backgroundColor,
             prefixIconColor: AppTheme.backgroundColor,
             prefixIcon: const Padding(
               padding: EdgeInsets.only(right: 18.0, left: 18),
@@ -539,7 +554,7 @@ class SignUpScreen extends GetView<SignUpController> {
                 width: 2.0,
                 color: Colors.black,
               ),
-              borderRadius: BorderRadius.circular(16.0),
+              borderRadius: BorderRadius.circular(30.0),
               gapPadding: 8.0,
             ),
             hintText: "Mot de passe",
@@ -569,21 +584,21 @@ class SignUpScreen extends GetView<SignUpController> {
                   color: Colors.black,
                   width: 2.0,
                 ),
-                borderRadius: BorderRadius.circular(16.0),
+                borderRadius: BorderRadius.circular(30.0),
                 gapPadding: 8.0),
             errorBorder: OutlineInputBorder(
                 borderSide: BorderSide(
                   color: Colors.red.withOpacity(0.4),
                   width: 2.0,
                 ),
-                borderRadius: BorderRadius.circular(16.0),
+                borderRadius: BorderRadius.circular(30.0),
                 gapPadding: 8.0),
             focusedBorder: OutlineInputBorder(
                 borderSide: const BorderSide(
                   color: Colors.black,
                   width: 2.0,
                 ),
-                borderRadius: BorderRadius.circular(16.0),
+                borderRadius: BorderRadius.circular(30.0),
                 gapPadding: 8.0),
           ),
           validator: (value) {
@@ -594,7 +609,7 @@ class SignUpScreen extends GetView<SignUpController> {
             return null;
           },
           autovalidateMode: AutovalidateMode.onUserInteraction,
-          autofocus: true,
+          autofocus: false,
           inputFormatters: [
             // FilteringTextInputFormatter.deny(
             //   RegExp(r"^((5000)|([0-4]?[0-9]{1,3}))$"),

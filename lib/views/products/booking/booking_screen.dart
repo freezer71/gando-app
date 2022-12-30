@@ -2,13 +2,19 @@ import 'package:csc_picker/csc_picker.dart';
 import 'package:datepicker_dropdown/datepicker_dropdown.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:gando/config/constants.dart';
 import 'package:gando/config/textstyle.dart';
 import 'package:gando/views/home/home.dart';
 import 'package:get/get.dart';
 import 'package:text_form_field_wrapper/text_form_field_wrapper.dart';
 
+import '../../../models/car.dart';
+import 'payment/payment_screen.dart';
+import 'success_booking_screen.dart';
+
 class BookingScreen extends StatefulWidget {
-  BookingScreen({Key? key}) : super(key: key);
+  final car;
+  BookingScreen({Key? key, required this.car}) : super(key: key);
 
   @override
   State<BookingScreen> createState() => _BookingScreenState();
@@ -28,9 +34,17 @@ class _BookingScreenState extends State<BookingScreen> {
   final formKey = Get.key;
   final key = GlobalKey<FormState>();
 
+  late Car car;
+
   @override
   void initState() {
     super.initState();
+    car = widget.car;
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
   }
 
   @override
@@ -42,9 +56,11 @@ class _BookingScreenState extends State<BookingScreen> {
         elevation: 0,
         centerTitle: true,
         automaticallyImplyLeading: true,
-        leading: Icon(Icons.arrow_back, color: AppTheme.darkColor),
+        leading: InkWell(onTap: (){
+          Get.back();
+        },child: Icon(Icons.arrow_back, color: AppTheme.darkColor)),
         title: Text(
-          'Réserver le véhicule',
+          'Réserver le véhicule'.toUpperCase(),
           style: Theme.of(context).textTheme.bodyText2!.copyWith(
                 fontWeight: FontWeight.w900,
                 fontSize: 18,
@@ -59,7 +75,7 @@ class _BookingScreenState extends State<BookingScreen> {
             child: ListView(
               padding: const EdgeInsets.all(16),
               children: [
-                buildRowMenu(context),
+                _buildRowMenu(context),
                 Divider(
                   height: Get.height / 12,
                   color: AppTheme.darkColor,
@@ -99,11 +115,11 @@ class _BookingScreenState extends State<BookingScreen> {
               // splashColor: const Color(0xFFEEEEEE),
               onTap: () {
                 //got to next page
-                Get.to(() => BookingScreen());
+                Get.bottomSheet(_buildBottomSheet(context, car));
               },
-              child: const Center(
+              child: Center(
                 child: Text(
-                  'Réserver',
+                  'Réserver'.toUpperCase(),
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 18,
@@ -130,6 +146,8 @@ class _BookingScreenState extends State<BookingScreen> {
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
+                buildAddCard(),
+                const SizedBox(height: 12),
                 InkWell(
                   onTap: () {
                     // go to signalisation page
@@ -147,8 +165,6 @@ class _BookingScreenState extends State<BookingScreen> {
                     ],
                   ),
                 ),
-                const SizedBox(height: 12),
-                buildAddCard()
               ],
             ),
             // const SizedBox(height: 36),
@@ -157,8 +173,143 @@ class _BookingScreenState extends State<BookingScreen> {
       ),
     );
   }
+  
+  Widget _buildBottomSheet(BuildContext context, Car car) {
+    bookingButton() => Container(
+      height: 58,
+      margin: EdgeInsets.symmetric(vertical: 10),
+      width: Get.width / 1.2,
+      decoration: BoxDecoration(
+        borderRadius: const BorderRadius.all(Radius.circular(29)),
+        color: AppTheme.primaryColor,
+        boxShadow: [
+          BoxShadow(
+            offset: const Offset(4, 8),
+            blurRadius: 20,
+            color: const Color(0xFF101010).withOpacity(0.25),
+          ),
+        ],
+      ),
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
+          borderRadius: const BorderRadius.all(Radius.circular(29)),
+          // splashColor: const Color(0xFFEEEEEE),
+          onTap: () {
+            //open bottom sheet
+            Get.bottomSheet(_buildBottomSheet(context, car));
+          },
+          child: Center(
+            child: Text(
+              'Réserver'.toUpperCase(),
+              style: const TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 18,
+                color: Colors.white,
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
 
-  Widget buildRowMenu(context) {
+    return Container(
+      width: Get.width,
+      height: 350,
+      padding: EdgeInsets.symmetric(vertical: 20, horizontal: 20),
+      decoration: BoxDecoration(
+        color:  AppTheme.backgroundColor,
+        borderRadius: BorderRadius.only(topLeft: Radius.circular(16), topRight: Radius.circular(16)),
+      ),
+      child: Stack(
+        children: [
+          Container(
+            child: Column(
+              children: [
+                Text("${car.brand} ${car.model}", style: Theme.of(context).textTheme.bodyText2!.copyWith(
+                  fontWeight: FontWeight.w900,
+                  fontSize: 18,
+                  color: AppTheme.darkColor,
+                  overflow: TextOverflow.ellipsis,
+                )),
+                Divider(color: AppTheme.darkColor.withOpacity(0.3),),
+                Container(
+                  padding: EdgeInsets.all(22),
+                  child: Text("11 adile maret Sainte Anne, 97180", style: Theme.of(context).textTheme.bodyText2!.copyWith(
+                    fontWeight: FontWeight.w400,
+                    fontSize: 16,
+                    color: AppTheme.darkColor,
+                    overflow: TextOverflow.ellipsis,
+                  )),
+                ),
+                Divider( color: AppTheme.darkColor.withOpacity(0.3),),
+                Container(
+                  width: Get.width / 1.4,
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Column(
+                        children: [
+                          Text("du 11/09/22", style: Theme.of(context).textTheme.bodyText2!.copyWith(
+                            fontWeight: FontWeight.w900,
+                            fontSize: 18,
+                            color: AppTheme.darkColor,
+                            overflow: TextOverflow.ellipsis,
+                          )),
+                          Text("à 14h30", style: Theme.of(context).textTheme.bodyText2!.copyWith(
+                            fontWeight: FontWeight.w400,
+                            fontSize: 12,
+                            color: AppTheme.darkColor,
+                            overflow: TextOverflow.ellipsis,
+                          )),
+                        ],
+                      ),
+                      Column(
+                        children: [
+                          Text("du 02/09/22", style: Theme.of(context).textTheme.bodyText2!.copyWith(
+                            fontWeight: FontWeight.w900,
+                            fontSize: 18,
+                            color: AppTheme.darkColor,
+                            overflow: TextOverflow.ellipsis,
+                          )),
+                          Text("à 14h30", style: Theme.of(context).textTheme.bodyText2!.copyWith(
+                            fontWeight: FontWeight.w400,
+                            fontSize: 12,
+                            color: AppTheme.darkColor,
+                            overflow: TextOverflow.ellipsis,
+                          )),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+                Divider( color: AppTheme.darkColor.withOpacity(0.3),),
+                bookingButton(),
+                Container(
+                  padding: EdgeInsets.all(10),
+                  child: Text("Ajouter un code promotionnel", style: Theme.of(context).textTheme.bodyText2!.copyWith(
+                    fontWeight: FontWeight.w600,
+                    fontSize: 16,
+                    color: AppTheme.primaryColor,
+                    overflow: TextOverflow.ellipsis,
+                  )),
+                ),
+              ],
+            ),
+          ),
+          Positioned(
+              top: -15,
+              right: -15,
+              child: IconButton(onPressed: (){
+            Get.back();
+          }, icon: Icon(Icons.close, color: AppTheme.darkColor,),))
+        ],
+      ),
+    );
+  } 
+
+  Widget _buildRowMenu(context) {
     return Container(
       width: Get.width,
       child: Row(
@@ -405,14 +556,14 @@ class _BookingScreenState extends State<BookingScreen> {
               height: Get.height / 12,
               color: AppTheme.darkColor,
             ),
-            section1(context),
+            _buildSection1(context),
           ],
         ),
       )
     ];
   }
 
-  Widget section1(BuildContext context) {
+  Widget _buildSection1(BuildContext context) {
     return SizedBox(
       height: Get.height / 0.93,
       child: Column(
@@ -436,6 +587,8 @@ class _BookingScreenState extends State<BookingScreen> {
                             keyboardType: TextInputType.text,
                             autofocus: false,
                             decoration: InputDecoration(
+                                filled: true,
+                                fillColor: AppTheme.light,
                                 border: InputBorder.none,
                                 hintText: 'Nom',
                                 hintStyle: TextStyle(
@@ -454,6 +607,8 @@ class _BookingScreenState extends State<BookingScreen> {
                             keyboardType: TextInputType.text,
                             autofocus: false,
                             decoration: InputDecoration(
+                                filled: true,
+                                fillColor: AppTheme.light,
                                 border: InputBorder.none,
                                 hintText: 'Prénom',
                                 hintStyle: TextStyle(
@@ -551,11 +706,14 @@ class _BookingScreenState extends State<BookingScreen> {
                           height: 10,
                         ),
                         TextFormFieldWrapper(
+                          borderFocusedColor: AppTheme.primaryColor,
                           formField: TextFormField(
                             controller: drivingIdController,
                             keyboardType: TextInputType.number,
                             autofocus: false,
                             decoration: InputDecoration(
+                                filled: true,
+                                fillColor: AppTheme.light,
                                 border: InputBorder.none,
                                 hintText: 'Numéro de Permis',
                                 hintStyle: TextStyle(
@@ -569,7 +727,7 @@ class _BookingScreenState extends State<BookingScreen> {
                   ),
                   Container(
                     width: Get.width - 40,
-                    padding: EdgeInsets.only(bottom: 10, top: 10),
+                    padding: const  EdgeInsets.only(bottom: 10, top: 10),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -588,113 +746,101 @@ class _BookingScreenState extends State<BookingScreen> {
                         const SizedBox(
                           height: 10,
                         ),
-
-                        // DropdownDatePicker(
-                        //   inputDecoration: InputDecoration(
-                        //     enabledBorder: const OutlineInputBorder(
-                        //       borderSide: BorderSide(color: Colors.grey, width: 1.0),
-                        //     ),
-                        //     border: OutlineInputBorder(
-                        //       borderRadius: BorderRadius.circular(10),
-                        //     ),
-                        //   ),
-                        //   // optional
-                        //   isDropdownHideUnderline: false,
-                        //   // optional
-                        //   isFormValidator: true,
-                        //   // optional
-                        //   startYear:
-                        //       DateTime.parse('1969-07-20 20:18:04Z').year,
-                        //   // optional
-                        //   endYear: DateTime.now().year,
-                        //   // optional
-                        //   width: 10,
-                        //   // optional
-                        //   selectedDay: DateTime.now().day,
-                        //   // optional
-                        //   // selectedMonth: 12, // optional
-                        //   selectedYear: DateTime.now().year,
-                        //   selectedMonth: DateTime.now().month,
-                        //   showMonth: true,
-                        //   // optional
-                        //   onChangedDay: (value) =>
-                        //       print('onChangedDay: $value'),
-                        //   onChangedMonth: (value) =>
-                        //       print('onChangedMonth: $value'),
-                        //   onChangedYear: (value) =>
-                        //       print('onChangedYear: $value'),
-                        //   //boxDecoration: BoxDecoration(
-                        //   // border: Border.all(color: Colors.grey, width: 1.0)), // optional
-                        //   // showDay: false,// optional
-                        //   // dayFlex: 2,// optional
-                        //   // locale: "it_IT",// optional
-                        //   // hintDay: 'Day', // optional
-                        //   // hintMonth: 'Month', // optional
-                        //   // hintYear: 'Year', // optional
-                        //   // hintTextStyle: TextStyle(color: Colors.grey), // optional
-                        // ),
-
-                        TextButton(
-                            style: ButtonStyle(
-                              backgroundColor:
-                                  MaterialStateProperty.resolveWith<Color>(
-                                (Set<MaterialState> states) =>
-                                    states.contains(MaterialState.disabled)
-                                        ? AppTheme.primaryColor
-                                        : AppTheme.backgroundColor,
-                              ),
-                              overlayColor:
-                                  MaterialStateProperty.all(Colors.transparent),
-                              shape: MaterialStateProperty.all(
-                                RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(10.0),
-                                ),
-                              ),
+                        //
+                        DropdownDatePicker(
+                          inputDecoration: InputDecoration(
+                            filled: true,
+                            fillColor: AppTheme.light,
+                            enabledBorder: OutlineInputBorder(
+                              borderSide: BorderSide(color: AppTheme.darkColor, width: 1.0),
                             ),
-                            onPressed: () async {
-                              Get.dialog(DatePickerDialog(
-                                  initialDate: DateTime.now(),
-                                  firstDate: DateTime.now(),
-                                  lastDate: DateTime.now()));
-                            },
-                            child: SizedBox(
-                              width: Get.width,
-                              height: 30,
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  Text('Date du D\'obtention',
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .bodyText2!
-                                          .copyWith(
-                                              color: AppTheme.darkColor,
-                                              fontSize: 16,
-                                              fontWeight: FontWeight.w500)),
-                                  Icon(
-                                    Icons.calendar_month,
-                                    color: AppTheme.darkColor,
-                                  )
-                                ],
-                              ),
-                            )),
-                        // TextFormFieldWrapper(
-                        //   formField: TextFormField(
-                        //     controller: drivingIdController,
-                        //     keyboardType: TextInputType.datetime,
-                        //     autofocus: false,
-                        //     decoration: InputDecoration(
-                        //         border: InputBorder.none,
-                        //         hintText: 'Date du D\'obtention',
-                        //         hintStyle: TextStyle(
-                        //             color: AppTheme.darkColor.withOpacity(0.5)
-                        //         )
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                          ),
+                          // optional
+                          isDropdownHideUnderline: false,
+                          // optional
+                          isFormValidator: true,
+                          // optional
+                          startYear:
+                              DateTime.parse('1969-07-20 20:18:04Z').year,
+                          // optional
+                          endYear: DateTime.now().year,
+                          // optional
+                          width: 0,
+                          // optional
+                          selectedDay: DateTime.now().day,
+                          // optional
+                          // selectedMonth: 12, // optional
+                          selectedYear: DateTime.now().year,
+                          selectedMonth: DateTime.now().month,
+                          showMonth: true,
+                          // optional
+                          onChangedDay: (value) =>
+                              print('onChangedDay: $value'),
+                          onChangedMonth: (value) =>
+                              print('onChangedMonth: $value'),
+                          onChangedYear: (value) =>
+                              print('onChangedYear: $value'),
+                          boxDecoration: BoxDecoration(
+                          border: Border.all(color: Colors.white, width: 1.0)), // optional
+                          showDay: true,// optional
+                          dayFlex: 2,
+                          locale: "en",// optional
+                          hintDay: 'Jour', // optional
+                          hintMonth: 'Mois', // optional
+                          hintYear: 'Année', // optional
+                          hintTextStyle: TextStyle(color: AppTheme.darkColor), // optional
+                        ),
+
+                        // TextButton(
+                        //     style: ButtonStyle(
+                        //       backgroundColor:
+                        //           MaterialStateProperty.resolveWith<Color>(
+                        //         (Set<MaterialState> states) =>
+                        //             states.contains(MaterialState.disabled)
+                        //                 ? AppTheme.primaryColor
+                        //                 : AppTheme.backgroundColor,
+                        //       ),
+                        //       overlayColor:
+                        //           MaterialStateProperty.all(Colors.transparent),
+                        //       shape: MaterialStateProperty.all(
+                        //         RoundedRectangleBorder(
+                        //           borderRadius: BorderRadius.circular(10.0),
+                        //         ),
+                        //       ),
                         //     ),
-                        //   ),
-                        //   position: TextFormFieldPosition.alone,
-                        // ),
+                        //     onPressed: () async {
+                        //       Get.dialog(DatePickerDialog(
+                        //           initialDate: DateTime.now(),
+                        //           firstDate: DateTime.now(),
+                        //           lastDate: DateTime.now()));
+                        //     },
+                        //     child: SizedBox(
+                        //       width: Get.width,
+                        //       height: 30,
+                        //       child: Row(
+                        //         mainAxisAlignment:
+                        //             MainAxisAlignment.spaceBetween,
+                        //         crossAxisAlignment: CrossAxisAlignment.center,
+                        //         children: [
+                        //           Text('Date du D\'obtention',
+                        //               style: Theme.of(context)
+                        //                   .textTheme
+                        //                   .bodyText2!
+                        //                   .copyWith(
+                        //                       color: AppTheme.darkColor,
+                        //                       fontSize: 16,
+                        //                       fontWeight: FontWeight.w500)),
+                        //           Icon(
+                        //             Icons.calendar_month,
+                        //             color: AppTheme.darkColor,
+                        //           )
+                        //         ],
+                        //       ),
+                        //     )),
+
                       ],
                     ),
                   ),

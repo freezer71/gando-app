@@ -12,9 +12,8 @@ import 'package:get_storage/get_storage.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  // await Get.putAsync(() => ChatService().init());
+  await Get.putAsync(() => ChatService().init());
   await GetStorage.init();
-
 
   SystemChrome.setSystemUIOverlayStyle(
     Platform.isIOS
@@ -71,7 +70,7 @@ class _MyAppState extends State<MyApp> {
       statusBarBrightness: Brightness.dark,
       systemNavigationBarColor: AppTheme.getTheme().primaryColor,
       systemNavigationBarDividerColor: AppTheme.getTheme().disabledColor,
-      systemNavigationBarIconBrightness: Brightness.light,
+      systemNavigationBarIconBrightness: Brightness.dark,
     ));
 
     return GetMaterialApp(

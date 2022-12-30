@@ -1,3 +1,5 @@
+import 'package:latlong2/latlong.dart';
+
 class Car {
   String image;
   int price;
@@ -5,6 +7,7 @@ class Car {
   String model;
   String co2;
   String fuelCons;
+  LatLng? latLng;
 
   Car(
     this.image,
@@ -13,5 +16,6 @@ class Car {
     this.model,
     this.co2,
     this.fuelCons,
+    this.latLng,
   );
 }

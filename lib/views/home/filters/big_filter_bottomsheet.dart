@@ -123,7 +123,7 @@ class Filters extends StatelessWidget {
               SizedBox(
                 child: ActionChip(
                   elevation: 2,
-                  autofocus: true,
+                  autofocus: false,
                   labelPadding: EdgeInsets.symmetric(vertical: 3, horizontal: 15),
                   backgroundColor: AppTheme.primaryColor,
                   labelStyle:  Theme.of(context).textTheme.bodyText2!.copyWith(
@@ -174,13 +174,15 @@ class Filters extends StatelessWidget {
                  mainAxisAlignment: MainAxisAlignment.spaceAround,
                  children: [
                    Container(
-                     width: 150,
+                     width: Get.width / 2.2,
                      child: TextFormFieldWrapper(
                        formField: TextFormField(
                          controller: minController,
                          keyboardType: TextInputType.number,
                          autofocus: false,
                          decoration: InputDecoration(
+                             filled: true,
+                             fillColor: AppTheme.light,
                              border: InputBorder.none,
                              hintText: 'Min',
                              hintStyle: TextStyle(
@@ -192,18 +194,20 @@ class Filters extends StatelessWidget {
                      ),
                    ),
                    Container(
-                     width: 150,
+                     width: Get.width / 2.2,
                      child: TextFormFieldWrapper(
                        formField: TextFormField(
                          controller: maxController,
                          keyboardType: TextInputType.number,
                          autofocus: false,
                          decoration: InputDecoration(
-                             border: InputBorder.none,
+                           filled: true,
+                           fillColor: AppTheme.light,
+                           border: InputBorder.none,
                            hintText: 'Max',
                            hintStyle: TextStyle(
                              color: AppTheme.secondaryColor.withOpacity(0.5)
-                           )
+                           ),
                          ),
                        ),
                        position: TextFormFieldPosition.alone,
@@ -232,17 +236,17 @@ class Filters extends StatelessWidget {
                   color: AppTheme.secondaryColor,
                 ),
           ),
-          SizedBox(height: 15,),
+          const SizedBox(height: 15,),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: List.generate(3, (index) => buildCarType(context, carTypeList[index]['title']),),
           ),
-          SizedBox(height: 15,),
+          const SizedBox(height: 15,),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: List.generate(3, (index) => buildCarType(context, carTypeList2[index]['title']),),
           ),
-          SizedBox(height: 15,),
+          const SizedBox(height: 15,),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: List.generate(3, (index) => buildCarType(context, carTypeList3[index]['title']),),

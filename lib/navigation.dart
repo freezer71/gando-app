@@ -13,7 +13,6 @@ import 'package:gando/views/authentication/resetPassword/forgot_password.dart';
 import 'package:gando/views/authentication/signin/signin_screen.dart';
 import 'package:gando/views/authentication/signup/signup_screen.dart';
 import 'package:gando/views/bottom_navigation_bar.dart';
-import 'package:gando/views/home/home.dart';
 import 'package:gando/views/splashscreen/splash_screen.dart';
 import 'package:get/get.dart';
 
