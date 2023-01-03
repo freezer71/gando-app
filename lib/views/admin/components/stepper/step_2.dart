@@ -8,7 +8,6 @@ class Step2 extends StatefulWidget {
 
   @override
   State<StatefulWidget> createState() {
-    // TODO: implement createState
     return Step2State();
   }
 
@@ -24,26 +23,23 @@ class Step2State extends State<Step2> {
 
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
-    return Container(
-        child: Form(
-          key: form2,
-          autovalidateMode: AutovalidateMode.always,
-          child: Column(
-            children: <Widget>[
-              _buildHeader(context),
-              const SizedBox(
-                height: 10,
-              ),
-              _buildBody(context),
-            ],
+    return Form(
+      key: form2,
+      autovalidateMode: AutovalidateMode.always,
+      child: Column(
+        children: [
+          _buildHeader(),
+          const SizedBox(
+            height: 10,
           ),
-        )
+          _buildBody(),
+        ],
+      ),
     );
   }
 
 
-  Widget _buildHeader(BuildContext context) {
+  Widget _buildHeader() {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 5, vertical: 5),
       child: Column(
@@ -72,54 +68,52 @@ class Step2State extends State<Step2> {
       ),
     );
   }
-  Widget _buildBody(BuildContext context) {
+
+  Widget _buildBody() {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 5, vertical: 10),
       child: Column(
         children: [
-          Padding(
-            padding: const EdgeInsets.all(0.0),
-            child: GridView.builder(
-              key: Get.keys[2],
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
-              itemCount: c.imagesList.length,
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
-                mainAxisSpacing: 10,
-                crossAxisSpacing: 10,
-                mainAxisExtent: 120,
-              ),
-              itemBuilder: (context, index) {
-                return ElevatedButton(
-                    style: ButtonStyle(
-                      backgroundColor:
-                      MaterialStateProperty.all(AppTheme.light),
-                      overlayColor: MaterialStateProperty.all(Colors
-                          .transparent),
-                      shape: MaterialStateProperty.all(RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20.0),
-                      )),
-                    ),
-                    onPressed: () {
-                      // c.selectedPlaces.value = c.placesList[index];
-                    },
-                    child: SizedBox(
-                      width: Get.width / 1.5,
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text("${c.imagesList[index]} ${index == c.imagesList.length -1 ? '+' : ''}",
-                              style: TextStyle(
-                                  fontSize: 14,
-                                  color: AppTheme.darkColor)),
-                          const SizedBox(height: 10,),
-                          Icon(Icons.camera_alt_outlined, size: 40, color: AppTheme.darkColor.withOpacity(0.4),)
-                        ],
-                      ),
-                    ));
-              },
+          GridView.builder(
+            key: Get.keys[2],
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+            itemCount: c.imagesList.length,
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 2,
+              mainAxisSpacing: 10,
+              crossAxisSpacing: 10,
+              mainAxisExtent: 120,
             ),
+            itemBuilder: (context, index) {
+              return ElevatedButton(
+                  style: ButtonStyle(
+                    backgroundColor:
+                    MaterialStateProperty.all(AppTheme.light),
+                    overlayColor: MaterialStateProperty.all(Colors
+                        .transparent),
+                    shape: MaterialStateProperty.all(RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20.0),
+                    )),
+                  ),
+                  onPressed: () {
+                    // c.selectedPlaces.value = c.placesList[index];
+                  },
+                  child: SizedBox(
+                    width: Get.width / 1.5,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text("${c.imagesList[index]} ${index == c.imagesList.length -1 ? '+' : ''}",
+                            style: TextStyle(
+                                fontSize: 14,
+                                color: AppTheme.darkColor)),
+                        const SizedBox(height: 10,),
+                        Icon(Icons.camera_alt_outlined, size: 40, color: AppTheme.darkColor.withOpacity(0.4),)
+                      ],
+                    ),
+                  ));
+            },
           ),
         ],
       ),

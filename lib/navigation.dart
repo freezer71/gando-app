@@ -77,7 +77,7 @@ class AppPages {
     ),
     GetPage(
       name: Routes.signUp,
-      page: () => const SignUpScreen(),
+      page: () => SignUpScreen(),
     ),
     // GetPage(
     //   name: Routes.profile,

@@ -6,6 +6,9 @@ import 'package:gando/navigation.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 
+import '../../../helpers/global_widget.dart';
+import '../../../widget/customTextFormField.dart';
+
 class SignUpScreen extends GetView<SignUpController> {
   const SignUpScreen({Key? key}) : super(key: key);
 
@@ -143,10 +146,7 @@ class SignUpScreen extends GetView<SignUpController> {
       onPressed: () => Get.toNamed(Routes.home),
       style: ButtonStyle(
         backgroundColor: MaterialStateProperty.resolveWith<Color>(
-              (Set<MaterialState> states) =>
-          states.contains(MaterialState.disabled)
-              ? AppTheme.primaryColor
-              : AppTheme.darkColor,
+              (Set<MaterialState> states) => AppTheme.primaryColor,
         ),
         overlayColor: MaterialStateProperty.all(Colors.transparent),
         shape: MaterialStateProperty.all(RoundedRectangleBorder(
@@ -513,93 +513,17 @@ class SignUpScreen extends GetView<SignUpController> {
         const SizedBox(
           height: 10,
         ),
-        TextFormField(
-          key: Get.keys[2],
-          // controller: controller.topUpAmount.value,
-          initialValue: null,
+        CustomTextFormField(
+          context: context,
+          key: Get.keys[3],
+          controller: controller.passwordController.value,
           obscureText: true,
-          keyboardType: TextInputType.emailAddress,
-          cursorColor: HexColor(AppTheme.primaryColorString!),
-          cursorRadius: const Radius.circular(50),
-          cursorWidth: 3,
-          style: Theme
-              .of(context)
-              .textTheme
-              .bodyText2!
-              .copyWith(
-            fontWeight: FontWeight.w900,
-            fontSize: 18,
-            overflow: TextOverflow.ellipsis,
-            color: HexColor(AppTheme.primaryColorString!),
-          ),
           enabled: true,
-          decoration: InputDecoration(
-            filled: true,
-            fillColor: AppTheme.light,
-            suffixIcon: const Padding(
-              padding: EdgeInsets.only(right: 18.0, left: 18),
-              child: InkWell(
-                focusColor: Colors.transparent,
-                child: Icon(Icons.remove_red_eye_sharp),
-              ),
-            ),
-            prefixIconColor: AppTheme.backgroundColor,
-            prefixIcon: const Padding(
-              padding: EdgeInsets.only(right: 18.0, left: 18),
-              child: Icon(Icons.lock_outlined),
-            ),
-            enabled: true,
-            enabledBorder: OutlineInputBorder(
-              borderSide: const BorderSide(
-                width: 2.0,
-                color: Colors.black,
-              ),
-              borderRadius: BorderRadius.circular(30.0),
-              gapPadding: 8.0,
-            ),
-            hintText: "Mot de passe",
-            labelStyle: Theme
-                .of(context)
-                .textTheme
-                .bodyText2!
-                .copyWith(
-              fontWeight: FontWeight.w400,
-              fontSize: 16,
-              overflow: TextOverflow.ellipsis,
-              color: HexColor(AppTheme.primaryColorString!),
-            ),
-            hintStyle: Theme
-                .of(context)
-                .textTheme
-                .bodyText2!
-                .copyWith(
-              fontWeight: FontWeight.w400,
-              fontSize: 16,
-              overflow: TextOverflow.ellipsis,
-              color: HexColor(AppTheme.primaryColorString!),
-            ),
-            errorMaxLines: 3,
-            focusedErrorBorder: OutlineInputBorder(
-                borderSide: const BorderSide(
-                  color: Colors.black,
-                  width: 2.0,
-                ),
-                borderRadius: BorderRadius.circular(30.0),
-                gapPadding: 8.0),
-            errorBorder: OutlineInputBorder(
-                borderSide: BorderSide(
-                  color: Colors.red.withOpacity(0.4),
-                  width: 2.0,
-                ),
-                borderRadius: BorderRadius.circular(30.0),
-                gapPadding: 8.0),
-            focusedBorder: OutlineInputBorder(
-                borderSide: const BorderSide(
-                  color: Colors.black,
-                  width: 2.0,
-                ),
-                borderRadius: BorderRadius.circular(30.0),
-                gapPadding: 8.0),
+          hintText: 'Mot de passe',
+          keyboardType: TextInputType.text,
+          prefixIcon: const Padding(
+            padding: EdgeInsets.only(right: 18.0, left: 18),
+            child: Icon(Icons.lock),
           ),
           validator: (value) {
             if (!value!.isAlphabetOnly) {
@@ -608,12 +532,7 @@ class SignUpScreen extends GetView<SignUpController> {
             }
             return null;
           },
-          autovalidateMode: AutovalidateMode.onUserInteraction,
-          autofocus: false,
-          inputFormatters: [
-            // FilteringTextInputFormatter.deny(
-            //   RegExp(r"^((5000)|([0-4]?[0-9]{1,3}))$"),
-            // ),
+          formatter: [
             LengthLimitingTextInputFormatter(60),
             FilteringTextInputFormatter.singleLineFormatter
           ],
@@ -628,7 +547,7 @@ class SignUpScreen extends GetView<SignUpController> {
             // } else {
             //   topUpController.buttonDisabled.value = true;
             // }
-          }, // default null
+          }, shape: 30.0, // default null
           // ... + other textfield params
         ),
         const SizedBox(

@@ -75,16 +75,34 @@ class _ChatScreenState extends State<ChatScreen> with SingleTickerProviderStateM
                   //       ? Colors.transparent
                   //       : Color(0xffA4BDD4),
                   // ),
-                  margin:
-                  EdgeInsets.symmetric(horizontal: 5.0, vertical: 5.0),
+                  margin: const EdgeInsets.symmetric(horizontal: 5.0, vertical: 5.0),
                   child: Align(
                     alignment: Alignment.center,
-                    child: Text(
-                      myTab.text.toString(),
-                      style: Theme.of(context).textTheme.bodyText2!.copyWith(
-                          fontWeight: FontWeight.w900,
-                          fontSize: 18,
-                          color: _activeTabIndex == myTabs.indexOf(myTab) ? AppTheme.light : AppTheme.darkColor),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          myTab.text.toString(),
+                          style: Theme.of(context).textTheme.bodyText2!.copyWith(
+                              fontWeight: FontWeight.w900,
+                              fontSize: 18,
+                              color: _activeTabIndex == myTabs.indexOf(myTab) ? AppTheme.light : AppTheme.darkColor),
+                        ),
+                        myTab.text == 'Demandes' ? Container(
+                          width: 20,
+                          height: 20,
+                          margin: const  EdgeInsets.only(left: 10),
+                          decoration: BoxDecoration(
+                              color: AppTheme.redColor,
+                              borderRadius: BorderRadius.circular(50)
+                          ),
+                          child: Text('2', style: Theme.of(context).textTheme.bodyText2!.copyWith(
+                              color: AppTheme.light,
+                              fontSize: 14,
+                              fontWeight: FontWeight.w900), textAlign: TextAlign.center,),
+                        ) : Container()
+                      ],
                     ),
                   ),
                 ),

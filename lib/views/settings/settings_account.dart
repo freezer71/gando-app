@@ -5,6 +5,8 @@ import 'package:gando/views/home/home.dart';
 import 'package:get/get.dart';
 import 'package:get/get_rx/src/rx_typedefs/rx_typedefs.dart';
 
+import '../../widget/customTextFormField.dart';
+
 class SettingsAccountScreen extends StatelessWidget {
   SettingsAccountScreen({Key? key}) : super(key: key);
 
@@ -81,121 +83,34 @@ class SettingsAccountScreen extends StatelessWidget {
 
   List<Widget> _buildBodyTextField(BuildContext context) =>
       [
-        TextFormField(
-          maxLines: 1,
+        CustomTextFormField(
           controller: c.oldEmailController.value,
-          style: Theme
-              .of(context)
-              .textTheme
-              .bodyText2!
-              .copyWith(
-            fontWeight: FontWeight.w600,
-            fontSize: 18,
-            overflow: TextOverflow.visible,
-            color: AppTheme.darkColor,
-          ),
           keyboardType: TextInputType.text,
-          decoration: InputDecoration(
-            filled: true,
-            fillColor: AppTheme.light,
-            labelStyle: Theme
-                .of(context)
-                .textTheme
-                .bodyText2!
-                .copyWith(
-              fontWeight: FontWeight.w500,
-              fontSize: 18,
-              overflow: TextOverflow.visible,
-              color: AppTheme.darkColor.withOpacity(0.5),
-            ),
-            labelText: 'Ancien email',
-            border: const OutlineInputBorder(
-              borderRadius: BorderRadius.all(Radius.circular(10.0)),
-            ),
-          ),
           validator: (value) {
             if (value!.trim().isEmpty) {
               return "Ancien email is Required";
             }
-          },
+          }, formatter: [], onChanged: (v) {  }, onSaved: (v) {  }, hintText: 'Ancien email',
         ),
         const SizedBox(height: 20),
-        TextFormField(
-          maxLines: 1,
+        CustomTextFormField(
           controller: c.newEmailController.value,
-          style: Theme
-              .of(context)
-              .textTheme
-              .bodyText2!
-              .copyWith(
-            fontWeight: FontWeight.w600,
-            fontSize: 18,
-            overflow: TextOverflow.visible,
-            color: AppTheme.darkColor,
-          ),
           keyboardType: TextInputType.text,
-          decoration: InputDecoration(
-            filled: true,
-            fillColor: AppTheme.light,
-            labelStyle: Theme
-                .of(context)
-                .textTheme
-                .bodyText2!
-                .copyWith(
-              fontWeight: FontWeight.w500,
-              fontSize: 18,
-              overflow: TextOverflow.visible,
-              color: AppTheme.darkColor.withOpacity(0.5),
-            ),
-            labelText: 'Nouvel email',
-            border: const OutlineInputBorder(
-              borderRadius: BorderRadius.all(Radius.circular(10.0)),
-            ),
-          ),
           validator: (value) {
             if (value!.trim().isEmpty) {
               return "Nouvel email is Required";
             }
-          },
+          }, formatter: [], onChanged: (v) {  }, onSaved: (v) {  }, hintText: 'Nouvel email',
         ),
         const SizedBox(height: 20),
-        TextFormField(
-          maxLines: 1,
+        CustomTextFormField(
           controller: c.passwordController.value,
-          style: Theme
-              .of(context)
-              .textTheme
-              .bodyText2!
-              .copyWith(
-            fontWeight: FontWeight.w600,
-            fontSize: 18,
-            overflow: TextOverflow.visible,
-            color: AppTheme.darkColor,
-          ),
           keyboardType: TextInputType.text,
-          decoration: InputDecoration(
-            filled: true,
-            fillColor: AppTheme.light,
-            labelStyle: Theme
-                .of(context)
-                .textTheme
-                .bodyText2!
-                .copyWith(
-              fontWeight: FontWeight.w500,
-              fontSize: 18,
-              overflow: TextOverflow.visible,
-              color: AppTheme.darkColor.withOpacity(0.5),
-            ),
-            labelText: 'Mot de passe',
-            border: const OutlineInputBorder(
-              borderRadius: BorderRadius.all(Radius.circular(10.0)),
-            ),
-          ),
           validator: (value) {
             if (value!.trim().isEmpty) {
               return "Mot de passe is Required";
             }
-          },
+          }, formatter: [], onChanged: (v) {  }, onSaved: (v) {  }, hintText: 'Mot de passe',
         ),
         const SizedBox(height: 20),
         _buildSubmitButton(context, () {}, delete: false),
@@ -203,82 +118,24 @@ class SettingsAccountScreen extends StatelessWidget {
 
   List<Widget> _buildPasswordChange(BuildContext context) =>
       [
-        TextFormField(
-          maxLines: 1,
+        CustomTextFormField(
           controller: c.passwordController.value,
-          style: Theme
-              .of(context)
-              .textTheme
-              .bodyText2!
-              .copyWith(
-            fontWeight: FontWeight.w600,
-            fontSize: 18,
-            overflow: TextOverflow.visible,
-            color: AppTheme.darkColor,
-          ),
           keyboardType: TextInputType.text,
-          decoration: InputDecoration(
-            filled: true,
-            fillColor: AppTheme.light,
-            labelStyle: Theme
-                .of(context)
-                .textTheme
-                .bodyText2!
-                .copyWith(
-              fontWeight: FontWeight.w500,
-              fontSize: 18,
-              overflow: TextOverflow.visible,
-              color: AppTheme.darkColor.withOpacity(0.5),
-            ),
-            labelText: 'Nouveau mot de passe',
-            border: const OutlineInputBorder(
-              borderRadius: BorderRadius.all(Radius.circular(10.0)),
-            ),
-          ),
           validator: (value) {
             if (value!.trim().isEmpty) {
               return "Nouveau mot de passe is Required";
             }
-          },
+          }, formatter: [], onChanged: (v) {  }, onSaved: (v) {  }, hintText: 'Nouveau mot de passe',
         ),
         const SizedBox(height: 20),
-        TextFormField(
-          maxLines: 1,
+        CustomTextFormField(
           controller: c.passwordConfirmController.value,
-          style: Theme
-              .of(context)
-              .textTheme
-              .bodyText2!
-              .copyWith(
-            fontWeight: FontWeight.w600,
-            fontSize: 18,
-            overflow: TextOverflow.visible,
-            color: AppTheme.darkColor,
-          ),
           keyboardType: TextInputType.text,
-          decoration: InputDecoration(
-            filled: true,
-            fillColor: AppTheme.light,
-            labelStyle: Theme
-                .of(context)
-                .textTheme
-                .bodyText2!
-                .copyWith(
-              fontWeight: FontWeight.w500,
-              fontSize: 18,
-              overflow: TextOverflow.visible,
-              color: AppTheme.darkColor.withOpacity(0.5),
-            ),
-            labelText: 'Confirmer mot de passe',
-            border: const OutlineInputBorder(
-              borderRadius: BorderRadius.all(Radius.circular(10.0)),
-            ),
-          ),
           validator: (value) {
             if (value!.trim().isEmpty) {
               return "Confirmer mot de passe is Required";
             }
-          },
+          }, formatter: [], onChanged: (v) {  }, onSaved: (v) {  }, hintText: 'Confirmer mot de passe',
         ),
         const SizedBox(height: 20),
         _buildSubmitButton(context, () {}, delete: false),
@@ -286,43 +143,14 @@ class SettingsAccountScreen extends StatelessWidget {
 
   List<Widget> _buildDeleteAccount(BuildContext context) =>
       [
-        TextFormField(
-          maxLines: 1,
+        CustomTextFormField(
           controller: c.passwordController.value,
-          style: Theme
-              .of(context)
-              .textTheme
-              .bodyText2!
-              .copyWith(
-            fontWeight: FontWeight.w600,
-            fontSize: 18,
-            overflow: TextOverflow.visible,
-            color: AppTheme.darkColor,
-          ),
           keyboardType: TextInputType.text,
-          decoration: InputDecoration(
-            filled: true,
-            fillColor: AppTheme.light,
-            labelStyle: Theme
-                .of(context)
-                .textTheme
-                .bodyText2!
-                .copyWith(
-              fontWeight: FontWeight.w500,
-              fontSize: 18,
-              overflow: TextOverflow.visible,
-              color: AppTheme.darkColor.withOpacity(0.5),
-            ),
-            labelText: 'Mot de passe',
-            border: const OutlineInputBorder(
-              borderRadius: BorderRadius.all(Radius.circular(10.0)),
-            ),
-          ),
           validator: (value) {
             if (value!.trim().isEmpty) {
               return "Mot de passe is Required";
             }
-          },
+          }, formatter: [], onChanged: (v) {  }, onSaved: (v) {  }, hintText: 'Mot de passe',
         ),
         const SizedBox(height: 20),
         _buildSubmitButton(context, () {}, delete: true),
@@ -343,7 +171,7 @@ class SettingsAccountScreen extends StatelessWidget {
         MaterialStateProperty.all(Colors.transparent),
         shape: MaterialStateProperty.all(
             RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(10.0),
+              borderRadius: BorderRadius.circular(30.0),
             )),
       ),
       child: Container(

@@ -4,6 +4,8 @@ import 'package:gando/generated/assets.dart';
 import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
 
+import 'contract/contract_step_1.dart';
+
 class SuccessBookingScreen extends StatelessWidget {
   const SuccessBookingScreen({Key? key}) : super(key: key);
 
@@ -58,7 +60,9 @@ class SuccessBookingScreen extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               GestureDetector(
-                onTap: () {},
+                onTap: () {
+                  Get.to(()=> const ContractStep1());
+                },
                 child: Container(
                   decoration: BoxDecoration(
                     color: AppTheme.darkColor,
@@ -68,15 +72,15 @@ class SuccessBookingScreen extends StatelessWidget {
                   ),
                   height: Get.height / 10,
                   width: Get.width / 3,
-                  child: Icon(
+                  child: const Icon(
                    Icons.thumb_up_alt_rounded,
                    size: 50,
-                      ),
+                  ),
                 ),
               ),
             ],
           ),
-          const SizedBox(height: 10,),
+          const SizedBox(height: 30,),
           Text('Retour à l\'accueil',
               style: Theme.of(context).textTheme.bodyText2!.copyWith(
                   color: AppTheme.redColor,

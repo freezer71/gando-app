@@ -1,42 +1,58 @@
 
 
-
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:gando/config/textstyle.dart';
 
-class GlobalWidget {
-  static TextFormField CustomTextFormField(
-      {
-        Key? key,
-        BuildContext? context,
-        TextInputType? keyboardType,
-        controller,
-        String initialValue  = '',
-        String hintText = '',
-        String? Function(String?)? validator,
-        List<TextInputFormatter>? formatter,
-        void Function(String?)? onChanged,
-        void Function(String?)? onSaved,
-        Widget? suffixIcon,
-        Widget? prefixIcon,
-        bool obscureText = false,
-        bool autofocus = false,
-        bool enabled = true,
-        double shape = 30.0,
-      }) => TextFormField(
+import '../config/textstyle.dart';
+
+class CustomTextFormField extends StatelessWidget {
+
+  final BuildContext? context;
+  final TextInputType? keyboardType;
+  final controller;
+  String? initialValue = '';
+  String? hintText = '';
+  final String? Function(String?)? validator;
+  final List<TextInputFormatter>? formatter;
+  final void Function(String?)? onChanged;
+  final void Function(String?)? onSaved;
+  final Widget? suffixIcon;
+  final Widget? prefixIcon;
+  bool obscureText;
+  bool autofocus;
+  bool enabled;
+  double shape;
+
+  CustomTextFormField({Key? key,
+    this.context,
+    required this.keyboardType,
+    this.controller,
+    required this.validator,
+    required this.formatter,
+    required this.onChanged,
+    required this.onSaved,
+    this.obscureText = false,
+    this.suffixIcon,
+    this.prefixIcon,
+    this.shape = 30.0,
+    this.enabled = true,
+    this.autofocus = false,
+    required this.hintText,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return TextFormField(
       key: key,
       controller: controller,
-
-      // initialValue: initialValue!,
+      // initialValue: initialValue,
       obscureText: obscureText,
       keyboardType: keyboardType!, //TextInputType.emailAddress
       cursorColor: AppTheme.primaryColor,
       cursorRadius: const Radius.circular(50),
       cursorWidth: 3,
       style: Theme
-          .of(context!)
+          .of(context)
           .textTheme
           .bodyText2!
           .copyWith(
@@ -115,5 +131,5 @@ class GlobalWidget {
       onChanged: onChanged!, // default null
       // ... + other textfield params
     );
-
+  }
 }

@@ -15,7 +15,8 @@ class SplashScreen extends StatefulWidget {
 
 class _SplashScreenState extends State<SplashScreen>
     with SingleTickerProviderStateMixin {
-  double brandingLogoPosition = -0.075;
+  double brandingLogoPosition = 0.12;
+  bool _visible = false;
 
   late AnimationController controller;
   late Animation<double> animation;
@@ -27,18 +28,19 @@ class _SplashScreenState extends State<SplashScreen>
     Future.delayed(const Duration(seconds: 5), () {
       Get.offAllNamed(Routes.preLogin);
     });
-    Future.delayed(const Duration(seconds: 2), () {
+    Future.delayed(const Duration(milliseconds: 1000), () {
       setState(() {
-        brandingLogoPosition = 0.10;
+        brandingLogoPosition = 0.30;
+        _visible = true;
       });
     });
     controller = AnimationController(
-        vsync: this, duration: const Duration(milliseconds: 700));
+        vsync: this, duration: const Duration(milliseconds: 1000));
 
     // setRotation(90);
 
-    controller.addStatusListener((status) async{
-      if(status == AnimationStatus.completed){
+    controller.addStatusListener((status) async {
+      if (status == AnimationStatus.completed) {
         await Future.delayed(const Duration(seconds: 3));
         // controller.reset();
       }
@@ -65,50 +67,57 @@ class _SplashScreenState extends State<SplashScreen>
     return Scaffold(
       body: Container(
         color: const Color(0xFFEBEBEB),
-        width: Get.width,
-        height: Get.height,
         alignment: Alignment.center,
         child: Stack(
+          alignment: Alignment.center,
           children: [
-            Positioned(
-              width: Get.width / 2,
-              height: Get.height /2 ,
-              top: 180,
-              left: 110,
-              child: AnimatedBuilder(
-                animation: animation,
+            AnimatedOpacity(
+              opacity: _visible ? 1.0 : 0.0,
+              duration: const Duration(milliseconds: 1000),
+              child: AnimatedContainer(
+                curve: Curves.bounceInOut,
+                duration: const Duration(milliseconds: 500),
+                alignment: Alignment(0, brandingLogoPosition),
+                width: Get.width,
+                height: Get.height,
+                margin: const EdgeInsets.only(top: 40),
                 child: Container(
-                  width: 150,
-                  height: 150,
-                  decoration: const BoxDecoration(
+                  width: 298,
+                  height: 298,
+                  decoration: BoxDecoration(
                     image: DecorationImage(
-                      image: AssetImage("assets/images/logo-splash.png"),
+                      image: const AssetImage("assets/images/branding-icon.png"),
                     ),
                   ),
                 ),
-                builder: (context, child) => Transform.rotate(
-                  angle: animation.value,
-                  child: child,
-                ),
               ),
             ),
-            AnimatedContainer(
-              curve: Curves.bounceInOut,
-              duration: const Duration(milliseconds: 500),
-              alignment: Alignment(0, brandingLogoPosition),
-              width: Get.width,
-              height: Get.height,
-              margin: const EdgeInsets.only(top: 40),
-              child: Container(
-                width: 298,
-                height: 298,
-                decoration: const BoxDecoration(
-                  image: DecorationImage(
-                    image: AssetImage("assets/images/branding-icon.png"),
+            Positioned.fill(
+              child: Align(
+                alignment: Alignment.center,
+                child: AnimatedOpacity(
+                  opacity: _visible ? 1.0 : 0.0,
+                  duration: const Duration(milliseconds: 500),
+                  child: AnimatedBuilder(
+                    animation: animation,
+                    child: Container(
+                      width: 180,
+                      height: 180,
+                      decoration:  BoxDecoration(
+                        image: DecorationImage(
+                          image: const AssetImage("assets/images/logo-splash.png"),
+                        ),
+                      ),
+                    ),
+                    builder: (context, child) => Transform.rotate(
+                      angle: animation.value,
+                      child: child,
+                    ),
                   ),
                 ),
               ),
             ),
+
             // Container(
             //   alignment: Alignment.center,
             //   width: Get.width,

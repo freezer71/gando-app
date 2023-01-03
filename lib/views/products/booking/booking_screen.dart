@@ -197,7 +197,7 @@ class _BookingScreenState extends State<BookingScreen> {
           // splashColor: const Color(0xFFEEEEEE),
           onTap: () {
             //open bottom sheet
-            Get.bottomSheet(_buildBottomSheet(context, car));
+            Get.bottomSheet(_buildPaymentBottomSheet(context, car));
           },
           child: Center(
             child: Text(
@@ -308,6 +308,264 @@ class _BookingScreenState extends State<BookingScreen> {
       ),
     );
   } 
+  Widget _buildPaymentBottomSheet(BuildContext context, Car car) {
+    bookingButton() => Container(
+      height: 58,
+      margin: EdgeInsets.symmetric(vertical: 10),
+      width: Get.width / 1.2,
+      decoration: BoxDecoration(
+        borderRadius: const BorderRadius.all(Radius.circular(29)),
+        color: AppTheme.darkColor,
+        boxShadow: [
+          BoxShadow(
+            offset: const Offset(4, 8),
+            blurRadius: 20,
+            color: const Color(0xFF101010).withOpacity(0.25),
+          ),
+        ],
+      ),
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
+          borderRadius: const BorderRadius.all(Radius.circular(29)),
+          // splashColor: const Color(0xFFEEEEEE),
+          onTap: () {
+            //open bottom sheet
+            Get.bottomSheet(_buildOtherPaymentBottomSheet(context, car));
+          },
+          child: Center(
+            child: Text(
+              'Paiement'.toUpperCase(),
+              style: const TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 18,
+                color: Colors.white,
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+    return Container(
+      width: Get.width,
+      height: 450,
+      padding: EdgeInsets.symmetric(vertical: 20, horizontal: 20),
+      decoration: BoxDecoration(
+        color:  AppTheme.backgroundColor,
+        borderRadius: BorderRadius.only(topLeft: Radius.circular(16), topRight: Radius.circular(16)),
+      ),
+      child: Stack(
+        fit: StackFit.expand,
+        children: [
+          Container(
+            child: Column(
+              children: [
+                Text("${car.brand} ${car.model}", style: Theme.of(context).textTheme.bodyText2!.copyWith(
+                  fontWeight: FontWeight.w900,
+                  fontSize: 18,
+                  color: AppTheme.darkColor,
+                  overflow: TextOverflow.ellipsis,
+                )),
+                Text("Marco DEGARDIO", style: Theme.of(context).textTheme.bodyText2!.copyWith(
+                  fontWeight: FontWeight.w400,
+                  fontSize: 12,
+                  color: AppTheme.darkColor,
+                  overflow: TextOverflow.ellipsis,
+                )),
+                Divider(color: AppTheme.darkColor.withOpacity(0.3),),
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 4.0),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text('Prix jour',
+                          style: Theme.of(context).textTheme.bodyText2!.copyWith(
+                            fontWeight: FontWeight.w500,
+                            fontSize: 12,
+                            color: AppTheme.darkColor,
+                            overflow: TextOverflow.ellipsis,
+                          )),
+                      Text('15 €',
+                          style: Theme.of(context).textTheme.bodyText2!.copyWith(
+                            fontWeight: FontWeight.w900,
+                            fontSize: 14,
+                            color: AppTheme.darkColor,
+                            overflow: TextOverflow.ellipsis,
+                          )),
+                    ],
+                  ),
+                ),
+                Divider( color: AppTheme.darkColor.withOpacity(0.3),),
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 4.0),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text('Suplément jeune conducteur',
+                          style: Theme.of(context).textTheme.bodyText2!.copyWith(
+                            fontWeight: FontWeight.w500,
+                            fontSize: 12,
+                            color: AppTheme.darkColor,
+                            overflow: TextOverflow.ellipsis,
+                          )),
+                      Text('2,25 €',
+                          style: Theme.of(context).textTheme.bodyText2!.copyWith(
+                            fontWeight: FontWeight.w900,
+                            fontSize: 14,
+                            color: AppTheme.darkColor,
+                            overflow: TextOverflow.ellipsis,
+                          )),
+                    ],
+                  ),
+                ),
+                Divider( color: AppTheme.darkColor.withOpacity(0.3),),
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 4.0),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text('Promotion',
+                          style: Theme.of(context).textTheme.bodyText2!.copyWith(
+                            fontWeight: FontWeight.w500,
+                            fontSize: 12,
+                            color: AppTheme.darkColor,
+                            overflow: TextOverflow.ellipsis,
+                          )),
+                      Text('-0,00 €',
+                          style: Theme.of(context).textTheme.bodyText2!.copyWith(
+                            fontWeight: FontWeight.w900,
+                            fontSize: 14,
+                            color: AppTheme.darkColor,
+                            overflow: TextOverflow.ellipsis,
+                          )),
+                    ],
+                  ),
+                ),
+                Divider( color: AppTheme.darkColor.withOpacity(0.3),),
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 4.0),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text('Total',
+                          style: Theme.of(context).textTheme.bodyText2!.copyWith(
+                            fontWeight: FontWeight.w900,
+                            fontSize: 14,
+                            color: AppTheme.darkColor,
+                            overflow: TextOverflow.ellipsis,
+                          )),
+                      Text('17,25 €',
+                          style: Theme.of(context).textTheme.bodyText2!.copyWith(
+                            fontWeight: FontWeight.w900,
+                            fontSize: 16,
+                            color: AppTheme.darkColor,
+                            overflow: TextOverflow.ellipsis,
+                          )),
+                    ],
+                  ),
+                ),
+                Divider( color: AppTheme.darkColor.withOpacity(0.3),),
+                Text("En reservant  véhicule,vous acceptez les \nconditons générales de Gando", textAlign: TextAlign.center, style: Theme.of(context).textTheme.bodyText2!.copyWith(
+                  fontWeight: FontWeight.w400,
+                  fontSize: 12,
+                  color: AppTheme.darkColor,
+                  overflow: TextOverflow.ellipsis,
+                )),
+                bookingButton(),
+                Container(
+                  padding: EdgeInsets.all(4),
+                  child: Text("Autres moyens de paiement".toUpperCase(), style: Theme.of(context).textTheme.bodyText2!.copyWith(
+                    fontWeight: FontWeight.w900,
+                    fontSize: 18,
+                    color: AppTheme.darkColor,
+                    overflow: TextOverflow.ellipsis,
+                  )),
+                ),
+              ],
+            ),
+          ),
+          Positioned(
+              top: -15,
+              right: -15,
+              child: IconButton(onPressed: (){
+            Get.back();
+          }, icon: Icon(Icons.close, color: AppTheme.darkColor,),))
+        ],
+      ),
+    );
+  }
+  Widget _buildOtherPaymentBottomSheet(BuildContext context, Car car) {
+    bookingButton({String? title, Color? color}) => Container(
+      height: 58,
+      margin: EdgeInsets.symmetric(vertical: 10),
+      width: Get.width / 1.2,
+      decoration: BoxDecoration(
+        borderRadius: const BorderRadius.all(Radius.circular(29)),
+        color: color,
+        boxShadow: [
+          BoxShadow(
+            offset: const Offset(4, 8),
+            blurRadius: 20,
+            color: const Color(0xFF101010).withOpacity(0.25),
+          ),
+        ],
+      ),
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
+          borderRadius: const BorderRadius.all(Radius.circular(29)),
+          // splashColor: const Color(0xFFEEEEEE),
+          onTap: () {
+            //open bottom sheet
+            Get.to(() => const SuccessBookingScreen());
+          },
+          child: Center(
+            child: Text(
+              title!.toUpperCase(),
+              style: const TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 18,
+                color: Colors.white,
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+    return Container(
+      width: Get.width,
+      height: 250,
+      padding: EdgeInsets.symmetric(vertical: 20, horizontal: 20),
+      decoration: BoxDecoration(
+        color:  AppTheme.backgroundColor,
+        borderRadius: BorderRadius.only(topLeft: Radius.circular(16), topRight: Radius.circular(16)),
+      ),
+      child: Stack(
+        fit: StackFit.expand,
+        children: [
+          Container(
+            padding: const EdgeInsets.only(top: 20.0),
+            child: Column(
+              children: [
+                bookingButton(title: 'Carte bancaire', color: AppTheme.primaryColor),
+                bookingButton(title: 'PayPal', color: AppTheme.darkColor),
+              ],
+            ),
+          ),
+          Positioned(
+              top: -15,
+              right: -15,
+              child: IconButton(onPressed: (){
+            Get.back();
+          }, icon: Icon(Icons.close, color: AppTheme.darkColor,),))
+        ],
+      ),
+    );
+  }
 
   Widget _buildRowMenu(context) {
     return Container(
@@ -733,7 +991,7 @@ class _BookingScreenState extends State<BookingScreen> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          'Date du D\'obtention',
+                          'Date D\'obtention',
                           style: Theme.of(context)
                               .textTheme
                               .bodyText2!
@@ -859,7 +1117,7 @@ class _BookingScreenState extends State<BookingScreen> {
   }
 
   Widget _buildResultForm(BuildContext context) {
-    if (2==2) {
+    if (1==1) { // ramplace with current form state validator check
       return Container(
         height: Get.height / 2.2,
         margin: const EdgeInsets.symmetric(vertical: 10),

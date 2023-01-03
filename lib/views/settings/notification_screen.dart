@@ -8,86 +8,93 @@ import 'package:get_storage/get_storage.dart';
 class NotificationScreen extends StatelessWidget {
   NotificationScreen({Key? key}) : super(key: key);
 
-  final c = Get.put(AccountSettingController());
+  final AccountSettingController c = Get.put(AccountSettingController());
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppTheme.backgroundColor,
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        centerTitle: true,
-        automaticallyImplyLeading: false,
-        elevation: 0,
-        leading: IconButton(
-          onPressed: () {
-            Get.back();
-          },
-          icon: Icon(
-            Icons.arrow_back_ios_outlined,
-            color: AppTheme.darkColor,
+    return Obx(() {
+      return Scaffold(
+        backgroundColor: AppTheme.backgroundColor,
+        appBar: AppBar(
+          backgroundColor: Colors.transparent,
+          centerTitle: true,
+          automaticallyImplyLeading: false,
+          elevation: 0,
+          leading: IconButton(
+            onPressed: () {
+              Get.back();
+            },
+            icon: Icon(
+              Icons.arrow_back_ios_outlined,
+              color: AppTheme.darkColor,
+            ),
+          ),
+          title: Text(
+            'Notification'.toUpperCase(),
+            style: Theme
+                .of(context)
+                .textTheme
+                .bodyText2!
+                .copyWith(
+                fontWeight: FontWeight.w900,
+                fontSize: 18,
+                overflow: TextOverflow.ellipsis,
+                color: AppTheme.darkColor),
           ),
         ),
-        title: Text(
-          'Notification'.toUpperCase(),
-          style: Theme.of(context).textTheme.bodyText2!.copyWith(
-              fontWeight: FontWeight.w900,
-              fontSize: 18,
-              overflow: TextOverflow.ellipsis,
-              color: AppTheme.darkColor),
-        ),
-      ),
-      body: Obx(() {
-        return ListView(
+        body: ListView(
           padding: const EdgeInsets.all(16),
           children: [
             Divider(
               color: AppTheme.darkColor,
             ),
             Container(
-              width: Get.width,
+              width: Get.width / 2,
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   SizedBox(
-                    width: 130,
+                    width: 135,
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text('App',
-                            style: Theme.of(context)
+                            style: Theme
+                                .of(context)
                                 .textTheme
                                 .bodyText2!
                                 .copyWith(
-                                    fontWeight: FontWeight.w900,
-                                    fontSize: 14,
-                                    overflow: TextOverflow.ellipsis,
-                                    color: AppTheme.darkColor)),
+                                fontWeight: FontWeight.w900,
+                                fontSize: 14,
+                                overflow: TextOverflow.ellipsis,
+                                color: AppTheme.darkColor)),
                         SizedBox(
                           width: 5,
                         ),
                         Text('SMS',
-                            style: Theme.of(context)
+                            style: Theme
+                                .of(context)
                                 .textTheme
                                 .bodyText2!
                                 .copyWith(
-                                    fontWeight: FontWeight.w900,
-                                    fontSize: 14,
-                                    overflow: TextOverflow.ellipsis,
-                                    color: AppTheme.darkColor)),
+                                fontWeight: FontWeight.w900,
+                                fontSize: 14,
+                                overflow: TextOverflow.ellipsis,
+                                color: AppTheme.darkColor)),
                         SizedBox(
                           width: 5,
                         ),
                         Text('Email',
-                            style: Theme.of(context)
+                            style: Theme
+                                .of(context)
                                 .textTheme
                                 .bodyText2!
                                 .copyWith(
-                                    fontWeight: FontWeight.w900,
-                                    fontSize: 14,
-                                    overflow: TextOverflow.ellipsis,
-                                    color: AppTheme.darkColor)),
+                                fontWeight: FontWeight.w900,
+                                fontSize: 14,
+                                overflow: TextOverflow.ellipsis,
+                                color: AppTheme.darkColor)),
                         SizedBox(
                           width: 5,
                         ),
@@ -124,41 +131,42 @@ class NotificationScreen extends StatelessWidget {
               c.paymentEmail.value,
             ]),
           ],
-        );
-      }),
-    );
+        ),
+      );
+    });
   }
 
   Widget _createListMenu(String menuTitle, List box) {
     return Container(
       margin: const EdgeInsets.fromLTRB(0, 10, 0, 0),
-      child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-          Container(width: Get.width / 2,
-      child: Text(
-        menuTitle,
-        style: TextStyle(fontSize: 13, color: AppTheme.darkColor),
-      ),
+      child: Row(mainAxisAlignment: MainAxisAlignment.start, children: [
+        Container(
+          width: Get.width / 2,
+          child: Text(
+            menuTitle,
+            style: TextStyle(fontSize: 13, color: AppTheme.darkColor),
           ),
-          Row(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: List.generate(
-            box.length, (index) => _buildCheckbox(box[index])))
-        ]),
+        ),
+        Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: List.generate(
+                box.length, (index) => _buildCheckbox(box[index])))
+      ]),
     );
   }
 
-  Widget _buildCheckbox(c) {
-    return Checkbox(
-        fillColor: MaterialStateProperty.resolveWith<Color>(
-          (Set<MaterialState> states) => states.contains(MaterialState.disabled)
-              ? AppTheme.secondaryColor
-              : AppTheme.primaryColor,
-        ),
-        checkColor: AppTheme.secondaryColor,
-        value: c,
-        onChanged: (value) {
-          c = !c;
-        });
-  }
+  Widget _buildCheckbox(c) =>
+      Checkbox(
+          fillColor: MaterialStateProperty.resolveWith<Color>(
+                (Set<MaterialState> states) =>
+            states.contains(MaterialState.disabled)
+                ? AppTheme.secondaryColor
+                : AppTheme.primaryColor,
+          ),
+          checkColor: AppTheme.secondaryColor,
+          value: c,
+          onChanged: (value) {
+            c = !c;
+          });
 }

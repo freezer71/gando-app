@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:gando/config/textstyle.dart';
 import 'package:gando/generated/assets.dart';
+import 'package:gando/views/home/home.dart';
 import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
 
@@ -26,7 +27,7 @@ class PaymentScreen extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Icon(Icons.credit_card,color: AppTheme.darkColor,),
-              const SizedBox(width: 10,),
+              const SizedBox(width: 10),
               Text(
                 'Carte bancaire',
                 style: Theme.of(context).textTheme.bodyText2!.copyWith(
@@ -87,7 +88,9 @@ class PaymentScreen extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               GestureDetector(
-                onTap: () {},
+                onTap: () {
+                  Get.to(HomeScreen());
+                },
                 child: Container(
                   decoration: BoxDecoration(
                     color: AppTheme.darkColor,
@@ -105,7 +108,7 @@ class PaymentScreen extends StatelessWidget {
               ),
             ],
           ),
-          const SizedBox(height: 10,),
+          const SizedBox(height: 30,),
           Text('Retour à l\'accueil',
               style: Theme.of(context).textTheme.bodyText2!.copyWith(
                   color: AppTheme.redColor,

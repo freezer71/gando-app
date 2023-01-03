@@ -70,7 +70,7 @@ class ProfileScreen extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       TextButton(
-                        onPressed: () => Get.back(),
+                        onPressed: () => Get.to(() => EditProfileScreen(seller: seller,)),
                         style: ButtonStyle(
                           backgroundColor:
                           MaterialStateProperty.resolveWith<Color>(
@@ -100,7 +100,7 @@ class ProfileScreen extends StatelessWidget {
                       ),
                     ],
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 20,
                   ),
                   Container(
@@ -162,7 +162,6 @@ class ProfileScreen extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.center,
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-
                             Text('Deconnexion', style: Theme.of(context).textTheme.bodyText2!.copyWith(
                               fontWeight: FontWeight.w900,
                               fontSize: 16,
@@ -178,7 +177,7 @@ class ProfileScreen extends StatelessWidget {
                       ),
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 50,
                   ),
                 ],

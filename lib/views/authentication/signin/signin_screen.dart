@@ -4,6 +4,8 @@ import 'package:gando/config/textstyle.dart';
 import 'package:gando/navigation.dart';
 import 'package:get/get.dart';
 
+import '../../../widget/customTextFormField.dart';
+
 class SignInScreen extends StatelessWidget {
   const SignInScreen({Key? key}) : super(key: key);
 
@@ -18,8 +20,11 @@ class SignInScreen extends StatelessWidget {
         elevation: 0,
         backgroundColor: Colors.transparent,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: AppTheme.darkColor,),
-          onPressed: (){
+          icon: Icon(
+            Icons.arrow_back,
+            color: AppTheme.darkColor,
+          ),
+          onPressed: () {
             Get.back();
           },
         ),
@@ -45,19 +50,20 @@ class SignInScreen extends StatelessWidget {
                 children: [
                   Hero(
                       tag: 'logo',
-                      child: Image.asset('assets/images/gando-logo.png', height: 140)),
+                      child: Image.asset('assets/images/gando-logo.png',
+                          height: 140)),
                   const SizedBox(
-                    height:  35,
+                    height: 35,
                   ),
                   Center(
                     child: Text(
                       "Connectez-vous ",
                       style: Theme.of(context).textTheme.bodyText2!.copyWith(
-                        fontWeight: FontWeight.w900,
-                        fontSize: 22,
-                        overflow: TextOverflow.ellipsis,
-                        color: HexColor(AppTheme.primaryColorString!),
-                      ),
+                            fontWeight: FontWeight.w900,
+                            fontSize: 22,
+                            overflow: TextOverflow.ellipsis,
+                            color: HexColor(AppTheme.primaryColorString!),
+                          ),
                     ),
                   ),
                   Center(
@@ -67,22 +73,32 @@ class SignInScreen extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.center,
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          const SizedBox(height: 20,),
+                          const SizedBox(
+                            height: 20,
+                          ),
                           buildSignInInput(context),
-                          const SizedBox(height: 40,),
+                          const SizedBox(
+                            height: 40,
+                          ),
                           submitButton(context),
-                          SizedBox(height: Get.height /9,),
+                          SizedBox(
+                            height: Get.height / 9,
+                          ),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Text(
                                 "Vous n'avez pas de compte ? ",
-                                style: Theme.of(context).textTheme.bodyText2!.copyWith(
-                                  fontWeight: FontWeight.w900,
-                                  fontSize: 12,
-                                  overflow: TextOverflow.ellipsis,
-                                  color: HexColor(AppTheme.primaryColorString!),
-                                ),
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .bodyText2!
+                                    .copyWith(
+                                      fontWeight: FontWeight.w900,
+                                      fontSize: 12,
+                                      overflow: TextOverflow.ellipsis,
+                                      color: HexColor(
+                                          AppTheme.primaryColorString!),
+                                    ),
                               ),
                               GestureDetector(
                                 onTap: () {
@@ -112,110 +128,44 @@ class SignInScreen extends StatelessWidget {
     );
   }
 
-  Widget submitButton(BuildContext context){
+  Widget submitButton(BuildContext context) {
     return TextButton(
       onPressed: () => Get.toNamed(Routes.home),
       style: ButtonStyle(
-        backgroundColor:
-        MaterialStateProperty.resolveWith<Color>(
-              (Set<MaterialState> states) =>
-          states.contains(MaterialState.disabled)
-              ? AppTheme.primaryColor
-              : AppTheme.darkColor,
+        backgroundColor: MaterialStateProperty.resolveWith<Color>(
+          (Set<MaterialState> states) => AppTheme.primaryColor,
         ),
-        overlayColor:
-        MaterialStateProperty.all(Colors.transparent),
-        shape: MaterialStateProperty.all(
-            RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(10.0),
-            )),
+        overlayColor: MaterialStateProperty.all(Colors.transparent),
+        shape: MaterialStateProperty.all(RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(30.0),
+        )),
       ),
       child: Container(
         height: 40,
         width: Get.width / 1.3,
         padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 10),
         child: Center(
-          child: Text('Connexion', style: Theme.of(context).textTheme.bodyText2!.copyWith(
-            fontWeight: FontWeight.w900,
-            fontSize: 16,
-            color: AppTheme.backgroundColor,
-          ),),
+          child: Text(
+            'Connexion',
+            style: Theme.of(context).textTheme.bodyText2!.copyWith(
+                  fontWeight: FontWeight.w900,
+                  fontSize: 16,
+                  color: AppTheme.backgroundColor,
+                ),
+          ),
         ),
       ),
     );
   }
 
-  Widget buildSignInInput(BuildContext context){
+  Widget buildSignInInput(BuildContext context) {
     return Column(
       children: [
-        TextFormField(
-          key: Get.keys[2],
-          // controller: controller.topUpAmount.value,
-          initialValue: null,
+        CustomTextFormField(
+          key: Get.keys[0],
+          controller: null,
           keyboardType: TextInputType.emailAddress,
-          cursorColor: HexColor(AppTheme.primaryColorString!),
-          cursorRadius: const Radius.circular(50),
-          cursorWidth: 3,
-          style: Theme.of(context).textTheme.bodyText2!.copyWith(
-            fontWeight: FontWeight.w900,
-            fontSize: 18,
-            overflow: TextOverflow.ellipsis,
-            color: HexColor(AppTheme.primaryColorString!),
-          ),
           enabled: true,
-          decoration: InputDecoration(
-            filled: true,
-            fillColor: AppTheme.light,
-            prefixIconColor: AppTheme.backgroundColor,
-            prefixIcon: const Padding(
-              padding: EdgeInsets.only(right: 18.0, left: 18),
-              child: Icon(Icons.alternate_email),
-            ),
-            enabled: true,
-            enabledBorder: OutlineInputBorder(
-              borderSide: const BorderSide(
-                width: 2.0,
-                color: Colors.black,
-              ),
-              borderRadius: BorderRadius.circular(16.0),
-              gapPadding: 8.0,
-            ),
-            hintText: "Votre email",
-            labelStyle: Theme.of(context).textTheme.bodyText2!.copyWith(
-              fontWeight: FontWeight.w400,
-              fontSize: 16,
-              overflow: TextOverflow.ellipsis,
-              color: HexColor(AppTheme.primaryColorString!),
-            ),
-            hintStyle: Theme.of(context).textTheme.bodyText2!.copyWith(
-              fontWeight: FontWeight.w400,
-              fontSize: 16,
-              overflow: TextOverflow.ellipsis,
-              color: HexColor(AppTheme.primaryColorString!),
-            ),
-            errorMaxLines: 3,
-            focusedErrorBorder: OutlineInputBorder(
-                borderSide: const BorderSide(
-                  color: Colors.black,
-                  width: 2.0,
-                ),
-                borderRadius: BorderRadius.circular(16.0),
-                gapPadding: 8.0),
-            errorBorder: OutlineInputBorder(
-                borderSide: BorderSide(
-                  color: Colors.red.withOpacity(0.4),
-                  width: 2.0,
-                ),
-                borderRadius: BorderRadius.circular(16.0),
-                gapPadding: 8.0),
-            focusedBorder: OutlineInputBorder(
-                borderSide: const BorderSide(
-                  color: Colors.black,
-                  width: 2.0,
-                ),
-                borderRadius: BorderRadius.circular(16.0),
-                gapPadding: 8.0),
-          ),
           validator: (value) {
             if (!value!.isEmail) {
               return "Email invalid";
@@ -223,9 +173,8 @@ class SignInScreen extends StatelessWidget {
             }
             return null;
           },
-          autovalidateMode: AutovalidateMode.onUserInteraction,
           autofocus: false,
-          inputFormatters: [
+          formatter: [
             // FilteringTextInputFormatter.deny(
             //   RegExp(r"^((5000)|([0-4]?[0-9]{1,3}))$"),
             // ),
@@ -243,95 +192,34 @@ class SignInScreen extends StatelessWidget {
             // } else {
             //   topUpController.buttonDisabled.value = true;
             // }
-          }, // default null
+          },
+          context: context,
+          obscureText: false,
+          prefixIcon: const Padding(
+            padding: EdgeInsets.only(right: 18.0, left: 18),
+            child: Icon(Icons.alternate_email_outlined),
+          ),
+          shape: 30,
+          hintText: 'Votre email', // default null
           // ... + other textfield params
         ),
-        const SizedBox(height: 10,),
-        TextFormField(
-          key: Get.keys[2],
-          // controller: controller.topUpAmount.value,
-          initialValue: null,
-          obscureText: true,
+        const SizedBox(
+          height: 10,
+        ),
+        CustomTextFormField(
+          key: Get.keys[1],
+          controller: null,
           keyboardType: TextInputType.emailAddress,
-          cursorColor: HexColor(AppTheme.primaryColorString!),
-          cursorRadius: const Radius.circular(50),
-          cursorWidth: 3,
-          style: Theme.of(context).textTheme.bodyText2!.copyWith(
-            fontWeight: FontWeight.w900,
-            fontSize: 18,
-            overflow: TextOverflow.ellipsis,
-            color: HexColor(AppTheme.primaryColorString!),
-          ),
           enabled: true,
-          decoration: InputDecoration(
-            filled: true,
-            fillColor: AppTheme.light,
-            suffixIcon: const Padding(
-              padding: EdgeInsets.only(right: 18.0, left: 18),
-              child: InkWell(
-                focusColor: Colors.transparent,
-                child: Icon(Icons.remove_red_eye_sharp),),
-            ),
-            prefixIconColor: AppTheme.backgroundColor,
-            prefixIcon: const Padding(
-              padding: EdgeInsets.only(right: 18.0, left: 18),
-              child: Icon(Icons.lock_outlined),
-            ),
-            enabled: true,
-            enabledBorder: OutlineInputBorder(
-              borderSide: const BorderSide(
-                width: 2.0,
-                color: Colors.black,
-              ),
-              borderRadius: BorderRadius.circular(16.0),
-              gapPadding: 8.0,
-            ),
-            hintText: "Mot de passe",
-            labelStyle: Theme.of(context).textTheme.bodyText2!.copyWith(
-              fontWeight: FontWeight.w400,
-              fontSize: 16,
-              overflow: TextOverflow.ellipsis,
-              color: HexColor(AppTheme.primaryColorString!),
-            ),
-            hintStyle: Theme.of(context).textTheme.bodyText2!.copyWith(
-              fontWeight: FontWeight.w400,
-              fontSize: 16,
-              overflow: TextOverflow.ellipsis,
-              color: HexColor(AppTheme.primaryColorString!),
-            ),
-            errorMaxLines: 3,
-            focusedErrorBorder: OutlineInputBorder(
-                borderSide: const BorderSide(
-                  color: Colors.black,
-                  width: 2.0,
-                ),
-                borderRadius: BorderRadius.circular(16.0),
-                gapPadding: 8.0),
-            errorBorder: OutlineInputBorder(
-                borderSide: BorderSide(
-                  color: Colors.red.withOpacity(0.4),
-                  width: 2.0,
-                ),
-                borderRadius: BorderRadius.circular(16.0),
-                gapPadding: 8.0),
-            focusedBorder: OutlineInputBorder(
-                borderSide: const BorderSide(
-                  color: Colors.black,
-                  width: 2.0,
-                ),
-                borderRadius: BorderRadius.circular(16.0),
-                gapPadding: 8.0),
-          ),
           validator: (value) {
-            if (!value!.isAlphabetOnly) {
-              return "Mot de passe invalide";
+            if (!value!.isEmail) {
+              return "Mot de passe invalid";
               // return 'amount Is not valid';
             }
             return null;
           },
-          autovalidateMode: AutovalidateMode.onUserInteraction,
           autofocus: false,
-          inputFormatters: [
+          formatter: [
             // FilteringTextInputFormatter.deny(
             //   RegExp(r"^((5000)|([0-4]?[0-9]{1,3}))$"),
             // ),
@@ -349,27 +237,38 @@ class SignInScreen extends StatelessWidget {
             // } else {
             //   topUpController.buttonDisabled.value = true;
             // }
-          }, // default null
+          },
+          context: context,
+          obscureText: false,
+          prefixIcon: const Padding(
+            padding: EdgeInsets.only(right: 18.0, left: 18),
+            child: Icon(Icons.lock),
+          ),
+          shape: 30,
+          hintText: 'Mot de passe', // default null
           // ... + other textfield params
         ),
-        const SizedBox(height: 15,),
+        const SizedBox(
+          height: 15,
+        ),
         InkWell(
           onTap: () {
             Get.toNamed(Routes.forgotPwd);
           },
           child: Align(
             alignment: Alignment.centerLeft,
-            child: Text('Mot de passe oublié?', style: Theme.of(context).textTheme.bodyText2!.copyWith(
-              fontWeight: FontWeight.w900,
-              fontSize: 12,
-              overflow: TextOverflow.ellipsis,
-              color: AppTheme.primaryColor,
-            ),),
+            child: Text(
+              'Mot de passe oublié?',
+              style: Theme.of(context).textTheme.bodyText2!.copyWith(
+                    fontWeight: FontWeight.w900,
+                    fontSize: 12,
+                    overflow: TextOverflow.ellipsis,
+                    color: AppTheme.primaryColor,
+                  ),
+            ),
           ),
         ),
       ],
     );
   }
 }
-
-

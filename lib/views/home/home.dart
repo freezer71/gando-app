@@ -312,95 +312,103 @@ class _HomeScreenState extends State<HomeScreen>
                 ),
               ],
             ),
-            child: Stack(
-              children: [
-                SizedBox(
-                  height: Get.height / 6,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      IconButton(
-                          padding: EdgeInsets.zero,
-                          // icon: _globalWidget.customNotifIcon(8, AppTheme.secondaryColor.withOpacity(0.5)),
-                          icon: Icon(Icons.dehaze,
-                              size: 30,
-                              color: AppTheme.light),
+            child: SizedBox(
+              height: Get.height / 6,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  IconButton(
+                      padding: EdgeInsets.zero,
+                      // icon: _globalWidget.customNotifIcon(8, AppTheme.secondaryColor.withOpacity(0.5)),
+                      icon: Icon(Icons.dehaze,
+                          size: 30,
+                          color: AppTheme.light),
+                      onPressed: () {
+                        Get.bottomSheet(
+                            showFilterBottomSheet(context));
+                        // Navigator.push(context, MaterialPageRoute(builder: (context) => NotificationPage()));
+                      }),
+                  Container(
+                    width: Get.width / 1.52,
+                    height: 45,
+                    child: TextButton(
+                        style: ButtonStyle(
+                          padding: MaterialStateProperty.all(
+                              const EdgeInsets.symmetric(horizontal: 10)),
+                          backgroundColor:
+                              MaterialStateProperty.resolveWith<Color>(
+                            (Set<MaterialState> states) =>
+                                AppTheme.light,
+                          ),
+                          overlayColor:
+                              MaterialStateProperty.all(Colors.black),
+                          shape: MaterialStateProperty.all(
+                              RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(30.0),
+                          )),
+                        ),
+                        onPressed: () {
+                          // Navigator.push(
+                          //     context,
+                          //     MaterialPageRoute(
+                          //         builder: (context) => SearchPage()));
+                        },
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            SizedBox(
+                              width: Get.width / 2.3,
+                              child: Text(
+                                'Trouver une adresse',
+                                maxLines: 1,
+                                style: TextStyle(
+                                    color: Colors.grey[500],
+                                    fontSize: 14,
+                                    overflow: TextOverflow.ellipsis,
+                                    fontWeight: FontWeight.normal),
+                              ),
+                            ),
+                            InkWell(
+                              onTap: () {},
+                              child: Container(
+                                height: 45,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(50)
+                                ),
+                                child: Row(
+                                  children: [
+                                    const Icon(Icons.location_on_outlined, color: Colors.grey),
+                                    Text('10 Km', style:TextStyle(
+                                        color: Colors.grey[500],
+                                        fontSize: 12,
+                                        overflow: TextOverflow.ellipsis,
+                                        fontWeight: FontWeight.normal),),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ],
+                        )),
+                  ),
+                  Container(
+                      width: 50,
+                      height: 50,
+                      decoration: BoxDecoration(
+                        color: AppTheme.redColor,
+                        shape: BoxShape.circle,
+                      ),
+                      child: IconButton(
                           onPressed: () {
                             Get.bottomSheet(
-                                showFilterBottomSheet(context));
-                            // Navigator.push(context, MaterialPageRoute(builder: (context) => NotificationPage()));
-                          }),
-                      Container(
-                        width: Get.width / 1.52,
-                        height: 45,
-                        child: TextButton(
-                            style: ButtonStyle(
-                              padding: MaterialStateProperty.all(
-                                  const EdgeInsets.symmetric(horizontal: 10)),
-                              backgroundColor:
-                                  MaterialStateProperty.resolveWith<Color>(
-                                (Set<MaterialState> states) =>
-                                    AppTheme.light,
-                              ),
-                              overlayColor:
-                                  MaterialStateProperty.all(Colors.black),
-                              shape: MaterialStateProperty.all(
-                                  RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10.0),
-                              )),
-                            ),
-                            onPressed: () {
-                              // Navigator.push(
-                              //     context,
-                              //     MaterialPageRoute(
-                              //         builder: (context) => SearchPage()));
-                            },
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceAround,
-                              children: [
-
-                                SizedBox(
-                                  width: 180,
-                                  child: Text(
-                                    'Trouver une adresse',
-                                    maxLines: 1,
-                                    style: TextStyle(
-                                        color: Colors.grey[500],
-                                        fontSize: 14,
-                                        overflow: TextOverflow.ellipsis,
-                                        fontWeight: FontWeight.normal),
-                                  ),
-                                ),
-                                const Icon(
-                                  Icons.search,
-                                  color: Colors.grey,
-                                ),
-                              ],
-                            )),
-                      ),
-                      ClipRRect(
-                        child: Container(
-                            width: 55,
-                            height: 50,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(50),
-                              color: AppTheme.redColor,
-                            ),
-                            child: IconButton(
-                                onPressed: () {
-                                  Get.bottomSheet(
-                                      showFilterDateBottomSheet(
-                                          context));
-                                },
-                                icon: Icon(Icons.calendar_month,
-                                    size: 25,
-                                    color: AppTheme.backgroundColor
-                                        .withOpacity(0.9)))),
-                      )
-                    ],
-                  ),
-                ),
-              ],
+                                showFilterDateBottomSheet(
+                                    context));
+                          },
+                          icon: Icon(Icons.calendar_month,
+                              size: 25,
+                              color: AppTheme.backgroundColor
+                                  .withOpacity(0.9))))
+                ],
+              ),
             ),
           )));
 
@@ -418,7 +426,7 @@ class _HomeScreenState extends State<HomeScreen>
             color: Colors.transparent,
             elevation: 0,
             child: Container(
-                padding: EdgeInsets.all(0),
+                padding: const EdgeInsets.all(0),
                 decoration: BoxDecoration(
                   color: AppTheme.secondaryColor,
                   borderRadius: BorderRadius.circular(16),
@@ -427,7 +435,7 @@ class _HomeScreenState extends State<HomeScreen>
                 child: ListTile(
                   title: Text(
                     location,
-                    style: TextStyle(fontSize: 18),
+                    style: const TextStyle(fontSize: 18),
                   ),
                   trailing: Icon(
                     Icons.search,
