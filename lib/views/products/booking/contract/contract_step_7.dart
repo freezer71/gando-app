@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:gando/config/textstyle.dart';
 import 'package:gando/controllers/contract_controller/contract_controller.dart';
+import 'package:gando/views/bottom_navigation_bar.dart';
+import 'package:gando/views/home/home.dart';
 import 'package:get/get.dart';
 import 'package:signature/signature.dart';
 
@@ -111,7 +113,7 @@ class ContractStep7 extends StatelessWidget {
               // splashColor: const Color(0xFFEEEEEE),
               onTap: () {
                 //open bottom sheet
-                // Get.off(() => const SuccessBookingScreen());
+                Get.to(() => const BottomNavigationBarPage());
               },
               child: Center(
                 child: Text(

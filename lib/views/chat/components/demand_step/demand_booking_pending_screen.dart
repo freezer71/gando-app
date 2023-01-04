@@ -8,20 +8,20 @@ import 'package:gando/views/home/home.dart';
 import 'package:get/get.dart';
 import 'package:text_form_field_wrapper/text_form_field_wrapper.dart';
 
-import '../../../models/car.dart';
-import '../../../widget/customTextFormField.dart';
-import 'payment/payment_screen.dart';
-import 'success_booking_screen.dart';
+import '../../../../models/car.dart';
+import '../../../../widget/customTextFormField.dart';
+import '../../../products/booking/contract/contract_step_2.dart';
+import '../../../products/booking/success_booking_screen.dart';
 
-class BookingScreen extends StatefulWidget {
+class DemandBookingPendingScreen extends StatefulWidget {
   final car;
-  BookingScreen({Key? key, required this.car}) : super(key: key);
+  DemandBookingPendingScreen({Key? key, required this.car}) : super(key: key);
 
   @override
-  State<BookingScreen> createState() => _BookingScreenState();
+  State<DemandBookingPendingScreen> createState() => _DemandBookingPendingScreenState();
 }
 
-class _BookingScreenState extends State<BookingScreen> {
+class _DemandBookingPendingScreenState extends State<DemandBookingPendingScreen> {
   final TextEditingController etNameController = TextEditingController();
 
   final TextEditingController etLastNameController = TextEditingController();
@@ -57,17 +57,35 @@ class _BookingScreenState extends State<BookingScreen> {
         elevation: 0,
         centerTitle: true,
         automaticallyImplyLeading: true,
-        leading: InkWell(onTap: (){
-          Get.back();
-        },child: Icon(Icons.arrow_back, color: AppTheme.darkColor)),
-        title: Text(
-          'Réserver le véhicule'.toUpperCase(),
-          style: Theme.of(context).textTheme.bodyText2!.copyWith(
+        leading: InkWell(
+          onTap: () {
+            Get.back();
+          },
+          child: Icon(
+            Icons.arrow_back,
+            color: AppTheme.darkColor,
+          ),
+        ),
+        actions: const [
+          Padding(
+            padding: EdgeInsets.only(right: 18.0),
+            child: SizedBox(
+              height: 40,
+              width: 40,
+              child: CircleAvatar(
+                backgroundImage: AssetImage('assets/images/av.png'),
+              ),
+            ),
+          ),
+        ],
+        title: SizedBox(
+          width: Get.width,
+          child: Text('Laure Manida',
+            style: Theme.of(context).textTheme.bodyText2!.copyWith(
                 fontWeight: FontWeight.w900,
                 fontSize: 18,
-                color: AppTheme.darkColor,
                 overflow: TextOverflow.ellipsis,
-              ),
+                color: AppTheme.darkColor), textAlign: TextAlign.center,),
         ),
       ),
       body: Stack(
@@ -76,499 +94,104 @@ class _BookingScreenState extends State<BookingScreen> {
             child: ListView(
               padding: const EdgeInsets.all(16),
               children: [
-                _buildRowMenu(context),
+                Text(
+                  '${car.brand} ${car.model}' ,
+                  style: Theme.of(context).textTheme.bodyText2!.copyWith(
+                    fontWeight: FontWeight.w900,
+                    fontSize: 18,
+                    color: AppTheme.darkColor,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
                 Divider(
-                  height: Get.height / 12,
+                  height: Get.height / 22,
                   color: AppTheme.darkColor,
                 ),
-                ..._buildBody(context),
-                SizedBox(
-                  height: Get.height / 8,
-                )
+                _buildRowMenu(),
+                Divider(
+                  height: Get.height / 22,
+                  color: AppTheme.darkColor,
+                ),
+                ..._buildBody(),
+
+                Text(
+                  'Le montant de la location est de ',
+                  style: Theme.of(context).textTheme.bodyText2!.copyWith(
+                    fontWeight: FontWeight.w900,
+                    fontSize: 18,
+                    color: AppTheme.darkColor,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+                Text(
+                  '${car.price * 30 / 100} €'.toUpperCase(),
+                  style: Theme.of(context).textTheme.bodyText2!.copyWith(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 50,
+                    color: AppTheme.darkColor,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+                Container(
+                  width: Get.width,
+                  padding: const EdgeInsets.all(10),
+                  margin: const EdgeInsets.only(top: 20),
+                  decoration: BoxDecoration(
+                    color: AppTheme.light,
+                    borderRadius: BorderRadius.circular(30)
+                  ),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(Icons.access_time_outlined, color: AppTheme.darkColor.withOpacity(0.4),),
+                  SizedBox(
+                    width: Get.width /20,),
+                      SizedBox(
+                        width: Get.width / 1.6,
+                        child: Text(
+                          'Votre demande de location est désormais en attente\n de la réponse du propriétaire.',
+                          style: Theme.of(context).textTheme.bodyText2!.copyWith(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 12,
+                            color: AppTheme.darkColor,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                          maxLines: 3,
+                          textAlign: TextAlign.left,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                SizedBox(height: Get.height / 5,),
               ],
             ),
           ),
-          _buldFloatBar(),
+          _buildFloatBar(),
         ],
       ),
     );
   }
 
-  Widget _buldFloatBar() {
-    buildAddCard() => Container(
-          height: 58,
-          width: Get.width / 1.2,
-          decoration: BoxDecoration(
-            borderRadius: const BorderRadius.all(Radius.circular(29)),
-            color: AppTheme.primaryColor,
-            boxShadow: [
-              BoxShadow(
-                offset: const Offset(4, 8),
-                blurRadius: 20,
-                color: const Color(0xFF101010).withOpacity(0.25),
-              ),
-            ],
-          ),
-          child: Material(
-            color: Colors.transparent,
-            child: InkWell(
-              borderRadius: const BorderRadius.all(Radius.circular(29)),
-              // splashColor: const Color(0xFFEEEEEE),
-              onTap: () {
-                //got to next page
-                Get.bottomSheet(_buildBottomSheet(context, car));
-              },
-              child: Center(
-                child: Text(
-                  'Réserver'.toUpperCase(),
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 18,
-                    color: Colors.white,
-                  ),
-                ),
-              ),
-            ),
-          ),
-        );
-
+  Widget _buildFloatBar() {
     return Positioned(
       bottom: 0,
       left: 0,
       right: 0,
       child: Container(
         color: Colors.white,
-        height: 110,
-        padding: const EdgeInsets.symmetric(horizontal: 24),
-        child: Column(
-          children: [
-            const SizedBox(height: 5),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                buildAddCard(),
-                const SizedBox(height: 12),
-                InkWell(
-                  onTap: () {
-                    // go to signalisation page
-                  },
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Icon(
-                        Icons.flag,
-                        color: AppTheme.redColor,
-                      ),
-                      const Text('Signaler l\'annonce',
-                          style: TextStyle(
-                              color: Color(0xFF757575), fontSize: 12)),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-            // const SizedBox(height: 36),
-          ],
-        ),
-      ),
-    );
-  }
-  
-  Widget _buildBottomSheet(BuildContext context, Car car) {
-    bookingButton() => Container(
-      height: 58,
-      margin: EdgeInsets.symmetric(vertical: 10),
-      width: Get.width / 1.2,
-      decoration: BoxDecoration(
-        borderRadius: const BorderRadius.all(Radius.circular(29)),
-        color: AppTheme.primaryColor,
-        boxShadow: [
-          BoxShadow(
-            offset: const Offset(4, 8),
-            blurRadius: 20,
-            color: const Color(0xFF101010).withOpacity(0.25),
-          ),
-        ],
-      ),
-      child: Material(
-        color: Colors.transparent,
-        child: InkWell(
-          borderRadius: const BorderRadius.all(Radius.circular(29)),
-          // splashColor: const Color(0xFFEEEEEE),
-          onTap: () {
-            //open bottom sheet
-            Get.bottomSheet(_buildPaymentBottomSheet(context, car));
-          },
-          child: Center(
-            child: Text(
-              'Réserver'.toUpperCase(),
-              style: const TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 18,
-                color: Colors.white,
-              ),
-            ),
-          ),
-        ),
-      ),
-    );
-
-    return Container(
-      width: Get.width,
-      height: 350,
-      padding: EdgeInsets.symmetric(vertical: 20, horizontal: 20),
-      decoration: BoxDecoration(
-        color:  AppTheme.backgroundColor,
-        borderRadius: BorderRadius.only(topLeft: Radius.circular(16), topRight: Radius.circular(16)),
-      ),
-      child: Stack(
-        children: [
-          Container(
-            child: Column(
-              children: [
-                Text("${car.brand} ${car.model}", style: Theme.of(context).textTheme.bodyText2!.copyWith(
-                  fontWeight: FontWeight.w900,
-                  fontSize: 18,
-                  color: AppTheme.darkColor,
-                  overflow: TextOverflow.ellipsis,
-                )),
-                Divider(color: AppTheme.darkColor.withOpacity(0.3),),
-                Container(
-                  padding: EdgeInsets.all(22),
-                  child: Text("11 adile maret Sainte Anne, 97180", style: Theme.of(context).textTheme.bodyText2!.copyWith(
-                    fontWeight: FontWeight.w400,
-                    fontSize: 16,
-                    color: AppTheme.darkColor,
-                    overflow: TextOverflow.ellipsis,
-                  )),
-                ),
-                Divider( color: AppTheme.darkColor.withOpacity(0.3),),
-                Container(
-                  width: Get.width / 1.4,
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Column(
-                        children: [
-                          Text("du 11/09/22", style: Theme.of(context).textTheme.bodyText2!.copyWith(
-                            fontWeight: FontWeight.w900,
-                            fontSize: 18,
-                            color: AppTheme.darkColor,
-                            overflow: TextOverflow.ellipsis,
-                          )),
-                          Text("à 14h30", style: Theme.of(context).textTheme.bodyText2!.copyWith(
-                            fontWeight: FontWeight.w400,
-                            fontSize: 12,
-                            color: AppTheme.darkColor,
-                            overflow: TextOverflow.ellipsis,
-                          )),
-                        ],
-                      ),
-                      Column(
-                        children: [
-                          Text("du 02/09/22", style: Theme.of(context).textTheme.bodyText2!.copyWith(
-                            fontWeight: FontWeight.w900,
-                            fontSize: 18,
-                            color: AppTheme.darkColor,
-                            overflow: TextOverflow.ellipsis,
-                          )),
-                          Text("à 14h30", style: Theme.of(context).textTheme.bodyText2!.copyWith(
-                            fontWeight: FontWeight.w400,
-                            fontSize: 12,
-                            color: AppTheme.darkColor,
-                            overflow: TextOverflow.ellipsis,
-                          )),
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
-                Divider( color: AppTheme.darkColor.withOpacity(0.3),),
-                bookingButton(),
-                Container(
-                  padding: EdgeInsets.all(10),
-                  child: Text("Ajouter un code promotionnel", style: Theme.of(context).textTheme.bodyText2!.copyWith(
-                    fontWeight: FontWeight.w600,
-                    fontSize: 16,
-                    color: AppTheme.primaryColor,
-                    overflow: TextOverflow.ellipsis,
-                  )),
-                ),
-              ],
-            ),
-          ),
-          Positioned(
-              top: -15,
-              right: -15,
-              child: IconButton(onPressed: (){
-            Get.back();
-          }, icon: Icon(Icons.close, color: AppTheme.darkColor,),))
-        ],
-      ),
-    );
-  } 
-  Widget _buildPaymentBottomSheet(BuildContext context, Car car) {
-    bookingButton() => Container(
-      height: 58,
-      margin: EdgeInsets.symmetric(vertical: 10),
-      width: Get.width / 1.2,
-      decoration: BoxDecoration(
-        borderRadius: const BorderRadius.all(Radius.circular(29)),
-        color: AppTheme.darkColor,
-        boxShadow: [
-          BoxShadow(
-            offset: const Offset(4, 8),
-            blurRadius: 20,
-            color: const Color(0xFF101010).withOpacity(0.25),
-          ),
-        ],
-      ),
-      child: Material(
-        color: Colors.transparent,
-        child: InkWell(
-          borderRadius: const BorderRadius.all(Radius.circular(29)),
-          // splashColor: const Color(0xFFEEEEEE),
-          onTap: () {
-            //open bottom sheet
-            Get.bottomSheet(_buildOtherPaymentBottomSheet(context, car));
-          },
-          child: Center(
-            child: Text(
-              'Paiement'.toUpperCase(),
-              style: const TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 18,
-                color: Colors.white,
-              ),
-            ),
-          ),
-        ),
-      ),
-    );
-    return Container(
-      width: Get.width,
-      height: 450,
-      padding: EdgeInsets.symmetric(vertical: 20, horizontal: 20),
-      decoration: BoxDecoration(
-        color:  AppTheme.backgroundColor,
-        borderRadius: BorderRadius.only(topLeft: Radius.circular(16), topRight: Radius.circular(16)),
-      ),
-      child: Stack(
-        fit: StackFit.expand,
-        children: [
-          Container(
-            child: Column(
-              children: [
-                Text("${car.brand} ${car.model}", style: Theme.of(context).textTheme.bodyText2!.copyWith(
-                  fontWeight: FontWeight.w900,
-                  fontSize: 18,
-                  color: AppTheme.darkColor,
-                  overflow: TextOverflow.ellipsis,
-                )),
-                Text("Marco DEGARDIO", style: Theme.of(context).textTheme.bodyText2!.copyWith(
-                  fontWeight: FontWeight.w400,
-                  fontSize: 12,
-                  color: AppTheme.darkColor,
-                  overflow: TextOverflow.ellipsis,
-                )),
-                Divider(color: AppTheme.darkColor.withOpacity(0.3),),
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 4.0),
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text('Prix jour',
-                          style: Theme.of(context).textTheme.bodyText2!.copyWith(
-                            fontWeight: FontWeight.w500,
-                            fontSize: 12,
-                            color: AppTheme.darkColor,
-                            overflow: TextOverflow.ellipsis,
-                          )),
-                      Text('15 €',
-                          style: Theme.of(context).textTheme.bodyText2!.copyWith(
-                            fontWeight: FontWeight.w900,
-                            fontSize: 14,
-                            color: AppTheme.darkColor,
-                            overflow: TextOverflow.ellipsis,
-                          )),
-                    ],
-                  ),
-                ),
-                Divider( color: AppTheme.darkColor.withOpacity(0.3),),
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 4.0),
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text('Suplément jeune conducteur',
-                          style: Theme.of(context).textTheme.bodyText2!.copyWith(
-                            fontWeight: FontWeight.w500,
-                            fontSize: 12,
-                            color: AppTheme.darkColor,
-                            overflow: TextOverflow.ellipsis,
-                          )),
-                      Text('2,25 €',
-                          style: Theme.of(context).textTheme.bodyText2!.copyWith(
-                            fontWeight: FontWeight.w900,
-                            fontSize: 14,
-                            color: AppTheme.darkColor,
-                            overflow: TextOverflow.ellipsis,
-                          )),
-                    ],
-                  ),
-                ),
-                Divider( color: AppTheme.darkColor.withOpacity(0.3),),
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 4.0),
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text('Promotion',
-                          style: Theme.of(context).textTheme.bodyText2!.copyWith(
-                            fontWeight: FontWeight.w500,
-                            fontSize: 12,
-                            color: AppTheme.darkColor,
-                            overflow: TextOverflow.ellipsis,
-                          )),
-                      Text('-0,00 €',
-                          style: Theme.of(context).textTheme.bodyText2!.copyWith(
-                            fontWeight: FontWeight.w900,
-                            fontSize: 14,
-                            color: AppTheme.darkColor,
-                            overflow: TextOverflow.ellipsis,
-                          )),
-                    ],
-                  ),
-                ),
-                Divider( color: AppTheme.darkColor.withOpacity(0.3),),
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 4.0),
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text('Total',
-                          style: Theme.of(context).textTheme.bodyText2!.copyWith(
-                            fontWeight: FontWeight.w900,
-                            fontSize: 14,
-                            color: AppTheme.darkColor,
-                            overflow: TextOverflow.ellipsis,
-                          )),
-                      Text('17,25 €',
-                          style: Theme.of(context).textTheme.bodyText2!.copyWith(
-                            fontWeight: FontWeight.w900,
-                            fontSize: 16,
-                            color: AppTheme.darkColor,
-                            overflow: TextOverflow.ellipsis,
-                          )),
-                    ],
-                  ),
-                ),
-                Divider( color: AppTheme.darkColor.withOpacity(0.3),),
-                Text("En reservant  véhicule,vous acceptez les \nconditons générales de Gando", textAlign: TextAlign.center, style: Theme.of(context).textTheme.bodyText2!.copyWith(
-                  fontWeight: FontWeight.w400,
-                  fontSize: 12,
-                  color: AppTheme.darkColor,
-                  overflow: TextOverflow.ellipsis,
-                )),
-                bookingButton(),
-                Container(
-                  padding: EdgeInsets.all(4),
-                  child: Text("Autres moyens de paiement".toUpperCase(), style: Theme.of(context).textTheme.bodyText2!.copyWith(
-                    fontWeight: FontWeight.w900,
-                    fontSize: 18,
-                    color: AppTheme.darkColor,
-                    overflow: TextOverflow.ellipsis,
-                  )),
-                ),
-              ],
-            ),
-          ),
-          Positioned(
-              top: -15,
-              right: -15,
-              child: IconButton(onPressed: (){
-            Get.back();
-          }, icon: Icon(Icons.close, color: AppTheme.darkColor,),))
-        ],
-      ),
-    );
-  }
-  Widget _buildOtherPaymentBottomSheet(BuildContext context, Car car) {
-    bookingButton({String? title, Color? color}) => Container(
-      height: 58,
-      margin: EdgeInsets.symmetric(vertical: 10),
-      width: Get.width / 1.2,
-      decoration: BoxDecoration(
-        borderRadius: const BorderRadius.all(Radius.circular(29)),
-        color: color,
-        boxShadow: [
-          BoxShadow(
-            offset: const Offset(4, 8),
-            blurRadius: 20,
-            color: const Color(0xFF101010).withOpacity(0.25),
-          ),
-        ],
-      ),
-      child: Material(
-        color: Colors.transparent,
-        child: InkWell(
-          borderRadius: const BorderRadius.all(Radius.circular(29)),
-          // splashColor: const Color(0xFFEEEEEE),
-          onTap: () {
-            //open bottom sheet
-            Get.to(() => const SuccessBookingScreen());
-          },
-          child: Center(
-            child: Text(
-              title!.toUpperCase(),
-              style: const TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 18,
-                color: Colors.white,
-              ),
-            ),
-          ),
-        ),
-      ),
-    );
-    return Container(
-      width: Get.width,
-      height: 250,
-      padding: EdgeInsets.symmetric(vertical: 20, horizontal: 20),
-      decoration: BoxDecoration(
-        color:  AppTheme.backgroundColor,
-        borderRadius: BorderRadius.only(topLeft: Radius.circular(16), topRight: Radius.circular(16)),
-      ),
-      child: Stack(
-        fit: StackFit.expand,
-        children: [
-          Container(
-            padding: const EdgeInsets.only(top: 20.0),
-            child: Column(
-              children: [
-                bookingButton(title: 'Carte bancaire', color: AppTheme.primaryColor),
-                bookingButton(title: 'PayPal', color: AppTheme.darkColor),
-              ],
-            ),
-          ),
-          Positioned(
-              top: -15,
-              right: -15,
-              child: IconButton(onPressed: (){
-            Get.back();
-          }, icon: Icon(Icons.close, color: AppTheme.darkColor,),))
-        ],
+        height: 100,
+        padding: const EdgeInsets.symmetric(horizontal: 20),
+        child: _buildBodyButtons(),
       ),
     );
   }
 
-  Widget _buildRowMenu(context) {
+  Widget _buildRowMenu() {
     return Container(
       width: Get.width,
       child: Row(
@@ -605,25 +228,25 @@ class _BookingScreenState extends State<BookingScreen> {
                               .textTheme
                               .bodyText2!
                               .copyWith(
-                                  color: AppTheme.darkColor,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w900)),
+                              color: AppTheme.darkColor,
+                              fontSize: 16,
+                              fontWeight: FontWeight.w900)),
                       Text('09',
                           style: Theme.of(context)
                               .textTheme
                               .bodyText2!
                               .copyWith(
-                                  color: AppTheme.darkColor,
-                                  fontSize: 32,
-                                  fontWeight: FontWeight.w900)),
+                              color: AppTheme.darkColor,
+                              fontSize: 32,
+                              fontWeight: FontWeight.w900)),
                       Text('Septembre',
                           style: Theme.of(context)
                               .textTheme
                               .bodyText2!
                               .copyWith(
-                                  color: AppTheme.darkColor,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w900)),
+                              color: AppTheme.darkColor,
+                              fontSize: 16,
+                              fontWeight: FontWeight.w900)),
                       Container(
                         padding: const EdgeInsets.symmetric(
                             vertical: 4, horizontal: 16),
@@ -636,9 +259,9 @@ class _BookingScreenState extends State<BookingScreen> {
                                 .textTheme
                                 .bodyText2!
                                 .copyWith(
-                                    color: AppTheme.backgroundColor,
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.w900)),
+                                color: AppTheme.backgroundColor,
+                                fontSize: 20,
+                                fontWeight: FontWeight.w900)),
                       )
                     ],
                   ),
@@ -677,25 +300,25 @@ class _BookingScreenState extends State<BookingScreen> {
                               .textTheme
                               .bodyText2!
                               .copyWith(
-                                  color: AppTheme.darkColor,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w900)),
+                              color: AppTheme.darkColor,
+                              fontSize: 16,
+                              fontWeight: FontWeight.w900)),
                       Text('XX',
                           style: Theme.of(context)
                               .textTheme
                               .bodyText2!
                               .copyWith(
-                                  color: AppTheme.darkColor,
-                                  fontSize: 32,
-                                  fontWeight: FontWeight.w900)),
+                              color: AppTheme.darkColor,
+                              fontSize: 32,
+                              fontWeight: FontWeight.w900)),
                       Text('Mois',
                           style: Theme.of(context)
                               .textTheme
                               .bodyText2!
                               .copyWith(
-                                  color: AppTheme.darkColor,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w900)),
+                              color: AppTheme.darkColor,
+                              fontSize: 16,
+                              fontWeight: FontWeight.w900)),
                       Container(
                         padding: const EdgeInsets.symmetric(
                             vertical: 4, horizontal: 16),
@@ -708,9 +331,9 @@ class _BookingScreenState extends State<BookingScreen> {
                                 .textTheme
                                 .bodyText2!
                                 .copyWith(
-                                    color: AppTheme.backgroundColor,
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.w900)),
+                                color: AppTheme.backgroundColor,
+                                fontSize: 20,
+                                fontWeight: FontWeight.w900)),
                       )
                     ],
                   ),
@@ -723,56 +346,7 @@ class _BookingScreenState extends State<BookingScreen> {
     );
   }
 
-  Widget _createListMenu(context, String menuTitle, page, IconData icon) {
-    return GestureDetector(
-      behavior: HitTestBehavior.translucent,
-      onTap: () {
-        Get.to(() => page);
-      },
-      child: Container(
-        margin: const EdgeInsets.fromLTRB(0, 18, 0, 8),
-        child: Center(
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              ElevatedButton(
-                  style: ButtonStyle(
-                    backgroundColor: MaterialStateProperty.resolveWith<Color>(
-                      (Set<MaterialState> states) =>
-                          states.contains(MaterialState.disabled)
-                              ? AppTheme.primaryColor
-                              : AppTheme.darkColor,
-                    ),
-                    overlayColor: MaterialStateProperty.all(Colors.transparent),
-                    shape: MaterialStateProperty.all(RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20.0),
-                    )),
-                  ),
-                  onPressed: () {},
-                  child: SizedBox(
-                    width: Get.width / 1.5,
-                    height: 50,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(menuTitle,
-                            style: TextStyle(
-                                fontSize: 15, color: AppTheme.backgroundColor)),
-                        Icon(icon,
-                            color: AppTheme.backgroundColor.withOpacity(0.9)),
-                      ],
-                    ),
-                  ))
-
-              // Icon(Icons.chevron_right, size: 20, color: AppTheme.secondaryColor),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
-  List<Widget> _buildBody(context) {
+  List<Widget> _buildBody() {
     return [
       Container(
         width: Get.width / 22,
@@ -812,14 +386,40 @@ class _BookingScreenState extends State<BookingScreen> {
               ],
             ),
             Divider(
-              height: Get.height / 12,
+              height: Get.height / 22,
               color: AppTheme.darkColor,
             ),
-            _buildSection1(context),
+
           ],
         ),
       )
     ];
+  }
+
+  Widget _buildBodyButtons() {
+    return Container(
+      height: 48,
+      margin: const EdgeInsets.symmetric(vertical: 8),
+      decoration: const BoxDecoration(
+        borderRadius: const BorderRadius.all(Radius.circular(29)),
+        color: Colors.transparent,
+      ),
+      child: InkWell(
+        borderRadius: const BorderRadius.all(Radius.circular(29)),
+        // splashColor: const Color(0xFFEEEEEE),
+        onTap: () => Get.back(),
+        child: Center(
+          child: Text(
+            'Annuler la demande'.toUpperCase(),
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: 18,
+              color: AppTheme.redColor,
+            ),
+          ),
+        ),
+      ),
+    );
   }
 
   Widget _buildSection1(BuildContext context) {
@@ -876,9 +476,9 @@ class _BookingScreenState extends State<BookingScreen> {
                               .textTheme
                               .bodyText2!
                               .copyWith(
-                                  color: AppTheme.darkColor,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w500),
+                              color: AppTheme.darkColor,
+                              fontSize: 16,
+                              fontWeight: FontWeight.w500),
                           textAlign: TextAlign.left,
                         ),
                         const SizedBox(
@@ -894,12 +494,12 @@ class _BookingScreenState extends State<BookingScreen> {
                               .textTheme
                               .bodyText2!
                               .copyWith(
-                                  color: AppTheme.darkColor,
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.w500),
+                              color: AppTheme.darkColor,
+                              fontSize: 18,
+                              fontWeight: FontWeight.w500),
                           dropdownDecoration: BoxDecoration(
                               borderRadius:
-                                  const BorderRadius.all(Radius.circular(30)),
+                              const BorderRadius.all(Radius.circular(30)),
                               color: AppTheme.light,
                               border: Border.all(
                                   color: AppTheme.darkColor, width: 2)),
@@ -907,7 +507,7 @@ class _BookingScreenState extends State<BookingScreen> {
                           ///Disabled Dropdown box decoration to style your dropdown selector [OPTIONAL PARAMETER]  (USE with disabled dropdownDecoration)
                           disabledDropdownDecoration: BoxDecoration(
                               borderRadius:
-                                  const BorderRadius.all(Radius.circular(30)),
+                              const BorderRadius.all(Radius.circular(30)),
                               color: Colors.grey.shade300,
                               border: Border.all(
                                   color: AppTheme.darkColor.withOpacity(0.4), width: 1)),
@@ -915,9 +515,9 @@ class _BookingScreenState extends State<BookingScreen> {
                               .textTheme
                               .bodyText2!
                               .copyWith(
-                                  color: AppTheme.backgroundColor,
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w500),
+                              color: AppTheme.backgroundColor,
+                              fontSize: 14,
+                              fontWeight: FontWeight.w500),
                           onCountryChanged: (value) {
                             setState(() {
                               obtainingCountryController = value;
@@ -941,9 +541,9 @@ class _BookingScreenState extends State<BookingScreen> {
                                 .textTheme
                                 .bodyText2!
                                 .copyWith(
-                                    color: AppTheme.darkColor,
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w500)),
+                                color: AppTheme.darkColor,
+                                fontSize: 16,
+                                fontWeight: FontWeight.w500)),
                         SizedBox(
                           height: 10,
                         ),
@@ -971,9 +571,9 @@ class _BookingScreenState extends State<BookingScreen> {
                               .textTheme
                               .bodyText2!
                               .copyWith(
-                                  color: AppTheme.darkColor,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w500),
+                              color: AppTheme.darkColor,
+                              fontSize: 16,
+                              fontWeight: FontWeight.w500),
                           textAlign: TextAlign.left,
                         ),
                         const SizedBox(
@@ -1134,18 +734,18 @@ class _BookingScreenState extends State<BookingScreen> {
                 children: [
                   Text('Durée de la location',
                       style: Theme.of(context).textTheme.bodyText2!.copyWith(
-                            fontWeight: FontWeight.w500,
-                            fontSize: 14,
-                            color: AppTheme.darkColor,
-                            overflow: TextOverflow.ellipsis,
-                          )),
+                        fontWeight: FontWeight.w500,
+                        fontSize: 14,
+                        color: AppTheme.darkColor,
+                        overflow: TextOverflow.ellipsis,
+                      )),
                   Text('1 jour',
                       style: Theme.of(context).textTheme.bodyText2!.copyWith(
-                            fontWeight: FontWeight.w900,
-                            fontSize: 18,
-                            color: AppTheme.darkColor,
-                            overflow: TextOverflow.ellipsis,
-                          )),
+                        fontWeight: FontWeight.w900,
+                        fontSize: 18,
+                        color: AppTheme.darkColor,
+                        overflow: TextOverflow.ellipsis,
+                      )),
                 ],
               ),
             ),
@@ -1168,11 +768,11 @@ class _BookingScreenState extends State<BookingScreen> {
                       )),
                   Text('200 Km',
                       style: Theme.of(context).textTheme.bodyText2!.copyWith(
-                            fontWeight: FontWeight.w900,
-                            fontSize: 18,
-                            color: AppTheme.darkColor,
-                            overflow: TextOverflow.ellipsis,
-                          )),
+                        fontWeight: FontWeight.w900,
+                        fontSize: 18,
+                        color: AppTheme.darkColor,
+                        overflow: TextOverflow.ellipsis,
+                      )),
                 ],
               ),
             ),

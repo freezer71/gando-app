@@ -380,21 +380,26 @@ class _CarDetailPageState extends State<CarDetailPage> {
             borderRadius: BorderRadius.all(Radius.circular(10)),
             color: AppTheme.backgroundColor,
           ),
-          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 12),
-          child: Column(
+          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+          margin: EdgeInsets.only(bottom: 10),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(featuresList[index]['name'],
-                  style: Theme.of(context).textTheme.bodyText2!.copyWith(
-                      color: AppTheme.darkColor,
-                      fontSize: 8,
-                      fontWeight: FontWeight.w900)),
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 4.0),
-                child: _buildLine(),
+              Row(
+                children: [
+                  Icon(featuresList[index]['icon'], color: AppTheme.darkColor.withOpacity(0.3),),
+                  SizedBox(width: 8,),
+                  Text(featuresList[index]['name'],
+                      style: Theme.of(context).textTheme.bodyText2!.copyWith(
+                          color: AppTheme.darkColor,
+                          fontSize: 12,
+                          fontWeight: FontWeight.w900)),
+                ],
               ),
+
               Text(featuresList[index]['value'], style: Theme.of(context).textTheme.bodyText2!.copyWith(
-                  color: AppTheme.primaryColor,
-                  fontSize: 13,
+                  color: AppTheme.redColor,
+                  fontSize: 16,
                   overflow: TextOverflow.ellipsis,
                   fontWeight: FontWeight.w900))
             ],
@@ -408,18 +413,18 @@ class _CarDetailPageState extends State<CarDetailPage> {
               fontSize: 20,
               fontWeight: FontWeight.w900)),
       const SizedBox(height: 22),
-      GridView.builder(
+      ListView.builder(
         padding: EdgeInsets.zero,
         key: Get.keys[3],
         shrinkWrap: true,
         physics: const NeverScrollableScrollPhysics(),
         itemCount: featuresList.length,
-        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 3,
-            mainAxisSpacing: 10,
-            crossAxisSpacing: 5,
-            childAspectRatio: 1.7
-        ),
+        // : const SliverGridDelegateWithFixedCrossAxisCount(
+        //     crossAxisCount: 3,
+        //     mainAxisSpacing: 10,
+        //     crossAxisSpacing: 5,
+        //     childAspectRatio: 1.7
+        // ),
         itemBuilder: (context, index) => buildBox(index),
       ),
     ];

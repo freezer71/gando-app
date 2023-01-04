@@ -84,6 +84,7 @@ class _BottomNavigationBarPage extends State<BottomNavigationBarPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       extendBody: true,
+      extendBodyBehindAppBar: true,
       // backgroundColor: HexColor(AppTheme.secondaryColorString!).withOpacity(0.4),
       body: GetX<TabScreenController>(
         init: tabController,
@@ -96,18 +97,18 @@ class _BottomNavigationBarPage extends State<BottomNavigationBarPage> {
             : const MyGandoScreen(),
       ),
       bottomNavigationBar: SnakeNavigationBar.color(
-        height: 65,
+        height: 80,
         behaviour: snakeBarStyle,
         snakeShape: snakeShape,
         shape: bottomBarShape,
         padding: padding,
-        backgroundColor: Colors.white.withOpacity(0.9),
+        backgroundColor: AppTheme.light,
         snakeViewColor: selectedColor.withOpacity(0.9),
         selectedItemColor: snakeShape == SnakeShape.indicator ? selectedColor : null,
         unselectedItemColor: unselectedColor,
         showUnselectedLabels: showUnselectedLabels,
         showSelectedLabels: showSelectedLabels,
-        elevation: 16,
+        elevation: 0,
         currentIndex: tabController.pageIndex.value,
         onTap: (index) => setState(() => tabController.pageIndex.value = index),
         items:  [
