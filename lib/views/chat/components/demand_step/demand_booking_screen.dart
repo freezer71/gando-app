@@ -67,8 +67,8 @@ class _DemandBookingScreenState extends State<DemandBookingScreen> {
             color: AppTheme.darkColor,
           ),
         ),
-        actions: const [
-          Padding(
+        actions: [
+          const Padding(
             padding: EdgeInsets.only(right: 18.0),
             child: SizedBox(
               height: 40,
@@ -76,6 +76,21 @@ class _DemandBookingScreenState extends State<DemandBookingScreen> {
               child: CircleAvatar(
                 backgroundImage: AssetImage('assets/images/av.png'),
               ),
+            ),
+          ),
+          InkWell(
+            onTap: (){
+              Get.bottomSheet(_buildBottomSheet(car));
+            },
+            child: Container(
+              width: 30,
+              height: 5,
+              margin: const EdgeInsets.only(top: 8, bottom: 8, right: 18),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(8),
+                color: AppTheme.light.withOpacity(0.4)
+              ),
+              child: Center(child: Icon(Icons.more_vert_outlined, color: AppTheme.darkColor,)),
             ),
           ),
         ],
@@ -143,6 +158,101 @@ class _DemandBookingScreenState extends State<DemandBookingScreen> {
             ),
           ),
           _buildFloatBar(),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildBottomSheet(Car car) {
+    return Container(
+      width: Get.width,
+      height: 400,
+      padding: EdgeInsets.symmetric(vertical: 20, horizontal: 20),
+      decoration: BoxDecoration(
+        color:  AppTheme.backgroundColor,
+        borderRadius: BorderRadius.only(topLeft: Radius.circular(16), topRight: Radius.circular(16)),
+      ),
+      child: Stack(
+        children: [
+          Container(
+            child: Column(
+              children: [
+                Container(
+                  padding: EdgeInsets.all(22),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      Icon(Icons.phone_enabled_rounded, color: AppTheme.darkColor.withOpacity(0.7),),
+                      Text("Voir le numéro", style: Theme.of(context).textTheme.bodyText2!.copyWith(
+                        fontWeight: FontWeight.w400,
+                        fontSize: 16,
+                        color: AppTheme.darkColor,
+                        overflow: TextOverflow.ellipsis,
+                      )),
+                    ],
+                  ),
+                ),
+                Divider( color: AppTheme.darkColor.withOpacity(0.3),),
+                Container(
+                  padding: EdgeInsets.all(22),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      Icon(Icons.message, color: AppTheme.darkColor.withOpacity(0.7),),
+                      Text("Envoyer un message", style: Theme.of(context).textTheme.bodyText2!.copyWith(
+                        fontWeight: FontWeight.w400,
+                        fontSize: 16,
+                        color: AppTheme.darkColor,
+                        overflow: TextOverflow.ellipsis,
+                      )),
+                    ],
+                  ),
+                ),
+                Divider( color: AppTheme.darkColor.withOpacity(0.3),),
+                Container(
+                  padding: EdgeInsets.all(22),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      Icon(Icons.share, color: AppTheme.darkColor.withOpacity(0.7),),
+                      Text("Partager le profile", style: Theme.of(context).textTheme.bodyText2!.copyWith(
+                        fontWeight: FontWeight.w400,
+                        fontSize: 16,
+                        color: AppTheme.darkColor,
+                        overflow: TextOverflow.ellipsis,
+                      )),
+                    ],
+                  ),
+                ),
+                Divider( color: AppTheme.darkColor.withOpacity(0.3),),
+                Container(
+                  padding: EdgeInsets.all(22),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      Icon(Icons.flag, color: AppTheme.darkColor.withOpacity(0.7),),
+                      Text("Signaler le profil", style: Theme.of(context).textTheme.bodyText2!.copyWith(
+                        fontWeight: FontWeight.w400,
+                        fontSize: 16,
+                        color: AppTheme.darkColor,
+                        overflow: TextOverflow.ellipsis,
+                      )),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+          Positioned(
+              top: -15,
+              right: -15,
+              child: IconButton(onPressed: (){
+                Get.back();
+              }, icon: Icon(Icons.close, color: AppTheme.darkColor,),))
         ],
       ),
     );

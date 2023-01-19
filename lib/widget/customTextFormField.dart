@@ -65,7 +65,8 @@ class CustomTextFormField extends StatelessWidget {
       decoration: InputDecoration(
         filled: true,
         fillColor: AppTheme.light,
-        suffixIcon: suffixIcon,
+        // suffixIcon: suffixIcon,/**/
+        suffix: suffixIcon,
         prefixIconColor: AppTheme.backgroundColor,
         prefixIcon: prefixIcon,
         enabled: enabled,

@@ -156,7 +156,7 @@ class NotificationScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildCheckbox(c) =>
+  Widget _buildCheckbox(controller) =>
       Checkbox(
           fillColor: MaterialStateProperty.resolveWith<Color>(
                 (Set<MaterialState> states) =>
@@ -165,8 +165,9 @@ class NotificationScreen extends StatelessWidget {
                 : AppTheme.primaryColor,
           ),
           checkColor: AppTheme.secondaryColor,
-          value: c,
+          value: controller,
           onChanged: (value) {
-            c = !c;
+            controller = !controller;
+            // printInfo(info: '${c.locationApp.value}');
           });
 }

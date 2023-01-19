@@ -31,9 +31,25 @@ class AccountSettingController extends GetxController{
   final RxBool paymentApp = true.obs;
   final RxBool paymentEmail = false.obs;
 
+  final RxBool gender = false.obs;
+  RxBool gearboxValue = false.obs;
+
+  RxString country = 'Pays'.obs;
+
 
   //edit profil
   Rx<TextEditingController> nameController = TextEditingController().obs;
   Rx<TextEditingController> firstnameController = TextEditingController().obs;
 
+  // detail contact screen
+  Rx<TextEditingController> phoneNumber = TextEditingController().obs;
+  Rx<TextEditingController> postalCodeController = TextEditingController().obs;
+  Rx<TextEditingController> cityController = TextEditingController().obs;
+
+
+  //social pages screen
+  Rx<TextEditingController> socialFacebook = TextEditingController().obs;
+  Rx<TextEditingController> socialInstagram = TextEditingController().obs;
+  Rx<TextEditingController> socialTwitter = TextEditingController().obs;
+  Rx<TextEditingController> socialLinkedin = TextEditingController().obs;
 }

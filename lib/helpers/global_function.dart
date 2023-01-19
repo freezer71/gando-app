@@ -12,6 +12,7 @@ import 'package:lottie/lottie.dart';
 import 'package:pinput/pinput.dart';
 
 import '../config/textstyle.dart';
+import '../generated/assets.dart';
 
 class GlobalFunction {
   final box = GetStorage();
@@ -59,6 +60,8 @@ class GlobalFunction {
     SmartDialog.dismiss();
   }
 
+  final lottieFile = LottieBuilder.asset(Assets.lotties77365LocationLottieAnimation, width: 10, height: 10);
+
   final defaultPinTheme = PinTheme(
     width: 66,
     height: 66,
@@ -69,7 +72,7 @@ class GlobalFunction {
     decoration: BoxDecoration(
       color: AppTheme.secondaryColor.withOpacity(0.7),
       border: Border.all( color: AppTheme.primaryColor, width: 2.0),
-      borderRadius: BorderRadius.circular(16),
+      borderRadius: BorderRadius.circular(30),
     ),
   );
 

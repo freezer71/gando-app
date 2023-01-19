@@ -13,7 +13,7 @@ class ContractController extends GetxController{
   final grayCard = false.obs;
   final RxDouble carState = 40.0.obs;
   final selectedCarState = ''.obs;
-  final annotationValue = '40'.obs;
+  final annotationValue = '100'.obs;
 
   final Rx<SignatureController> signature1 = SignatureController(
     penStrokeWidth: 3.0,

@@ -10,4 +10,6 @@ class TabScreenController extends GetxController{
   customInit() {
     pageIndex.value = 0;
   }
+
+
 }

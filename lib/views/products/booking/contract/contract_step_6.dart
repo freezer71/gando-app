@@ -280,7 +280,7 @@ class ContractStep6 extends StatelessWidget {
               // splashColor: const Color(0xFFEEEEEE),
               onTap: () {
                 //open bottom sheet
-                Get.to(() => ContractStep7());
+                Get.off(() => ContractStep7());
               },
               child: Center(
                 child: Text(

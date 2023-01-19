@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gando/config/textstyle.dart';
 import 'package:gando/generated/assets.dart';
+import 'package:gando/views/bottom_navigation_bar.dart';
 import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
 
@@ -61,7 +62,7 @@ class SuccessBookingScreen extends StatelessWidget {
             children: [
               GestureDetector(
                 onTap: () {
-                  Get.to(()=> const ContractStep1());
+                  Get.offAll(()=> const BottomNavigationBarPage());
                 },
                 child: Container(
                   decoration: BoxDecoration(

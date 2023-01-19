@@ -98,27 +98,24 @@ class ContractStep4 extends StatelessWidget {
                   ),
                 ),
               ),
-              CustomDropdownButton2(
-                hint: 'Selectionner Kilometrage',
-                // dropdownPadding: const EdgeInsets.symmetric(horizontal: 10),
-                dropdownDecoration: BoxDecoration(
-                  color: AppTheme.darkColor,
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                dropdownWidth: Get.width - 40,
-                buttonWidth: Get.width,
-                buttonHeight: 60,
-                buttonDecoration: BoxDecoration(
-                    color: AppTheme.darkColor.withOpacity(0.8),
-                    borderRadius: BorderRadius.circular(30)),
-                dropdownItems: c.itemsKilometer,
-                value: c.selectedKilometer.value.isNotEmpty
-                    ? c.selectedKilometer.value
-                    : null,
-                // value: selectedEquipment,
-                onChanged: (value) {
-                  c.selectedKilometer.value = value!;
+              CustomTextFormField(
+                controller: c.idController.value,
+                keyboardType: TextInputType.number,
+                autofocus: false,
+                validator: (v) { return null;  },
+                onChanged: (v) {
+                  c.selectedKilometer.value = v!;
                 },
+                suffixIcon: Text('Km', style: Theme
+                    .of(context)
+                    .textTheme
+                    .bodyText2!
+                    .copyWith(
+                  color: AppTheme.darkColor,
+                  fontSize: 16,
+                  fontWeight: FontWeight.w700,
+                )),
+                onSaved: (v) {  }, hintText: 'Kilometrage', formatter: [],
               ),
             ],
           ),

@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "260961065510",
+    "project_id": "gando-app",
+    "storage_bucket": "gando-app.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:260961065510:android:ce83c6ba7e3e185ae024e7",
+        "android_client_info": {
+          "package_name": "com.gando.rentcar.app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "260961065510-tu3aid6mt3caa0fvudf6e8ncqug86ji6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCFxDOU_vbVlgshwo1nVowz0Sd_ZsVSoU0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "260961065510-tu3aid6mt3caa0fvudf6e8ncqug86ji6.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

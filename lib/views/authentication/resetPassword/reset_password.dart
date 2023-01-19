@@ -97,27 +97,23 @@ class ResetRecoveryOtpScreen extends StatelessWidget {
       style: ButtonStyle(
         backgroundColor:
         MaterialStateProperty.resolveWith<Color>(
-              (Set<MaterialState> states) =>
-          states.contains(MaterialState.disabled)
-              ? AppTheme.primaryColor
-              : AppTheme.secondaryColor,
+              (Set<MaterialState> states) => AppTheme.primaryColor
         ),
         overlayColor:
         MaterialStateProperty.all(Colors.transparent),
         shape: MaterialStateProperty.all(
             RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(10.0),
+              borderRadius: BorderRadius.circular(30.0),
             )),
       ),
       child: Container(
-        height: 40,
         width: Get.width / 1.3,
         padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 10),
         child: Center(
           child: Text('Confirmer', style: Theme.of(context).textTheme.bodyText2!.copyWith(
             fontWeight: FontWeight.w900,
             fontSize: 16,
-            color: AppTheme.primaryColor,
+            color: AppTheme.light,
           ),),
         ),
       ),
@@ -145,7 +141,7 @@ class ResetRecoveryOtpScreen extends StatelessWidget {
                   color: AppTheme.secondaryColor,
                   border: Border.all(color: const Color.fromRGBO(
                       180, 25, 25, 1.0)),
-                  borderRadius: BorderRadius.circular(16)
+                  borderRadius: BorderRadius.circular(30)
               )
           ),
           enabled: true,

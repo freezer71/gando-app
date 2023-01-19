@@ -60,15 +60,15 @@ class AppPages {
       name: Routes.home,
       page: () => const BottomNavigationBarPage(),
       // binding: HomeViewBinding(),
-      // middlewares: [
-      //   // My middlewares here
-      //   // IsFirstGuard(),
-      //   AuthGuard(),
-      // ],
+      /*middlewares: [
+        // My middlewares here
+        // IsFirstGuard(),
+        AuthGuard(),
+      ],*/
     ),
     GetPage(
       name: Routes.signIn,
-      page: () => const SignInScreen(),
+      page: () => SignInScreen(),
       // middlewares: [
       //   // My middlewares here
       //   IsFirstGuard(),

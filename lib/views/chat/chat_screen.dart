@@ -99,7 +99,7 @@ class _ChatScreenState extends State<ChatScreen> with SingleTickerProviderStateM
                           ),
                           child: Text('2', style: Theme.of(context).textTheme.bodyText2!.copyWith(
                               color: AppTheme.light,
-                              fontSize: 14,
+                              fontSize: 13,
                               fontWeight: FontWeight.w900), textAlign: TextAlign.center,),
                         ) : Container()
                       ],

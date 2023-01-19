@@ -37,6 +37,7 @@ class Step4State extends State<Step4> {
             padding: EdgeInsets.zero,
             child: ListView(
               scrollDirection: Axis.vertical,
+              padding: EdgeInsets.zero,
               physics: const NeverScrollableScrollPhysics(),
               controller: controller,
               children: [

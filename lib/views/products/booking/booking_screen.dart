@@ -824,7 +824,7 @@ class _BookingScreenState extends State<BookingScreen> {
 
   Widget _buildSection1(BuildContext context) {
     return SizedBox(
-      height: Get.height / 0.93,
+      height: Get.height / 0.90,
       child: Column(
         children: [
           SizedBox(
@@ -838,7 +838,7 @@ class _BookingScreenState extends State<BookingScreen> {
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
                       Container(
-                        width: 180,
+                        width: Get.width /2.3,
                         child: CustomTextFormField(
                           controller: etNameController,
                           keyboardType: TextInputType.text,
@@ -850,7 +850,7 @@ class _BookingScreenState extends State<BookingScreen> {
                         ),
                       ),
                       Container(
-                        width: 180,
+                        width: Get.width /2.3,
                         child: CustomTextFormField(
                           controller: etLastNameController,
                           keyboardType: TextInputType.text,
@@ -1105,7 +1105,7 @@ class _BookingScreenState extends State<BookingScreen> {
         height: Get.height / 2.2,
         margin: const EdgeInsets.symmetric(vertical: 10),
         decoration: BoxDecoration(
-          borderRadius: const BorderRadius.all(Radius.circular(29)),
+          borderRadius: const BorderRadius.all(Radius.circular(30)),
           color: AppTheme.backgroundColor,
           boxShadow: [
             BoxShadow(
@@ -1115,7 +1115,6 @@ class _BookingScreenState extends State<BookingScreen> {
             ),
           ],
         ),
-
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
         child: Column(
           children: [

@@ -20,9 +20,9 @@ class MyGandoScreen extends StatelessWidget {
         centerTitle: true,
         automaticallyImplyLeading: false,
         elevation: 0,
-        leading: IconButton(onPressed: (){
-          Get.back();
-        }, icon: Icon(Icons.arrow_back_ios_outlined, color: AppTheme.darkColor,),),
+        // leading: IconButton(onPressed: (){
+        //   Get.back();
+        // }, icon: Icon(Icons.arrow_back_ios_outlined, color: AppTheme.darkColor,),),
         title: Text(
           'Mon Gando',
           style: Theme.of(context).textTheme.bodyText2!.copyWith(

@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:gando/config/textstyle.dart';
 import 'package:gando/controllers/contract_controller/contract_controller.dart';
+import 'package:gando/controllers/home/tabs/tab_controller.dart';
 import 'package:gando/views/bottom_navigation_bar.dart';
 import 'package:gando/views/home/home.dart';
+import 'package:gando/views/products/booking/success_booking_screen.dart';
 import 'package:get/get.dart';
+import 'package:provider/provider.dart';
 import 'package:signature/signature.dart';
 
 class ContractStep7 extends StatelessWidget {
@@ -21,7 +24,7 @@ class ContractStep7 extends StatelessWidget {
         elevation: 0,
         backgroundColor: AppTheme.backgroundColor,
         automaticallyImplyLeading: false,
-        title: _buildBodyButtons(),
+        title: _buildBodyButtons(context),
         centerTitle: true,
       ),
       body: Container(
@@ -34,21 +37,19 @@ class ContractStep7 extends StatelessWidget {
                 padding: EdgeInsets.symmetric(vertical: 20),
                 child: Text(
                   'Signatures',
-                  style: Theme
-                      .of(context)
-                      .textTheme
-                      .bodyText2!
-                      .copyWith(
-                    color: AppTheme.darkColor,
-                    fontSize: 22,
-                    fontWeight: FontWeight.w900,
-                  ),
+                  style: Theme.of(context).textTheme.bodyText2!.copyWith(
+                        color: AppTheme.darkColor,
+                        fontSize: 22,
+                        fontWeight: FontWeight.w900,
+                      ),
                   textAlign: TextAlign.center,
                 ),
               ),
             ),
-            Divider(height: 10, color: AppTheme.darkColor,),
-
+            Divider(
+              height: 10,
+              color: AppTheme.darkColor,
+            ),
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.start,
@@ -57,21 +58,21 @@ class ContractStep7 extends StatelessWidget {
                   width: Get.width,
                   child: Text(
                     'En signant, vous acceptez que les informations que vous nous aviez citées dans le contrat sont exactes.',
-                    style: Theme
-                        .of(context)
-                        .textTheme
-                        .bodyText2!
-                        .copyWith(
-                      color: AppTheme.darkColor,
-                      fontSize: 12,
-                      fontWeight: FontWeight.w400,
-                    ),
+                    style: Theme.of(context).textTheme.bodyText2!.copyWith(
+                          color: AppTheme.darkColor,
+                          fontSize: 12,
+                          fontWeight: FontWeight.w400,
+                        ),
                     textAlign: TextAlign.left,
                   ),
                 ),
-                const SizedBox(height: 20,),
+                const SizedBox(
+                  height: 20,
+                ),
                 _buildBody(),
-                const SizedBox(height: 80,),
+                const SizedBox(
+                  height: 80,
+                ),
               ],
             ),
           ],
@@ -80,7 +81,7 @@ class ContractStep7 extends StatelessWidget {
     );
   }
 
-  Widget _buildBodyButtons() {
+  Widget _buildBodyButtons(BuildContext context) {
     return Container(
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -113,7 +114,11 @@ class ContractStep7 extends StatelessWidget {
               // splashColor: const Color(0xFFEEEEEE),
               onTap: () {
                 //open bottom sheet
-                Get.to(() => const BottomNavigationBarPage());
+                WidgetsBinding.instance.addPostFrameCallback((t) {
+                  // Provider.of<TabScreenController>(context, listen: false)
+                  //     .dispose();
+                Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => const SuccessBookingScreen()), (route) => true);
+                });
               },
               child: Center(
                 child: Text(
@@ -141,15 +146,11 @@ class ContractStep7 extends StatelessWidget {
           children: [
             Text(
               'Signature du propriétaire',
-              style: Theme
-                  .of(Get.context!)
-                  .textTheme
-                  .bodyText2!
-                  .copyWith(
-                color: AppTheme.darkColor,
-                fontSize: 18,
-                fontWeight: FontWeight.w900,
-              ),
+              style: Theme.of(Get.context!).textTheme.bodyText2!.copyWith(
+                    color: AppTheme.darkColor,
+                    fontSize: 18,
+                    fontWeight: FontWeight.w900,
+                  ),
               textAlign: TextAlign.left,
             ),
             Container(
@@ -164,16 +165,12 @@ class ContractStep7 extends StatelessWidget {
             ),
             Text(
               'Signature du propriétaire',
-              style: Theme
-                  .of(Get.context!)
-                  .textTheme
-                  .bodyText2!
-                  .copyWith(
-                color: AppTheme.darkColor,
-                fontSize: 18,
-                fontWeight: FontWeight.w900,
-              ),
-              textAlign: TextAlign.left ,
+              style: Theme.of(Get.context!).textTheme.bodyText2!.copyWith(
+                    color: AppTheme.darkColor,
+                    fontSize: 18,
+                    fontWeight: FontWeight.w900,
+                  ),
+              textAlign: TextAlign.left,
             ),
             Container(
               padding: EdgeInsets.symmetric(vertical: 20),

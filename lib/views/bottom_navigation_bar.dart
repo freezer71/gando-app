@@ -27,14 +27,15 @@ class _BottomNavigationBarPage extends State<BottomNavigationBarPage> {
 
   @override
   void initState() {
-    super.initState();
     tabController.customInit();
     controller = ScrollController();
+    super.initState();
   }
 
   @override
   void dispose() {
     controller.dispose();
+    // tabController.dispose();
     super.dispose();
   }
 
@@ -86,7 +87,7 @@ class _BottomNavigationBarPage extends State<BottomNavigationBarPage> {
       extendBody: true,
       extendBodyBehindAppBar: true,
       // backgroundColor: HexColor(AppTheme.secondaryColorString!).withOpacity(0.4),
-      body: GetX<TabScreenController>(
+      body: GetBuilder<TabScreenController>(
         init: tabController,
         builder: (tabController) => tabController.pageIndex.value == 0
             ? HomeScreen()
@@ -114,7 +115,25 @@ class _BottomNavigationBarPage extends State<BottomNavigationBarPage> {
         items:  [
           BottomNavigationBarItem(icon: Icon(Icons.home_filled , size: 30, color: tabController.pageIndex.value == 0 ? AppTheme.redColor : AppTheme.secondaryColor.withOpacity(0.6),)),
           BottomNavigationBarItem(icon: Icon(Icons.bookmark_outline_outlined, size: 30, color: tabController.pageIndex.value == 1 ? AppTheme.redColor : AppTheme.secondaryColor.withOpacity(0.6))),
-          BottomNavigationBarItem(icon: Icon(Icons.mail_outlined, size: 30, color: tabController.pageIndex.value == 2 ? AppTheme.redColor : AppTheme.secondaryColor.withOpacity(0.6))),
+          BottomNavigationBarItem(icon: Stack(
+            fit: StackFit.expand,
+            children: [
+              Icon(Icons.message, size: 30, color: tabController.pageIndex.value == 2 ? AppTheme.redColor : AppTheme.secondaryColor.withOpacity(0.6)),
+              Positioned(
+                top: 15,
+                right: 30,
+                child: Container(
+                  width: 10,
+                  height: 10,
+                  margin: const  EdgeInsets.only(left: 10),
+                  decoration: BoxDecoration(
+                      color: AppTheme.redColor,
+                      borderRadius: BorderRadius.circular(50)
+                  ),
+                ),
+              ),
+            ],
+          )),
           BottomNavigationBarItem(
               icon: Icon(Icons.settings, size: 25, color: tabController.pageIndex.value == 3 ? AppTheme.redColor : AppTheme.secondaryColor.withOpacity(0.6))),
         ],

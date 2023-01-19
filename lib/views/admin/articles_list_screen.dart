@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 import 'package:latlong2/latlong.dart';
 
 import '../../config/constants.dart';
+import '../../generated/assets.dart';
 import '../../models/car.dart';
 import '../../models/profile_seller.dart';
 import 'components/add_articles_stepper.dart';
@@ -21,7 +22,7 @@ class ArticleListScreen extends StatefulWidget {
 class _ArticleListScreenState extends State<ArticleListScreen> {
 
   final List listItems = [
-    {'image': 'assets/images/bentley.png'},
+    {'image': Assets.imagesImg8,},
     {'image': 'assets/images/cadillac.png'},
     {'image': 'assets/images/maserati.png'},
     {'image': 'assets/images/rolls_royce.png'},
@@ -124,39 +125,52 @@ class _ArticleListScreenState extends State<ArticleListScreen> {
                 },
                 background: buildSwipeActionLeft(),
                 secondaryBackground: buildSwipeActionRight(),
-                child: Card(
-                  color: AppTheme.darkColor,
-                  shape: RoundedRectangleBorder(
-                    side: const BorderSide(color: Colors.white70, width: 1),
-                    borderRadius: BorderRadius.circular(20),
+                child: Container(
+                  // color: AppTheme.darkColor,
+                  decoration: BoxDecoration(
+                    // shape: RoundedRectangleBorder(
+                    //   side: const BorderSide(color: Colors.white70, width: 1),
+                    //   borderRadius: BorderRadius.circular(20),
+                    // ),
+                    image: DecorationImage(
+                      repeat: ImageRepeat.noRepeat,
+                      alignment: Alignment.center,
+                      fit: BoxFit.cover,
+                      image:
+                      AssetImage(listItems[index]['image']),
+                    ),
+                    color: AppTheme.primaryColor,
+                    borderRadius: BorderRadius.circular(16),
                   ),
                   margin: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10),
                   child: SizedBox(
                     width: Get.width,
                     child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      mainAxisAlignment: MainAxisAlignment.end,
                       children: [
-                        SizedBox(
-                          width: Get.width / 22,
-                        ),
-                        Container(
-                          height: Get.height / 6,
-                          width: Get.width / 2,
-                          decoration: BoxDecoration(
-                            image: DecorationImage(
-                              repeat: ImageRepeat.noRepeat,
-                              alignment: Alignment.center,
-                              image:
-                              AssetImage(listItems[index]['image']),
-                            ),
-                            borderRadius: BorderRadius.circular(16),
-                          ),
-                        ),
+                        // SizedBox(
+                        //   width: Get.width / 22,
+                        // ),
+                        // Container(
+                        //   height: Get.height / 6,
+                        //   width: Get.width / 2,
+                        //   decoration: BoxDecoration(
+                        //     image: DecorationImage(
+                        //       repeat: ImageRepeat.noRepeat,
+                        //       alignment: Alignment.center,
+                        //       fit: BoxFit.contain,
+                        //       image:
+                        //       AssetImage(listItems[index]['image']),
+                        //     ),
+                        //     color: AppTheme.primaryColor,
+                        //     borderRadius: BorderRadius.circular(16),
+                        //   ),
+                        // ),
                         Container(
                           width: Get.width / 8,
                           height: Get.height / 6,
                           decoration: BoxDecoration(
-                              color: AppTheme.redColor,
+                              color: AppTheme.darkColor,
                               borderRadius: const BorderRadius.only(
                                   topRight: Radius.circular(20),
                                   bottomRight: Radius.circular(20))),

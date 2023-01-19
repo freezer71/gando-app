@@ -77,6 +77,7 @@ class Step2State extends State<Step2> {
           GridView.builder(
             key: Get.keys[2],
             shrinkWrap: true,
+            padding: EdgeInsets.zero,
             physics: const NeverScrollableScrollPhysics(),
             itemCount: c.imagesList.length,
             gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(

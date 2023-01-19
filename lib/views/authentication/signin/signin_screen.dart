@@ -3,11 +3,16 @@ import 'package:flutter/services.dart';
 import 'package:gando/config/textstyle.dart';
 import 'package:gando/navigation.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 
+import '../../../controllers/authController/signin_controller.dart';
 import '../../../widget/customTextFormField.dart';
 
 class SignInScreen extends StatelessWidget {
-  const SignInScreen({Key? key}) : super(key: key);
+  SignInScreen({Key? key}) : super(key: key);
+
+
+  final controller = Get.put(SignInController());
 
   @override
   Widget build(BuildContext context) {
@@ -163,7 +168,7 @@ class SignInScreen extends StatelessWidget {
       children: [
         CustomTextFormField(
           key: Get.keys[0],
-          controller: null,
+          controller: controller.emailController.value,
           keyboardType: TextInputType.emailAddress,
           enabled: true,
           validator: (value) {
@@ -208,11 +213,11 @@ class SignInScreen extends StatelessWidget {
         ),
         CustomTextFormField(
           key: Get.keys[1],
-          controller: null,
+          controller: controller.passwordController.value,
           keyboardType: TextInputType.emailAddress,
           enabled: true,
           validator: (value) {
-            if (!value!.isEmail) {
+            if (!value!.isPassport) {
               return "Mot de passe invalid";
               // return 'amount Is not valid';
             }

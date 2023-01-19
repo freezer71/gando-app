@@ -77,18 +77,18 @@ class DateFilterRange extends StatelessWidget {
                       children: [
                         Icon(Icons.calendar_month,
                             size: 25,
-                            color: AppTheme.secondaryColor.withOpacity(0.9)),
+                            color: AppTheme.darkColor.withOpacity(0.9)),
                         const SizedBox(
                           width: 10,
                         ),
                         Text(
-                          'Depart',
+                          'Départ',
                           style:
                               Theme.of(context).textTheme.bodyText2!.copyWith(
                                     fontWeight: FontWeight.w900,
                                     fontSize: 18,
                                     overflow: TextOverflow.ellipsis,
-                                    color: AppTheme.secondaryColor,
+                                    color: AppTheme.darkColor,
                                   ),
                         ),
                       ],
@@ -100,7 +100,7 @@ class DateFilterRange extends StatelessWidget {
                       children: [
                         Icon(Icons.calendar_month,
                             size: 25,
-                            color: AppTheme.secondaryColor.withOpacity(0.9)),
+                            color: AppTheme.darkColor.withOpacity(0.9)),
                         const SizedBox(
                           width: 10,
                         ),
@@ -111,7 +111,7 @@ class DateFilterRange extends StatelessWidget {
                                     fontWeight: FontWeight.w900,
                                     fontSize: 18,
                                     overflow: TextOverflow.ellipsis,
-                                    color: AppTheme.secondaryColor,
+                                    color: AppTheme.darkColor,
                                   ),
                         ),
                       ],
@@ -158,7 +158,7 @@ class DateFilterRange extends StatelessWidget {
                         const EdgeInsets.symmetric(
                             vertical: 12, horizontal: 80)),
                     backgroundColor: MaterialStateProperty.resolveWith<Color>(
-                      (Set<MaterialState> states) => AppTheme.secondaryColor,
+                      (Set<MaterialState> states) => AppTheme.darkColor,
                     ),
                     overlayColor: MaterialStateProperty.all(Colors.transparent),
                     shape: MaterialStateProperty.all(RoundedRectangleBorder(

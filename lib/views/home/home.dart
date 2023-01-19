@@ -3,9 +3,12 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_map_marker_cluster/flutter_map_marker_cluster.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flutter_svg/parser.dart';
 import 'package:gando/config/config.dart';
 import 'package:gando/config/constants.dart';
 import 'package:gando/config/textstyle.dart';
+import 'package:gando/helpers/global_function.dart';
 import 'package:gando/models/car.dart';
 import 'package:gando/views/home/components/home_card.dart';
 import 'package:gando/views/home/filters/big_filter_bottomsheet.dart';
@@ -14,7 +17,9 @@ import 'package:gando/views/products/available/available_car_screen.dart';
 import 'package:gando/views/products/detail/widget/car_detail_infomation.dart';
 import 'package:get/get.dart';
 import 'package:latlong2/latlong.dart';
+import 'package:lottie/lottie.dart' as LottieFiles;
 
+import '../../generated/assets.dart';
 import '../products/available/widget/car_list_item.dart';
 
 enum SingingCharacter { list, map }
@@ -65,16 +70,18 @@ class _HomeScreenState extends State<HomeScreen>
     super.initState();
     tabController = TabController(length: 2, vsync: this);
     _markers = _latLngList
-        .map((point) => Marker(
-      point: point,
-      width: 60,
-      height: 60,
-      builder: (context) => const Icon(
-        Icons.pin_drop,
-        size: 60,
-        color: Colors.blueAccent,
-      ),
-    )).toList();
+        .map((point) =>
+        Marker(
+          point: point,
+          width: 60,
+          height: 60,
+          builder: (context) =>
+          const Icon(
+            Icons.pin_drop,
+            size: 60,
+            color: Colors.blueAccent,
+          ),
+        )).toList();
   }
 
 
@@ -84,14 +91,16 @@ class _HomeScreenState extends State<HomeScreen>
   }
 
   @override
-  Widget build(BuildContext context) => DefaultTabController(
+  Widget build(BuildContext context) =>
+      DefaultTabController(
         length: 2,
         child: Scaffold(
           backgroundColor: AppTheme.backgroundColor,
           extendBody: true,
           extendBodyBehindAppBar: true,
           appBar: PreferredSize(
-            preferredSize: const Size.fromHeight(50.0), // here the desired height
+            preferredSize: const Size.fromHeight(50.0),
+            // here the desired height
             child: AppBar(
               backgroundColor: Colors.transparent,
               elevation: 0,
@@ -113,13 +122,14 @@ class _HomeScreenState extends State<HomeScreen>
                         ),
                         Text(
                           'Plan',
-                          style: Theme.of(context)
+                          style: Theme
+                              .of(context)
                               .textTheme
                               .bodyText2!
                               .copyWith(
-                                  fontWeight: FontWeight.w900,
-                                  fontSize: 18,
-                                  color: AppTheme.light),
+                              fontWeight: FontWeight.w900,
+                              fontSize: 18,
+                              color: AppTheme.light),
                         ),
                       ],
                     ),
@@ -137,13 +147,14 @@ class _HomeScreenState extends State<HomeScreen>
                         ),
                         Text(
                           'Liste',
-                          style: Theme.of(context)
+                          style: Theme
+                              .of(context)
                               .textTheme
                               .bodyText2!
                               .copyWith(
-                                  fontWeight: FontWeight.w900,
-                                  fontSize: 18,
-                                  color: AppTheme.light),
+                              fontWeight: FontWeight.w900,
+                              fontSize: 18,
+                              color: AppTheme.light),
                         ),
                       ],
                     ),
@@ -166,7 +177,12 @@ class _HomeScreenState extends State<HomeScreen>
             Container(
               foregroundDecoration: const BoxDecoration(
                 gradient: LinearGradient(
-                  colors: [Colors.black, Colors.transparent, Colors.transparent, Colors.black],
+                  colors: [
+                    Colors.black,
+                    Colors.transparent,
+                    Colors.transparent,
+                    Colors.black
+                  ],
                   begin: Alignment.topCenter,
                   end: Alignment.bottomCenter,
                   stops: [0.0032, 0.3, 0.85, 4],
@@ -175,8 +191,9 @@ class _HomeScreenState extends State<HomeScreen>
               child: FlutterMap(
                 mapController: _mapController,
                 options: MapOptions(
-                  zoom: 13.0,
-                  maxZoom: 18.0,
+                  zoom: 12,
+                  maxZoom: 16,
+                  minZoom: 3,
                   center: car.latLng,
                   // rotation: 180.0,
                   keepAlive: true,
@@ -190,18 +207,21 @@ class _HomeScreenState extends State<HomeScreen>
                 ),
                 children: [
                   TileLayer(
-                    urlTemplate: "https://api.mapbox.com/styles/v1/caviaros/clc1ppt3l000714p9rtrajii2/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1IjoiY2F2aWFyb3MiLCJhIjoiY2xjMW90MWx3MTFhajNwbXpmaXlreHI5diJ9.mPwJumFFjJCjq45E-17_QQ",
+                    urlTemplate: MAP_URL_DARK,
                     userAgentPackageName: 'com.gando.rentcar.app',
                     additionalOptions: const {
-                      'accessToken' : 'pk.eyJ1IjoiY2F2aWFyb3MiLCJhIjoiY2xjMW90MWx3MTFhajNwbXpmaXlreHI5diJ9.mPwJumFFjJCjq45E-17_QQ',
-                      'id' : 'mapbox.mapbox-streets-v8'
+                      'accessToken': TOKEN_MAP,
+                      'id': MAP_STYLE
                     },
-                    retinaMode: MediaQuery.of(context).devicePixelRatio > 1.0,
+                    retinaMode: MediaQuery
+                        .of(context)
+                        .devicePixelRatio > 1.0,
                     // tileBounds: LatLngBounds(
                     //   LatLng(32.2934590056236, 24.328924534719548),
                     //   LatLng(21.792152188247265, 37.19854583903912),
                     // ),
-                    errorImage: const NetworkImage('https://tile.openstreetmap.org/18/0/0.png'),
+                    errorImage: const NetworkImage(
+                        'https://tile.openstreetmap.org/18/0/0.png'),
                     // tileBuilder: (context, widget, tile) =>
                     //     Stack(
                     //       fit: StackFit.passthrough,
@@ -216,12 +236,13 @@ class _HomeScreenState extends State<HomeScreen>
                   ),
                   MarkerLayer(
                     markers: [
-                      ...List.generate(carList.length, (index) => Marker(
-                        point: carList[index].latLng!,
-                        width: 120,
-                        height: 120,
-                        builder: (context) => const Icon(Icons.location_history, color: Colors.deepOrange,),
-                      ),),
+                      ...List.generate(carList.length, (index) =>
+                          Marker(
+                            point: carList[index].latLng!,
+                            width: 50,
+                            height: 50,
+                            builder: (context) => GlobalFunction().lottieFile,
+                          ),),
                     ],
                   ),
                 ],
@@ -251,7 +272,8 @@ class _HomeScreenState extends State<HomeScreen>
                     scrollDirection: Axis.horizontal,
                     itemCount: carList.length,
                     itemBuilder: (context, index) {
-                      scrollController.position.context.axisDirection.index == 0;
+                      scrollController.position.context.axisDirection.index ==
+                          0;
                       return HomeCardCar(index);
                     },
                   ),
@@ -268,7 +290,12 @@ class _HomeScreenState extends State<HomeScreen>
               margin: const EdgeInsets.only(top: 0.0),
               foregroundDecoration: const BoxDecoration(
                 gradient: LinearGradient(
-                  colors: [Colors.black, Colors.transparent, Colors.transparent, Colors.black],
+                  colors: [
+                    Colors.black,
+                    Colors.transparent,
+                    Colors.transparent,
+                    Colors.black
+                  ],
                   begin: Alignment.topCenter,
                   end: Alignment.bottomCenter,
                   stops: [0.0032, 0.3, 2.0, 90],
@@ -289,128 +316,128 @@ class _HomeScreenState extends State<HomeScreen>
     );
   }
 
-  Widget buildAppBar() => DefaultTabController(
-      length: 2,
-      initialIndex: 0,
-      child: Positioned(
-          width: Get.width,
-          height: Get.height / 4.5,
-          child: Container(
-            padding: const EdgeInsets.only(top: 90, right: 0, left: 0),
-            decoration: const BoxDecoration(
-              color: Colors.transparent,
-              borderRadius: BorderRadius.only(
-                  bottomLeft: Radius.circular(20),
-                  bottomRight: Radius.circular(20)),
-              boxShadow: [
-                BoxShadow(
+  Widget buildAppBar() =>
+      DefaultTabController(
+          length: 2,
+          initialIndex: 0,
+          child: Positioned(
+              width: Get.width,
+              height: Get.height / 4.5,
+              child: Container(
+                padding: const EdgeInsets.only(top: 90, right: 0, left: 0),
+                decoration: const BoxDecoration(
                   color: Colors.transparent,
-                  offset:  Offset(0.0, 0.0),
-                  blurRadius: 10.0,
-                  spreadRadius: 5,
-                  blurStyle: BlurStyle.normal
+                  borderRadius: BorderRadius.only(
+                      bottomLeft: Radius.circular(20),
+                      bottomRight: Radius.circular(20)),
+                  boxShadow: [
+                    BoxShadow(
+                        color: Colors.transparent,
+                        offset: Offset(0.0, 0.0),
+                        blurRadius: 10.0,
+                        spreadRadius: 5,
+                        blurStyle: BlurStyle.normal
+                    ),
+                  ],
                 ),
-              ],
-            ),
-            child: SizedBox(
-              height: Get.height / 6,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  IconButton(
-                      padding: EdgeInsets.zero,
-                      // icon: _globalWidget.customNotifIcon(8, AppTheme.secondaryColor.withOpacity(0.5)),
-                      icon: Icon(Icons.dehaze,
-                          size: 30,
-                          color: AppTheme.light),
-                      onPressed: () {
-                        Get.bottomSheet(
-                            showFilterBottomSheet(context));
-                        // Navigator.push(context, MaterialPageRoute(builder: (context) => NotificationPage()));
-                      }),
-                  Container(
-                    width: Get.width / 1.52,
-                    height: 45,
-                    child: TextButton(
-                        style: ButtonStyle(
-                          padding: MaterialStateProperty.all(
-                              const EdgeInsets.symmetric(horizontal: 10)),
-                          backgroundColor:
-                              MaterialStateProperty.resolveWith<Color>(
-                            (Set<MaterialState> states) =>
-                                AppTheme.light,
-                          ),
-                          overlayColor:
-                              MaterialStateProperty.all(Colors.black),
-                          shape: MaterialStateProperty.all(
-                              RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(30.0),
-                          )),
-                        ),
-                        onPressed: () {
-                          // Navigator.push(
-                          //     context,
-                          //     MaterialPageRoute(
-                          //         builder: (context) => SearchPage()));
-                        },
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            SizedBox(
-                              width: Get.width / 2.3,
-                              child: Text(
-                                'Trouver une adresse',
-                                maxLines: 1,
-                                style: TextStyle(
-                                    color: Colors.grey[500],
-                                    fontSize: 14,
-                                    overflow: TextOverflow.ellipsis,
-                                    fontWeight: FontWeight.normal),
-                              ),
-                            ),
-                            InkWell(
-                              onTap: () {},
-                              child: Container(
-                                height: 45,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(50)
-                                ),
-                                child: Row(
-                                  children: [
-                                    const Icon(Icons.location_on_outlined, color: Colors.grey),
-                                    Text('10 Km', style:TextStyle(
-                                        color: Colors.grey[500],
-                                        fontSize: 12,
-                                        overflow: TextOverflow.ellipsis,
-                                        fontWeight: FontWeight.normal),),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ],
-                        )),
-                  ),
-                  Container(
-                      width: 50,
-                      height: 50,
-                      decoration: BoxDecoration(
-                        color: AppTheme.redColor,
-                        shape: BoxShape.circle,
-                      ),
-                      child: IconButton(
+                child: SizedBox(
+                  height: Get.height / 6,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      IconButton(
+                          padding: EdgeInsets.zero,
+                          // icon: _globalWidget.customNotifIcon(8, AppTheme.secondaryColor.withOpacity(0.5)),
+                          icon: SvgPicture.asset(Assets.svgVector, width: 30,),
                           onPressed: () {
                             Get.bottomSheet(
-                                showFilterDateBottomSheet(
-                                    context));
-                          },
-                          icon: Icon(Icons.calendar_month,
-                              size: 25,
-                              color: AppTheme.backgroundColor
-                                  .withOpacity(0.9))))
-                ],
-              ),
-            ),
-          )));
+                                showFilterBottomSheet(context));
+                            // Navigator.push(context, MaterialPageRoute(builder: (context) => NotificationPage()));
+                          }),
+                      Container(
+                        width: Get.width / 1.52,
+                        height: 45,
+                        child: TextButton(
+                            style: ButtonStyle(
+                              padding: MaterialStateProperty.all(
+                                  const EdgeInsets.symmetric(horizontal: 10)),
+                              backgroundColor:
+                              MaterialStateProperty.resolveWith<Color>(
+                                    (Set<MaterialState> states) =>
+                                AppTheme.light,
+                              ),
+                              overlayColor:
+                              MaterialStateProperty.all(Colors.black),
+                              shape: MaterialStateProperty.all(
+                                  RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(30.0),
+                                  )),
+                            ),
+                            onPressed: () {
+                              // Navigator.push(
+                              //     context,
+                              //     MaterialPageRoute(
+                              //         builder: (context) => SearchPage()));
+                            },
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                SizedBox(
+                                  width: Get.width / 2.3,
+                                  child: Text(
+                                    'Trouver une adresse',
+                                    maxLines: 1,
+                                    style: TextStyle(
+                                        color: Colors.grey[500],
+                                        fontSize: 14,
+                                        overflow: TextOverflow.ellipsis,
+                                        fontWeight: FontWeight.normal),
+                                  ),
+                                ),
+                                InkWell(
+                                  onTap: () {},
+                                  child: Container(
+                                    height: 45,
+                                    decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(50)
+                                    ),
+                                    child: Row(
+                                      children: [
+                                        const Icon(Icons.location_on_outlined,
+                                            color: Colors.grey),
+                                        Text('10 Km', style: TextStyle(
+                                            color: Colors.grey[500],
+                                            fontSize: 12,
+                                            overflow: TextOverflow.ellipsis,
+                                            fontWeight: FontWeight.normal),),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            )),
+                      ),
+                      Container(
+                          width: 50,
+                          height: 50,
+                          decoration: BoxDecoration(
+                            color: AppTheme.redColor,
+                            shape: BoxShape.circle,
+                          ),
+                          child: IconButton(
+                              onPressed: () {
+                                Get.bottomSheet(
+                                    showFilterDateBottomSheet(
+                                        context));
+                              },
+                              icon: Icon(Icons.calendar_month,
+                                  size: 25,
+                                  color: AppTheme.backgroundColor
+                                      .withOpacity(0.9))))
+                    ],
+                  ),
+                ),
+              )));
 
   Widget buildSearchBox(context) {
     return Positioned(
@@ -431,7 +458,10 @@ class _HomeScreenState extends State<HomeScreen>
                   color: AppTheme.secondaryColor,
                   borderRadius: BorderRadius.circular(16),
                 ),
-                width: MediaQuery.of(context).size.width - 40,
+                width: MediaQuery
+                    .of(context)
+                    .size
+                    .width - 40,
                 child: ListTile(
                   title: Text(
                     location,
@@ -462,8 +492,12 @@ class _HomeScreenState extends State<HomeScreen>
     return BottomSheet(
         backgroundColor: Colors.transparent,
         onClosing: () {},
+        enableDrag: true,
         builder: (c) {
-          return Filters();
+          return FractionallySizedBox(
+            heightFactor: 1.9,
+            child: Filters(),
+          );
         });
   }
 }

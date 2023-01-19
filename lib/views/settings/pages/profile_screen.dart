@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:gando/config/textstyle.dart';
 import 'package:gando/models/profile_seller.dart';
+import 'package:gando/views/settings/pages/social_network_screen.dart';
 import 'package:get/get.dart';
 
 import '../../home/home.dart';
 import 'edit_profile_screen.dart';
+import 'my_contact_detail_screen.dart';
 
 class ProfileScreen extends StatelessWidget {
   final ProfileSeller seller;
@@ -57,7 +59,7 @@ class ProfileScreen extends StatelessWidget {
                       ),
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 20,
                   ),
                   Text(seller.name,
@@ -87,8 +89,8 @@ class ProfileScreen extends StatelessWidget {
                               )),
                         ),
                         child: Container(
-                          height: 30,
-                          width: Get.width / 1.5,
+                          height: 20,
+                          width: Get.width / 2,
                           child: Center(
                             child: Text('Modifier le profil', style: Theme.of(context).textTheme.bodyText2!.copyWith(
                               fontWeight: FontWeight.w900,
@@ -131,9 +133,9 @@ class ProfileScreen extends StatelessWidget {
                     height: 40,
                     color: AppTheme.darkColor,
                   ),
-                  _createListMenu('Mes coordonnées', EditProfileScreen(seller: seller,)),
-                  _createListMenu('Porte-monnaie', EditProfileScreen(seller: seller,)),
-                  _createListMenu('Mes réseaux sociaux', EditProfileScreen(seller: seller,)),
+                  _createListMenu('Mes coordonnées', MyContactDetailScreen()),
+                  // _createListMenu('Porte-monnaie', MyContactDetailScreen()),
+                  _createListMenu('Mes réseaux sociaux', SocialNetworkScreen()),
                   const SizedBox(
                     height: 120,
                   ),

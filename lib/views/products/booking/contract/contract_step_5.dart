@@ -129,7 +129,7 @@ class ContractStep5 extends StatelessWidget {
             ),
             showTicks: false,
             showLabels: true,
-            maximum: 40,
+            maximum: 160,
             minimum: 0,
             interval: 10,
             minorTicksPerInterval: 10,
@@ -151,18 +151,17 @@ class ContractStep5 extends StatelessWidget {
                         '${c.annotationValue.value}',
                         style: const TextStyle(
                             fontSize: 16,
-                            fontFamily: 'Times',
                             fontWeight: FontWeight.bold,
                             color: Color(0xFF00A8B5)),
                       ),
-                      const Text(
-                        ' Litres',
-                        style: TextStyle(
-                            fontSize: 16,
-                            fontFamily: 'Times',
-                            fontWeight: FontWeight.bold,
-                            color: const Color(0xFF00A8B5)),
-                      )
+                      // const Text(
+                      //   ' Litres',
+                      //   style: TextStyle(
+                      //       fontSize: 16,
+                      //       fontFamily: 'Times',
+                      //       fontWeight: FontWeight.bold,
+                      //       color: const Color(0xFF00A8B5)),
+                      // )
                     ],
                   ),
                   positionFactor: 0.95,
@@ -280,7 +279,6 @@ class ContractStep5 extends StatelessWidget {
   }
 
   void onPointerValueChanged(double value) {
-    final int _value = value.toInt();
     c.annotationValue.value = '${value.toInt()}';
   }
 }

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:gando/config/textstyle.dart';
 import 'package:gando/navigation.dart';
+import 'package:gando/widget/customTextFormField.dart';
 import 'package:get/get.dart';
 
 class ForgotPasswordScreen extends StatelessWidget {
@@ -18,8 +19,11 @@ class ForgotPasswordScreen extends StatelessWidget {
         elevation: 0,
         backgroundColor: Colors.transparent,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: AppTheme.darkColor,),
-          onPressed: (){
+          icon: Icon(
+            Icons.arrow_back,
+            color: AppTheme.darkColor,
+          ),
+          onPressed: () {
             Get.back();
           },
         ),
@@ -55,7 +59,7 @@ class ForgotPasswordScreen extends StatelessWidget {
                       "Récuperer votre mot de passe",
                       style: Theme.of(context).textTheme.bodyText2!.copyWith(
                             fontWeight: FontWeight.w900,
-                            fontSize: 22,
+                            fontSize: 18,
                             overflow: TextOverflow.ellipsis,
                             color: HexColor(AppTheme.primaryColorString!),
                           ),
@@ -73,7 +77,7 @@ class ForgotPasswordScreen extends StatelessWidget {
                           ),
                           buildInput(context),
                           const SizedBox(
-                            height: 40,
+                            height: 20,
                           ),
                           submitButton(context),
                         ],
@@ -94,14 +98,12 @@ class ForgotPasswordScreen extends StatelessWidget {
       onPressed: () => Get.toNamed(Routes.resetPwd),
       style: ButtonStyle(
         backgroundColor: MaterialStateProperty.resolveWith<Color>(
-          (Set<MaterialState> states) => states.contains(MaterialState.disabled)
-              ? AppTheme.primaryColor
-              : AppTheme.darkColor,
+          (Set<MaterialState> states) =>  AppTheme.primaryColor
         ),
         overlayColor: MaterialStateProperty.all(Colors.transparent),
         shape: MaterialStateProperty.all(
           RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(10.0),
+            borderRadius: BorderRadius.circular(30.0),
           ),
         ),
       ),
@@ -126,104 +128,28 @@ class ForgotPasswordScreen extends StatelessWidget {
   Widget buildInput(BuildContext context) {
     return Column(
       children: [
-        TextFormField(
-          key: Get.keys[1],
-          // controller: controller.topUpAmount.value,
-          initialValue: null,
-          keyboardType: TextInputType.emailAddress,
-          cursorColor: HexColor(AppTheme.primaryColorString!),
-          cursorRadius: const Radius.circular(50),
-          cursorWidth: 3,
-          style: Theme.of(context).textTheme.bodyText2!.copyWith(
-                fontWeight: FontWeight.w900,
-                fontSize: 18,
-                overflow: TextOverflow.ellipsis,
-                color: HexColor(AppTheme.primaryColorString!),
-              ),
-          enabled: true,
-          decoration: InputDecoration(
-            filled: true,
-            fillColor: AppTheme.light,
-            prefixIconColor: AppTheme.backgroundColor,
-            prefixIcon: const Padding(
-              padding: EdgeInsets.only(right: 18.0, left: 18),
-              child: Icon(Icons.alternate_email),
-            ),
-            enabled: true,
-            enabledBorder: OutlineInputBorder(
-              borderSide: const BorderSide(
-                width: 2.0,
-                color: Colors.black,
-              ),
-              borderRadius: BorderRadius.circular(16.0),
-              gapPadding: 8.0,
-            ),
-            hintText: "Votre email",
-            labelStyle: Theme.of(context).textTheme.bodyText2!.copyWith(
-                  fontWeight: FontWeight.w400,
-                  fontSize: 16,
-                  overflow: TextOverflow.ellipsis,
-                  color: HexColor(AppTheme.primaryColorString!),
-                ),
-            hintStyle: Theme.of(context).textTheme.bodyText2!.copyWith(
-                  fontWeight: FontWeight.w400,
-                  fontSize: 16,
-                  overflow: TextOverflow.ellipsis,
-                  color: HexColor(AppTheme.primaryColorString!),
-                ),
-            errorMaxLines: 3,
-            focusedErrorBorder: OutlineInputBorder(
-                borderSide: const BorderSide(
-                  color: Colors.black,
-                  width: 2.0,
-                ),
-                borderRadius: BorderRadius.circular(16.0),
-                gapPadding: 8.0),
-            errorBorder: OutlineInputBorder(
-                borderSide: BorderSide(
-                  color: Colors.red.withOpacity(0.4),
-                  width: 2.0,
-                ),
-                borderRadius: BorderRadius.circular(16.0),
-                gapPadding: 8.0),
-            focusedBorder: OutlineInputBorder(
-                borderSide: const BorderSide(
-                  color: Colors.black,
-                  width: 2.0,
-                ),
-                borderRadius: BorderRadius.circular(16.0),
-                gapPadding: 8.0),
-          ),
-          validator: (value) {
-            if (!value!.isEmail) {
-              return "Email invalid";
-              // return 'amount Is not valid';
-            }
-            return null;
-          },
-          autovalidateMode: AutovalidateMode.onUserInteraction,
-          autofocus: false,
-          inputFormatters: [
-            // FilteringTextInputFormatter.deny(
-            //   RegExp(r"^((5000)|([0-4]?[0-9]{1,3}))$"),
-            // ),
-            LengthLimitingTextInputFormatter(60),
-            FilteringTextInputFormatter.singleLineFormatter
-          ],
-          // default
-          onSaved: (p) {
-            print('saved $p');
-          },
-          // default null
-          onChanged: (p) {
-            // if (p.validateAmount) {
-            //   topUpController.buttonDisabled.value = false;
-            // } else {
-            //   topUpController.buttonDisabled.value = true;
-            // }
-          }, // default null
-          // ... + other textfield params
-        ),
+        CustomTextFormField(
+            key: Get.keys[1],
+            keyboardType: TextInputType.emailAddress,
+            validator: (value) {
+              if (!value!.isEmail) {
+                return "Email invalid";
+                // return 'amount Is not valid';
+              }
+              return null;
+            },
+            prefixIcon: Icon(Icons.alternate_email),
+            formatter:  [
+              LengthLimitingTextInputFormatter(60),
+              FilteringTextInputFormatter.singleLineFormatter
+            ],
+            onChanged:  (p) {
+              print('saved $p');
+            },
+            onSaved:  (p) {
+              print('saved $p');
+            },
+            hintText: 'Votre email'),
         const SizedBox(
           height: 15,
         ),
