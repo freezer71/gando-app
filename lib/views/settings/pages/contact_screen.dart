@@ -3,6 +3,7 @@ import 'package:gando/config/textstyle.dart';
 import 'package:gando/models/profile_seller.dart';
 import 'package:get/get.dart';
 
+import '../../../widget/appBarWidget.dart';
 import '../../home/home.dart';
 import 'edit_profile_screen.dart';
 
@@ -15,27 +16,11 @@ class ContactScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppTheme.backgroundColor,
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        centerTitle: true,
-        automaticallyImplyLeading: true,
-        leading: IconButton(
-          onPressed: () {
-            Get.back();
-          },
-          icon: const Icon(Icons.arrow_back_ios_outlined),
-          color: AppTheme.darkColor,
-        ),
-        title: Text(
-          'Mon Profil',
-          style: Theme.of(context).textTheme.bodyText2!.copyWith(
-            fontWeight: FontWeight.w900,
-            fontSize: 18,
-            color: AppTheme.darkColor,
-            overflow: TextOverflow.ellipsis,
-          ),
-        ),
+      appBar: CustomAppBar(
+        leading: IconButton(onPressed: (){
+          Get.back();
+        }, icon: Icon(Icons.arrow_back_ios_outlined, color: AppTheme.darkColor,),),
+        title: 'Mon Profil',
       ),
       body: Container(
         child: ListView(

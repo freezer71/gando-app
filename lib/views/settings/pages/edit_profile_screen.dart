@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:gando/config/textstyle.dart';
 import 'package:gando/controllers/settings_controller/account_setting_controller.dart';
 import 'package:gando/models/profile_seller.dart';
+import 'package:gando/widget/customTextFormField.dart';
 import 'package:get/get.dart';
 
+import '../../../widget/appBarWidget.dart';
 import '../../home/home.dart';
 
 class EditProfileScreen extends StatelessWidget {
@@ -17,27 +19,11 @@ class EditProfileScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppTheme.backgroundColor,
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        centerTitle: true,
-        automaticallyImplyLeading: true,
-        leading: IconButton(
-          onPressed: () {
-            Get.back();
-          },
-          icon: const Icon(Icons.arrow_back_ios_outlined),
-          color: AppTheme.darkColor,
-        ),
-        title: Text(
-          'Modifié mon profil',
-          style: Theme.of(context).textTheme.bodyText2!.copyWith(
-            fontWeight: FontWeight.w900,
-            fontSize: 18,
-            color: AppTheme.darkColor,
-            overflow: TextOverflow.ellipsis,
-          ),
-        ),
+      appBar: CustomAppBar(
+        leading: IconButton(onPressed: (){
+          Get.back();
+        }, icon: Icon(Icons.arrow_back_ios_outlined, color: AppTheme.darkColor,),),
+        title: 'Modifier mon profil',
       ),
       body: Container(
         child: ListView(
@@ -76,12 +62,12 @@ class EditProfileScreen extends StatelessWidget {
                               )),
                         ),
                         child: Container(
-                          height: 30,
+                          height: 20,
                           width: Get.width / 1.5,
                           child: Center(
                             child: Text('Changer la photo de profil', style: Theme.of(context).textTheme.bodyText2!.copyWith(
                               fontWeight: FontWeight.w900,
-                              fontSize: 16,
+                              fontSize: 14,
                               decoration: TextDecoration.underline,
                               color: AppTheme.darkColor,
                             ),),
@@ -171,82 +157,28 @@ class EditProfileScreen extends StatelessWidget {
   }
 
   List<Widget> _buildTextField(BuildContext context) => [
-    TextFormField(
-      maxLines: 1,
+    CustomTextFormField(
       controller: c.nameController.value,
-      style: Theme
-          .of(context)
-          .textTheme
-          .bodyText2!
-          .copyWith(
-        fontWeight: FontWeight.w600,
-        fontSize: 18,
-        overflow: TextOverflow.visible,
-        color: AppTheme.darkColor,
-      ),
       keyboardType: TextInputType.text,
-      decoration: InputDecoration(
-        filled: true,
-        fillColor: AppTheme.light,
-        labelStyle: Theme
-            .of(context)
-            .textTheme
-            .bodyText2!
-            .copyWith(
-          fontWeight: FontWeight.w500,
-          fontSize: 18,
-          overflow: TextOverflow.visible,
-          color: AppTheme.darkColor.withOpacity(0.9),
-        ),
-        labelText: 'Nom',
-        border: const OutlineInputBorder(
-          borderRadius: BorderRadius.all(Radius.circular(10.0)),
-        ),
-      ),
+      enabled: true,
+      formatter: [],
       validator: (value) {
         if (value!.trim().isEmpty) {
           return "Nom is Required";
         }
-      },
+      }, hintText: 'Nom', onChanged: (String) {  }, onSaved: (String) {  },
     ),
     const SizedBox(height: 20),
-    TextFormField(
-      maxLines: 1,
+    CustomTextFormField(
       controller: c.firstnameController.value,
-      style: Theme
-          .of(context)
-          .textTheme
-          .bodyText2!
-          .copyWith(
-        fontWeight: FontWeight.w600,
-        fontSize: 18,
-        overflow: TextOverflow.visible,
-        color: AppTheme.darkColor,
-      ),
       keyboardType: TextInputType.text,
-      decoration: InputDecoration(
-        filled: true,
-        fillColor: AppTheme.light,
-        labelStyle: Theme
-            .of(context)
-            .textTheme
-            .bodyText2!
-            .copyWith(
-          fontWeight: FontWeight.w500,
-          fontSize: 18,
-          overflow: TextOverflow.visible,
-          color: AppTheme.darkColor.withOpacity(0.9),
-        ),
-        labelText: 'Prénom',
-        border: const OutlineInputBorder(
-          borderRadius: BorderRadius.all(Radius.circular(10.0)),
-        ),
-      ),
+      enabled: true,
+      formatter: [],
       validator: (value) {
         if (value!.trim().isEmpty) {
-          return "Prenom is Required";
+          return "Prénom is Required";
         }
-      },
+      }, hintText: 'Prénom', onChanged: (String) {  }, onSaved: (String) {  },
     ),
   ];
 

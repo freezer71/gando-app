@@ -72,11 +72,11 @@ class CustomTextFormField extends StatelessWidget {
         enabled: enabled,
         enabledBorder: OutlineInputBorder(
           borderSide: BorderSide(
-            width: 2.0,
+            width: 0.5,
             color: AppTheme.darkColor,
           ),
           borderRadius: BorderRadius.circular(shape),
-          gapPadding: 8.0,
+          gapPadding: 4.0,
         ),
         hintText: hintText,
         labelStyle: Theme
@@ -103,24 +103,24 @@ class CustomTextFormField extends StatelessWidget {
         focusedErrorBorder: OutlineInputBorder(
             borderSide: BorderSide(
               color: AppTheme.darkColor,
-              width: 2.0,
+              width: 1.0,
             ),
             borderRadius: BorderRadius.circular(shape),
-            gapPadding: 8.0),
+            gapPadding: 4.0),
         errorBorder: OutlineInputBorder(
             borderSide: BorderSide(
               color: AppTheme.redColor.withOpacity(0.4),
-              width: 2.0,
+              width: 1.0,
             ),
             borderRadius: BorderRadius.circular(shape),
-            gapPadding: 8.0),
+            gapPadding: 4.0),
         focusedBorder: OutlineInputBorder(
             borderSide: BorderSide(
               color: AppTheme.darkColor,
-              width: 2.0,
+              width: 1.0,
             ),
             borderRadius: BorderRadius.circular(shape),
-            gapPadding: 8.0),
+            gapPadding: 1.0),
       ),
       validator: validator,
       autovalidateMode: AutovalidateMode.onUserInteraction,

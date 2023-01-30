@@ -47,7 +47,7 @@ class _ChatScreenState extends State<ChatScreen> with SingleTickerProviderStateM
       child: Scaffold(
         backgroundColor: AppTheme.backgroundColor,
         appBar: PreferredSize(
-          preferredSize: Size.fromHeight(60.0), // here the desired height
+          preferredSize: const Size.fromHeight(60.0), // here the desired height
           child: AppBar(
             backgroundColor: Colors.transparent,
             elevation: 0,
@@ -59,6 +59,7 @@ class _ChatScreenState extends State<ChatScreen> with SingleTickerProviderStateM
               indicatorSize: TabBarIndicatorSize.tab,
               indicatorColor: AppTheme.light,
               indicatorWeight: 2.0,
+              padding: const EdgeInsets.symmetric(horizontal: 20),
               indicator: BoxDecoration(
                 borderRadius: BorderRadius.circular(50),
                 color: AppTheme.darkColor,
@@ -66,7 +67,7 @@ class _ChatScreenState extends State<ChatScreen> with SingleTickerProviderStateM
               tabs: myTabs
                   .map<Widget>((myTab) => Tab(
                 child: Container(
-                  // width: Get.width / 3 -
+                  width: Get.width / 3,
                   //     10, // - 10 is used to make compensate horizontal padding
                   // decoration: BoxDecoration(
                   //   borderRadius: BorderRadius.circular(10.0),
@@ -75,6 +76,7 @@ class _ChatScreenState extends State<ChatScreen> with SingleTickerProviderStateM
                   //       ? Colors.transparent
                   //       : Color(0xffA4BDD4),
                   // ),
+                  // padding: const EdgeInsets.symmetric(horizontal: 25.0),
                   margin: const EdgeInsets.symmetric(horizontal: 5.0, vertical: 5.0),
                   child: Align(
                     alignment: Alignment.center,

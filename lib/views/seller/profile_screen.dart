@@ -3,6 +3,8 @@ import 'package:gando/config/textstyle.dart';
 import 'package:gando/models/profile_seller.dart';
 import 'package:get/get.dart';
 
+import '../../widget/appBarWidget.dart';
+
 class SellerProfileScreen extends StatelessWidget {
   final ProfileSeller seller;
 
@@ -12,27 +14,11 @@ class SellerProfileScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppTheme.backgroundColor,
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        centerTitle: true,
-        automaticallyImplyLeading: true,
-        leading: IconButton(
-          onPressed: () {
-            Get.back();
-          },
-          icon: const Icon(Icons.arrow_back_ios_outlined),
-          color: AppTheme.darkColor,
-        ),
-        title: Text(
-          'Profil',
-          style: Theme.of(context).textTheme.bodyText2!.copyWith(
-                fontWeight: FontWeight.w900,
-                fontSize: 18,
-                color: AppTheme.darkColor,
-                overflow: TextOverflow.ellipsis,
-              ),
-        ),
+      appBar: CustomAppBar(
+        leading: IconButton(onPressed: (){
+          Get.back();
+        }, icon: Icon(Icons.arrow_back_ios_outlined, color: AppTheme.darkColor,),),
+        title: 'Profil',
       ),
       body: Container(
         child: ListView(
@@ -271,23 +257,21 @@ class SellerProfileScreen extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            SizedBox(
-              width: Get.width / 22,
-            ),
             Container(
               height: Get.height / 5,
-              width: Get.width / 2,
+              width: Get.width / 1.57,
               decoration: BoxDecoration(
                 image: DecorationImage(
+                  fit: BoxFit.cover,
                   repeat: ImageRepeat.noRepeat,
-                  alignment: Alignment.center,
+                  alignment: Alignment.topCenter,
                   image: AssetImage(seller.cars[0].image),
                 ),
-                borderRadius: BorderRadius.circular(16),
+                borderRadius: const BorderRadius.only(topLeft: Radius.circular(16), bottomLeft: Radius.circular(16)),
               ),
             ),
             Container(
-              width: Get.width / 3,
+              width: Get.width / 4,
               height: Get.height / 5,
               decoration: BoxDecoration(
                   color: AppTheme.darkColor,

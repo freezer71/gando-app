@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:gando/config/textstyle.dart';
 import 'package:gando/controllers/settings_controller/account_setting_controller.dart';
 import 'package:gando/views/home/home.dart';
+import 'package:gando/widget/appBarWidget.dart';
 import 'package:get/get.dart';
 import 'package:get/get_rx/src/rx_typedefs/rx_typedefs.dart';
 
@@ -16,23 +17,11 @@ class SettingsAccountScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppTheme.backgroundColor,
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        centerTitle: true,
-        automaticallyImplyLeading: false,
-        elevation: 0,
+      appBar: CustomAppBar(
         leading: IconButton(onPressed: (){
           Get.back();
         }, icon: Icon(Icons.arrow_back_ios_outlined, color: AppTheme.darkColor,),),
-        title: Text(
-          'Paramètre du compte',
-          style: Theme.of(context).textTheme.bodyText2!.copyWith(
-              fontWeight: FontWeight.w900,
-              fontSize: 18,
-              overflow: TextOverflow.ellipsis,
-              color: AppTheme.darkColor
-          ),
-        ),
+        title: 'Paramètre du compte',
       ),
       body: ListView(
         padding: const EdgeInsets.all(16),

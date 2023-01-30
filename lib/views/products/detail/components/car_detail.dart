@@ -80,30 +80,39 @@ class _CarDetailPageState extends State<CarDetailPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppTheme.backgroundColor.withOpacity(0.9),
-      extendBody: false,
-      extendBodyBehindAppBar: false,
+      extendBody: true,
+      extendBodyBehindAppBar: true,
       body: Stack(
         children: [
           CustomScrollView(
             slivers: [
               SliverAppBar(
                 pinned: true,
+                automaticallyImplyLeading: true,
                 backgroundColor: AppTheme.backgroundColor,
-                expandedHeight: Get.height / 2.5,
+                expandedHeight: Get.height / 3.5,
                 leading: IconButton(
                   icon: Icon(
-                    Icons.arrow_back_rounded,
-                    color: AppTheme.darkColor,
+                    Icons.arrow_back_ios_outlined,
+                    color: AppTheme.light,
                   ),
                   onPressed: () => Navigator.pop(context),
                 ),
                 flexibleSpace: FlexibleSpaceBar(
+                  centerTitle: false,
+                  // title: Container(
+                  //   child: Text("${car.brand}", style: Theme.of(context).textTheme.bodyText2!.copyWith(
+                  //       color: AppTheme.darkColor,
+                  //       fontSize: 18,
+                  //       fontWeight: FontWeight.w900),),
+                  // ),
                   background: Container(
                     color: AppTheme.backgroundColor,
-                    padding: const EdgeInsets.all(22),
+                    padding:  EdgeInsets.zero,
                     child: Image.asset(
                       car.image,
-                      fit: BoxFit.contain,
+                      fit: BoxFit.cover,
+                      alignment: Alignment.topCenter,
                     ),
                   ),
                 ),

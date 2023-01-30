@@ -18,9 +18,9 @@ class AddArticlesScreen extends GetView<AddArticlesController> {
   Widget buildBody(context) => Scaffold(
     backgroundColor: AppTheme.backgroundColor,
     appBar: AppBar(
-      backgroundColor: Colors.transparent,
+      backgroundColor: Colors.red,
       centerTitle: true,
-      elevation: 0,
+      elevation: 6,
       automaticallyImplyLeading: true,
       leading: IconButton(onPressed: (){
         Get.back();
@@ -40,7 +40,7 @@ class AddArticlesScreen extends GetView<AddArticlesController> {
           margin: EdgeInsets.zero,
           padding: EdgeInsets.symmetric(horizontal: 20, vertical: 8),
           child: Text(
-            'Deposer une annonce',
+            'Déposer une annonce',
             style: Theme.of(context).textTheme.bodyText2!.copyWith(
               fontWeight: FontWeight.w600,
               fontSize: 22,
@@ -52,9 +52,9 @@ class AddArticlesScreen extends GetView<AddArticlesController> {
       ),
     ),
     extendBody: true,
-    extendBodyBehindAppBar: true,
+    extendBodyBehindAppBar: false,
     body: Obx(() => Padding(
-      padding: const EdgeInsets.only(top: 80.0),
+      padding: const EdgeInsets.only(top: 100.0),
       child: Expanded(
         child: Stepper(
           type: StepperType.horizontal,

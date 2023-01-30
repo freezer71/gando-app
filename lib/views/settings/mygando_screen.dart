@@ -6,6 +6,7 @@ import 'package:gando/views/settings/pages/profile_screen.dart';
 import 'package:get/get.dart';
 
 import '../../config/constants.dart';
+import '../../widget/appBarWidget.dart';
 import 'settings_screen.dart';
 
 class MyGandoScreen extends StatelessWidget {
@@ -15,24 +16,7 @@ class MyGandoScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppTheme.backgroundColor,
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        centerTitle: true,
-        automaticallyImplyLeading: false,
-        elevation: 0,
-        // leading: IconButton(onPressed: (){
-        //   Get.back();
-        // }, icon: Icon(Icons.arrow_back_ios_outlined, color: AppTheme.darkColor,),),
-        title: Text(
-          'Mon Gando',
-          style: Theme.of(context).textTheme.bodyText2!.copyWith(
-                fontWeight: FontWeight.w900,
-                fontSize: 18,
-                overflow: TextOverflow.ellipsis,
-                color: AppTheme.darkColor
-              ),
-        ),
-      ),
+      appBar: CustomAppBar(title: 'Mon Gando',),
       body: ListView(
         padding: const EdgeInsets.all(16),
         children: [
@@ -84,7 +68,7 @@ class MyGandoScreen extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: const [
-                  Icon(Icons.person_pin, size: 40,),
+                  Icon(Icons.person_pin, size: 80,),
                   SizedBox(height: 10,),
                   Text(
                     'Mon profil',
@@ -108,7 +92,7 @@ class MyGandoScreen extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: const [
-                  Icon(Icons.settings_outlined, size: 40,),
+                  Icon(Icons.settings_outlined, size: 80,),
                   SizedBox(height: 10,),
                   Text(
                     'Parametres',
@@ -152,13 +136,13 @@ class MyGandoScreen extends StatelessWidget {
                     width: Get.width / 1.5,
                     height: 50,
                     child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
+                        Icon(icon,
+                            color: AppTheme.backgroundColor.withOpacity(0.9)),
                         Text(menuTitle,
                             style: TextStyle(
                                 fontSize: 15, color: AppTheme.backgroundColor)),
-                        Icon(icon,
-                            color: AppTheme.backgroundColor.withOpacity(0.9)),
                       ],
                     ),
                   ))

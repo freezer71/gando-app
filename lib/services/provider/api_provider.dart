@@ -29,6 +29,7 @@ class ApiProvider {
       dio.options.headers['content-Type'] = 'application/x-www-form-urlencoded';
       dio.options.headers['accept'] = 'application/json';
       dio.options.headers['authorization'] = 'Bearer $token';
+      dio.options.headers['authenticate_client'] = '427620db3b5aeffd7da95bff1e02c58e91f2b7c8394cabc1db92aabe2a918ded';
       dio.options.connectTimeout = 30000; //5s
       dio.options.receiveTimeout = 25000;
 

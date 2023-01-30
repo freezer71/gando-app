@@ -109,7 +109,7 @@ class ChangePasswordScreen extends StatelessWidget {
         width: Get.width / 1.3,
         padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 10),
         child: Center(
-          child: Text('Valider', style: Theme.of(context).textTheme.bodyText2!.copyWith(
+          child: Text('Valider'.toUpperCase(), style: Theme.of(context).textTheme.bodyText2!.copyWith(
             fontWeight: FontWeight.w900,
             fontSize: 18,
             color: AppTheme.light,

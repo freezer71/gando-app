@@ -113,7 +113,7 @@ class ForgotPasswordScreen extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 10),
         child: Center(
           child: Text(
-            'Récuperer',
+            'Récuperer'.toUpperCase(),
             style: Theme.of(context).textTheme.bodyText2!.copyWith(
                   fontWeight: FontWeight.w900,
                   fontSize: 16,

@@ -5,6 +5,7 @@ import 'package:gando/views/admin/components/stepper/step_4.dart';
 import 'package:get/get.dart';
 
 import '../../../config/textstyle.dart';
+import '../../../widget/appBarWidget.dart';
 import 'stepper/final_step.dart';
 import 'stepper/step_1.dart';
 import 'stepper/step_2.dart';
@@ -35,7 +36,6 @@ class _StepperArticlesState extends State<StepperArticles> {
 
     List<Step> steps = [
       Step(
-
         title: Container().marginZero.paddingZero,
         label: Text('Etape 1', style: Theme.of(context).textTheme.bodyText2!.copyWith(
           fontWeight: FontWeight.w600,
@@ -45,7 +45,7 @@ class _StepperArticlesState extends State<StepperArticles> {
         )),
         content: Step1(),
         state: currentStep == 0 ? StepState.editing : StepState.indexed,
-        isActive: true,
+        isActive: currentStep == 0 ? true : false,
       ),
       Step(
         title: Container().marginZero.paddingZero,
@@ -57,7 +57,7 @@ class _StepperArticlesState extends State<StepperArticles> {
         ),).paddingZero,
         content: Step2(),
         state: currentStep == 1 ? StepState.editing : StepState.indexed,
-        isActive: true,
+        isActive: currentStep == 1 ? true : false,
       ),
       Step(
         title: Container().marginZero.paddingZero,
@@ -69,7 +69,7 @@ class _StepperArticlesState extends State<StepperArticles> {
         ),).paddingZero,
         content: Step3(),
         state: currentStep == 2 ? StepState.editing : StepState.indexed,
-        isActive: true,
+        isActive: currentStep == 2 ? true : false,
       ),
       Step(
         title: Container().marginZero.paddingZero,
@@ -81,10 +81,9 @@ class _StepperArticlesState extends State<StepperArticles> {
         ),).paddingZero,
         content: Step4(),
         state: currentStep == 3 ? StepState.editing : StepState.indexed,
-        isActive: true,
+        isActive: currentStep == 3 ? true : false,
       ),
       Step(
-
         label: Text('Publier', style: Theme.of(context).textTheme.bodyText2!.copyWith(
           fontWeight: FontWeight.w600,
           fontSize: 12,
@@ -94,35 +93,22 @@ class _StepperArticlesState extends State<StepperArticles> {
         title: Container().marginZero.paddingZero,
         content: Upload(mapData),
         state: StepState.complete,
-        isActive: true,
+        isActive: currentStep == 4 ? true : false,
       ),
     ];
 
     return Scaffold(
       backgroundColor: AppTheme.backgroundColor,
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        centerTitle: true,
-        elevation: 0,
-        automaticallyImplyLeading: true,
+      appBar: CustomAppBar(
         leading: IconButton(onPressed: (){
           Get.back();
         }, icon: Icon(Icons.arrow_back_ios_outlined, color: AppTheme.darkColor,),),
-        title: Text(
-          widget.title,
-          textAlign: TextAlign.center,
-          style: Theme.of(context).textTheme.bodyText2!.copyWith(
-            fontWeight: FontWeight.w600,
-            fontSize: 18,
-            overflow: TextOverflow.visible,
-            color: AppTheme.darkColor,
-          ),
-        ),
+        title: widget.title,
       ),
       extendBody: true,
       extendBodyBehindAppBar: true,
       body: Container(
-        padding: EdgeInsets.only(top: 80.0),
+        padding: const EdgeInsets.only(top: 80.0),
         child: Stepper(
           currentStep: this.currentStep,
           steps: steps,

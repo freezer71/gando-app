@@ -13,6 +13,7 @@ import 'package:gando/views/authentication/resetPassword/forgot_password.dart';
 import 'package:gando/views/authentication/signin/signin_screen.dart';
 import 'package:gando/views/authentication/signup/signup_screen.dart';
 import 'package:gando/views/bottom_navigation_bar.dart';
+import 'package:gando/views/onboarding.dart';
 import 'package:gando/views/splashscreen/splash_screen.dart';
 import 'package:get/get.dart';
 
@@ -47,15 +48,15 @@ class AppPages {
       page: () => const SplashScreen(),
       // binding: SplashScreenBinding(),
     ),
-    // GetPage(
-    //   name: Routes.welcome,
-    //   page: () => const WelcomeFirstScreen(),
-    //   // middlewares: [
-    //   //   IsFirstGuard(),
-    //   //   // My middlewares here
-    //   //   AuthGuard(),
-    //   // ],
-    // ),
+    GetPage(
+      name: Routes.welcome,
+      page: () => const OnboardingScreen(),
+      // middlewares: [
+      //   IsFirstGuard(),
+      //   // My middlewares here
+      //   AuthGuard(),
+      // ],
+    ),
     GetPage(
       name: Routes.home,
       page: () => const BottomNavigationBarPage(),
@@ -77,7 +78,7 @@ class AppPages {
     ),
     GetPage(
       name: Routes.signUp,
-      page: () => SignUpScreen(),
+      page: () => const SignUpScreen(),
     ),
     // GetPage(
     //   name: Routes.profile,

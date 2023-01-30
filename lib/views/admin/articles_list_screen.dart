@@ -9,6 +9,7 @@ import '../../config/constants.dart';
 import '../../generated/assets.dart';
 import '../../models/car.dart';
 import '../../models/profile_seller.dart';
+import '../../widget/appBarWidget.dart';
 import 'components/add_articles_stepper.dart';
 import 'edit_article_screen.dart';
 
@@ -49,20 +50,8 @@ class _ArticleListScreenState extends State<ArticleListScreen> {
 
   Widget buildBody()=> Scaffold(
     backgroundColor: AppTheme.backgroundColor,
-    appBar: AppBar(
-      backgroundColor: Colors.transparent,
-      centerTitle: true,
-      automaticallyImplyLeading: false,
-      elevation: 0,
-      title: Text(
-        'Mes annonces',
-        style: Theme.of(context).textTheme.bodyText2!.copyWith(
-            fontWeight: FontWeight.w900,
-            fontSize: 18,
-            overflow: TextOverflow.ellipsis,
-            color: AppTheme.darkColor
-        ),
-      ),
+    appBar: CustomAppBar(
+      title: 'Mes annonces',
     ),
     body: Stack(
       children: [

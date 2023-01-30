@@ -7,6 +7,7 @@ import 'package:gando/views/home/home.dart';
 import 'package:get/get.dart';
 import 'package:get/get_rx/src/rx_typedefs/rx_typedefs.dart';
 
+import '../../../widget/appBarWidget.dart';
 import '../../../widget/customTextFormField.dart';
 
 class MyContactDetailScreen extends StatelessWidget {
@@ -19,36 +20,15 @@ class MyContactDetailScreen extends StatelessWidget {
     return Obx(() {
       return Scaffold(
         backgroundColor: AppTheme.backgroundColor,
-        appBar: AppBar(
-          backgroundColor: Colors.transparent,
-          centerTitle: true,
-          automaticallyImplyLeading: false,
-          elevation: 0,
-          leading: IconButton(onPressed: () {
+        appBar: CustomAppBar(
+          leading: IconButton(onPressed: (){
             Get.back();
-          },
-            icon: Icon(
-              Icons.arrow_back_ios_outlined, color: AppTheme.darkColor,),),
-          title: Text(
-            'Mes coordonnées',
-            style: Theme
-                .of(context)
-                .textTheme
-                .bodyText2!
-                .copyWith(
-                fontWeight: FontWeight.w900,
-                fontSize: 18,
-                overflow: TextOverflow.ellipsis,
-                color: AppTheme.darkColor
-            ),
-          ),
+          }, icon: Icon(Icons.arrow_back_ios_outlined, color: AppTheme.darkColor,),),
+          title: 'Mes coordonnées',
         ),
         body: ListView(
           padding: const EdgeInsets.all(16),
           children: [
-            Divider(
-              color: AppTheme.darkColor,
-            ),
             _createListMenu('Civilité', context),
             ..._buildBodyTextField(context),
           ],

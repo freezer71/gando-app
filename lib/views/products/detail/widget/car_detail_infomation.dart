@@ -17,24 +17,23 @@ class CarDetailInfomation extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 200,
       width: 320,
-      padding: const EdgeInsets.all(0),
-      margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+      height: 200,
+      margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
       decoration: BoxDecoration(
           color: AppTheme.light,
           boxShadow: [
             BoxShadow(
                 color: AppTheme.darkColor.withOpacity(0.11),
-                offset: Offset(0.0, 1.2),
+                offset: const Offset(0.0, 1.2),
                 blurRadius: 6.0,
                 spreadRadius: 3,
                 blurStyle: BlurStyle.normal),
           ],
           borderRadius: BorderRadius.circular(20),
-          image: DecorationImage(image: AssetImage(car.image,), alignment: Alignment.topCenter, repeat: ImageRepeat.noRepeat, fit: BoxFit.scaleDown)),
+          image: DecorationImage(image: AssetImage(car.image, ), alignment: Alignment.center, repeat: ImageRepeat.noRepeat, fit: BoxFit.cover, )),
       child: NextCarInfo(car: car),
-    );
+    ).paddingZero;
   }
 }
 
@@ -70,26 +69,35 @@ class NextCarInfo extends StatelessWidget {
                   Container(
                     padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 4),
                     decoration: BoxDecoration(
-                      borderRadius: BorderRadius.all(Radius.circular(8)),
+                      borderRadius: const BorderRadius.only(topLeft: Radius.circular(10), bottomLeft: Radius.circular(10)),
                       color: AppTheme.primaryColor,
                     ),
                     child: Icon(
                       Icons.star,
                       color: AppTheme.light,
                     ),
-                  ),
-                  SizedBox(width: 5,),
-                  Text('4.5/5', style: Theme.of(context).textTheme.bodyText2!.copyWith(
-                      color: AppTheme.darkColor,
-                      fontSize: 14,
-                      fontWeight: FontWeight.w800))
+                  ).marginZero.paddingZero,
+                  Container(
+                    padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5.5),
+                    decoration: BoxDecoration(
+                      color: AppTheme.light,
+                      boxShadow: [
+                        BoxShadow(color: AppTheme.darkColor, blurRadius: 0.1),
+                      ],
+                      borderRadius: const BorderRadius.only(topRight: Radius.circular(10), bottomRight: Radius.circular(10))
+                    ),
+                    child: Text('4.5/5', style: Theme.of(context).textTheme.bodyText2!.copyWith(
+                        color: AppTheme.darkColor,
+                        fontSize: 15,
+                        fontWeight: FontWeight.bold)),
+                  ).marginZero
                 ],
               ),
             )
           ],
         ),
         Container(
-          height: 80,
+          height: 70,
           padding: EdgeInsets.symmetric(vertical: 5, horizontal: 5),
           decoration: BoxDecoration(
             color: AppTheme.darkColor,
@@ -103,21 +111,27 @@ class NextCarInfo extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  Text('${car.brand} ${car.model}'),
+                  Text('${car.brand} ${car.model}', style: Theme.of(context).textTheme.bodyText2!.copyWith(
+                      color: AppTheme.light,
+                      fontSize: 18,
+                      fontWeight: FontWeight.w900)),
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Icon(Icons.location_on_rounded),
-                      Text('Localisation'),
+                      Icon(Icons.location_on_rounded, size: 20,),
+                      Text('Localisation', style: Theme.of(context).textTheme.bodyText2!.copyWith(
+                          color: AppTheme.light,
+                          fontSize: 14,
+                          fontWeight: FontWeight.w300)),
                     ],
                   )
                 ],
               ),
               Container(child: Text('${gf.removeDecimalZeroFormat(car.price.toDouble())}', style: Theme.of(context).textTheme.bodyText2!.copyWith(
                   color: AppTheme.primaryColor,
-                  fontSize: 22,
-                  fontWeight: FontWeight.w900)),)
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold)),)
             ],
           ),
         )

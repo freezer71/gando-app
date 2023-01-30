@@ -159,7 +159,7 @@ class SignUpScreen extends GetView<SignUpController> {
         padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 10),
         child: Center(
           child: Text(
-            'Créer',
+            'Créer'.toUpperCase(),
             style: Theme
                 .of(context)
                 .textTheme
@@ -178,95 +178,24 @@ class SignUpScreen extends GetView<SignUpController> {
   Widget buildSignUpInput(BuildContext context) {
     return Column(
       children: [
-        TextFormField(
-          key: Get.keys[2],
-          // controller: controller.topUpAmount.value,
-          initialValue: null,
-          keyboardType: TextInputType.emailAddress,
-          cursorColor: HexColor(AppTheme.primaryColorString!),
-          cursorRadius: const Radius.circular(50),
-          cursorWidth: 3,
-          style: Theme
-              .of(context)
-              .textTheme
-              .bodyText2!
-              .copyWith(
-            fontWeight: FontWeight.w900,
-            fontSize: 18,
-            overflow: TextOverflow.ellipsis,
-            color: HexColor(AppTheme.primaryColorString!),
+        CustomTextFormField(
+          key: Get.keys[0],
+          controller: controller.lastNameController.value,
+          keyboardType: TextInputType.text,
+          hintText: 'Votre prénom',
+          prefixIcon: const Padding(
+            padding: EdgeInsets.only(right: 18.0, left: 18),
+            child: Icon(Icons.person),
           ),
           enabled: true,
-          decoration: InputDecoration(
-            filled: true,
-            fillColor: AppTheme.light,
-            prefixIconColor: AppTheme.backgroundColor,
-            prefixIcon: const Padding(
-              padding: EdgeInsets.only(right: 18.0, left: 18),
-              child: Icon(Icons.person),
-            ),
-            enabled: true,
-            enabledBorder: OutlineInputBorder(
-              borderSide: const BorderSide(
-                width: 2.0,
-                color: Colors.black,
-              ),
-              borderRadius: BorderRadius.circular(30.0),
-              gapPadding: 8.0,
-            ),
-            hintText: "Votre prénom",
-            labelStyle: Theme
-                .of(context)
-                .textTheme
-                .bodyText2!
-                .copyWith(
-              fontWeight: FontWeight.w400,
-              fontSize: 16,
-              overflow: TextOverflow.ellipsis,
-              color: HexColor(AppTheme.primaryColorString!),
-            ),
-            hintStyle: Theme
-                .of(context)
-                .textTheme
-                .bodyText2!
-                .copyWith(
-              fontWeight: FontWeight.w400,
-              fontSize: 16,
-              overflow: TextOverflow.ellipsis,
-              color: HexColor(AppTheme.primaryColorString!),
-            ),
-            errorMaxLines: 3,
-            focusedErrorBorder: OutlineInputBorder(
-                borderSide: const BorderSide(
-                  color: Colors.black,
-                  width: 2.0,
-                ),
-                borderRadius: BorderRadius.circular(30.0),
-                gapPadding: 8.0),
-            errorBorder: OutlineInputBorder(
-                borderSide: BorderSide(
-                  color: Colors.red.withOpacity(0.4),
-                  width: 2.0,
-                ),
-                borderRadius: BorderRadius.circular(30.0),
-                gapPadding: 8.0),
-            focusedBorder: OutlineInputBorder(
-                borderSide: const BorderSide(
-                  color: Colors.black,
-                  width: 2.0,
-                ),
-                borderRadius: BorderRadius.circular(30.0),
-                gapPadding: 8.0),
-          ),
           validator: (value) {
             if (!value!.isAlphabetOnly) {
               return "Prenom invalide";
             }
             return null;
           },
-          autovalidateMode: AutovalidateMode.onUserInteraction,
           autofocus: false,
-          inputFormatters: [
+          formatter: [
             LengthLimitingTextInputFormatter(60),
             FilteringTextInputFormatter.singleLineFormatter
           ],
@@ -287,85 +216,15 @@ class SignUpScreen extends GetView<SignUpController> {
         const SizedBox(
           height: 10,
         ),
-        TextFormField(
-          key: Get.keys[2],
-          // controller: controller.topUpAmount.value,
-          initialValue: null,
-          keyboardType: TextInputType.emailAddress,
-          cursorColor: HexColor(AppTheme.primaryColorString!),
-          cursorRadius: const Radius.circular(50),
-          cursorWidth: 3,
-          style: Theme
-              .of(context)
-              .textTheme
-              .bodyText2!
-              .copyWith(
-            fontWeight: FontWeight.w900,
-            fontSize: 18,
-            overflow: TextOverflow.ellipsis,
-            color: HexColor(AppTheme.primaryColorString!),
-          ),
+        CustomTextFormField(
+          key: Get.keys[1],
+          controller: controller.nameController.value,
+          keyboardType: TextInputType.text,
+          hintText: 'Votre nom',
           enabled: true,
-          decoration: InputDecoration(
-            filled: true,
-            fillColor: AppTheme.light,
-            prefixIconColor: AppTheme.backgroundColor,
-            prefixIcon: const Padding(
-              padding: EdgeInsets.only(right: 18.0, left: 18),
-              child: Icon(Icons.person),
-            ),
-            enabled: true,
-            enabledBorder: OutlineInputBorder(
-              borderSide: const BorderSide(
-                width: 2.0,
-                color: Colors.black,
-              ),
-              borderRadius: BorderRadius.circular(30.0),
-              gapPadding: 8.0,
-            ),
-            hintText: "Votre nom",
-            labelStyle: Theme
-                .of(context)
-                .textTheme
-                .bodyText2!
-                .copyWith(
-              fontWeight: FontWeight.w400,
-              fontSize: 16,
-              overflow: TextOverflow.ellipsis,
-              color: HexColor(AppTheme.primaryColorString!),
-            ),
-            hintStyle: Theme
-                .of(context)
-                .textTheme
-                .bodyText2!
-                .copyWith(
-              fontWeight: FontWeight.w400,
-              fontSize: 16,
-              overflow: TextOverflow.ellipsis,
-              color: HexColor(AppTheme.primaryColorString!),
-            ),
-            errorMaxLines: 3,
-            focusedErrorBorder: OutlineInputBorder(
-                borderSide: const BorderSide(
-                  color: Colors.black,
-                  width: 2.0,
-                ),
-                borderRadius: BorderRadius.circular(30.0),
-                gapPadding: 8.0),
-            errorBorder: OutlineInputBorder(
-                borderSide: BorderSide(
-                  color: Colors.red.withOpacity(0.4),
-                  width: 2.0,
-                ),
-                borderRadius: BorderRadius.circular(30.0),
-                gapPadding: 8.0),
-            focusedBorder: OutlineInputBorder(
-                borderSide: const BorderSide(
-                  color: Colors.black,
-                  width: 2.0,
-                ),
-                borderRadius: BorderRadius.circular(30.0),
-                gapPadding: 8.0),
+          prefixIcon: const Padding(
+            padding: EdgeInsets.only(right: 18.0, left: 18),
+            child: Icon(Icons.person),
           ),
           validator: (value) {
             if (!value!.isAlphabetOnly) {
@@ -374,9 +233,8 @@ class SignUpScreen extends GetView<SignUpController> {
             }
             return null;
           },
-          autovalidateMode: AutovalidateMode.onUserInteraction,
           autofocus: false,
-          inputFormatters: [
+          formatter: [
             // FilteringTextInputFormatter.deny(
             //   RegExp(r"^((5000)|([0-4]?[0-9]{1,3}))$"),
             // ),
@@ -400,99 +258,26 @@ class SignUpScreen extends GetView<SignUpController> {
         const SizedBox(
           height: 10,
         ),
-        TextFormField(
+        CustomTextFormField(
+          context: context,
           key: Get.keys[2],
-          // controller: controller.topUpAmount.value,
-          initialValue: null,
-          keyboardType: TextInputType.emailAddress,
-          cursorColor: HexColor(AppTheme.primaryColorString!),
-          cursorRadius: const Radius.circular(50),
-          cursorWidth: 3,
-          style: Theme
-              .of(context)
-              .textTheme
-              .bodyText2!
-              .copyWith(
-            fontWeight: FontWeight.w900,
-            fontSize: 18,
-            overflow: TextOverflow.ellipsis,
-            color: HexColor(AppTheme.primaryColorString!),
-          ),
+          controller: controller.passwordController.value,
+          obscureText: true,
           enabled: true,
-          decoration: InputDecoration(
-            filled: true,
-            fillColor: AppTheme.light,
-            prefixIconColor: AppTheme.backgroundColor,
-            prefixIcon: const Padding(
-              padding: EdgeInsets.only(right: 18.0, left: 18),
-              child: Icon(Icons.alternate_email),
-            ),
-            enabled: true,
-            enabledBorder: OutlineInputBorder(
-              borderSide: const BorderSide(
-                width: 2.0,
-                color: Colors.black,
-              ),
-              borderRadius: BorderRadius.circular(30.0),
-              gapPadding: 8.0,
-            ),
-            hintText: "Votre email",
-            labelStyle: Theme
-                .of(context)
-                .textTheme
-                .bodyText2!
-                .copyWith(
-              fontWeight: FontWeight.w400,
-              fontSize: 16,
-              overflow: TextOverflow.ellipsis,
-              color: HexColor(AppTheme.primaryColorString!),
-            ),
-            hintStyle: Theme
-                .of(context)
-                .textTheme
-                .bodyText2!
-                .copyWith(
-              fontWeight: FontWeight.w400,
-              fontSize: 16,
-              overflow: TextOverflow.ellipsis,
-              color: HexColor(AppTheme.primaryColorString!),
-            ),
-            errorMaxLines: 3,
-            focusedErrorBorder: OutlineInputBorder(
-                borderSide: const BorderSide(
-                  color: Colors.black,
-                  width: 2.0,
-                ),
-                borderRadius: BorderRadius.circular(30.0),
-                gapPadding: 8.0),
-            errorBorder: OutlineInputBorder(
-                borderSide: BorderSide(
-                  color: Colors.red.withOpacity(0.4),
-                  width: 2.0,
-                ),
-                borderRadius: BorderRadius.circular(30.0),
-                gapPadding: 8.0),
-            focusedBorder: OutlineInputBorder(
-                borderSide: const BorderSide(
-                  color: Colors.black,
-                  width: 2.0,
-                ),
-                borderRadius: BorderRadius.circular(30.0),
-                gapPadding: 8.0),
+          hintText: "Votre Email",
+          keyboardType: TextInputType.emailAddress,
+          prefixIcon: const Padding(
+            padding: EdgeInsets.only(right: 18.0, left: 18),
+            child: Icon(Icons.alternate_email),
           ),
           validator: (value) {
-            if (!value!.isEmail) {
-              return "Email invalid";
+            if (!value!.isAlphabetOnly) {
+              return "Email invalide";
               // return 'amount Is not valid';
             }
             return null;
           },
-          autovalidateMode: AutovalidateMode.onUserInteraction,
-          autofocus: false,
-          inputFormatters: [
-            // FilteringTextInputFormatter.deny(
-            //   RegExp(r"^((5000)|([0-4]?[0-9]{1,3}))$"),
-            // ),
+          formatter: [
             LengthLimitingTextInputFormatter(60),
             FilteringTextInputFormatter.singleLineFormatter
           ],
@@ -507,7 +292,7 @@ class SignUpScreen extends GetView<SignUpController> {
             // } else {
             //   topUpController.buttonDisabled.value = true;
             // }
-          }, // default null
+          }, shape: 30.0, // default null
           // ... + other textfield params
         ),
         const SizedBox(
@@ -557,18 +342,25 @@ class SignUpScreen extends GetView<SignUpController> {
           alignment: Alignment.center,
           child: Row(
             children: [
-              Checkbox(
-                  fillColor: MaterialStateProperty.resolveWith<Color>(
-                        (Set<MaterialState> states) =>
-                    states.contains(MaterialState.disabled)
-                        ? AppTheme.secondaryColor
-                        : AppTheme.primaryColor,
-                  ),
-                  checkColor: AppTheme.secondaryColor,
-                  value: controller.terms.value,
-                  onChanged: (value) {
-                    controller.terms.value = !controller.terms.value;
-                  }),
+              Transform.scale(
+                scale: 1.5,
+                child: Checkbox(
+                    fillColor: MaterialStateProperty.resolveWith<Color>(
+                          (Set<MaterialState> states) =>
+                      states.contains(MaterialState.disabled)
+                          ? AppTheme.darkColor
+                          : AppTheme.primaryColor,
+                    ),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(5)
+                    ),
+
+                    checkColor: AppTheme.darkColor,
+                    value: controller.terms.value,
+                    onChanged: (value) {
+                      controller.terms.value = !controller.terms.value;
+                    }),
+              ),
               Container(
                 width: Get.width/ 1.6,
                 child: Text(
@@ -581,7 +373,7 @@ class SignUpScreen extends GetView<SignUpController> {
                     fontWeight: FontWeight.w900,
                     fontSize: 9,
                     overflow: TextOverflow.ellipsis,
-                    color: AppTheme.secondaryColor,
+                    color: AppTheme.darkColor,
                   ),
                   maxLines: 5,
                 ),

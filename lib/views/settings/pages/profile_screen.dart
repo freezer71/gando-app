@@ -4,6 +4,7 @@ import 'package:gando/models/profile_seller.dart';
 import 'package:gando/views/settings/pages/social_network_screen.dart';
 import 'package:get/get.dart';
 
+import '../../../widget/appBarWidget.dart';
 import '../../home/home.dart';
 import 'edit_profile_screen.dart';
 import 'my_contact_detail_screen.dart';
@@ -17,27 +18,11 @@ class ProfileScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppTheme.backgroundColor,
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        centerTitle: true,
-        automaticallyImplyLeading: true,
-        leading: IconButton(
-          onPressed: () {
-            Get.back();
-          },
-          icon: const Icon(Icons.arrow_back_ios_outlined),
-          color: AppTheme.darkColor,
-        ),
-        title: Text(
-          'Mon Profil',
-          style: Theme.of(context).textTheme.bodyText2!.copyWith(
-            fontWeight: FontWeight.w900,
-            fontSize: 18,
-            color: AppTheme.darkColor,
-            overflow: TextOverflow.ellipsis,
-          ),
-        ),
+      appBar: CustomAppBar(
+        leading: IconButton(onPressed: (){
+          Get.back();
+        }, icon: Icon(Icons.arrow_back_ios_outlined, color: AppTheme.darkColor,),),
+        title: 'Mon Profil',
       ),
       body: Container(
         child: ListView(
@@ -90,11 +75,11 @@ class ProfileScreen extends StatelessWidget {
                         ),
                         child: Container(
                           height: 20,
-                          width: Get.width / 2,
+                          width: Get.width / 3,
                           child: Center(
                             child: Text('Modifier le profil', style: Theme.of(context).textTheme.bodyText2!.copyWith(
                               fontWeight: FontWeight.w900,
-                              fontSize: 16,
+                              fontSize: 14,
                               color: AppTheme.light,
                             ),),
                           ),
@@ -139,43 +124,20 @@ class ProfileScreen extends StatelessWidget {
                   const SizedBox(
                     height: 120,
                   ),
-                  TextButton(
-                    onPressed: () => Get.back(),
-                    style: ButtonStyle(
-                      backgroundColor:
-                      MaterialStateProperty.resolveWith<Color>(
-                            (Set<MaterialState> states) =>
-                        states.contains(MaterialState.disabled)
-                            ? AppTheme.primaryColor
-                            : AppTheme.redColor,
-                      ),
-                      overlayColor:
-                      MaterialStateProperty.all(Colors.transparent),
-                      shape: MaterialStateProperty.all(
-                          RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(30.0),
-                          )),
-                    ),
-                    child: Container(
-                      height: 30,
-                      width: Get.width / 1.5,
-                      child: Center(
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text('Deconnexion', style: Theme.of(context).textTheme.bodyText2!.copyWith(
-                              fontWeight: FontWeight.w900,
-                              fontSize: 16,
-                              color: AppTheme.light,
-                            ),),
-                            const SizedBox(
-                              width: 20,
-                            ),
-                            Icon(Icons.exit_to_app_outlined,
-                                color: AppTheme.light.withOpacity(0.9)),
-                          ],
-                        ),
+                  Container(
+                    height: 30,
+                    width: Get.width / 1.5,
+                    child: Center(
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text('Deconnexion', style: Theme.of(context).textTheme.bodyText2!.copyWith(
+                            fontWeight: FontWeight.w900,
+                            fontSize: 16,
+                            color: AppTheme.redColor,
+                          ),),
+                        ],
                       ),
                     ),
                   ),

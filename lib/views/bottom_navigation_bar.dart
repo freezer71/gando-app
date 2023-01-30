@@ -98,7 +98,7 @@ class _BottomNavigationBarPage extends State<BottomNavigationBarPage> {
             : const MyGandoScreen(),
       ),
       bottomNavigationBar: SnakeNavigationBar.color(
-        height: 80,
+        height: 70,
         behaviour: snakeBarStyle,
         snakeShape: snakeShape,
         shape: bottomBarShape,

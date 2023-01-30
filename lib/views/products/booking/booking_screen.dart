@@ -9,6 +9,7 @@ import 'package:get/get.dart';
 import 'package:text_form_field_wrapper/text_form_field_wrapper.dart';
 
 import '../../../models/car.dart';
+import '../../../widget/appBarWidget.dart';
 import '../../../widget/customTextFormField.dart';
 import 'payment/payment_screen.dart';
 import 'success_booking_screen.dart';
@@ -52,23 +53,11 @@ class _BookingScreenState extends State<BookingScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppTheme.backgroundColor.withOpacity(0.9),
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        centerTitle: true,
-        automaticallyImplyLeading: true,
-        leading: InkWell(onTap: (){
+      appBar: CustomAppBar(
+        leading: IconButton(onPressed: (){
           Get.back();
-        },child: Icon(Icons.arrow_back, color: AppTheme.darkColor)),
-        title: Text(
-          'Réserver le véhicule'.toUpperCase(),
-          style: Theme.of(context).textTheme.bodyText2!.copyWith(
-                fontWeight: FontWeight.w900,
-                fontSize: 18,
-                color: AppTheme.darkColor,
-                overflow: TextOverflow.ellipsis,
-              ),
-        ),
+        }, icon: Icon(Icons.arrow_back_ios_outlined, color: AppTheme.darkColor,),),
+        title: 'Réserver le véhicule',
       ),
       body: Stack(
         children: [
@@ -895,14 +884,14 @@ class _BookingScreenState extends State<BookingScreen> {
                               .bodyText2!
                               .copyWith(
                                   color: AppTheme.darkColor,
-                                  fontSize: 18,
+                                  fontSize: 22,
                                   fontWeight: FontWeight.w500),
                           dropdownDecoration: BoxDecoration(
                               borderRadius:
-                                  const BorderRadius.all(Radius.circular(30)),
+                                  const BorderRadius.all(Radius.circular(50)),
                               color: AppTheme.light,
                               border: Border.all(
-                                  color: AppTheme.darkColor, width: 2)),
+                                  color: AppTheme.darkColor, width: 0.5)),
                           countrySearchPlaceholder: "Selectionner un Pays",
                           ///Disabled Dropdown box decoration to style your dropdown selector [OPTIONAL PARAMETER]  (USE with disabled dropdownDecoration)
                           disabledDropdownDecoration: BoxDecoration(

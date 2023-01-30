@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:gando/config/textstyle.dart';
 import 'package:get/get.dart';
 
+import '../../widget/appBarWidget.dart';
 import 'notification_screen.dart';
 import 'settings_account.dart';
 
@@ -12,30 +13,15 @@ class SettingsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppTheme.backgroundColor,
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        centerTitle: true,
-        automaticallyImplyLeading: false,
-        elevation: 0,
+      appBar: CustomAppBar(
         leading: IconButton(onPressed: (){
-          Get.back();
-        }, icon: Icon(Icons.arrow_back_ios_outlined, color: AppTheme.darkColor,),),
-        title: Text(
-          'Paramètres',
-          style: Theme.of(context).textTheme.bodyText2!.copyWith(
-              fontWeight: FontWeight.w900,
-              fontSize: 18,
-              overflow: TextOverflow.ellipsis,
-              color: AppTheme.darkColor
-          ),
-        ),
-      ),
+      Get.back();
+    }, icon: Icon(Icons.arrow_back_ios_outlined, color: AppTheme.darkColor,),),
+      title: 'Paramètres',
+    ),
       body: ListView(
         padding: const EdgeInsets.all(16),
         children: [
-          Divider(
-            color: AppTheme.darkColor,
-          ),
           _createListMenu('Parametres du Compte', SettingsAccountScreen(),
               Icons.account_circle_outlined),
           _createListMenu('Notifications', NotificationScreen(),

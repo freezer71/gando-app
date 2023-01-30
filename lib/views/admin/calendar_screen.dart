@@ -5,6 +5,8 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 
+import '../../widget/appBarWidget.dart';
+
 class CalendarScreen extends StatelessWidget {
   CalendarScreen({Key? key}) : super(key: key);
 
@@ -17,27 +19,11 @@ class CalendarScreen extends StatelessWidget {
     return Obx(() {
       return Scaffold(
         backgroundColor: AppTheme.backgroundColor,
-        appBar: AppBar(
-          centerTitle: true,
-          backgroundColor: Colors.transparent,
-          elevation: 0,
-          automaticallyImplyLeading: true,
+        appBar: CustomAppBar(
           leading: IconButton(onPressed: (){
             Get.back();
           }, icon: Icon(Icons.arrow_back_ios_outlined, color: AppTheme.darkColor,),),
-          title: Text(
-            'Calendrier',
-            style: Theme
-                .of(context)
-                .textTheme
-                .bodyText2!
-                .copyWith(
-              fontWeight: FontWeight.w600,
-              fontSize: 22,
-              overflow: TextOverflow.ellipsis,
-              color: AppTheme.darkColor,
-            ),
-          ),
+          title: 'Calendrier',
         ),
         body: Stack(
           children: [
@@ -46,19 +32,7 @@ class CalendarScreen extends StatelessWidget {
               padding: EdgeInsets.all(20),
               child: ListView(
                 scrollDirection: Axis.vertical,
-
                 children: [
-                  Text('Calendrier', style: Theme
-                      .of(context)
-                      .textTheme
-                      .bodyText2!
-                      .copyWith(
-                    fontWeight: FontWeight.w600,
-                    fontSize: 18,
-                    overflow: TextOverflow.ellipsis,
-                    color: AppTheme.darkColor,
-
-                  ), textAlign: TextAlign.center,),
                   Container(
                     padding: EdgeInsets.all(10),
                     margin: EdgeInsets.symmetric(vertical: 10),

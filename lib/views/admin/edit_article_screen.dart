@@ -16,6 +16,8 @@ import 'package:multi_select_flutter/util/multi_select_list_type.dart';
 import 'package:text_form_field_wrapper/text_form_field_wrapper.dart';
 
 import '../../models/Equipment.dart';
+import '../../widget/appBarWidget.dart';
+import '../../widget/customTextFormField.dart';
 
 class EditArticleScreen extends StatelessWidget {
   final Car article;
@@ -66,27 +68,11 @@ class EditArticleScreen extends StatelessWidget {
     return Obx(() {
       return Scaffold(
         backgroundColor: AppTheme.backgroundColor.withOpacity(0.9),
-        appBar: AppBar(
-          backgroundColor: Colors.transparent,
-          centerTitle: true,
-          elevation: 0,
-          automaticallyImplyLeading: true,
+        appBar: CustomAppBar(
           leading: IconButton(onPressed: (){
             Get.back();
           }, icon: Icon(Icons.arrow_back_ios_outlined, color: AppTheme.darkColor,),),
-          title: Text(
-            'Modifier mon annonce',
-            style: Theme
-                .of(context)
-                .textTheme
-                .bodyText2!
-                .copyWith(
-              fontWeight: FontWeight.w900,
-              fontSize: 18,
-              color: AppTheme.darkColor,
-              overflow: TextOverflow.ellipsis,
-            ),
-          ),
+          title: 'Modifier mon annonce',
         ),
         body: Container(
           child: ListView(
@@ -159,24 +145,13 @@ class EditArticleScreen extends StatelessWidget {
                         const SizedBox(
                           height: 10,
                         ),
-                        TextFormFieldWrapper(
-                          borderFocusedColor: AppTheme.primaryColor,
-                          formField: TextFormField(
-                            controller: drivingIdController,
-                            keyboardType: TextInputType.text,
-                            autofocus: false,
-                            style: TextStyle(color: AppTheme.darkColor),
-                            decoration: InputDecoration(
-                                filled: true,
-                                fillColor: AppTheme.light,
-                                border: InputBorder.none,
-                                hintText: 'Adresse du vehicule',
-                                hintStyle: TextStyle(
-                                    color:
-                                    AppTheme.darkColor.withOpacity(0.5))),
-                          ),
-                          // position: TextFormFieldPosition.alone,
-                        ),
+                        CustomTextFormField(
+                          controller: drivingIdController,
+                          keyboardType: TextInputType.text,
+                          autofocus: false,
+                          enabled: true,
+                          formatter: [], validator: (String) {  }, hintText: '', onChanged: (String ) {  }, onSaved: (String ) {  },
+                        )
                       ],
                     ),
                   ),
@@ -284,9 +259,30 @@ class EditArticleScreen extends StatelessWidget {
           overflow: TextOverflow.visible,
           color: AppTheme.darkColor.withOpacity(0.5),
         ),
+        enabledBorder: OutlineInputBorder(
+            borderSide: BorderSide(
+              color: AppTheme.darkColor,
+              width: 0.5,
+            ),
+          borderRadius: BorderRadius.all(Radius.circular(30.0)),
+          gapPadding:2
+        ),
+        focusedBorder: OutlineInputBorder(
+            borderSide: BorderSide(
+              color: AppTheme.darkColor,
+              width: 1,
+            ),
+            borderRadius: BorderRadius.all(Radius.circular(30.0)),
+            gapPadding:2
+        ),
         labelText: 'Description du véhicule',
-        border: const OutlineInputBorder(
-          borderRadius: BorderRadius.all(Radius.circular(10.0)),
+        border:  OutlineInputBorder(
+          borderSide: BorderSide(
+            color: AppTheme.darkColor,
+            width: 0.5,
+          ),
+          borderRadius: BorderRadius.all(Radius.circular(30.0)),
+            gapPadding: 2
         ),
       ),
       validator: (value) {

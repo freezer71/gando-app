@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:csc_picker/csc_picker.dart';
 import 'package:datepicker_dropdown/datepicker_dropdown.dart';
 import 'package:flutter/material.dart';
@@ -9,6 +11,7 @@ import 'package:get/get.dart';
 import 'package:text_form_field_wrapper/text_form_field_wrapper.dart';
 
 import '../../../../models/car.dart';
+import '../../../../widget/appBarWidget.dart';
 import '../../../../widget/customTextFormField.dart';
 import '../../../products/booking/contract/contract_step_2.dart';
 import '../../../products/booking/success_booking_screen.dart';
@@ -53,31 +56,25 @@ class _DemandBookingScreenState extends State<DemandBookingScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppTheme.backgroundColor.withOpacity(0.9),
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        centerTitle: true,
-        automaticallyImplyLeading: true,
-        leading: InkWell(
-          onTap: () {
-            Get.back();
-          },
-          child: Icon(
-            Icons.arrow_back,
-            color: AppTheme.darkColor,
-          ),
-        ),
-        actions: [
-          const Padding(
-            padding: EdgeInsets.only(right: 18.0),
-            child: SizedBox(
-              height: 40,
-              width: 40,
+      appBar: CustomAppBar(
+        leading: Stack(
+          clipBehavior: Clip.none,
+          children: [
+            Positioned(
+              left: 0,
+              child: IconButton(onPressed: (){
+                Get.back();
+              }, icon: Icon(Icons.arrow_back_ios_outlined, color: AppTheme.darkColor,),),),
+            const Positioned(
+              right: -40,
+              top: 8,
               child: CircleAvatar(
                 backgroundImage: AssetImage('assets/images/av.png'),
-              ),
-            ),
-          ),
+              ),)
+          ],
+        ),
+        title: 'Laure Manida',
+        action: [
           InkWell(
             onTap: (){
               Get.bottomSheet(_buildBottomSheet(car));
@@ -87,22 +84,13 @@ class _DemandBookingScreenState extends State<DemandBookingScreen> {
               height: 5,
               margin: const EdgeInsets.only(top: 8, bottom: 8, right: 18),
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(8),
-                color: AppTheme.light.withOpacity(0.4)
+                  borderRadius: BorderRadius.circular(8),
+                  color: AppTheme.light.withOpacity(0.4)
               ),
               child: Center(child: Icon(Icons.more_vert_outlined, color: AppTheme.darkColor,)),
             ),
           ),
         ],
-        title: SizedBox(
-          width: Get.width,
-          child: Text('Laure Manida',
-              style: Theme.of(context).textTheme.bodyText2!.copyWith(
-                  fontWeight: FontWeight.w900,
-                  fontSize: 18,
-                  overflow: TextOverflow.ellipsis,
-                  color: AppTheme.darkColor), textAlign: TextAlign.center,),
-        ),
       ),
       body: Stack(
         children: [
@@ -264,8 +252,11 @@ class _DemandBookingScreenState extends State<DemandBookingScreen> {
       left: 0,
       right: 0,
       child: Container(
-        color: Colors.white,
-        height: 100,
+        decoration: BoxDecoration(
+          borderRadius: const BorderRadius.only(topLeft: Radius.circular(30), topRight: Radius.circular(30)),
+          color: AppTheme.light,
+        ),
+        height: Platform.isAndroid ? 70 : 90,
         padding: const EdgeInsets.symmetric(horizontal: 20),
         child: _buildBodyButtons(),
       ),

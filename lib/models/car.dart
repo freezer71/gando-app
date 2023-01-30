@@ -1,14 +1,8 @@
 import 'package:latlong2/latlong.dart';
+import 'package:json_annotation/json_annotation.dart';
 
+@JsonSerializable()
 class Car {
-  String image;
-  int price;
-  String brand;
-  String model;
-  String co2;
-  String fuelCons;
-  LatLng? latLng;
-
   Car(
     this.image,
     this.price,
@@ -18,4 +12,14 @@ class Car {
     this.fuelCons,
     this.latLng,
   );
+
+  String image;
+  int price;
+  String brand;
+  String model;
+  String co2;
+  String fuelCons;
+  LatLng? latLng;
+
+
 }

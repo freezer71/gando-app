@@ -18,22 +18,22 @@ class DemandTabScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 30, horizontal: 15),
-      child: Center(
-        child: Column(
-          children: [
-            Text(
-              'Locations à venir',
-              style: Theme.of(context).textTheme.bodyText2!.copyWith(
-                  fontWeight: FontWeight.w900,
-                  fontSize: 22,
-                  color: AppTheme.darkColor),
-            ),
-            const SizedBox(
-              height: 20,
-            ),
-            ..._buildBody(context),
-          ],
-        ),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            'Locations à venir',
+            style: Theme.of(context).textTheme.bodyText2!.copyWith(
+                fontWeight: FontWeight.w900,
+                fontSize: 22,
+                color: AppTheme.darkColor),
+          ),
+          const SizedBox(
+            height: 20,
+          ),
+          ..._buildBody(context),
+        ],
       ),
     );
   }

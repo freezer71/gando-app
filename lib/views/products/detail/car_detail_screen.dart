@@ -50,7 +50,7 @@ class CarDetailScreen extends StatelessWidget {
                 mapController = controller;
               },
             ),*/
-            MyAppbar(),
+            const MyAppbar(),
             Positioned(
               left: 24,
               right: 24,

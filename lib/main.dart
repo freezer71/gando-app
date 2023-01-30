@@ -7,6 +7,7 @@ import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:gando/config/textstyle.dart';
 import 'package:gando/navigation.dart';
 import 'package:gando/services/chat/chat_service.dart';
+import 'package:gando/services/onboarding_services.dart';
 import 'package:gando/translations/locale_string.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
@@ -15,12 +16,11 @@ import 'firebase_options.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await GetStorage.init();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-
-  await Get.putAsync(() => ChatService().init());
-  await GetStorage.init();
+  // await Get.putAsync(() => ChatService().init());
 
   SystemChrome.setSystemUIOverlayStyle(
     Platform.isIOS
@@ -56,6 +56,8 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   final box = GetStorage();
 
+  final controller = Get.put(OnboardingServices());
+
   setCustomeTheme(int index) {
     if (index == 6) {
       setState(() {
@@ -66,7 +68,13 @@ class _MyAppState extends State<MyApp> {
         AppTheme.isLightTheme = false;
       });
     }
+
     box.write('isLightMode', AppTheme.isLightTheme);
+  }
+
+  @override
+  void initState() {
+    super.initState();
   }
 
   @override
@@ -92,8 +100,8 @@ class _MyAppState extends State<MyApp> {
       debugShowCheckedModeBanner: false,
       getPages: AppPages.appPages,
       // I add my list of pages here
-      initialRoute: AppPages
-          .INITIAL, // This is the page that should be rendered on app launch
+      initialRoute: controller.isFirst.value ? AppPages
+          .INITIAL : Routes.welcome, // This is the page that should be rendered on app launch
     );
   }
 }

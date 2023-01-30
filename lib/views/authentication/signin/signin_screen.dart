@@ -151,7 +151,7 @@ class SignInScreen extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 10),
         child: Center(
           child: Text(
-            'Connexion',
+            'Connexion'.toUpperCase(),
             style: Theme.of(context).textTheme.bodyText2!.copyWith(
                   fontWeight: FontWeight.w900,
                   fontSize: 16,
