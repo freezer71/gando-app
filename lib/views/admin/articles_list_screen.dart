@@ -7,8 +7,8 @@ import 'package:latlong2/latlong.dart';
 
 import '../../config/constants.dart';
 import '../../generated/assets.dart';
-import '../../models/car.dart';
-import '../../models/profile_seller.dart';
+import '../../models/Car.dart';
+import '../../models/ProfileSeller.dart';
 import '../../widget/appBarWidget.dart';
 import 'components/add_articles_stepper.dart';
 import 'edit_article_screen.dart';

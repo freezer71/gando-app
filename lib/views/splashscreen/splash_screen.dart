@@ -1,7 +1,9 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:get/route_manager.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:provider/single_child_widget.dart';
 
 import '../../navigation.dart';
@@ -21,12 +23,27 @@ class _SplashScreenState extends State<SplashScreen>
   late AnimationController controller;
   late Animation<double> animation;
 
+  late bool isViewed;
+  final box = GetStorage();
+
   @override
   void initState() {
     super.initState();
     //like fetching login data in serveur or check token validite
-    Future.delayed(const Duration(seconds: 5), () {
-      Get.offAllNamed(Routes.preLogin);
+    Future<void>.delayed(const Duration(milliseconds: 3000), () {
+     try{
+       // box.erase();
+       if(box.hasData('onboarding')){
+         isViewed = box.read('onboarding');
+       }else{
+         box.writeIfNull('onboarding', false);
+         isViewed = false;
+       }
+       // print("ONBOARD ++++++++========${box.read('onboarding')} ----- $isViewed");
+       isViewed ? Get.offAllNamed(Routes.preLogin) : Get.offAllNamed(Routes.welcome) ;
+     }catch(e){
+       printError(info: '$e');
+     }
     });
     Future.delayed(const Duration(milliseconds: 1000), () {
       setState(() {

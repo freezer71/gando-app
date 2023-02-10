@@ -5,19 +5,28 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:gando/config/textstyle.dart';
 import 'package:get/get.dart';
 
+import '../../../controllers/authController/social/social_auth_controller.dart';
 import '../../../navigation.dart';
 import '../../../widget/signInWith/signInWith.dart';
 
-class PreLogin extends StatefulWidget {
-  const PreLogin({super.key});
 
-  @override
-  State<PreLogin> createState() => _PreLoginState();
-}
+class PreLogin extends GetView<SocialAuthController> {
+  PreLogin({Key? key}) : super(key: key);
 
-class _PreLoginState extends State<PreLogin> {
-  void onServiseClick(String serviseName) {
-    print(serviseName);
+  final controller = Get.put(SocialAuthController());
+
+  void onServiceClick(String serviceName) {
+    // signInWithGoogle();
+    switch (serviceName) {
+      case 'google':
+        controller.signInWithGoogle();
+        break;
+      case 'facebook':
+        break;
+      case 'apple':
+        break;
+    }
+    printInfo(info: serviceName);
   }
 
   @override
@@ -71,30 +80,30 @@ class _PreLoginState extends State<PreLogin> {
                   SignInWith(
                     const Color(0xFFFF6B6B),
                     FontAwesomeIcons.google,
-                    "Google",
+                    "google",
                     Get.size,
-                    onServiseClick,
+                    onServiceClick,
                   ), //google sigIn
-                  const SizedBox(
-                    height: 15,
-                  ),
-                  SignInWith(
-                    const Color(0xFF039BE5),
-                    FontAwesomeIcons.facebookF,
-                    "Facebook",
-                    Get.size,
-                    onServiseClick,
-                  ), //facebook sigIn
-                  const SizedBox(
-                    height: 15,
-                  ),
-                  SignInWith(
-                    const Color(0xFF000000),
-                    FontAwesomeIcons.apple,
-                    "Apple",
-                    Get.size,
-                    onServiseClick,
-                  ),
+                  // const SizedBox(
+                  //   height: 15,
+                  // ),
+                  // SignInWith(
+                  //   const Color(0xFF039BE5),
+                  //   FontAwesomeIcons.facebookF,
+                  //   "Facebook",
+                  //   Get.size,
+                  //   onServiseClick,
+                  // ), //facebook sigIn
+                  // const SizedBox(
+                  //   height: 15,
+                  // ),
+                  // SignInWith(
+                  //   const Color(0xFF000000),
+                  //   FontAwesomeIcons.apple,
+                  //   "Apple",
+                  //   Get.size,
+                  //   onServiseClick,
+                  // ),
                 ],
               ),
               SizedBox(

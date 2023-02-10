@@ -11,7 +11,7 @@ import 'package:gando/config/config.dart';
 import 'package:gando/config/constants.dart';
 import 'package:gando/config/textstyle.dart';
 import 'package:gando/helpers/global_function.dart';
-import 'package:gando/models/car.dart';
+import 'package:gando/models/Car.dart';
 import 'package:gando/views/home/components/home_card.dart';
 import 'package:gando/views/home/filters/big_filter_bottomsheet.dart';
 import 'package:gando/views/home/filters/date_filter_range.dart';

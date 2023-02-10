@@ -1,7 +1,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:gando/config/constants.dart';
-import 'package:gando/models/car.dart';
+import 'package:gando/models/Car.dart';
 import 'package:gando/views/products/detail/car_detail_screen.dart';
 import 'package:gando/views/products/detail/components/car_detail.dart';
 import 'package:gando/views/products/detail/widget/car_detail_infomation.dart';

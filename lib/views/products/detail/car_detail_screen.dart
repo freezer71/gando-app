@@ -3,7 +3,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:gando/config/config.dart';
-import 'package:gando/models/car.dart';
+import 'package:gando/models/Car.dart';
 import 'package:gando/views/products/detail/widget/car_detail_infomation.dart';
 import 'package:gando/views/products/detail/widget/my_appbar.dart';
 

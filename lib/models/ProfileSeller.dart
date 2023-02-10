@@ -1,4 +1,4 @@
-import 'car.dart';
+import 'Car.dart';
 
 class ProfileSeller {
   String name;

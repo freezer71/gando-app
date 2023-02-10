@@ -167,11 +167,10 @@ class ContractStep3 extends StatelessWidget {
                 activeColor: AppTheme.primaryColor,
                 inactiveColor: AppTheme.primaryColor,
                 thumbIcon: Container(
-
                   width: 20,
                   height: 20,
                   decoration: BoxDecoration(
-                      color: AppTheme.redColor,
+                    color: AppTheme.redColor,
                     shape: BoxShape.circle
                   ),
                 ),
@@ -180,7 +179,7 @@ class ContractStep3 extends StatelessWidget {
                 value: c.carState.value,
                 interval: 10,
                 stepSize: 10,
-                showTicks: true,
+                showTicks: false,
                 showLabels: false,
                 enableTooltip: true,
                 tooltipTextFormatterCallback: (dynamic actualValue, String formattedText) {

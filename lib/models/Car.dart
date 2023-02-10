@@ -1,6 +1,8 @@
 import 'package:latlong2/latlong.dart';
 import 'package:json_annotation/json_annotation.dart';
 
+// part 'Car.g.dart';
+
 @JsonSerializable()
 class Car {
   Car(
@@ -20,6 +22,4 @@ class Car {
   String co2;
   String fuelCons;
   LatLng? latLng;
-
-
 }

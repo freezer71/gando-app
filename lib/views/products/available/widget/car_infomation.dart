@@ -2,7 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:gando/config/constants.dart';
 import 'package:gando/config/textstyle.dart';
-import 'package:gando/models/car.dart';
+import 'package:gando/models/Car.dart';
 import 'package:gando/widget/attribute.dart';
 
 class CarInfomation extends StatelessWidget {

@@ -25,7 +25,7 @@ class AppPages {
   static final appPages = [
     GetPage(
       name: Routes.preLogin,
-      page: () => const PreLogin(),
+      page: () => PreLogin(),
       // binding: SplashScreenBinding(),
     ),
     GetPage(
@@ -78,7 +78,7 @@ class AppPages {
     ),
     GetPage(
       name: Routes.signUp,
-      page: () => const SignUpScreen(),
+      page: () => SignUpScreen(),
     ),
     // GetPage(
     //   name: Routes.profile,

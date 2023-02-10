@@ -3,7 +3,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_onboarding_slider/flutter_onboarding_slider.dart';
 import 'package:gando/generated/assets.dart';
+import 'package:get/get.dart';
 import 'package:get/route_manager.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:lottie/lottie.dart';
 
 import '../config/textstyle.dart';
@@ -31,8 +33,11 @@ class OnboardingScreen extends StatelessWidget {
             fontWeight: FontWeight.w900),
         // skipTextButton: Text('Suivant'),
         // trailing: Text('Login'),
-        onFinish: (){
-          return Get.offNamed(Routes.preLogin);
+        onFinish: () async {
+          await GetStorage().write('onboarding', true).then((value) {
+            printInfo(info: 'ONBOARDING +++++++++++============----${GetStorage().read('onboarding')}');
+            return Get.offNamed(Routes.preLogin, arguments: {'isFirstOpen': true});
+          });
         },
         background: [
           Container(

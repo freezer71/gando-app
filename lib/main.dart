@@ -14,12 +14,14 @@ import 'package:get_storage/get_storage.dart';
 
 import 'firebase_options.dart';
 
+
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await GetStorage.init();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+
   // await Get.putAsync(() => ChatService().init());
 
   SystemChrome.setSystemUIOverlayStyle(
@@ -56,7 +58,7 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   final box = GetStorage();
 
-  final controller = Get.put(OnboardingServices());
+  // final controller = Get.put(OnboardingServices());
 
   setCustomeTheme(int index) {
     if (index == 6) {
@@ -100,8 +102,8 @@ class _MyAppState extends State<MyApp> {
       debugShowCheckedModeBanner: false,
       getPages: AppPages.appPages,
       // I add my list of pages here
-      initialRoute: controller.isFirst.value ? AppPages
-          .INITIAL : Routes.welcome, // This is the page that should be rendered on app launch
+      initialRoute: AppPages
+          .INITIAL, // This is the page that should be rendered on app launch
     );
   }
 }

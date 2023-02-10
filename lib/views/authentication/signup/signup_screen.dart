@@ -143,10 +143,14 @@ class SignUpScreen extends GetView<SignUpController> {
 
   Widget submitButton(BuildContext context) {
     return TextButton(
-      onPressed: () => Get.toNamed(Routes.home),
+      onPressed: () {
+        if(controller.formKey.currentState!.validate()){
+          controller.register();
+        }
+      },
       style: ButtonStyle(
         backgroundColor: MaterialStateProperty.resolveWith<Color>(
-              (Set<MaterialState> states) => AppTheme.primaryColor,
+              (Set<MaterialState> states) => controller.isLoading.value ? AppTheme.primaryColor.withOpacity(0.5) : AppTheme.primaryColor,
         ),
         overlayColor: MaterialStateProperty.all(Colors.transparent),
         shape: MaterialStateProperty.all(RoundedRectangleBorder(
@@ -158,7 +162,7 @@ class SignUpScreen extends GetView<SignUpController> {
         width: Get.width / 1.3,
         padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 10),
         child: Center(
-          child: Text(
+          child: !controller.isLoading.value ? Text(
             'Créer'.toUpperCase(),
             style: Theme
                 .of(context)
@@ -169,219 +173,225 @@ class SignUpScreen extends GetView<SignUpController> {
               fontSize: 16,
               color: AppTheme.backgroundColor,
             ),
-          ),
+          ) : const CircularProgressIndicator.adaptive()
         ),
       ),
     );
   }
 
   Widget buildSignUpInput(BuildContext context) {
-    return Column(
-      children: [
-        CustomTextFormField(
-          key: Get.keys[0],
-          controller: controller.lastNameController.value,
-          keyboardType: TextInputType.text,
-          hintText: 'Votre prénom',
-          prefixIcon: const Padding(
-            padding: EdgeInsets.only(right: 18.0, left: 18),
-            child: Icon(Icons.person),
-          ),
-          enabled: true,
-          validator: (value) {
-            if (!value!.isAlphabetOnly) {
-              return "Prenom invalide";
-            }
-            return null;
-          },
-          autofocus: false,
-          formatter: [
-            LengthLimitingTextInputFormatter(60),
-            FilteringTextInputFormatter.singleLineFormatter
-          ],
-          // default
-          onSaved: (p) {
-            print('saved $p');
-          },
-          // default null
-          onChanged: (p) {
-            // if (p.validateAmount) {
-            //   topUpController.buttonDisabled.value = false;
-            // } else {
-            //   topUpController.buttonDisabled.value = true;
-            // }
-          }, // default null
-          // ... + other textfield params
-        ),
-        const SizedBox(
-          height: 10,
-        ),
-        CustomTextFormField(
-          key: Get.keys[1],
-          controller: controller.nameController.value,
-          keyboardType: TextInputType.text,
-          hintText: 'Votre nom',
-          enabled: true,
-          prefixIcon: const Padding(
-            padding: EdgeInsets.only(right: 18.0, left: 18),
-            child: Icon(Icons.person),
-          ),
-          validator: (value) {
-            if (!value!.isAlphabetOnly) {
-              return "Nom invalide";
-              // return 'amount Is not valid';
-            }
-            return null;
-          },
-          autofocus: false,
-          formatter: [
-            // FilteringTextInputFormatter.deny(
-            //   RegExp(r"^((5000)|([0-4]?[0-9]{1,3}))$"),
-            // ),
-            LengthLimitingTextInputFormatter(60),
-            FilteringTextInputFormatter.singleLineFormatter
-          ],
-          // default
-          onSaved: (p) {
-            print('saved $p');
-          },
-          // default null
-          onChanged: (p) {
-            // if (p.validateAmount) {
-            //   topUpController.buttonDisabled.value = false;
-            // } else {
-            //   topUpController.buttonDisabled.value = true;
-            // }
-          }, // default null
-          // ... + other textfield params
-        ),
-        const SizedBox(
-          height: 10,
-        ),
-        CustomTextFormField(
-          context: context,
-          key: Get.keys[2],
-          controller: controller.passwordController.value,
-          obscureText: true,
-          enabled: true,
-          hintText: "Votre Email",
-          keyboardType: TextInputType.emailAddress,
-          prefixIcon: const Padding(
-            padding: EdgeInsets.only(right: 18.0, left: 18),
-            child: Icon(Icons.alternate_email),
-          ),
-          validator: (value) {
-            if (!value!.isAlphabetOnly) {
-              return "Email invalide";
-              // return 'amount Is not valid';
-            }
-            return null;
-          },
-          formatter: [
-            LengthLimitingTextInputFormatter(60),
-            FilteringTextInputFormatter.singleLineFormatter
-          ],
-          // default
-          onSaved: (p) {
-            print('saved $p');
-          },
-          // default null
-          onChanged: (p) {
-            // if (p.validateAmount) {
-            //   topUpController.buttonDisabled.value = false;
-            // } else {
-            //   topUpController.buttonDisabled.value = true;
-            // }
-          }, shape: 30.0, // default null
-          // ... + other textfield params
-        ),
-        const SizedBox(
-          height: 10,
-        ),
-        CustomTextFormField(
-          context: context,
-          key: Get.keys[3],
-          controller: controller.passwordController.value,
-          obscureText: true,
-          enabled: true,
-          hintText: 'Mot de passe',
-          keyboardType: TextInputType.text,
-          prefixIcon: const Padding(
-            padding: EdgeInsets.only(right: 18.0, left: 18),
-            child: Icon(Icons.lock),
-          ),
-          validator: (value) {
-            if (!value!.isAlphabetOnly) {
-              return "Mot de passe invalide";
-              // return 'amount Is not valid';
-            }
-            return null;
-          },
-          formatter: [
-            LengthLimitingTextInputFormatter(60),
-            FilteringTextInputFormatter.singleLineFormatter
-          ],
-          // default
-          onSaved: (p) {
-            print('saved $p');
-          },
-          // default null
-          onChanged: (p) {
-            // if (p.validateAmount) {
-            //   topUpController.buttonDisabled.value = false;
-            // } else {
-            //   topUpController.buttonDisabled.value = true;
-            // }
-          }, shape: 30.0, // default null
-          // ... + other textfield params
-        ),
-        const SizedBox(
-          height: 15,
-        ),
-        Align(
-          alignment: Alignment.center,
-          child: Row(
-            children: [
-              Transform.scale(
-                scale: 1.5,
-                child: Checkbox(
-                    fillColor: MaterialStateProperty.resolveWith<Color>(
-                          (Set<MaterialState> states) =>
-                      states.contains(MaterialState.disabled)
-                          ? AppTheme.darkColor
-                          : AppTheme.primaryColor,
-                    ),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(5)
-                    ),
-
-                    checkColor: AppTheme.darkColor,
-                    value: controller.terms.value,
-                    onChanged: (value) {
-                      controller.terms.value = !controller.terms.value;
-                    }),
-              ),
-              Container(
-                width: Get.width/ 1.6,
-                child: Text(
-                  'En créant un compte, Je reconnais voir pris connaissance des CGU de Gando, de la Politique de Confidentialité et de la chartesur les Cookies et je les accepte.',
-                  style: Theme
-                      .of(context)
-                      .textTheme
-                      .bodyText2!
-                      .copyWith(
-                    fontWeight: FontWeight.w900,
-                    fontSize: 9,
-                    overflow: TextOverflow.ellipsis,
-                    color: AppTheme.darkColor,
-                  ),
-                  maxLines: 5,
-                ),
-              ),
+    return Form(
+      key: controller.formKey,
+      child: Column(
+        children: [
+          CustomTextFormField(
+            key: Get.keys[0],
+            controller: controller.lastNameController.value,
+            keyboardType: TextInputType.text,
+            hintText: 'Votre prénom',
+            prefixIcon: const Padding(
+              padding: EdgeInsets.only(right: 18.0, left: 18),
+              child: Icon(Icons.person),
+            ),
+            enabled: true,
+            validator: (value) {
+              if (!value!.isAlphabetOnly) {
+                return "Prenom invalide";
+              }
+              return null;
+            },
+            autofocus: false,
+            formatter: [
+              LengthLimitingTextInputFormatter(60),
+              FilteringTextInputFormatter.singleLineFormatter
             ],
+            // default
+            onSaved: (p) {
+              print('saved $p');
+            },
+            // default null
+            onChanged: (p) {
+              // if (p.validateAmount) {
+              //   topUpController.buttonDisabled.value = false;
+              // } else {
+              //   topUpController.buttonDisabled.value = true;
+              // }
+            }, // default null
+            // ... + other textfield params
           ),
-        ),
-      ],
+          const SizedBox(
+            height: 10,
+          ),
+          CustomTextFormField(
+            key: Get.keys[1],
+            controller: controller.nameController.value,
+            keyboardType: TextInputType.text,
+            hintText: 'Votre nom',
+            enabled: true,
+            prefixIcon: const Padding(
+              padding: EdgeInsets.only(right: 18.0, left: 18),
+              child: Icon(Icons.person),
+            ),
+            validator: (value) {
+              if (!value!.isAlphabetOnly) {
+                return "Nom invalide";
+                // return 'amount Is not valid';
+              }
+              return null;
+            },
+            autofocus: false,
+            formatter: [
+              // FilteringTextInputFormatter.deny(
+              //   RegExp(r"^((5000)|([0-4]?[0-9]{1,3}))$"),
+              // ),
+              LengthLimitingTextInputFormatter(60),
+              FilteringTextInputFormatter.singleLineFormatter
+            ],
+            // default
+            onSaved: (p) {
+              print('saved $p');
+            },
+            // default null
+            onChanged: (p) {
+              // if (p.validateAmount) {
+              //   topUpController.buttonDisabled.value = false;
+              // } else {
+              //   topUpController.buttonDisabled.value = true;
+              // }
+            }, // default null
+            // ... + other textfield params
+          ),
+          const SizedBox(
+            height: 10,
+          ),
+          CustomTextFormField(
+            context: context,
+            key: Get.keys[2],
+            controller: controller.emailController.value,
+            obscureText: false,
+            enabled: true,
+            hintText: "Votre Email",
+            keyboardType: TextInputType.emailAddress,
+            prefixIcon: const Padding(
+              padding: EdgeInsets.only(right: 18.0, left: 18),
+              child: Icon(Icons.alternate_email),
+            ),
+            validator: (value) {
+              if (!value!.isEmail) {
+                return "Email invalide";
+                // return 'amount Is not valid';
+              }
+              return null;
+            },
+            formatter: [
+              LengthLimitingTextInputFormatter(60),
+              FilteringTextInputFormatter.singleLineFormatter
+            ],
+            // default
+            onSaved: (p) {
+              print('saved $p');
+            },
+            // default null
+            onChanged: (p) {
+              // if (p.validateAmount) {
+              //   topUpController.buttonDisabled.value = false;
+              // } else {
+              //   topUpController.buttonDisabled.value = true;
+              // }
+            }, shape: 30.0, // default null
+            // ... + other textfield params
+          ),
+          const SizedBox(
+            height: 10,
+          ),
+          CustomTextFormField(
+            context: context,
+            key: Get.keys[3],
+            controller: controller.passwordController.value,
+            obscureText: true,
+            enabled: true,
+            hintText: 'Mot de passe',
+            keyboardType: TextInputType.text,
+            prefixIcon: const Padding(
+              padding: EdgeInsets.only(right: 18.0, left: 18),
+              child: Icon(Icons.lock),
+            ),
+            validator: (value) {
+              if (value!.isEmpty) {
+                if(value.length < 8){
+                  return "Mot de passe doit être supérieur à 8 caractères";
+                }
+                return "Mot de passe invalide";
+                // return 'amount Is not valid';
+              }
+              return null;
+            },
+            formatter: [
+              LengthLimitingTextInputFormatter(60),
+              FilteringTextInputFormatter.singleLineFormatter
+            ],
+            // default
+            onSaved: (p) {
+              print('saved $p');
+            },
+            // default null
+            onChanged: (p) {
+              // if (p.validateAmount) {
+              //   topUpController.buttonDisabled.value = false;
+              // } else {
+              //   topUpController.buttonDisabled.value = true;
+              // }
+            }, shape: 30.0, // default null
+            // ... + other textfield params
+          ),
+          const SizedBox(
+            height: 15,
+          ),
+          Align(
+            alignment: Alignment.center,
+            child: Row(
+              children: [
+                Transform.scale(
+                  scale: 1.5,
+                  child: Checkbox(
+                      fillColor: MaterialStateProperty.resolveWith<Color>(
+                            (Set<MaterialState> states) =>
+                        states.contains(MaterialState.disabled)
+                            ? AppTheme.darkColor
+                            : AppTheme.primaryColor,
+                      ),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(5)
+                      ),
+
+                      checkColor: AppTheme.darkColor,
+                      value: controller.terms.value,
+                      onChanged: (value) {
+                        controller.terms.value = !controller.terms.value;
+                      }),
+                ),
+                Container(
+                  width: Get.width/ 1.6,
+                  child: Text(
+                    'En créant un compte, Je reconnais voir pris connaissance des CGU de Gando, de la Politique de Confidentialité et de la chartesur les Cookies et je les accepte.',
+                    style: Theme
+                        .of(context)
+                        .textTheme
+                        .bodyText2!
+                        .copyWith(
+                      fontWeight: FontWeight.w900,
+                      fontSize: 9,
+                      overflow: TextOverflow.ellipsis,
+                      color: AppTheme.darkColor,
+                    ),
+                    maxLines: 5,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

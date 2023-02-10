@@ -14,7 +14,7 @@ class ApiProvider {
   static var client = http.Client();
   final apiToken = CancelToken();
 
-  var token;
+  var token, finalUrl;
 
   _setHeaders() => {
     'Content-type': 'application/json',
@@ -25,6 +25,7 @@ class ApiProvider {
   Future<Response> dioConnect(url, data) async {
     print('url : $url');
     print('postData : $data');
+    finalUrl = '$API_URL$url';
     try {
       dio.options.headers['content-Type'] = 'application/x-www-form-urlencoded';
       dio.options.headers['accept'] = 'application/json';
@@ -33,7 +34,7 @@ class ApiProvider {
       dio.options.connectTimeout = 30000; //5s
       dio.options.receiveTimeout = 25000;
 
-      return await dio.post(url, data: data, cancelToken: apiToken);
+      return await dio.post(finalUrl, data: data, cancelToken: apiToken);
     } on DioError catch (e) {
 
       if (e.type == DioErrorType.response) {

@@ -56,8 +56,8 @@ class CustomTextFormField extends StatelessWidget {
           .textTheme
           .bodyText2!
           .copyWith(
-        fontWeight: FontWeight.w900,
-        fontSize: 18,
+        fontWeight: FontWeight.w500,
+        fontSize: 16,
         overflow: TextOverflow.ellipsis,
         color: HexColor(AppTheme.primaryColorString!),
       ),

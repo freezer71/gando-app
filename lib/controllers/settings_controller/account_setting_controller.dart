@@ -3,8 +3,16 @@
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 
 class AccountSettingController extends GetxController{
+
+  static AccountSettingController get to => Get.find();
+
+  final RxBool isLoading = false.obs;
+  final RxBool isFirstOpen = false.obs;
+
+  final box = GetStorage();
 
   Rx<TextEditingController> oldEmailController = TextEditingController().obs;
   Rx<TextEditingController> newEmailController = TextEditingController().obs;
@@ -52,4 +60,11 @@ class AccountSettingController extends GetxController{
   Rx<TextEditingController> socialInstagram = TextEditingController().obs;
   Rx<TextEditingController> socialTwitter = TextEditingController().obs;
   Rx<TextEditingController> socialLinkedin = TextEditingController().obs;
+
+
+
+  @override
+  void onReady() {
+    super.onReady();
+  }
 }

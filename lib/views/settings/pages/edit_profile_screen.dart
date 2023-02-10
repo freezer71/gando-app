@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gando/config/textstyle.dart';
 import 'package:gando/controllers/settings_controller/account_setting_controller.dart';
-import 'package:gando/models/profile_seller.dart';
+import 'package:gando/models/ProfileSeller.dart';
 import 'package:gando/widget/customTextFormField.dart';
 import 'package:get/get.dart';
 

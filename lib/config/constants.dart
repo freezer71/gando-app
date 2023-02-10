@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gando/generated/assets.dart';
 import 'package:latlong2/latlong.dart';
-import '../models/car.dart';
+import '../models/Car.dart';
 
 const String TOKEN_MAP = 'pk.eyJ1IjoiY2F2aWFyb3MiLCJhIjoiY2xjMW90MWx3MTFhajNwbXpmaXlreHI5diJ9.mPwJumFFjJCjq45E-17_QQ';
 const String MAP_URL_LIGHT = 'https://api.mapbox.com/styles/v1/caviaros/clc1ppt3l000714p9rtrajii2/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1IjoiY2F2aWFyb3MiLCJhIjoiY2xjMW90MWx3MTFhajNwbXpmaXlreHI5diJ9.mPwJumFFjJCjq45E-17_QQ';
@@ -10,8 +10,9 @@ const String MAP_STYLE = 'mapbox://styles/caviaros/clc1oz5yc001p14ox3uvw1ynu';
 
 
 //API PROVIDER ----------------------
-const String API_URL = 'http://api.mygando.com';
-const String APP_URL = 'http://mygando.com';
+const String APP_URL ='https://mygando.com';
+const String DEV_URL = 'https://api.mygando.com';
+const String API_URL = 'https://dev.mygando.com';
 
 const int STATUS_OK = 200;
 const int STATUS_BAD_REQUEST = 400;

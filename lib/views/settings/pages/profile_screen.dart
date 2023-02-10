@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:gando/config/textstyle.dart';
-import 'package:gando/models/profile_seller.dart';
+import 'package:gando/models/ProfileSeller.dart';
 import 'package:gando/views/settings/pages/social_network_screen.dart';
 import 'package:get/get.dart';
 
+import '../../../services/auth/auth_services.dart';
 import '../../../widget/appBarWidget.dart';
 import '../../home/home.dart';
 import 'edit_profile_screen.dart';
 import 'my_contact_detail_screen.dart';
 
-class ProfileScreen extends StatelessWidget {
+class ProfileScreen extends GetView<AuthService> {
   final ProfileSeller seller;
 
   const ProfileScreen({Key? key, required this.seller}) : super(key: key);
@@ -124,20 +125,19 @@ class ProfileScreen extends StatelessWidget {
                   const SizedBox(
                     height: 120,
                   ),
-                  Container(
-                    height: 30,
-                    width: Get.width / 1.5,
-                    child: Center(
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text('Deconnexion', style: Theme.of(context).textTheme.bodyText2!.copyWith(
-                            fontWeight: FontWeight.w900,
-                            fontSize: 16,
-                            color: AppTheme.redColor,
-                          ),),
-                        ],
+                  InkWell(
+                    onTap: (){
+                      controller.logout();
+                    },
+                    child: Container(
+                      height: 30,
+                      width: Get.width / 1.5,
+                      child: Center(
+                        child: Text('Deconnexion', style: Theme.of(context).textTheme.bodyText2!.copyWith(
+                          fontWeight: FontWeight.w900,
+                          fontSize: 16,
+                          color: AppTheme.redColor,
+                        ),),
                       ),
                     ),
                   ),

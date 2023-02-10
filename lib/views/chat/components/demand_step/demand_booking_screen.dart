@@ -10,7 +10,7 @@ import 'package:gando/views/home/home.dart';
 import 'package:get/get.dart';
 import 'package:text_form_field_wrapper/text_form_field_wrapper.dart';
 
-import '../../../../models/car.dart';
+import '../../../../models/Car.dart';
 import '../../../../widget/appBarWidget.dart';
 import '../../../../widget/customTextFormField.dart';
 import '../../../products/booking/contract/contract_step_2.dart';
@@ -102,7 +102,7 @@ class _DemandBookingScreenState extends State<DemandBookingScreen> {
                   '[Laure Manida] souhaite louer votre véhicule\n${car.brand} ${car.model}' ,
                   style: Theme.of(context).textTheme.bodyText2!.copyWith(
                     fontWeight: FontWeight.w900,
-                    fontSize: 18,
+                    fontSize: 16,
                     color: AppTheme.darkColor,
                     overflow: TextOverflow.ellipsis,
                   ),
@@ -275,10 +275,10 @@ class _DemandBookingScreenState extends State<DemandBookingScreen> {
                 Center(
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child: Text('Départ',
+                    child: Text('Départ'.toUpperCase(),
                         style: Theme.of(context).textTheme.bodyText2!.copyWith(
-                            color: AppTheme.darkColor,
-                            fontSize: 16,
+                            color: AppTheme.darkColor.withOpacity(.5),
+                            fontSize: 18,
                             fontWeight: FontWeight.w900)),
                   ),
                 ),
@@ -347,10 +347,10 @@ class _DemandBookingScreenState extends State<DemandBookingScreen> {
                 Center(
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child: Text('Retour',
+                    child: Text('Retour'.toUpperCase(),
                         style: Theme.of(context).textTheme.bodyText2!.copyWith(
-                            color: AppTheme.darkColor,
-                            fontSize: 16,
+                            color: AppTheme.darkColor.withOpacity(0.5),
+                            fontSize: 18,
                             fontWeight: FontWeight.w900)),
                   ),
                 ),

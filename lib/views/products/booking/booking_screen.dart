@@ -8,7 +8,7 @@ import 'package:gando/views/home/home.dart';
 import 'package:get/get.dart';
 import 'package:text_form_field_wrapper/text_form_field_wrapper.dart';
 
-import '../../../models/car.dart';
+import '../../../models/Car.dart';
 import '../../../widget/appBarWidget.dart';
 import '../../../widget/customTextFormField.dart';
 import 'payment/payment_screen.dart';
