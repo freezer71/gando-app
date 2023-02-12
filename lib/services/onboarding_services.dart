@@ -4,7 +4,8 @@ import 'package:gando/services/provider/init_storage.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 
-class OnboardingServices extends GetxService{
+class OnboardingService extends GetxService{
+  Future<OnboardingService> init() async => this;
 
   final box = GetStorage();
   final isFirstOpen = false.obs;
@@ -12,6 +13,11 @@ class OnboardingServices extends GetxService{
   @override
   void onReady() {
     super.onReady();
-    isFirstOpen.value = box.read('onboarding') ?? false;
+    if(box.hasData('onboarding') && box.read('onboarding') != null){
+      if(box.read('onboarding')) {
+        isFirstOpen(true);
+      }
+    }
+    printInfo(info : 'Onboarding is $isFirstOpen');
   }
 }

@@ -120,15 +120,15 @@ class _BottomNavigationBarPage extends State<BottomNavigationBarPage> {
             children: [
               Icon(Icons.message, size: 30, color: tabController.pageIndex.value == 2 ? AppTheme.redColor : AppTheme.secondaryColor.withOpacity(0.6)),
               Positioned(
-                top: 15,
-                right: 30,
+                top: 12,
+                right: 25,
                 child: Container(
-                  width: 10,
-                  height: 10,
+                  width: 8,
+                  height: 8,
                   margin: const  EdgeInsets.only(left: 10),
                   decoration: BoxDecoration(
                       color: AppTheme.redColor,
-                      borderRadius: BorderRadius.circular(50)
+                      borderRadius: BorderRadius.circular(50),
                   ),
                 ),
               ),

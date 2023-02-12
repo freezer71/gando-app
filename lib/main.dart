@@ -6,6 +6,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:gando/config/textstyle.dart';
 import 'package:gando/navigation.dart';
+import 'package:gando/services/auth/auth_services.dart';
 import 'package:gando/services/chat/chat_service.dart';
 import 'package:gando/services/onboarding_services.dart';
 import 'package:gando/translations/locale_string.dart';
@@ -22,7 +23,8 @@ Future<void> main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
 
-  // await Get.putAsync(() => ChatService().init());
+  await Get.putAsync(() => OnboardingService().init());
+  await Get.putAsync(() => AuthService().init());
 
   SystemChrome.setSystemUIOverlayStyle(
     Platform.isIOS

@@ -3,19 +3,23 @@ import 'package:flutter/services.dart';
 import 'package:gando/config/textstyle.dart';
 import 'package:gando/controllers/authController/signup_controller.dart';
 import 'package:gando/navigation.dart';
+import 'package:gando/widget/submit_with_loading_button.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 
+import '../../../helpers/global_function.dart';
 import '../../../helpers/global_widget.dart';
 import '../../../widget/customTextFormField.dart';
 
-class SignUpScreen extends GetView<SignUpController> {
-  const SignUpScreen({Key? key}) : super(key: key);
+class SignUpScreen extends StatelessWidget {
+  SignUpScreen({Key? key}) : super(key: key);
+
+  final gf = GlobalFunction();
+
+  final controller = Get.put(SignUpController());
 
   @override
   Widget build(BuildContext context) {
-    Get.lazyPut(() => SignUpController());
-
     return Obx(() {
       return Scaffold(
         extendBody: true,
@@ -54,7 +58,7 @@ class SignUpScreen extends GetView<SignUpController> {
                     Hero(
                         tag: 'logo',
                         child: Image.asset('assets/images/gando-logo.png',
-                            height: 90)),
+                            height: 100)),
                     const SizedBox(
                       height: 20,
                     ),
@@ -90,9 +94,33 @@ class SignUpScreen extends GetView<SignUpController> {
                             const SizedBox(
                               height: 20,
                             ),
-                            submitButton(context),
+                            SubmitWithLoadingButton(
+                              isLoading: controller.isLoading.value,
+                              text: 'Créer'.toUpperCase(),
+                              onPressed: () {
+                                // if check box is not checked
+                                if(controller.formKey.currentState!.validate()){
+                                  if (!controller.terms.value) {
+                                    Get.snackbar(
+                                      'Erreur',
+                                      'Vous devez accepter les conditions d\'utilisation',
+                                      snackPosition: SnackPosition.TOP,
+                                      margin: EdgeInsets.symmetric(vertical: 20, horizontal: 30),
+                                      backgroundColor: AppTheme.redColor,
+                                      colorText: Colors.white,
+                                      icon: Icon(Icons.error_outline, color: Colors.white,),
+                                      duration: Duration(seconds: 3),
+                                    );
+
+                                    return;
+                                  }
+
+                                  controller.register();
+                                }
+                              },
+                            ),
                             SizedBox(
-                              height: Get.height / 22,
+                              height: Get.height / 25,
                             ),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.center,
@@ -119,9 +147,9 @@ class SignUpScreen extends GetView<SignUpController> {
                                     "Connectez-vous",
                                     style: Theme.of(context).textTheme.bodyText2!.copyWith(
                                       fontWeight: FontWeight.w900,
-                                      fontSize: 14,
+                                      fontSize: 16,
                                       overflow: TextOverflow.ellipsis,
-                                      color: HexColor(AppTheme.primaryColorString!),
+                                      color: AppTheme.primaryColor,
                                     ),
                                   ),
                                 )
@@ -233,9 +261,8 @@ class SignUpScreen extends GetView<SignUpController> {
               child: Icon(Icons.person),
             ),
             validator: (value) {
-              if (!value!.isAlphabetOnly) {
+              if (!gf.isName(value!)) {
                 return "Nom invalide";
-                // return 'amount Is not valid';
               }
               return null;
             },
@@ -363,7 +390,6 @@ class SignUpScreen extends GetView<SignUpController> {
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(5)
                       ),
-
                       checkColor: AppTheme.darkColor,
                       value: controller.terms.value,
                       onChanged: (value) {

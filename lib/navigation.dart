@@ -17,6 +17,9 @@ import 'package:gando/views/onboarding.dart';
 import 'package:gando/views/splashscreen/splash_screen.dart';
 import 'package:get/get.dart';
 
+import 'bindings/init_bindings.dart';
+import 'middlewares/auth_middlewares.dart';
+
 class AppPages {
   AppPages._();
 
@@ -26,21 +29,37 @@ class AppPages {
     GetPage(
       name: Routes.preLogin,
       page: () => PreLogin(),
+      binding: InitBindings(),
+      middlewares: [
+        IsFirstOpen(),
+        RequireVisitor()
+      ],
       // binding: SplashScreenBinding(),
     ),
     GetPage(
       name: Routes.forgotPwd,
-      page: () => const ForgotPasswordScreen(),
-      // binding: SplashScreenBinding(),
+      page: () => ForgotPasswordScreen(),
+      middlewares: [
+        IsFirstOpen(),
+        RequireVisitor()
+      ],
     ),
     GetPage(
       name: Routes.resetPwd,
       page: () => ResetRecoveryOtpScreen(),
+      middlewares: [
+        IsFirstOpen(),
+        RequireVisitor()
+      ],
       // binding: SplashScreenBinding(),
     ),
     GetPage(
       name: Routes.newPwd,
-      page: () => const ChangePasswordScreen(),
+      page: () => ChangePasswordScreen(),
+      middlewares: [
+        IsFirstOpen(),
+        RequireVisitor()
+      ],
       // binding: SplashScreenBinding(),
     ),
     GetPage(
@@ -51,6 +70,9 @@ class AppPages {
     GetPage(
       name: Routes.welcome,
       page: () => const OnboardingScreen(),
+      middlewares: [
+        RequireVisitor()
+      ],
       // middlewares: [
       //   IsFirstGuard(),
       //   // My middlewares here
@@ -61,23 +83,25 @@ class AppPages {
       name: Routes.home,
       page: () => const BottomNavigationBarPage(),
       // binding: HomeViewBinding(),
-      /*middlewares: [
-        // My middlewares here
-        // IsFirstGuard(),
-        AuthGuard(),
-      ],*/
+      middlewares: [
+        IsFirstOpen(),
+        AuthMiddlewares(),
+      ],
     ),
     GetPage(
       name: Routes.signIn,
       page: () => SignInScreen(),
-      // middlewares: [
-      //   // My middlewares here
-      //   IsFirstGuard(),
-      //   AuthGuard(),
-      // ],
+      middlewares: [
+        IsFirstOpen(),
+        RequireVisitor()
+      ],
     ),
     GetPage(
       name: Routes.signUp,
+      middlewares: [
+        IsFirstOpen(),
+        RequireVisitor()
+      ],
       page: () => SignUpScreen(),
     ),
     // GetPage(

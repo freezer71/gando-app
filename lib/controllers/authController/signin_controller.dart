@@ -1,4 +1,7 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:gando/config/textstyle.dart';
 import 'package:get/get.dart';
 
 import '../../config/constants.dart';
@@ -6,12 +9,11 @@ import '../../navigation.dart';
 import '../../services/auth/auth_services.dart';
 import '../../services/provider/api_provider.dart';
 
-class SignInController extends GetxController{
-
+class SignInController extends GetxController {
   final terms = false.obs;
   final isLoading = false.obs;
   final showPassword = false.obs;
-  final formKey = GlobalKey<FormState>();
+  final signInFormKey = GlobalKey<FormState>();
   final checkAuth = Get.put(AuthService());
   Rx<TextEditingController> emailController = TextEditingController().obs;
   Rx<TextEditingController> passwordController = TextEditingController().obs;
@@ -29,25 +31,46 @@ class SignInController extends GetxController{
   }
 
   Future signIn() async {
-    try{
+    try {
       isLoading(true);
       final data = {
-        'email' : emailController.value.text,
-        'password' : passwordController.value.text
+        'email': emailController.value.text,
+        'password': passwordController.value.text
       };
-      final res = await ApiProvider().dioConnect('/authentication/signin', data);
-      final body =  res.data;
-      if(res.statusCode == STATUS_OK){
-        printInfo(info: '${body['data']}');
-        checkAuth.authentication(token: body['token'], user: body['user']);
+      final res =
+          await ApiProvider().dioConnect('/authentication/signin', data);
+      final body = res.data['data'];
+      if (res.statusCode == STATUS_OK) {
+        printInfo(info: '${body}');
+        checkAuth.authentication(token: body['token']);
         return Get.offNamed(Routes.home);
       }
-    }catch(e){
-      Get.defaultDialog(title: 'Notification', content: const Text('Echec de connexion, réessayer s\'il vous plait'));
-      printError(info: '$e');
-    }finally{
+    } catch (e) {
+      // split error message
+      final error = e.toString().split(',')[1].split(':')[1];
+      Get.defaultDialog(
+        backgroundColor: AppTheme.darkColor,
+        title: e.toString().split(',')[1].split(':')[0].toUpperCase(),
+        content: Container(
+          padding: const EdgeInsets.all(10.0),
+          height: 70.0,
+          decoration: BoxDecoration(
+              color: AppTheme.redColor,
+              borderRadius: BorderRadius.circular(10.0)),
+          margin: const EdgeInsets.symmetric(horizontal: 8.0),
+          child: Text(
+            '${error}',
+            style: Theme.of(Get.context!).textTheme.headlineLarge!.copyWith(
+                color: AppTheme.light,
+                fontWeight: FontWeight.w400,
+                fontSize: 16.0),
+            textAlign: TextAlign.center,
+          ),
+        ),
+      );
+      printError(info: '$error');
+    } finally {
       isLoading(false);
     }
   }
-
 }

@@ -19,19 +19,24 @@ class AuthService extends GetxService {
       box.write('authenticated', true);
       if(box.read('authenticated')) {
         isLoggedIn(true);
+        printInfo(info: 'User is authenticated from local storage : ${box.read('token')}');
       }
     }
+
+    printInfo(info: 'AuthService is ready');
+    printInfo(info: 'User is authenticated : ${box.read('authenticated')}');
+    printInfo(info: 'User token : ${box.read('token')}');
   }
 
   Future<void> handleSignOut() async => await GoogleSignIn().signOut();
 
   //authenticate user global function
-  Future<void> authentication({token, user}) async{
+  Future<void> authentication({token}) async{
     try{
       await box.write('token', token).then((value) async {
         await box.write('authenticated', true);
         isLoggedIn(true);
-        printInfo(info: 'User is authenticated');
+        printInfo(info: 'User is authenticated'.toLowerCase());
       });
     }catch(e) {
       rethrow;
@@ -51,3 +56,4 @@ class AuthService extends GetxService {
     isLoggedIn.value = newValue;
   }
 }
+

@@ -324,7 +324,7 @@ class MyContactDetailScreen extends StatelessWidget {
           showCities: false,
           showStates: false,
           countryDropdownLabel: c.country.value,
-          defaultCountry: DefaultCountry.France,
+          defaultCountry: CscCountry.France,
           flagState: CountryFlag.DISABLE,
           selectedItemStyle: Theme.of(context)
               .textTheme

@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:gando/config/textstyle.dart';
 import 'package:gando/generated/assets.dart';
+import 'package:gando/helpers/global_function.dart';
 import 'package:gando/navigation.dart';
 import 'package:get/get.dart';
-import 'package:get_storage/get_storage.dart';
 
 import '../../../controllers/authController/signin_controller.dart';
 import '../../../widget/customTextFormField.dart';
@@ -13,6 +13,8 @@ class SignInScreen extends StatelessWidget {
   SignInScreen({Key? key}) : super(key: key);
 
   final controller = Get.put(SignInController());
+
+  final gf = GlobalFunction();
 
   @override
   Widget build(BuildContext context) {
@@ -57,9 +59,23 @@ class SignInScreen extends StatelessWidget {
                     Hero(
                         tag: 'logo',
                         child: Image.asset(Assets.imagesGandoLogo,
-                            height: 140)),
+                            height: 100)),
                     const SizedBox(
                       height: 35,
+                    ),
+                    Text(
+                      "Bon retour parmis nous",
+                      style: Theme
+                          .of(context)
+                          .textTheme
+                          .bodyText2!
+                          .copyWith(
+                        fontWeight: FontWeight.w900,
+                        fontSize: 25,
+                        overflow: TextOverflow.ellipsis,
+                        color: AppTheme.darkColor,
+                      ),
+                      textAlign: TextAlign.center,
                     ),
                     Center(
                       child: Text(
@@ -69,11 +85,13 @@ class SignInScreen extends StatelessWidget {
                             .textTheme
                             .bodyText2!
                             .copyWith(
-                          fontWeight: FontWeight.w900,
-                          fontSize: 22,
+                          fontWeight: FontWeight.w700,
+                          fontSize: 18,
                           overflow: TextOverflow.ellipsis,
-                          color: HexColor(AppTheme.primaryColorString!),
+                          color: AppTheme.darkColor,
+
                         ),
+                        textAlign: TextAlign.center,
                       ),
                     ),
                     Center(
@@ -92,7 +110,7 @@ class SignInScreen extends StatelessWidget {
                             ),
                             submitButton(context),
                             SizedBox(
-                              height: Get.height / 9,
+                              height: Get.height / 14,
                             ),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.center,
@@ -119,7 +137,7 @@ class SignInScreen extends StatelessWidget {
                                     "Inscrivez-vous",
                                     style: TextStyle(
                                       color: AppTheme.primaryColor,
-                                      fontSize: 12,
+                                      fontSize: 16,
                                       fontWeight: FontWeight.bold,
                                     ),
                                   ),
@@ -143,7 +161,7 @@ class SignInScreen extends StatelessWidget {
   Widget submitButton(BuildContext context) {
     return TextButton(
       onPressed: () {
-        if(controller.formKey.currentState!.validate()){
+        if(controller.signInFormKey.currentState!.validate()){
           controller.signIn();
         }
       },
@@ -183,26 +201,22 @@ class SignInScreen extends StatelessWidget {
 
   Widget buildSignInInput(BuildContext context) {
     return Form(
-      key: controller.formKey,
+      key: controller.signInFormKey,
       child: Column(
         children: [
           CustomTextFormField(
-            key: Get.keys[0],
+            key: Get.keys[4],
             controller: controller.emailController.value,
             keyboardType: TextInputType.emailAddress,
             enabled: true,
             validator: (value) {
               if (!value!.isEmail) {
-                return "Email invalid";
-                // return 'amount Is not valid';
+                return "Email invalide";
               }
               return null;
             },
             autofocus: false,
             formatter: [
-              // FilteringTextInputFormatter.deny(
-              //   RegExp(r"^((5000)|([0-4]?[0-9]{1,3}))$"),
-              // ),
               LengthLimitingTextInputFormatter(60),
               FilteringTextInputFormatter.singleLineFormatter
             ],
@@ -232,37 +246,26 @@ class SignInScreen extends StatelessWidget {
             height: 10,
           ),
           CustomTextFormField(
-            key: Get.keys[1],
+            key: Get.keys[5],
             controller: controller.passwordController.value,
             keyboardType: TextInputType.emailAddress,
             enabled: true,
-
             validator: (value) {
-              if (!value!.isPassport) {
-                return "Mot de passe invalid";
-                // return 'amount Is not valid';
+              if (!gf.isPassword(value!)) {
+                return "Mot de passe invalide";
               }
               return null;
             },
             autofocus: false,
             formatter: [
-              // FilteringTextInputFormatter.deny(
-              //   RegExp(r"^((5000)|([0-4]?[0-9]{1,3}))$"),
-              // ),
-              LengthLimitingTextInputFormatter(60),
+              LengthLimitingTextInputFormatter(30),
               FilteringTextInputFormatter.singleLineFormatter
             ],
-            // default
             onSaved: (p) {
               print('saved $p');
             },
-            // default null
             onChanged: (p) {
-              // if (p.validateAmount) {
-              //   topUpController.buttonDisabled.value = false;
-              // } else {
-              //   topUpController.buttonDisabled.value = true;
-              // }
+
             },
             context: context,
             obscureText: true,
@@ -272,14 +275,16 @@ class SignInScreen extends StatelessWidget {
             ),
             shape: 30,
             hintText: 'Mot de passe', // default null
-            // ... + other textfield params
           ),
           const SizedBox(
             height: 15,
           ),
           InkWell(
             onTap: () {
-              Get.toNamed(Routes.forgotPwd);
+              Get.toNamed(Routes.forgotPwd, arguments:
+                controller.emailController.value.text.isEmpty ? null : {
+                          'email': controller.emailController.value.text
+              }); // if email is not empty);
             },
             child: Align(
               alignment: Alignment.centerLeft,

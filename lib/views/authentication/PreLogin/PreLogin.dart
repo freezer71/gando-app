@@ -116,7 +116,7 @@ class PreLogin extends GetView<SocialAuthController> {
                     "Vous avez déja un compte ? ",
                     style: Theme.of(context).textTheme.bodyText2!.copyWith(
                       fontWeight: FontWeight.w900,
-                      fontSize: 14,
+                      fontSize: 12,
                       overflow: TextOverflow.ellipsis,
                       color: HexColor(AppTheme.primaryColorString!),
                     ),
@@ -129,7 +129,7 @@ class PreLogin extends GetView<SocialAuthController> {
                       "Connectez-vous",
                       style: Theme.of(context).textTheme.bodyText2!.copyWith(
                         fontWeight: FontWeight.w900,
-                        fontSize: 14,
+                        fontSize: 16,
                         overflow: TextOverflow.ellipsis,
                         color: AppTheme.primaryColor,
                       ),

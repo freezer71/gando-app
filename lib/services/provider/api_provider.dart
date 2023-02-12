@@ -23,9 +23,9 @@ class ApiProvider {
   };
 
   Future<Response> dioConnect(url, data) async {
-    print('url : $url');
-    print('postData : $data');
     finalUrl = '$API_URL$url';
+    print('url : $finalUrl');
+    print('postData : $data');
     try {
       dio.options.headers['content-Type'] = 'application/x-www-form-urlencoded';
       dio.options.headers['accept'] = 'application/json';

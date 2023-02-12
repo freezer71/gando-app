@@ -54,7 +54,7 @@ class SocialAuthController extends GetxController{
 
         if(res.statusCode == STATUS_OK){
           printInfo(info: "USER DATA BY SIGNING GOOGLE ==========> $body");
-          checkAuth.authentication(token: body['token']);
+          await checkAuth.authentication(token: body['data']['token']);
           return Get.offAllNamed(Routes.home);
         }else{
           Get.defaultDialog(title: 'Notification', content: Text('Echec de connexion avec Google, réessayer s\'il vous plait'));

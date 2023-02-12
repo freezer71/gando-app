@@ -59,7 +59,7 @@ class _ChatScreenState extends State<ChatScreen> with SingleTickerProviderStateM
               indicatorSize: TabBarIndicatorSize.tab,
               indicatorColor: AppTheme.light,
               indicatorWeight: 2.0,
-              padding: const EdgeInsets.symmetric(horizontal: 20),
+              padding: const EdgeInsets.symmetric(horizontal: 8),
               indicator: BoxDecoration(
                 borderRadius: BorderRadius.circular(50),
                 color: AppTheme.darkColor,
@@ -67,7 +67,7 @@ class _ChatScreenState extends State<ChatScreen> with SingleTickerProviderStateM
               tabs: myTabs
                   .map<Widget>((myTab) => Tab(
                 child: Container(
-                  width: Get.width / 3,
+                  width: Get.width,
                   //     10, // - 10 is used to make compensate horizontal padding
                   // decoration: BoxDecoration(
                   //   borderRadius: BorderRadius.circular(10.0),

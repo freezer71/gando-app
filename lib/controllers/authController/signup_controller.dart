@@ -4,16 +4,19 @@ import 'package:gando/services/provider/api_provider.dart';
 import 'package:get/get.dart';
 
 import '../../navigation.dart';
+import '../../services/auth/auth_services.dart';
 
 class SignUpController extends GetxController{
 
   final terms = false.obs;
   final isLoading = false.obs;
   final formKey = GlobalKey<FormState>();
+  final signUpFormKey = GlobalKey<FormState>();
   Rx<TextEditingController> nameController = TextEditingController().obs;
   Rx<TextEditingController> lastNameController = TextEditingController().obs;
   Rx<TextEditingController> emailController = TextEditingController().obs;
   Rx<TextEditingController> passwordController = TextEditingController().obs;
+  final checkAuth = Get.put(AuthService());
 
 
   @override
@@ -33,8 +36,8 @@ class SignUpController extends GetxController{
       final res = await ApiProvider().dioConnect('/authentication/signup', data);
       final body =  res.data;
       if(res.statusCode == STATUS_OK){
-        // body['data'];
         printInfo(info: '${body['data']}');
+        checkAuth.authentication(token: body['data']['token']);
         return Get.offNamed(Routes.resetPwd, arguments: {'previewPage': 'register'});
       }
     }catch(e){

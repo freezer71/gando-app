@@ -877,7 +877,7 @@ class _BookingScreenState extends State<BookingScreen> {
                           showCities: false,
                           showStates: false,
                           countryDropdownLabel: obtainingCountryController,
-                          defaultCountry: DefaultCountry.France,
+                          defaultCountry: CscCountry.France,
                           flagState: CountryFlag.DISABLE,
                           selectedItemStyle: Theme.of(context)
                               .textTheme

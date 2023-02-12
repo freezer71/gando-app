@@ -17,6 +17,43 @@ import '../generated/assets.dart';
 class GlobalFunction {
   final box = GetStorage();
 
+  // check validation of email
+  bool isEmail(String email) {
+    final RegExp regex = RegExp(
+        r'^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$');
+    return regex.hasMatch(email);
+  }
+
+  // check validation of phone number
+  bool isPhoneNumber(String phone) {
+    final RegExp regex = RegExp(r'^[0-9]{10}$');
+    return regex.hasMatch(phone);
+  }
+
+  // check validation of password 8 characters
+  bool isPassword(String password) {
+    final RegExp regex = RegExp(r'^.{8,}$');
+    return regex.hasMatch(password);
+  }
+
+  // check name validation
+  bool isName(String name) {
+    final RegExp regex = RegExp(r'^[a-zA-Z ]+$');
+    return regex.hasMatch(name);
+  }
+
+  // check validation of otp
+  bool isOtp(String otp) {
+    final RegExp regex = RegExp(r'^[0-9]{6}$');
+    return regex.hasMatch(otp);
+  }
+
+  // check validation of pin
+  bool isPin(String pin) {
+    final RegExp regex = RegExp(r'^[0-9]{4}$');
+    return regex.hasMatch(pin);
+  }
+
   void showSnackbar({msg}) {
     Get.snackbar(msg != null && msg.isNotEmpty ? "Notification": "otp_auth".tr, msg.isNotEmpty ? msg : "invalid_access_code".tr,
         snackPosition: SnackPosition.BOTTOM,
@@ -63,15 +100,17 @@ class GlobalFunction {
   final lottieFile = LottieBuilder.asset(Assets.lotties77365LocationLottieAnimation, width: 10, height: 10);
 
   final defaultPinTheme = PinTheme(
-    width: 66,
-    height: 66,
+    width: 70,
+    height: 60,
+    padding: EdgeInsets.zero,
+    margin: EdgeInsets.zero,
     textStyle: TextStyle(
         fontSize: 32,
         color: AppTheme.primaryColor,
         fontWeight: FontWeight.w800),
     decoration: BoxDecoration(
-      color: AppTheme.secondaryColor.withOpacity(0.7),
-      border: Border.all( color: AppTheme.primaryColor, width: 2.0),
+      color: AppTheme.darkColor,
+      border: Border.all( color: AppTheme.darkColor, width: 1.0),
       borderRadius: BorderRadius.circular(30),
     ),
   );
