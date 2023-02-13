@@ -10,7 +10,7 @@ class SignUpController extends GetxController{
 
   final terms = false.obs;
   final isLoading = false.obs;
-  final formKey = GlobalKey<FormState>();
+  final passwordVisible = false.obs;
   final signUpFormKey = GlobalKey<FormState>();
   Rx<TextEditingController> nameController = TextEditingController().obs;
   Rx<TextEditingController> lastNameController = TextEditingController().obs;
@@ -33,17 +33,18 @@ class SignUpController extends GetxController{
         'email' : emailController.value.text,
         'password' : passwordController.value.text
       };
+
       final res = await ApiProvider().dioConnect('/authentication/signup', data);
-      final body =  res.data;
+      final body = res.data['data'];
+
       if(res.statusCode == STATUS_OK){
         printInfo(info: '${body['data']}');
-        checkAuth.authentication(token: body['data']['token']);
-        return Get.offNamed(Routes.resetPwd, arguments: {'previewPage': 'register'});
+        checkAuth.authentication(token: body['token']);
+        return Get.offNamed(Routes.resetPwd, arguments: {'previousPage': 'register'});
       }
     }catch(e){
       printError(info: '$e');
       Get.defaultDialog(title: 'Notification', content: const Text('Echec d\'inscription, réessayer s\'il vous plait'));
-
     }finally{
       isLoading(false);
     }

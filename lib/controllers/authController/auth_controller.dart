@@ -96,4 +96,29 @@ class AuthController extends GetxController {
     }
   }
 
+  //verify pin
+  Future<void> verifyPin() async {
+    try {
+      isLoading(true);
+      final data = {
+        'validedCode': pinController.value.text,
+      };
+
+      final res = await ApiProvider().dioConnect('/authentication/verifyEmail', data);
+      final body = res.data;
+
+      if (res.statusCode == STATUS_OK) {
+        printInfo(info: '${body['data']}');
+        return Get.offNamed(Routes.home);
+      }
+    } catch (e) {
+      Get.defaultDialog(
+          title: 'Notification',
+          content: const Text('Echec de connexion, réessayer s\'il vous plait'));
+      printError(info: '$e');
+    } finally {
+      isLoading(false);
+    }
+  }
+
 }

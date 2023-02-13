@@ -1,4 +1,6 @@
 // import 'package:gando/config.dart';
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -10,23 +12,23 @@ import '../../../navigation.dart';
 import '../../../widget/signInWith/signInWith.dart';
 
 
-class PreLogin extends GetView<SocialAuthController> {
+class PreLogin extends StatelessWidget {
   PreLogin({Key? key}) : super(key: key);
 
   final controller = Get.put(SocialAuthController());
 
   void onServiceClick(String serviceName) {
-    // signInWithGoogle();
     switch (serviceName) {
       case 'google':
-        controller.signInWithGoogle();
+        controller.signInWithSocial(serviceName);
         break;
       case 'facebook':
+        // controller.signInWithFacebook();
         break;
       case 'apple':
+        // controller.signInWithApple();
         break;
     }
-    printInfo(info: serviceName);
   }
 
   @override
@@ -77,7 +79,16 @@ class PreLogin extends GetView<SocialAuthController> {
               ),
               Column(
                 children: [
-                  SignInWith(
+                  Platform.isIOS
+                  ?
+                    SignInWith(
+                      const Color(0xFF000000),
+                      FontAwesomeIcons.apple,
+                      "apple",
+                      Get.size,
+                      onServiceClick,
+                    )
+                  : SignInWith(
                     const Color(0xFFFF6B6B),
                     FontAwesomeIcons.google,
                     "google",
@@ -97,13 +108,7 @@ class PreLogin extends GetView<SocialAuthController> {
                   // const SizedBox(
                   //   height: 15,
                   // ),
-                  // SignInWith(
-                  //   const Color(0xFF000000),
-                  //   FontAwesomeIcons.apple,
-                  //   "Apple",
-                  //   Get.size,
-                  //   onServiseClick,
-                  // ),
+
                 ],
               ),
               SizedBox(

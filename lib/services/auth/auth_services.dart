@@ -14,7 +14,6 @@ class AuthService extends GetxService {
 
   @override
   void onReady() async {
-    super.onReady();
     if(box.hasData('token') && box.read('token') != null){
       box.write('authenticated', true);
       if(box.read('authenticated')) {
@@ -22,10 +21,10 @@ class AuthService extends GetxService {
         printInfo(info: 'User is authenticated from local storage : ${box.read('token')}');
       }
     }
-
     printInfo(info: 'AuthService is ready');
     printInfo(info: 'User is authenticated : ${box.read('authenticated')}');
     printInfo(info: 'User token : ${box.read('token')}');
+    super.onReady();
   }
 
   Future<void> handleSignOut() async => await GoogleSignIn().signOut();

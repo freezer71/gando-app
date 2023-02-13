@@ -48,7 +48,6 @@ class AppPages {
       name: Routes.resetPwd,
       page: () => ResetRecoveryOtpScreen(),
       middlewares: [
-        IsFirstOpen(),
         RequireVisitor()
       ],
       // binding: SplashScreenBinding(),
@@ -71,7 +70,7 @@ class AppPages {
       name: Routes.welcome,
       page: () => const OnboardingScreen(),
       middlewares: [
-        RequireVisitor()
+        // RequireVisitor()
       ],
       // middlewares: [
       //   IsFirstGuard(),
@@ -82,9 +81,8 @@ class AppPages {
     GetPage(
       name: Routes.home,
       page: () => const BottomNavigationBarPage(),
-      // binding: HomeViewBinding(),
+      binding: InitBindings(),
       middlewares: [
-        IsFirstOpen(),
         AuthMiddlewares(),
       ],
     ),

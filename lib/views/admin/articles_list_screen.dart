@@ -28,19 +28,12 @@ class _ArticleListScreenState extends State<ArticleListScreen> {
     {'image': 'assets/images/maserati.png'},
     {'image': 'assets/images/rolls_royce.png'},
   ];
+
   late Car car;
+
   @override
   void initState() {
     super.initState();
-    car = Car(
-      'assets/images/rolls_royce.png',
-      800,
-      'lorem ipsum rem ipsum  ',
-      'maseratti',
-      'co2',
-      '2 L',
-      LatLng(13.05, 77.53),
-    );
   }
 
   @override

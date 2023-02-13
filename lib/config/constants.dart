@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:gando/controllers/car_controller.dart';
 import 'package:gando/generated/assets.dart';
+import 'package:get/get.dart';
 import 'package:latlong2/latlong.dart';
 import '../models/Car.dart';
 
@@ -13,6 +15,7 @@ const String MAP_STYLE = 'mapbox://styles/caviaros/clc1oz5yc001p14ox3uvw1ynu';
 const String APP_URL ='https://mygando.com';
 const String DEV_URL = 'https://api.mygando.com';
 const String API_URL = 'https://dev.mygando.com';
+const String APP_FILE = 'https://file.mygando.com/public/';
 
 const int STATUS_OK = 200;
 const int STATUS_BAD_REQUEST = 400;
@@ -27,12 +30,11 @@ const Color mPrimaryColor = Color(0xFF40ac9c);
 
 const Color mCardColor = Color(0xFF203e5a);
 
+
+// fake car list
 List<Car> carList = [
-  Car(Assets.imagesImg8, 120, 'Bentley', '3A 9200', '77/km', '5,5 L', LatLng(16.2613042,-61.5302309),),
-  Car('assets/images/rolls_royce.png', 185, 'RR', '3A 9200', '77/km', '5,5 L', LatLng(16.2613042,-61.5533309),),
-  Car('assets/images/maserati.png', 100, 'Maserati', '3A 9200', '77/km', '5,5 L', LatLng(16.2613042,-61.5544309),),
-  Car('assets/images/cadillac.png', 90, 'Cadillac', '3A 9200', '77/km', '5,5 L', LatLng(16.2613042,-61.5502334),),
-];
+    ...CarController().carList
+] ;
 
 
 

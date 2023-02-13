@@ -88,22 +88,8 @@ class ResetRecoveryOtpScreen extends StatelessWidget {
                               buildInput(context),
                               const SizedBox(height: 60,),
                               SubmitWithLoadingButton(
-                                onPressed: () {
-                                  if (controller.forgotPasswordFormKey
-                                      .currentState!
-                                      .validate()) {
-                                    controller.forgotPasswordFormKey.currentState!
-                                        .save();
-                                    if (!gf.isOtp(
-                                        controller.pinController.value.text)) {
-                                      Get.toNamed(Routes.newPwd, arguments: {
-                                        'otp': controller.pinController.value.text,
-                                        'email': Get.arguments['email']
-                                      });
-                                    }
-                                  }
-                                },
-                                text: 'Confirmer',
+                                onPressed: () => checkPreviousPage(),
+                                text: 'Confirmer'.toUpperCase(),
                                 isLoading: false,
                               ),
                             ],
@@ -177,8 +163,7 @@ class ResetRecoveryOtpScreen extends StatelessWidget {
         useNativeKeyboard: true,
         keyboardType: TextInputType.number,
         controller: controller.pinController.value,
-        defaultPinTheme: gf.defaultPinTheme
-
+        defaultPinTheme: gf.defaultPinTheme,
     );
   }
 
@@ -187,12 +172,23 @@ class ResetRecoveryOtpScreen extends StatelessWidget {
     if (Get.arguments != null) {
       if (Get.arguments['previousPage'] != null) {
         if(Get.arguments['previousPage'] == 'forgotPassword'){
-
+          Get.toNamed(Routes.newPwd, arguments: {
+            'otp': controller.pinController.value.text,
+            'email': Get.arguments['email']
+          });
         }else if(Get.arguments['previousPage'] == 'register'){
-
+          // go home page
+          if (controller.forgotPasswordFormKey
+              .currentState!
+              .validate()) {
+            if (gf.isOtp(
+                controller.pinController.value.text)) {
+              controller.verifyPin();
+            }
+            return;
+          }
         }
       }
     }
   }
-
 }

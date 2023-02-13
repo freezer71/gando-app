@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:gando/config/textstyle.dart';
+import 'package:gando/controllers/car_controller.dart';
 import 'package:gando/navigation.dart';
 import 'package:gando/services/auth/auth_services.dart';
 import 'package:gando/services/chat/chat_service.dart';
@@ -25,6 +26,8 @@ Future<void> main() async {
 
   await Get.putAsync(() => OnboardingService().init());
   await Get.putAsync(() => AuthService().init());
+
+  // await CarController().onReady();
 
   SystemChrome.setSystemUIOverlayStyle(
     Platform.isIOS

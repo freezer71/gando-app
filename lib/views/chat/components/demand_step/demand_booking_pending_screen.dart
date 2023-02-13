@@ -35,7 +35,7 @@ class _DemandBookingPendingScreenState extends State<DemandBookingPendingScreen>
 
   String obtainingCountryController = 'Pays d\'obtention';
 
-  final formKey = Get.key;
+  final formKey = GlobalKey<FormState>();
   final key = GlobalKey<FormState>();
 
   late Car car;
@@ -129,7 +129,7 @@ class _DemandBookingPendingScreenState extends State<DemandBookingPendingScreen>
                   textAlign: TextAlign.center,
                 ),
                 Text(
-                  '${car.price * 30 / 100} €'.toUpperCase(),
+                  '${car.pricePerDay! * 30 / 100} €'.toUpperCase(),
                   style: Theme.of(context).textTheme.bodyText2!.copyWith(
                     fontWeight: FontWeight.bold,
                     fontSize: 50,

@@ -61,7 +61,7 @@ class CarDetailScreen extends StatelessWidget {
                   Positioned(
                     right: 16,
                     child: Image.asset(
-                      car.image,
+                      car.images!.avant34!,
                       height: 100,
                     ),
                   )

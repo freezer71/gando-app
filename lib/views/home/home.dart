@@ -8,9 +8,11 @@ import 'package:flutter_map_marker_cluster/flutter_map_marker_cluster.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_svg/parser.dart';
 import 'package:gando/config/config.dart';
-import 'package:gando/config/constants.dart';
 import 'package:gando/config/textstyle.dart';
+import 'package:gando/controllers/car_controller.dart';
 import 'package:gando/helpers/global_function.dart';
+// imprt constants
+import 'package:gando/config/constants.dart';
 import 'package:gando/models/Car.dart';
 import 'package:gando/views/home/components/home_card.dart';
 import 'package:gando/views/home/filters/big_filter_bottomsheet.dart';
@@ -45,6 +47,8 @@ class _HomeScreenState extends State<HomeScreen>
   String location = "Tapez une adresse";
   late AnimationController _topColorAnimationController;
 
+  final controller = Get.put(CarController());
+
   //map
   final PopupController _popupController = PopupController();
   final _mapController = MapController();
@@ -65,11 +69,10 @@ class _HomeScreenState extends State<HomeScreen>
   ];
   List<Marker> _markers = [];
 
-  Car car = carList[3];
+  // late Car car;
 
   @override
   void initState() {
-    super.initState();
     tabController = TabController(length: 2, vsync: this);
     _markers = _latLngList
         .map((point) =>
@@ -84,6 +87,7 @@ class _HomeScreenState extends State<HomeScreen>
             color: Colors.blueAccent,
           ),
         )).toList();
+    super.initState();
   }
 
 
@@ -167,12 +171,12 @@ class _HomeScreenState extends State<HomeScreen>
               ),
             ),
           ),
-          body: tabView(context, car),
+          body: tabView(context),
           bottomNavigationBar: Container(height: 50,color: AppTheme.light,),
         ),
       );
 
-  Widget tabView(BuildContext context, Car car) {
+  Widget tabView(BuildContext context) {
     return TabBarView(
       controller: tabController,
       children: [
@@ -185,7 +189,7 @@ class _HomeScreenState extends State<HomeScreen>
                 zoom: 12,
                 maxZoom: 16,
                 minZoom: 3,
-                center: car.latLng,
+                // center: LatLng(double.parse(carList.first.location.lat), double.parse(carList.first.location.long)),
                 // rotation: 180.0,
                 keepAlive: true,
                 enableScrollWheel: true,
@@ -229,7 +233,7 @@ class _HomeScreenState extends State<HomeScreen>
                   markers: [
                     ...List.generate(carList.length, (index) =>
                         Marker(
-                          point: carList[index].latLng!,
+                          point: LatLng(double.parse(carList[index].location!.lat!), double.parse(carList[index].location!.long!)),
                           width: 50,
                           height: 50,
                           builder: (context) => GlobalFunction().lottieFile,
@@ -244,36 +248,32 @@ class _HomeScreenState extends State<HomeScreen>
               bottom: Get.height / 8,
               child: GestureDetector(
                 onVerticalDragUpdate: (c) {
-                  setState(() {
-                    tabController.index = 1;
-                  });
-                  // Get.to(
-                  //   const AvailableCarScreen(),
-                  //   transition: Transition.downToUp,
-                  //   duration: const Duration(milliseconds: 500),
-                  // );
+                  // setState(() {
+                  //   tabController.index = 1;
+                  // });
                 },
                 child: Container(
                   height: Get.height / 3.8,
                   // margin: const EdgeInsets.only(top: 80.0),
-                  child: ListView.builder(
-                    controller: scrollController,
-                    physics: const BouncingScrollPhysics(),
-                    scrollDirection: Axis.horizontal,
-                    itemCount: carList.length,
-                    itemBuilder: (context, index) {
-                      scrollController.position.context.axisDirection.index ==
-                          0;
-                      return HomeCardCar(index);
-                    },
-                  ),
+                  child: GetX<CarController>(
+                      init: CarController(),
+                      builder: (controller) {
+                        printInfo(info: 'carList: ${controller.carList.length}');
+                      return ListView.builder(
+                        physics: const BouncingScrollPhysics(),
+                        scrollDirection: Axis.horizontal,
+                        padding: const EdgeInsets.only(top: 0, bottom: 0),
+                        itemCount: controller.carList.length,
+                        itemBuilder: (context, index) => HomeCardCar(index, controller.carList[index]),
+                      );
+                  }),
                 ),
               ),
             ),
             Positioned(child: Container(
               decoration: BoxDecoration(
                   color: AppTheme.light,
-                borderRadius: BorderRadius.only(bottomLeft: Radius.circular(20), bottomRight: Radius.circular(20))
+                borderRadius: const BorderRadius.only(bottomLeft: Radius.circular(20), bottomRight: Radius.circular(20))
               ),
               height: Platform.isAndroid ? 160 : 180 )),
             buildAppBar(),
@@ -288,8 +288,8 @@ class _HomeScreenState extends State<HomeScreen>
                 physics: const BouncingScrollPhysics(),
                 scrollDirection: Axis.vertical,
                 padding: const EdgeInsets.only(top: 180, bottom: 80),
-                itemCount: carList.length,
-                itemBuilder: (context, index) => HomeCardCar(index,),
+                itemCount: controller.carList.length,
+                itemBuilder: (context, index) => HomeCardCar(index, carList[index] ),
               ),
             ),
             Positioned(child: Container(

@@ -30,7 +30,7 @@ class SocialAuthController extends GetxController{
     super.onReady();
   }
 
-  Future signInWithGoogle() async{
+  Future signInWithSocial(String from) async{
     isLoading(true);
 
     try{
@@ -49,19 +49,19 @@ class SocialAuthController extends GetxController{
           'code' : user.serverAuthCode
         };
 
-        final res = await ApiProvider().dioConnect('/authentication/google', data);
-        final body = res.data;
+        final res = await ApiProvider().dioConnect('/authentication/$from', data);
+        final body = res.data['data'];
 
-        if(res.statusCode == STATUS_OK){
-          printInfo(info: "USER DATA BY SIGNING GOOGLE ==========> $body");
-          await checkAuth.authentication(token: body['data']['token']);
+        if(res.statusCode == STATUS_OK) {
+          printInfo(info: "USER DATA SOCIAL SIGNING $from ==========> $body");
+          await checkAuth.authentication(token: body['token']);
           return Get.offAllNamed(Routes.home);
         }else{
-          Get.defaultDialog(title: 'Notification', content: Text('Echec de connexion avec Google, réessayer s\'il vous plait'));
+          Get.defaultDialog(title: 'Notification', content: Text('Echec de connexion avec $from, réessayer s\'il vous plait'));
         }
       }
     }catch (error){
-      Get.defaultDialog(title: 'Notification', content: Text('Echec de connexion avec Google, réessayer s\'il vous plait'));
+      Get.defaultDialog(title: 'Notification', content: Text('Echec de connexion avec $from, réessayer s\'il vous plait'));
       // Get.defaultDialog(content: Text('Echec de connexion avec Google, réessayer s\'il vous plait\n $error', style: GlobalStyle.authSignWith,));
     }finally{
       isLoading(false);

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:gando/config/textstyle.dart';
 import 'package:get/get.dart';
 
+import '../../bindings/init_bindings.dart';
 import '../../config/constants.dart';
 import '../../navigation.dart';
 import '../../services/auth/auth_services.dart';
@@ -30,6 +31,14 @@ class SignInController extends GetxController {
     super.onClose();
   }
 
+  @override
+  void dispose() {
+    emailController.value.dispose();
+    passwordController.value.dispose();
+    signInFormKey.currentState?.dispose();
+    super.dispose();
+  }
+
   Future signIn() async {
     try {
       isLoading(true);
@@ -43,7 +52,7 @@ class SignInController extends GetxController {
       if (res.statusCode == STATUS_OK) {
         printInfo(info: '${body}');
         checkAuth.authentication(token: body['token']);
-        return Get.offNamed(Routes.home);
+        return Get.offNamed(Routes.home, arguments: InitBindings(),);
       }
     } catch (e) {
       // split error message
