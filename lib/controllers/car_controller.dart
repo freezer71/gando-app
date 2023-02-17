@@ -11,7 +11,6 @@ import '../models/Car.dart';
 
 class CarController extends GetxController {
 
-
   /// initialize loading
   final RxBool isLoading = false.obs;
 
@@ -41,14 +40,9 @@ class CarController extends GetxController {
 
       final res = await ApiProvider().getData('/car/getAll');
       final body = jsonDecode(res.body)['data'];
-      // add car to list
-      carList.addAll(body.map<Car>((e) => Car.fromJson(e)).toList());
-
-      printInfo(info: carList.toString());
 
       if (res.statusCode == STATUS_OK) {
-        // clear car list
-
+        carList.addAll(body.map<Car>((e) => Car.fromJson(e)).toList());
         update();
       }
     } catch (e) {

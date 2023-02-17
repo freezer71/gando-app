@@ -27,8 +27,6 @@ Future<void> main() async {
   await Get.putAsync(() => OnboardingService().init());
   await Get.putAsync(() => AuthService().init());
 
-  // await CarController().onReady();
-
   SystemChrome.setSystemUIOverlayStyle(
     Platform.isIOS
         ? SystemUiOverlayStyle.dark

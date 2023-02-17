@@ -68,7 +68,7 @@ class AppPages {
     ),
     GetPage(
       name: Routes.welcome,
-      page: () => const OnboardingScreen(),
+      page: () => OnboardingScreen(),
       middlewares: [
         // RequireVisitor()
       ],

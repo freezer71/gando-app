@@ -4,32 +4,28 @@ import 'package:gando/views/admin/add_articles_screen.dart';
 import 'package:gando/views/admin/calendar_screen.dart';
 import 'package:get/get.dart';
 import 'package:latlong2/latlong.dart';
+import 'package:lottie/lottie.dart';
 
 import '../../config/constants.dart';
+import '../../controllers/user/user_controller.dart';
 import '../../generated/assets.dart';
 import '../../models/Car.dart';
 import '../../models/ProfileSeller.dart';
+import '../../models/UserCar.dart';
 import '../../widget/appBarWidget.dart';
 import 'components/add_articles_stepper.dart';
 import 'edit_article_screen.dart';
 
 class ArticleListScreen extends StatefulWidget {
-  const ArticleListScreen({Key? key}) : super(key: key);
+  final int? id;
+  ArticleListScreen({this.id, Key? key}) : super(key: key);
 
   @override
   State<ArticleListScreen> createState() => _ArticleListScreenState();
 }
 
 class _ArticleListScreenState extends State<ArticleListScreen> {
-
-  final List listItems = [
-    {'image': Assets.imagesImg8,},
-    {'image': 'assets/images/cadillac.png'},
-    {'image': 'assets/images/maserati.png'},
-    {'image': 'assets/images/rolls_royce.png'},
-  ];
-
-  late Car car;
+  final controller = Get.put(UserController());
 
   @override
   void initState() {
@@ -37,165 +33,172 @@ class _ArticleListScreenState extends State<ArticleListScreen> {
   }
 
   @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return buildBody();
   }
 
-  Widget buildBody()=> Scaffold(
-    backgroundColor: AppTheme.backgroundColor,
-    appBar: CustomAppBar(
-      title: 'Mes annonces',
-    ),
-    body: Stack(
-      children: [
-        Container(
-          child: ListView(
-            children: List.generate(
-              listItems.length,
-                  (index) => Dismissible(
-                key: ObjectKey(index),
-                direction: DismissDirection.endToStart,
-                onDismissed: (v) {
-                  Get.defaultDialog(
-                      backgroundColor: AppTheme.backgroundColor,
-                      title: 'Supprimer',
-                      middleText:
-                      'Voulez-vous vraiment supprimer cette annonce',
-                      middleTextStyle: Theme.of(context).textTheme.bodyText2!.copyWith(
-                        fontWeight: FontWeight.w400,
-                        fontSize: 14,
-                        overflow: TextOverflow.visible,
-                        color: AppTheme.darkColor,
-                      ),
-                      titleStyle: Theme.of(context).textTheme.bodyText2!.copyWith(
-                        fontWeight: FontWeight.w900,
-                        fontSize: 18,
-                        overflow: TextOverflow.ellipsis,
-                        color: AppTheme.darkColor,
-                      ),
-                      actions: [
-                        SizedBox(width: Get.width,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
-                            children: [
-                              TextButton(
-                                onPressed: () {
-                                  Get.back();
-                                },
-                                child: Text('Annuler', style: Theme.of(context).textTheme.bodyText2!.copyWith(
-                                  fontWeight: FontWeight.w900,
-                                  fontSize: 18,
-                                  overflow: TextOverflow.ellipsis,
-                                  color: AppTheme.redColor,
-                                ),),
-                              ),
-                              TextButton(
-                                onPressed: () {
-                                  // removeAds(index);
-                                },
-                                child: Text('Supprimer', style: Theme.of(context).textTheme.bodyText2!.copyWith(
-                                  fontWeight: FontWeight.w900,
-                                  fontSize: 18,
-                                  overflow: TextOverflow.ellipsis,
-                                  color: AppTheme.primaryColor,
-                                ),),
-                              )
-                            ],
-                          ),)
-                      ]
+  Widget buildBody() => Scaffold(
+        backgroundColor: AppTheme.backgroundColor,
+        appBar: CustomAppBar(
+          title: 'Mes annonces',
+        ),
+        body: Stack(
+          children: [
+            Container(
+                child: FutureBuilder(
+              future: controller.getUserCarList(),
+              builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+                // check connection state
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const Center(
+                    child: CircularProgressIndicator(),
                   );
-                },
-                background: buildSwipeActionLeft(),
-                secondaryBackground: buildSwipeActionRight(),
-                child: Container(
-                  // color: AppTheme.darkColor,
-                  decoration: BoxDecoration(
-                    // shape: RoundedRectangleBorder(
-                    //   side: const BorderSide(color: Colors.white70, width: 1),
-                    //   borderRadius: BorderRadius.circular(20),
-                    // ),
-                    image: DecorationImage(
-                      repeat: ImageRepeat.noRepeat,
-                      alignment: Alignment.center,
-                      fit: BoxFit.cover,
-                      image:
-                      AssetImage(listItems[index]['image']),
-                    ),
-                    color: AppTheme.primaryColor,
-                    borderRadius: BorderRadius.circular(16),
-                  ),
-                  margin: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10),
-                  child: SizedBox(
-                    width: Get.width,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        // SizedBox(
-                        //   width: Get.width / 22,
-                        // ),
-                        // Container(
-                        //   height: Get.height / 6,
-                        //   width: Get.width / 2,
-                        //   decoration: BoxDecoration(
-                        //     image: DecorationImage(
-                        //       repeat: ImageRepeat.noRepeat,
-                        //       alignment: Alignment.center,
-                        //       fit: BoxFit.contain,
-                        //       image:
-                        //       AssetImage(listItems[index]['image']),
-                        //     ),
-                        //     color: AppTheme.primaryColor,
-                        //     borderRadius: BorderRadius.circular(16),
-                        //   ),
-                        // ),
-                        Container(
-                          width: Get.width / 8,
-                          height: Get.height / 6,
-                          decoration: BoxDecoration(
-                              color: AppTheme.darkColor,
-                              borderRadius: const BorderRadius.only(
-                                  topRight: Radius.circular(20),
-                                  bottomRight: Radius.circular(20))),
+                } else {
+                  // check if there is an error
+                  if (snapshot.hasError) {
+                    return Center(
+                      child: Text('Error: ${snapshot.error}'),
+                    );
+                  } else {
+                    if (snapshot.hasData) {
+                      // check if the data is empty
+                      if (snapshot.data!) {
+                        return ListView.builder(
+                          itemCount: snapshot.data!.userProfileSeller!.length,
+                          itemBuilder: (BuildContext context, int index) {
+                            ProfileSeller profileSeller =
+                                snapshot.data!.userProfileSeller![index];
+                            return Dismissible(
+                              key: Key(
+                                  controller.userCarList[index].id.toString()),
+                              direction: DismissDirection.horizontal,
+                              background: buildSwipeActionLeft(),
+                              secondaryBackground: buildSwipeActionRight(),
+                              onDismissed: (direction) {
+                                dismissItem(context, index, direction);
+                              },
+                              child: Card(
+                                elevation: 5,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                                child: ListTile(
+                                  leading: CircleAvatar(
+                                    radius: 30,
+                                    backgroundImage: NetworkImage(
+                                      controller
+                                          .userCarList[index].images.avant34,
+                                    ),
+                                  ),
+                                  title: Text(
+                                    controller.userCarList[index].brand,
+                                    // style: AppTheme.title,
+                                  ),
+                                  subtitle: Text(
+                                    controller.userCarList[index].description,
+                                    // style: AppTheme.subtitle,
+                                  ),
+                                  trailing: IconButton(
+                                    onPressed: () {
+                                      // Get.to(() => EditArticleScreen(
+                                      //       id: profileSeller.id,
+                                      //     ));
+                                    },
+                                    icon: Icon(
+                                      Icons.edit,
+                                      color: AppTheme.primaryColor,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            );
+                          },
+                        );
+                      } else {
+                        return Center(
                           child: Column(
-                            mainAxisAlignment:
-                            MainAxisAlignment.spaceAround,
                             children: [
-                              IconButton( onPressed: (){
-                                Get.to(() => EditArticleScreen(article: car,));
-                              }, icon: const Icon(Icons.edit)),
-
-                              IconButton( onPressed: (){
-                                Get.to(() => CalendarScreen());
-                              }, icon: const Icon(Icons.calendar_month)),
+                              SizedBox(height: Get.height * .2),
+                              LottieBuilder.asset(
+                                Assets.lotties98979EmpyList,
+                                width: 200,
+                                height: 200,
+                              ),
+                              Text(
+                                'Vous n\'avez pas encore d\'annonces',
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .bodyText2!
+                                    .copyWith(
+                                      fontWeight: FontWeight.w900,
+                                      fontSize: 16,
+                                      overflow: TextOverflow.fade,
+                                      color: AppTheme.darkColor.withOpacity(.3),
+                                    ),
+                                textAlign: TextAlign.center,
+                                maxLines: 2,
+                              ),
                             ],
                           ),
+                        );
+                      }
+                    } else {
+                      return Center(
+                        child: Column(
+                          children: [
+                            SizedBox(height: Get.height * .2),
+                            LottieBuilder.asset(
+                              Assets.lotties98979EmpyList,
+                              width: 200,
+                              height: 200,
+                            ),
+                            Text(
+                              'Vous n\'avez pas encore d\'annonces',
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .bodyText2!
+                                  .copyWith(
+                                    fontWeight: FontWeight.w900,
+                                    fontSize: 16,
+                                    overflow: TextOverflow.fade,
+                                    color: AppTheme.darkColor.withOpacity(.3),
+                                  ),
+                              textAlign: TextAlign.center,
+                              maxLines: 2,
+                            ),
+                          ],
                         ),
-                      ],
-                    ),
-                  ),
+                      );
+                    }
+                  }
+                }
+              },
+            )),
+            Positioned(
+              bottom: 100,
+              width: Get.width,
+              child: FloatingActionButton(
+                backgroundColor: AppTheme.primaryColor,
+                elevation: 6,
+                onPressed: () {
+                  Get.to(() => AddArticlesScreen());
+                },
+                child: Icon(
+                  Icons.add,
+                  color: AppTheme.backgroundColor,
+                  size: 33,
                 ),
               ),
             ),
-          ),
+          ],
         ),
-        Positioned(
-          bottom: 100,
-          width: Get.width,
-          child: FloatingActionButton(
-            backgroundColor: AppTheme.primaryColor,
-            elevation: 6,
-            onPressed: () {
-              Get.to(() => AddArticlesScreen());
-            },
-            child: Icon(
-              Icons.add,
-              color: AppTheme.backgroundColor,
-              size: 33,
-            ),
-          ),
-        ),
-      ],
-    ),);
+      );
 
   Widget buildSwipeActionLeft() => Container(
         alignment: Alignment.centerLeft,
@@ -211,9 +214,10 @@ class _ArticleListScreenState extends State<ArticleListScreen> {
         child: const Icon(Icons.restore_from_trash_rounded),
       );
 
-  void dismissItem(BuildContext context, int index, DismissDirection direction){
+  void dismissItem(
+      BuildContext context, int index, DismissDirection direction) {
     setState(() {
-      listItems.removeAt(index);
+      controller.userCarList.removeAt(index);
     });
   }
 }

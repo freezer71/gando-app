@@ -284,18 +284,23 @@ class _HomeScreenState extends State<HomeScreen>
           children: [
             Container(
               margin: const EdgeInsets.only(top: 0.0),
-              child: ListView.builder(
-                physics: const BouncingScrollPhysics(),
-                scrollDirection: Axis.vertical,
-                padding: const EdgeInsets.only(top: 180, bottom: 80),
-                itemCount: controller.carList.length,
-                itemBuilder: (context, index) => HomeCardCar(index, carList[index] ),
-              ),
+              child: GetX<CarController>(
+                  init: CarController(),
+                  builder: (controller) {
+                    printInfo(info: 'carList: ${controller.carList.length}');
+                    return ListView.builder(
+                      physics: const BouncingScrollPhysics(),
+                      scrollDirection: Axis.vertical,
+                      padding: const EdgeInsets.only(top: 180, bottom: 80),
+                      itemCount: controller.carList.length,
+                      itemBuilder: (context, index) => HomeCardCar(index, controller.carList[index]),
+                    );
+                  }),
             ),
             Positioned(child: Container(
               decoration: BoxDecoration(
                   color: AppTheme.light,
-                  borderRadius: BorderRadius.only(bottomLeft: Radius.circular(20), bottomRight: Radius.circular(20))
+                  borderRadius: const BorderRadius.only(bottomLeft: Radius.circular(20), bottomRight: Radius.circular(20))
               ),
               height: Platform.isAndroid ? 160 : 180)),
             buildAppBar(),

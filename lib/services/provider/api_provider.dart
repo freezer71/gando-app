@@ -27,7 +27,7 @@ class ApiProvider {
   _setHeaders() => {
     'Content-type': 'application/json',
     'Accept': 'application/json',
-    'Authorization': 'Bearer $token'
+    'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYzZTVlYmExMjE3YzkwMjBiNzFlYjI3YyIsInN0YXR1cyI6ImVuIGF0dGVudGUiLCJpYXQiOjE2NzYwMTMzNTcsImV4cCI6MTY3NjYxMzM1N30.8loZ4IZJrYwTfSuCohScK_Kc0ylcFm6xcWhGIjA3ZF4'
   };
 
   Future<http.Response> getData(apiUrl) async {
@@ -48,12 +48,11 @@ class ApiProvider {
       dio.options.headers['accept'] = 'application/json';
       dio.options.headers['authorization'] = 'Bearer $token';
       dio.options.headers['authenticate_client'] = '427620db3b5aeffd7da95bff1e02c58e91f2b7c8394cabc1db92aabe2a918ded';
-      dio.options.connectTimeout = 30000; //5s
+      dio.options.connectTimeout = 30000; // 30s
       dio.options.receiveTimeout = 25000;
 
       return await dio.post(finalUrl, data: data, cancelToken: apiToken);
     } on DioError catch (e) {
-
       if (e.type == DioErrorType.response) {
         int? statusCode = e.response!.statusCode;
         if (statusCode == STATUS_NOT_FOUND) {

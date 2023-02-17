@@ -18,12 +18,14 @@ class Assets {
   static const String imagesImg6 = 'assets/images/img_6.png';
   static const String imagesImg7 = 'assets/images/img_7.png';
   static const String imagesImg8 = 'assets/images/img_8.png';
+  static const String imagesLogoG = 'assets/images/logo_G.png';
   static const String imagesLogoSplash = 'assets/images/logo-splash.png';
   static const String imagesMap = 'assets/images/map.png';
   static const String imagesMaserati = 'assets/images/maserati.png';
   static const String imagesRollsRoyce = 'assets/images/rolls_royce.png';
   static const String lotties128154DriverSteeringWheelMapMarkerTaxiRentCarSharing = 'assets/lotties/128154-driver-steering-wheel-map-marker-taxi-rent-car-sharing.json';
   static const String lotties77365LocationLottieAnimation = 'assets/lotties/77365-location-lottie-animation.json';
+  static const String lotties98979EmpyList = 'assets/lotties/98979-empy-list.json';
   static const String lottiesSuccess = 'assets/lotties/success.json';
   static const String svgImg = 'assets/svg/img.png';
   static const String svgVector = 'assets/svg/vector.svg';

@@ -12,12 +12,13 @@ class OnboardingService extends GetxService{
 
   @override
   void onReady() {
-    super.onReady();
+
     if(box.hasData('onboarding') && box.read('onboarding') != null){
       if(box.read('onboarding')) {
         isFirstOpen(true);
       }
     }
     printInfo(info : 'Onboarding is $isFirstOpen');
+    super.onReady();
   }
 }

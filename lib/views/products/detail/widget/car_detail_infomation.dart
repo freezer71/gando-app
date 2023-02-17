@@ -86,7 +86,7 @@ class NextCarInfo extends StatelessWidget {
                       ],
                       borderRadius: const BorderRadius.only(topRight: Radius.circular(10), bottomRight: Radius.circular(10))
                     ),
-                    child: Text('4.5/5', style: Theme.of(context).textTheme.bodyText2!.copyWith(
+                    child: Text('${car.advice!.length} /5', style: Theme.of(context).textTheme.bodyText2!.copyWith(
                         color: AppTheme.darkColor,
                         fontSize: 15,
                         fontWeight: FontWeight.bold)),
@@ -111,19 +111,28 @@ class NextCarInfo extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  Text('${car.brand} ${car.model}', style: Theme.of(context).textTheme.bodyText2!.copyWith(
-                      color: AppTheme.light,
-                      fontSize: 18,
-                      fontWeight: FontWeight.w900)),
+                  SizedBox(
+                    width: Get.width / 1.7,
+                    child: Text('${car.brand} ${car.model}',
+                        style: Theme.of(context).textTheme.bodyText2!.copyWith(
+                        color: AppTheme.light,
+                        fontSize: 18,
+                        overflow: TextOverflow.fade,
+                        fontWeight: FontWeight.w900),
+                      maxLines: 1,
+                    ),
+                  ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       const Icon(Icons.location_on_rounded, size: 20,),
-                      Text('Localisation', style: Theme.of(context).textTheme.bodyText2!.copyWith(
+                      Text(car.address!, style: Theme.of(context).textTheme.bodyText2!.copyWith(
                           color: AppTheme.light,
                           fontSize: 14,
-                          fontWeight: FontWeight.w300)),
+                          overflow: TextOverflow.fade,
+                          fontWeight: FontWeight.w300),
+                      maxLines: 1,),
                     ],
                   )
                 ],
