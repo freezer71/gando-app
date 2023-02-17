@@ -33,7 +33,7 @@ class _BookingScreenState extends State<BookingScreen> {
 
   String obtainingCountryController = 'Pays d\'obtention';
 
-  final formKey = Get.key;
+  final formKey = GlobalKey<FormState>();
   final key = GlobalKey<FormState>();
 
   late Car car;

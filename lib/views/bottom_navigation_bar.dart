@@ -92,7 +92,7 @@ class _BottomNavigationBarPage extends State<BottomNavigationBarPage> {
         builder: (tabController) => tabController.pageIndex.value == 0
             ? HomeScreen()
             : tabController.pageIndex.value == 1
-            ? const ArticleListScreen()
+            ? ArticleListScreen()
             : tabController.pageIndex.value == 2
             ? ChatScreen()
             : const MyGandoScreen(),

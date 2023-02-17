@@ -97,25 +97,24 @@ class SignUpScreen extends StatelessWidget {
                             SubmitWithLoadingButton(
                               isLoading: controller.isLoading.value,
                               text: 'Créer'.toUpperCase(),
-                              onPressed: () {
+                              onPressed: () async {
                                 // if check box is not checked
-                                if(controller.formKey.currentState!.validate()){
+                                if(controller.signUpFormKey.currentState!.validate()){
                                   if (!controller.terms.value) {
                                     Get.snackbar(
                                       'Erreur',
                                       'Vous devez accepter les conditions d\'utilisation',
                                       snackPosition: SnackPosition.TOP,
-                                      margin: EdgeInsets.symmetric(vertical: 20, horizontal: 30),
+                                      margin: const EdgeInsets.symmetric(vertical: 20, horizontal: 30),
                                       backgroundColor: AppTheme.redColor,
                                       colorText: Colors.white,
-                                      icon: Icon(Icons.error_outline, color: Colors.white,),
+                                      icon: const Icon(Icons.error_outline, color: Colors.white,),
                                       duration: Duration(seconds: 3),
                                     );
-
                                     return;
                                   }
-
-                                  controller.register();
+                                  // if all is ok
+                                  await controller.register();
                                 }
                               },
                             ),
@@ -169,47 +168,9 @@ class SignUpScreen extends StatelessWidget {
     });
   }
 
-  Widget submitButton(BuildContext context) {
-    return TextButton(
-      onPressed: () {
-        if(controller.formKey.currentState!.validate()){
-          controller.register();
-        }
-      },
-      style: ButtonStyle(
-        backgroundColor: MaterialStateProperty.resolveWith<Color>(
-              (Set<MaterialState> states) => controller.isLoading.value ? AppTheme.primaryColor.withOpacity(0.5) : AppTheme.primaryColor,
-        ),
-        overlayColor: MaterialStateProperty.all(Colors.transparent),
-        shape: MaterialStateProperty.all(RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(30.0),
-        )),
-      ),
-      child: Container(
-        height: 40,
-        width: Get.width / 1.3,
-        padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 10),
-        child: Center(
-          child: !controller.isLoading.value ? Text(
-            'Créer'.toUpperCase(),
-            style: Theme
-                .of(context)
-                .textTheme
-                .bodyText2!
-                .copyWith(
-              fontWeight: FontWeight.w900,
-              fontSize: 16,
-              color: AppTheme.backgroundColor,
-            ),
-          ) : const CircularProgressIndicator.adaptive()
-        ),
-      ),
-    );
-  }
-
   Widget buildSignUpInput(BuildContext context) {
     return Form(
-      key: controller.formKey,
+      key: controller.signUpFormKey,
       child: Column(
         children: [
           CustomTextFormField(
@@ -223,7 +184,7 @@ class SignUpScreen extends StatelessWidget {
             ),
             enabled: true,
             validator: (value) {
-              if (!value!.isAlphabetOnly) {
+              if (!gf.isName(value!)) {
                 return "Prenom invalide";
               }
               return null;
@@ -268,9 +229,6 @@ class SignUpScreen extends StatelessWidget {
             },
             autofocus: false,
             formatter: [
-              // FilteringTextInputFormatter.deny(
-              //   RegExp(r"^((5000)|([0-4]?[0-9]{1,3}))$"),
-              // ),
               LengthLimitingTextInputFormatter(60),
               FilteringTextInputFormatter.singleLineFormatter
             ],
@@ -280,11 +238,6 @@ class SignUpScreen extends StatelessWidget {
             },
             // default null
             onChanged: (p) {
-              // if (p.validateAmount) {
-              //   topUpController.buttonDisabled.value = false;
-              // } else {
-              //   topUpController.buttonDisabled.value = true;
-              // }
             }, // default null
             // ... + other textfield params
           ),
@@ -304,7 +257,7 @@ class SignUpScreen extends StatelessWidget {
               child: Icon(Icons.alternate_email),
             ),
             validator: (value) {
-              if (!value!.isEmail) {
+              if (!gf.isEmail(value!)) {
                 return "Email invalide";
                 // return 'amount Is not valid';
               }
@@ -335,7 +288,7 @@ class SignUpScreen extends StatelessWidget {
             context: context,
             key: Get.keys[3],
             controller: controller.passwordController.value,
-            obscureText: true,
+            obscureText: controller.passwordVisible.value,
             enabled: true,
             hintText: 'Mot de passe',
             keyboardType: TextInputType.text,
@@ -344,7 +297,7 @@ class SignUpScreen extends StatelessWidget {
               child: Icon(Icons.lock),
             ),
             validator: (value) {
-              if (value!.isEmpty) {
+              if (!gf.isPassword(value!)) {
                 if(value.length < 8){
                   return "Mot de passe doit être supérieur à 8 caractères";
                 }
@@ -353,6 +306,18 @@ class SignUpScreen extends StatelessWidget {
               }
               return null;
             },
+            suffixIcon: IconButton(
+              icon: Icon(
+                controller.passwordVisible.value
+                    ? Icons.visibility
+                    : Icons.visibility_off,
+                color: AppTheme.darkColor.withOpacity(.7),
+              ).marginZero.paddingZero,
+              onPressed: () {
+                controller.passwordVisible.value =
+                    !controller.passwordVisible.value;
+              },
+            ),
             formatter: [
               LengthLimitingTextInputFormatter(60),
               FilteringTextInputFormatter.singleLineFormatter

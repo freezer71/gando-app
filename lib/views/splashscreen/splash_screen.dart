@@ -39,7 +39,6 @@ class _SplashScreenState extends State<SplashScreen>
          box.writeIfNull('onboarding', false);
          isViewed = false;
        }
-       // print("ONBOARD ++++++++========${box.read('onboarding')} ----- $isViewed");
        isViewed ? Get.offAllNamed(Routes.preLogin) : Get.offAllNamed(Routes.welcome) ;
      }catch(e){
        printError(info: '$e');

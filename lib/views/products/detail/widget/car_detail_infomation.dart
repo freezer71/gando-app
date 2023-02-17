@@ -31,7 +31,7 @@ class CarDetailInfomation extends StatelessWidget {
                 blurStyle: BlurStyle.normal),
           ],
           borderRadius: BorderRadius.circular(20),
-          image: DecorationImage(image: AssetImage(car.image, ), alignment: Alignment.center, repeat: ImageRepeat.noRepeat, fit: BoxFit.cover, )),
+          image: DecorationImage(image: NetworkImage(APP_FILE+car.images!.ariere34!), alignment: Alignment.center, repeat: ImageRepeat.noRepeat, fit: BoxFit.cover, )),
       child: NextCarInfo(car: car),
     ).paddingZero;
   }
@@ -62,7 +62,7 @@ class NextCarInfo extends StatelessWidget {
             //       image: DecorationImage(image: AssetImage(car.image,), alignment: Alignment.center, repeat: ImageRepeat.noRepeat, fit: BoxFit.cover)),
             // ),
             Container(
-              padding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+              padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
@@ -78,7 +78,7 @@ class NextCarInfo extends StatelessWidget {
                     ),
                   ).marginZero.paddingZero,
                   Container(
-                    padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5.5),
+                    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5.5),
                     decoration: BoxDecoration(
                       color: AppTheme.light,
                       boxShadow: [
@@ -86,7 +86,7 @@ class NextCarInfo extends StatelessWidget {
                       ],
                       borderRadius: const BorderRadius.only(topRight: Radius.circular(10), bottomRight: Radius.circular(10))
                     ),
-                    child: Text('4.5/5', style: Theme.of(context).textTheme.bodyText2!.copyWith(
+                    child: Text('${car.advice!.length} /5', style: Theme.of(context).textTheme.bodyText2!.copyWith(
                         color: AppTheme.darkColor,
                         fontSize: 15,
                         fontWeight: FontWeight.bold)),
@@ -98,7 +98,7 @@ class NextCarInfo extends StatelessWidget {
         ),
         Container(
           height: 70,
-          padding: EdgeInsets.symmetric(vertical: 5, horizontal: 5),
+          padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 5),
           decoration: BoxDecoration(
             color: AppTheme.darkColor,
             borderRadius: const BorderRadius.only(bottomLeft: Radius.circular(20), bottomRight: Radius.circular(20)),
@@ -111,24 +111,33 @@ class NextCarInfo extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  Text('${car.brand} ${car.model}', style: Theme.of(context).textTheme.bodyText2!.copyWith(
-                      color: AppTheme.light,
-                      fontSize: 18,
-                      fontWeight: FontWeight.w900)),
+                  SizedBox(
+                    width: Get.width / 1.7,
+                    child: Text('${car.brand} ${car.model}',
+                        style: Theme.of(context).textTheme.bodyText2!.copyWith(
+                        color: AppTheme.light,
+                        fontSize: 18,
+                        overflow: TextOverflow.fade,
+                        fontWeight: FontWeight.w900),
+                      maxLines: 1,
+                    ),
+                  ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Icon(Icons.location_on_rounded, size: 20,),
-                      Text('Localisation', style: Theme.of(context).textTheme.bodyText2!.copyWith(
+                      const Icon(Icons.location_on_rounded, size: 20,),
+                      Text(car.address!, style: Theme.of(context).textTheme.bodyText2!.copyWith(
                           color: AppTheme.light,
                           fontSize: 14,
-                          fontWeight: FontWeight.w300)),
+                          overflow: TextOverflow.fade,
+                          fontWeight: FontWeight.w300),
+                      maxLines: 1,),
                     ],
                   )
                 ],
               ),
-              Container(child: Text('${gf.removeDecimalZeroFormat(car.price.toDouble())}', style: Theme.of(context).textTheme.bodyText2!.copyWith(
+              Container(child: Text(gf.removeDecimalZeroFormat(car.pricePerDay!.toDouble()), style: Theme.of(context).textTheme.bodyText2!.copyWith(
                   color: AppTheme.primaryColor,
                   fontSize: 24,
                   fontWeight: FontWeight.bold)),)
@@ -154,7 +163,7 @@ class CarInfo extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          '${car.price} €',
+          '${car.pricePerDay} €',
           style: const TextStyle(
             color: Colors.white,
             fontSize: 24,
@@ -221,12 +230,12 @@ class CarInfo extends StatelessWidget {
                 ],
               ),
               Attribute(
-                value: car.brand,
+                value: car.brand!,
                 name: 'Marque',
                 textColor: AppTheme.backgroundColor,
               ),
               Attribute(
-                value: car.fuelCons,
+                value: car.advice!.map((e) => e.car).join(', '),
                 name: 'Conso.',
                 textColor: AppTheme.backgroundColor,
               ),

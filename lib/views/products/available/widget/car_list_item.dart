@@ -37,7 +37,7 @@ class CarListItem extends StatelessWidget {
             Positioned(
               right: 40,
               child: Image.asset(
-                car.image,
+                car.images!.avant34!,
                 height: 100,
               ),
             )

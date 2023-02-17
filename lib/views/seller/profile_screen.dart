@@ -265,7 +265,7 @@ class SellerProfileScreen extends StatelessWidget {
                   fit: BoxFit.cover,
                   repeat: ImageRepeat.noRepeat,
                   alignment: Alignment.topCenter,
-                  image: AssetImage(seller.cars[0].image),
+                  image: AssetImage(seller.cars[0].images!.ariere34!),
                 ),
                 borderRadius: const BorderRadius.only(topLeft: Radius.circular(16), bottomLeft: Radius.circular(16)),
               ),
@@ -288,7 +288,7 @@ class SellerProfileScreen extends StatelessWidget {
                           color: AppTheme.backgroundColor,
                           fontSize: 14,
                           fontWeight: FontWeight.w700)),
-                  Text('${seller.cars[0].price} €',
+                  Text('${seller.cars[0].pricePerDay} €',
                       textAlign: TextAlign.center,
                       style: Theme.of(context).textTheme.bodyText2!.copyWith(
                           color: AppTheme.backgroundColor,

@@ -27,7 +27,7 @@ class CarInfomation extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            '${car.price}',
+            '${car.pricePerDay}',
             style: const TextStyle(
               color: Colors.white,
               fontSize: 24,
@@ -47,19 +47,19 @@ class CarInfomation extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Attribute(
-                value: car.brand,
+                value: car.brand!,
                 name: 'Marque',
               ),
               Attribute(
-                value: car.model,
+                value: car.model!,
                 name: 'Model',
               ),
               Attribute(
-                value: car.co2,
+                value: car.city!,
                 name: 'CO2',
               ),
               Attribute(
-                value: car.fuelCons,
+                value: car.fuel!,
                 name: 'Conso.',
               ),
             ],

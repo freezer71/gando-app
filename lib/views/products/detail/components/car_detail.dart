@@ -1,3 +1,4 @@
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:expandable_text/expandable_text.dart';
 import 'package:flutter/material.dart';
 import 'package:gando/config/constants.dart';
@@ -6,6 +7,7 @@ import 'package:gando/models/Car.dart';
 import 'package:gando/models/ProfileSeller.dart';
 import 'package:gando/views/products/booking/booking_screen.dart';
 import 'package:gando/views/seller/profile_screen.dart';
+import 'package:gando/widget/reusable/cache_image_network.dart';
 import 'package:get/get.dart';
 
 class CarDetailPage extends StatefulWidget {
@@ -20,7 +22,10 @@ class CarDetailPage extends StatefulWidget {
 class _CarDetailPageState extends State<CarDetailPage> {
   int _quantity = 0;
   late Car car;
+  late List<String> _carImagesList = [];
   bool _iscollected = false;
+
+  int _currentImageSlider = 0;
 
   final List equipmentsList = [
     {'name': 'Climatisation'},
@@ -43,11 +48,41 @@ class _CarDetailPageState extends State<CarDetailPage> {
   ];
 
   final List reviewsList = [
-    {'name': 'Lisa', 'rate': '5/5', 'image': 'assets/images/av.png', 'description': 'Voiture propre et conforme a l\'annonce\n Facile a conduire et qui roule tres bien.'},
-    {'name': 'Marco', 'rate': '4/5', 'image': 'assets/images/av.png', 'description': 'Voiture propre et conforme a l\'annonce\n Facile a conduire et qui roule tres bien.'},
-    {'name': 'Vicent', 'rate': '3/5', 'image': 'assets/images/av.png', 'description': 'Voiture propre et conforme a l\'annonce\n Facile a conduire et qui roule tres bien.'},
-    {'name': 'Thierry', 'rate': '5/5', 'image': 'assets/images/av.png', 'description': 'Voiture propre et conforme a l\'annonce\n Facile a conduire et qui roule tres bien.'},
-    {'name': 'Nagulan', 'rate': '4/5', 'image': 'assets/images/av.png', 'description': 'Voiture propre et conforme a l\'annonce\n Facile a conduire et qui roule tres bien.'},
+    {
+      'name': 'Lisa',
+      'rate': '5/5',
+      'image': 'assets/images/av.png',
+      'description':
+          'Voiture propre et conforme a l\'annonce\n Facile a conduire et qui roule tres bien.'
+    },
+    {
+      'name': 'Marco',
+      'rate': '4/5',
+      'image': 'assets/images/av.png',
+      'description':
+          'Voiture propre et conforme a l\'annonce\n Facile a conduire et qui roule tres bien.'
+    },
+    {
+      'name': 'Vicent',
+      'rate': '3/5',
+      'image': 'assets/images/av.png',
+      'description':
+          'Voiture propre et conforme a l\'annonce\n Facile a conduire et qui roule tres bien.'
+    },
+    {
+      'name': 'Thierry',
+      'rate': '5/5',
+      'image': 'assets/images/av.png',
+      'description':
+          'Voiture propre et conforme a l\'annonce\n Facile a conduire et qui roule tres bien.'
+    },
+    {
+      'name': 'Nagulan',
+      'rate': '4/5',
+      'image': 'assets/images/av.png',
+      'description':
+          'Voiture propre et conforme a l\'annonce\n Facile a conduire et qui roule tres bien.'
+    },
   ];
 
   late ProfileSeller profileSeller;
@@ -55,6 +90,12 @@ class _CarDetailPageState extends State<CarDetailPage> {
   @override
   void initState() {
     car = widget.car;
+    _carImagesList.addAll([APP_FILE+car.images!.supplementaire.toString(),
+        APP_FILE+car.images!.avant34.toString(),
+        APP_FILE+car.images!.ariere34.toString(),
+        APP_FILE+car.images!.lateral.toString(),
+        APP_FILE+car.images!.interieur.toString(),]
+    );
 
     profileSeller = ProfileSeller(
       'Marco DEGARDIO',
@@ -73,11 +114,14 @@ class _CarDetailPageState extends State<CarDetailPage> {
 
   @override
   void dispose() {
+    _carImagesList.clear();
+    _currentImageSlider = 0;
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       backgroundColor: AppTheme.backgroundColor.withOpacity(0.9),
       extendBody: true,
@@ -106,14 +150,28 @@ class _CarDetailPageState extends State<CarDetailPage> {
                   //       fontSize: 18,
                   //       fontWeight: FontWeight.w900),),
                   // ),
-                  background: Container(
-                    color: AppTheme.backgroundColor,
-                    padding:  EdgeInsets.zero,
-                    child: Image.asset(
-                      car.image,
-                      fit: BoxFit.cover,
-                      alignment: Alignment.topCenter,
-                    ),
+                  background: CarouselSlider(
+                    items: _carImagesList
+                        .map((item) {
+                          printInfo(info: "item: $item");
+                      return Container(
+                        child: buildCacheNetworkImage(
+                            width: 0, height: 0, url: item),
+                      );
+                    })
+                        .toList(),
+                    options: CarouselOptions(
+                        initialPage: 0,
+                        aspectRatio: 1,
+                        viewportFraction: 1.0,
+                        enableInfiniteScroll: true,
+                        autoPlay: false,
+                        enlargeCenterPage: false,
+                        onPageChanged: (index, reason) {
+                          setState(() {
+                            _currentImageSlider = index;
+                          });
+                        }),
                   ),
                 ),
               ),
@@ -161,15 +219,18 @@ class _CarDetailPageState extends State<CarDetailPage> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  car.brand,
-                  style: TextStyle(
-                      fontWeight: FontWeight.w900,
-                      fontSize: 32,
-                      color: AppTheme.darkColor),
+                SizedBox(
+                  width: Get.width / 1.8,
+                  child: Text(car.brand!,
+                      maxLines: 3,
+                      style: TextStyle(
+                          fontWeight: FontWeight.w900,
+                          fontSize: 22,
+                          overflow: TextOverflow.fade,
+                          color: AppTheme.darkColor)),
                 ),
                 Text(
-                  car.model,
+                  car.model!,
                   style: TextStyle(
                       fontWeight: FontWeight.w500,
                       fontSize: 14,
@@ -181,11 +242,11 @@ class _CarDetailPageState extends State<CarDetailPage> {
           Container(
             padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 14),
             decoration: BoxDecoration(
-              borderRadius: BorderRadius.all(Radius.circular(20)),
+              borderRadius: const BorderRadius.all(Radius.circular(20)),
               color: AppTheme.darkColor,
             ),
             child: Text(
-              '${car.price} €',
+              '${car.pricePerDay} €',
               style: Theme.of(context).textTheme.bodyText2!.copyWith(
                   color: AppTheme.backgroundColor,
                   fontSize: 28,
@@ -200,7 +261,7 @@ class _CarDetailPageState extends State<CarDetailPage> {
           Container(
             padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 4),
             decoration: BoxDecoration(
-              borderRadius: BorderRadius.all(Radius.circular(8)),
+              borderRadius: const BorderRadius.all(Radius.circular(8)),
               color: AppTheme.primaryColor,
             ),
             child: Icon(
@@ -208,7 +269,7 @@ class _CarDetailPageState extends State<CarDetailPage> {
               color: AppTheme.backgroundColor,
             ),
           ),
-          SizedBox(width: 8),
+          const SizedBox(width: 8),
           Text(
             '4.8 (53 avis)',
             style: Theme.of(context).textTheme.bodyText2!.copyWith(
@@ -253,102 +314,106 @@ class _CarDetailPageState extends State<CarDetailPage> {
             physics: const NeverScrollableScrollPhysics(),
             itemCount: equipmentsList.length,
             gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 3,
-              mainAxisSpacing: 10,
-              crossAxisSpacing: 5,
-                childAspectRatio: 2
-            ),
+                crossAxisCount: 3,
+                mainAxisSpacing: 10,
+                crossAxisSpacing: 5,
+                childAspectRatio: 2),
             itemBuilder: (context, index) => Container(
-              decoration: BoxDecoration(
-                  color: AppTheme.backgroundColor,
-                borderRadius: BorderRadius.circular(10)
-              ),
-              child: Center(
-                child: Text(equipmentsList[index]['name'], style: Theme.of(context).textTheme.bodyText2!.copyWith(
-                    color: AppTheme.darkColor,
-                    fontSize: 12,
-                    fontWeight: FontWeight.w900), textAlign: TextAlign.center,),
-              ),
-            )),
+                  decoration: BoxDecoration(
+                      color: AppTheme.backgroundColor,
+                      borderRadius: BorderRadius.circular(10)),
+                  child: Center(
+                    child: Text(
+                      equipmentsList[index]['name'],
+                      style: Theme.of(context).textTheme.bodyText2!.copyWith(
+                          color: AppTheme.darkColor,
+                          fontSize: 12,
+                          fontWeight: FontWeight.w900),
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                )),
       ),
     ];
   }
 
   List<Widget> _buildReviews() {
     Widget buildBox(index) => Container(
-      height: 120,
-      margin: EdgeInsets.symmetric(vertical: 10),
-      width: Get.width,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.all(Radius.circular(24)),
-        color: AppTheme.backgroundColor,
-      ),
-      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 12),
-      child: Container(
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            SizedBox(
-              height: 65,
-              width: 65,
-              child: CircleAvatar(
-                backgroundColor: AppTheme.backgroundColor,
-                backgroundImage: const AssetImage(
-                  'assets/images/av.png',
-                ),
-              ),
-            ),
-            const SizedBox(
-              width: 5,
-            ),
-            SizedBox(
-              width: 140,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    reviewsList[index]['name'],
-                    style: Theme.of(context).textTheme.bodyText2!.copyWith(
-                        color: AppTheme.darkColor,
-                        fontSize: 16,
-                        fontWeight: FontWeight.w900),
-                  ),
-                  Text(
-                    reviewsList[index]['description'],
-                    style: Theme.of(context).textTheme.bodyText2!.copyWith(
-                        color: AppTheme.darkColor,
-                        fontSize: 12,
-                        fontWeight: FontWeight.w500),
-                  )
-                  // name of seller wiil be here
-                ],
-              ),
-            ),
-            Row(
+          height: 120,
+          margin: EdgeInsets.symmetric(vertical: 10),
+          width: Get.width,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.all(Radius.circular(24)),
+            color: AppTheme.backgroundColor,
+          ),
+          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 12),
+          child: Container(
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                Container(
-                  padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 4),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.all(Radius.circular(8)),
-                    color: AppTheme.primaryColor,
-                  ),
-                  child: Icon(
-                    Icons.star,
-                    color: AppTheme.backgroundColor,
+                SizedBox(
+                  height: 65,
+                  width: 65,
+                  child: CircleAvatar(
+                    backgroundColor: AppTheme.backgroundColor,
+                    backgroundImage: const AssetImage(
+                      'assets/images/av.png',
+                    ),
                   ),
                 ),
-                _buildSpacerWidth(10.0),
-                Text(reviewsList[index]['rate'], style: Theme.of(context).textTheme.bodyText2!.copyWith(
-                    color: AppTheme.darkColor,
-                    fontSize: 12,
-                    fontWeight: FontWeight.w500))
+                const SizedBox(
+                  width: 5,
+                ),
+                SizedBox(
+                  width: 140,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        reviewsList[index]['name'],
+                        style: Theme.of(context).textTheme.bodyText2!.copyWith(
+                            color: AppTheme.darkColor,
+                            fontSize: 16,
+                            fontWeight: FontWeight.w900),
+                      ),
+                      Text(
+                        reviewsList[index]['description'],
+                        style: Theme.of(context).textTheme.bodyText2!.copyWith(
+                            color: AppTheme.darkColor,
+                            fontSize: 12,
+                            fontWeight: FontWeight.w500),
+                      )
+                      // name of seller wiil be here
+                    ],
+                  ),
+                ),
+                Row(
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 4, horizontal: 4),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.all(Radius.circular(8)),
+                        color: AppTheme.primaryColor,
+                      ),
+                      child: Icon(
+                        Icons.star,
+                        color: AppTheme.backgroundColor,
+                      ),
+                    ),
+                    _buildSpacerWidth(10.0),
+                    Text(reviewsList[index]['rate'],
+                        style: Theme.of(context).textTheme.bodyText2!.copyWith(
+                            color: AppTheme.darkColor,
+                            fontSize: 12,
+                            fontWeight: FontWeight.w500))
+                  ],
+                )
               ],
-            )
-          ],
-        ),
-      ),
-    );
+            ),
+          ),
+        );
 
     return [
       Row(
@@ -360,17 +425,21 @@ class _CarDetailPageState extends State<CarDetailPage> {
                   fontSize: 20,
                   fontWeight: FontWeight.w900)),
           Container(
-            width: 120,
+              width: 120,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              Text('Voir plus', style: Theme.of(context).textTheme.bodyText2!.copyWith(
-                  color: AppTheme.darkColor,
-                  fontSize: 16,
-                  fontWeight: FontWeight.w500)),
-              Icon(Icons.arrow_forward_outlined, color: AppTheme.darkColor,)
-            ],
-          )),
+                children: [
+                  Text('Voir plus',
+                      style: Theme.of(context).textTheme.bodyText2!.copyWith(
+                          color: AppTheme.darkColor,
+                          fontSize: 16,
+                          fontWeight: FontWeight.w500)),
+                  Icon(
+                    Icons.arrow_forward_outlined,
+                    color: AppTheme.darkColor,
+                  )
+                ],
+              )),
         ],
       ),
       const SizedBox(height: 8),
@@ -396,8 +465,13 @@ class _CarDetailPageState extends State<CarDetailPage> {
             children: [
               Row(
                 children: [
-                  Icon(featuresList[index]['icon'], color: AppTheme.darkColor.withOpacity(0.3),),
-                  SizedBox(width: 8,),
+                  Icon(
+                    featuresList[index]['icon'],
+                    color: AppTheme.darkColor.withOpacity(0.3),
+                  ),
+                  SizedBox(
+                    width: 8,
+                  ),
                   Text(featuresList[index]['name'],
                       style: Theme.of(context).textTheme.bodyText2!.copyWith(
                           color: AppTheme.darkColor,
@@ -405,12 +479,12 @@ class _CarDetailPageState extends State<CarDetailPage> {
                           fontWeight: FontWeight.w900)),
                 ],
               ),
-
-              Text(featuresList[index]['value'], style: Theme.of(context).textTheme.bodyText2!.copyWith(
-                  color: AppTheme.redColor,
-                  fontSize: 16,
-                  overflow: TextOverflow.ellipsis,
-                  fontWeight: FontWeight.w900))
+              Text(featuresList[index]['value'],
+                  style: Theme.of(context).textTheme.bodyText2!.copyWith(
+                      color: AppTheme.redColor,
+                      fontSize: 16,
+                      overflow: TextOverflow.ellipsis,
+                      fontWeight: FontWeight.w900))
             ],
           ),
         );
@@ -509,75 +583,77 @@ class _CarDetailPageState extends State<CarDetailPage> {
 
   Widget _buildSeller() {
     return Container(
-        height: 120,
-        margin: EdgeInsets.zero,
-        width: Get.width,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.all(Radius.circular(24)),
-          color: AppTheme.backgroundColor,
-        ),
-        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 12),
-        child: Container(
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              SizedBox(
-                height: 65,
-                width: 65,
-                child: CircleAvatar(
-                  backgroundColor: AppTheme.backgroundColor,
-                  backgroundImage: const AssetImage(
-                    'assets/images/av.png',
-                  ),
+      height: 120,
+      margin: EdgeInsets.zero,
+      width: Get.width,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.all(Radius.circular(24)),
+        color: AppTheme.backgroundColor,
+      ),
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 12),
+      child: Container(
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            SizedBox(
+              height: 65,
+              width: 65,
+              child: CircleAvatar(
+                backgroundColor: AppTheme.backgroundColor,
+                backgroundImage: const AssetImage(
+                  'assets/images/av.png',
                 ),
               ),
-              const SizedBox(
-                width: 5,
-              ),
-              SizedBox(
-                width: 140,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Marco DEGARDIO',
-                      style: Theme.of(context).textTheme.bodyText2!.copyWith(
-                          color: AppTheme.darkColor,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w900),
-                    ),
-                    Text(
-                      '8 locations déja effectuées\nMembres depuis 2022',
-                      style: Theme.of(context).textTheme.bodyText2!.copyWith(
-                          color: AppTheme.darkColor,
-                          fontSize: 12,
-                          fontWeight: FontWeight.w500),
-                    )
-                    // name of seller wiil be here
-                  ],
-                ),
-              ),
-              ElevatedButton(
-                  style: ButtonStyle(
-                      backgroundColor:
-                          MaterialStateProperty.all(AppTheme.redColor),
-                      shape: MaterialStateProperty.all(RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10)))),
-                  onPressed: () {
-                    Get.to(() => SellerProfileScreen(seller: profileSeller,));
-                  },
-                  child: Text(
-                    'Voir le Profil',
+            ),
+            const SizedBox(
+              width: 5,
+            ),
+            SizedBox(
+              width: 140,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Marco DEGARDIO',
                     style: Theme.of(context).textTheme.bodyText2!.copyWith(
-                        color: AppTheme.backgroundColor,
+                        color: AppTheme.darkColor,
+                        fontSize: 16,
+                        fontWeight: FontWeight.w900),
+                  ),
+                  Text(
+                    '8 locations déja effectuées\nMembres depuis 2022',
+                    style: Theme.of(context).textTheme.bodyText2!.copyWith(
+                        color: AppTheme.darkColor,
                         fontSize: 12,
                         fontWeight: FontWeight.w500),
-                  ))
-            ],
-          ),
+                  )
+                  // name of seller wiil be here
+                ],
+              ),
+            ),
+            ElevatedButton(
+                style: ButtonStyle(
+                    backgroundColor:
+                        MaterialStateProperty.all(AppTheme.redColor),
+                    shape: MaterialStateProperty.all(RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10)))),
+                onPressed: () {
+                  Get.to(() => SellerProfileScreen(
+                        seller: profileSeller,
+                      ));
+                },
+                child: Text(
+                  'Voir le Profil',
+                  style: Theme.of(context).textTheme.bodyText2!.copyWith(
+                      color: AppTheme.backgroundColor,
+                      fontSize: 12,
+                      fontWeight: FontWeight.w500),
+                ))
+          ],
         ),
-      );
+      ),
+    );
   }
 
   List<Widget> _buildDescription() {
@@ -674,7 +750,9 @@ class _CarDetailPageState extends State<CarDetailPage> {
               // splashColor: const Color(0xFFEEEEEE),
               onTap: () {
                 //got to next page
-                Get.to(() => BookingScreen(car: car,));
+                Get.to(() => BookingScreen(
+                      car: car,
+                    ));
               },
               child: Center(
                 child: Text(

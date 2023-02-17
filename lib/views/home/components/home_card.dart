@@ -8,11 +8,12 @@ import 'package:gando/views/products/detail/widget/car_detail_infomation.dart';
 
 class HomeCardCar extends StatelessWidget {
   final int index;
-  const HomeCardCar(this.index, {Key? key}) : super(key: key);
+  final Car car;
+  const HomeCardCar(this.index, this.car, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    Car car = carList[index];
+
 
     return GestureDetector(
       onTap: () {

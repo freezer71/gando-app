@@ -696,7 +696,7 @@ class EditArticleScreen extends StatelessWidget {
                 image: DecorationImage(
                   repeat: ImageRepeat.noRepeat,
                   alignment: Alignment.center,
-                  image: AssetImage(article.image),
+                  image: AssetImage(article.images!.avant34!),
                 ),
                 borderRadius: BorderRadius.circular(16),
               ),
