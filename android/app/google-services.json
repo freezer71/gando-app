@@ -14,7 +14,23 @@
       },
       "oauth_client": [
         {
-          "client_id": "260961065510-tu3aid6mt3caa0fvudf6e8ncqug86ji6.apps.googleusercontent.com",
+          "client_id": "260961065510-et40phdeclo0c0ks4q68q49m8io561re.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.gando.rentcar.app",
+            "certificate_hash": "989ef0586c03914209071606e61beadd333cb1ec"
+          }
+        },
+        {
+          "client_id": "260961065510-h1rmt0e5vl6f4kgg9qsdc3ige6qofq82.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.gando.rentcar.app",
+            "certificate_hash": "c5d1175a3c38421dd378298c33fd7f044b609750"
+          }
+        },
+        {
+          "client_id": "260961065510-jq4uadglav5b9bl6f3ud86u4op16v3kb.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
@@ -27,8 +43,15 @@
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "260961065510-tu3aid6mt3caa0fvudf6e8ncqug86ji6.apps.googleusercontent.com",
+              "client_id": "260961065510-jq4uadglav5b9bl6f3ud86u4op16v3kb.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "260961065510-9etvnglcq20mcdt8csclgt15a3v7ugbk.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.gando"
+              }
             }
           ]
         }

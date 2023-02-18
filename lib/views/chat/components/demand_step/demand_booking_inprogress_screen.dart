@@ -26,18 +26,6 @@ class DemandBookingInProgressScreen extends StatefulWidget {
 }
 
 class _DemandBookingInProgressScreenState extends State<DemandBookingInProgressScreen> {
-  final TextEditingController etNameController = TextEditingController();
-
-  final TextEditingController etLastNameController = TextEditingController();
-
-  final TextEditingController drivingIdController = TextEditingController();
-
-  final TextEditingController obtainingDateController = TextEditingController();
-
-  String obtainingCountryController = 'Pays d\'obtention';
-
-  final formKey = GlobalKey<FormState>();
-  final key = GlobalKey<FormState>();
 
   late Car car;
 

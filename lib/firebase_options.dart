@@ -63,20 +63,22 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions ios = FirebaseOptions(
     apiKey: 'AIzaSyCONHjvgZJS_dvJjfZdf5IOvlgrS-Qjhc8',
-    appId: '1:260961065510:ios:9bdf2ab31ed17d04e024e7',
+    appId: '1:260961065510:ios:aa2eaa9c15df0294e024e7',
     messagingSenderId: '260961065510',
     projectId: 'gando-app',
     storageBucket: 'gando-app.appspot.com',
-    iosClientId: '260961065510-d74n44bdbm66gtuh4tqpqn492bec4ma3.apps.googleusercontent.com',
-    iosBundleId: 'com.gando.rentcar.app',
+    androidClientId: '260961065510-et40phdeclo0c0ks4q68q49m8io561re.apps.googleusercontent.com',
+    iosClientId: '260961065510-gd0jkq24u00bl99ovkfmnq013tg4a394.apps.googleusercontent.com',
+    iosBundleId: 'com.gando.app',
   );
 
   static const FirebaseOptions macos = FirebaseOptions(
     apiKey: 'AIzaSyCONHjvgZJS_dvJjfZdf5IOvlgrS-Qjhc8',
-    appId: '1:260961065510:ios:c729b687d10a8a35e024e7',
+    appId: '1:260961065510:ios:74ddee2a65026fb6e024e7',
     messagingSenderId: '260961065510',
     projectId: 'gando-app',
     storageBucket: 'gando-app.appspot.com',
+    androidClientId: '260961065510-et40phdeclo0c0ks4q68q49m8io561re.apps.googleusercontent.com',
     iosClientId: '260961065510-9etvnglcq20mcdt8csclgt15a3v7ugbk.apps.googleusercontent.com',
     iosBundleId: 'com.example.gando',
   );

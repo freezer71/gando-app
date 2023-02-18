@@ -36,8 +36,6 @@ class SocialAuthController extends GetxController{
     try{
       final user = await GoogleSignInApi.login();
 
-      // printInfo(info: '$user');
-
       if ( user == null) {
         Get.defaultDialog(title: 'Notification', content: const Text('Echec de connexion avec Google, réessayer s\'il vous plait'));
       }else {
