@@ -15,7 +15,7 @@ class CarController extends GetxController {
   final RxBool isLoading = false.obs;
 
   // init car List
-  final RxList<Car> carList = <Car>[].obs;
+  late RxList<Car> carList = <Car>[].obs;
 
   // cancel token
   final cancelToken = CancelToken();

@@ -18,8 +18,8 @@ import '../../../products/booking/contract/contract_step_2.dart';
 import '../../../products/booking/success_booking_screen.dart';
 
 class DemandBookingInProgressScreen extends StatefulWidget {
-  final car;
-  DemandBookingInProgressScreen({Key? key, required this.car}) : super(key: key);
+
+  DemandBookingInProgressScreen({Key? key}) : super(key: key);
 
   @override
   State<DemandBookingInProgressScreen> createState() => _DemandBookingInProgressScreenState();
@@ -44,7 +44,21 @@ class _DemandBookingInProgressScreenState extends State<DemandBookingInProgressS
   @override
   void initState() {
     super.initState();
-    car = widget.car;
+    //init fake car
+    car = Car(
+      brand: 'BMW',
+      model: 'X5',
+      pricePerDay: 100,
+      images: Images(
+        avant34: 'assets/images/car1.png',
+        ariere34: 'assets/images/car2.png',
+        lateral: 'assets/images/car3.png',
+        supplementaire: 'assets/images/car4.png',
+      ),
+      fuel: 'Essence',
+      year: 2021,
+      description: 'Lorem ipsum dolor sit amet, nisl. Sed euismod, nunc sit amet aliquam'
+    );
   }
 
   @override
