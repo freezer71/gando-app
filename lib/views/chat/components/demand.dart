@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/simple/get_state.dart';
 
 import '../../../config/textstyle.dart';
+import '../../../controllers/car_controller.dart';
 import 'demand_step/demand_booking_inprogress_screen.dart';
 import 'demand_step/demand_booking_pending_screen.dart';
 import 'demand_step/demand_booking_screen.dart';
@@ -14,8 +15,12 @@ class DemandTabScreen extends StatelessWidget {
 
   final gf = GlobalFunction();
 
+  final controller = Get.put(CarController());
+
+
   @override
   Widget build(BuildContext context) {
+
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 30, horizontal: 15),
       child: Column(
@@ -257,7 +262,7 @@ class DemandTabScreen extends StatelessWidget {
         ),
         InkWell(
           onTap: () {
-            Get.to(() => DemandBookingInProgressScreen(car: carList.first,));
+            Get.to(() => DemandBookingInProgressScreen());
           },
           highlightColor: AppTheme.light,
           borderRadius: BorderRadius.circular(30),
