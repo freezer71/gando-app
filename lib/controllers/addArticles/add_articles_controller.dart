@@ -84,10 +84,10 @@ class AddArticlesController extends GetxController {
 
   @override
   void onInit() {
-    super.onInit();
     items.value = equipmentsList
         .map((data) => MultiSelectItem<Equipment>(data, data.name))
         .toList();
+    super.onInit();
   }
 
   @override

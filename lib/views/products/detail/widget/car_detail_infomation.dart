@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:gando/config/constants.dart';
 import 'package:gando/config/textstyle.dart';
@@ -31,7 +32,7 @@ class CarDetailInfomation extends StatelessWidget {
                 blurStyle: BlurStyle.normal),
           ],
           borderRadius: BorderRadius.circular(20),
-          image: DecorationImage(image: NetworkImage(APP_FILE+car.images!.ariere34!), alignment: Alignment.center, repeat: ImageRepeat.noRepeat, fit: BoxFit.cover, )),
+          image: DecorationImage(image: CachedNetworkImageProvider(APP_FILE+car.images!.avant34!), alignment: Alignment.topCenter, repeat: ImageRepeat.noRepeat, fit: BoxFit.cover, )),
       child: NextCarInfo(car: car),
     ).paddingZero;
   }
