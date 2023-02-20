@@ -9,6 +9,7 @@ import 'package:gando/views/products/booking/booking_screen.dart';
 import 'package:gando/views/seller/profile_screen.dart';
 import 'package:gando/widget/reusable/cache_image_network.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 
 class CarDetailPage extends StatefulWidget {
   final Car car;
@@ -523,27 +524,40 @@ class _CarDetailPageState extends State<CarDetailPage> {
                   fontSize: 20,
                   fontWeight: FontWeight.w900)),
           const SizedBox(width: 8),
-          Icon(
-            Icons.info_outline_rounded,
-            color: AppTheme.darkColor,
-            size: 20,
+          InkWell(
+            onTap: (){
+              Get.defaultDialog(
+                title: 'Forfait Kilometrique',
+                content: Text('250 Km sont inclus pour 1 journée, au dela du forfait +0,24 €/km vous sera ajouté.'),
+                textConfirm: 'Ok',
+                confirmTextColor: Colors.white,
+                onConfirm: () {
+                  Get.back();
+                },
+              );
+            },
+            child: Icon(
+              Icons.info_outline_rounded,
+              color: AppTheme.darkColor,
+              size: 20,
+            ),
           )
         ],
       ),
-      const SizedBox(height: 8),
-      ExpandableText(
-        '250 Km sont inclus pour 1 journée, au dela du forfait +0,24 €/km vous sera ajouté.',
-        expandText: ' Voir plus',
-        style: Theme.of(context).textTheme.bodyText2!.copyWith(
-            color: AppTheme.darkColor,
-            fontSize: 14,
-            fontWeight: FontWeight.w400),
-        collapseText: ' Voir moins',
-        linkStyle: Theme.of(context).textTheme.bodyText2!.copyWith(
-            color: AppTheme.redColor,
-            fontSize: 14,
-            fontWeight: FontWeight.w600),
-      ),
+      // const SizedBox(height: 8),
+      // ExpandableText(
+      //   '250 Km sont inclus pour 1 journée, au dela du forfait +0,24 €/km vous sera ajouté.',
+      //   expandText: ' Voir plus',
+      //   style: Theme.of(context).textTheme.bodyText2!.copyWith(
+      //       color: AppTheme.darkColor,
+      //       fontSize: 14,
+      //       fontWeight: FontWeight.w400),
+      //   collapseText: ' Voir moins',
+      //   linkStyle: Theme.of(context).textTheme.bodyText2!.copyWith(
+      //       color: AppTheme.redColor,
+      //       fontSize: 14,
+      //       fontWeight: FontWeight.w600),
+      // ),
     ];
   }
 
@@ -587,7 +601,7 @@ class _CarDetailPageState extends State<CarDetailPage> {
       margin: EdgeInsets.zero,
       width: Get.width,
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.all(Radius.circular(24)),
+        borderRadius: const BorderRadius.all(Radius.circular(24)),
         color: AppTheme.backgroundColor,
       ),
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 12),
@@ -615,14 +629,14 @@ class _CarDetailPageState extends State<CarDetailPage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Marco DEGARDIO',
+                    car.owner!.money.toString(),
                     style: Theme.of(context).textTheme.bodyText2!.copyWith(
                         color: AppTheme.darkColor,
                         fontSize: 16,
                         fontWeight: FontWeight.w900),
                   ),
                   Text(
-                    '8 locations déja effectuées\nMembres depuis 2022',
+                    '${car.owner!.loginType} locations déja effectuées\nMembres depuis ${DateTime.parse(car.owner!.registrationDate!).year}',
                     style: Theme.of(context).textTheme.bodyText2!.copyWith(
                         color: AppTheme.darkColor,
                         fontSize: 12,

@@ -318,45 +318,48 @@ class MyContactDetailScreen extends StatelessWidget {
                 fontSize: 16,
                 fontWeight: FontWeight.w500)),
         SizedBox(
-          height: 10,
+          height: 20,
         ),
-        CSCPicker(
-          showCities: false,
-          showStates: false,
-          countryDropdownLabel: c.country.value,
-          defaultCountry: CscCountry.France,
-          flagState: CountryFlag.DISABLE,
-          selectedItemStyle: Theme.of(context)
-              .textTheme
-              .bodyText2!
-              .copyWith(
-              color: AppTheme.darkColor,
-              fontSize: 18,
-              fontWeight: FontWeight.w500),
-          dropdownDecoration: BoxDecoration(
-              borderRadius:
-              const BorderRadius.all(Radius.circular(30)),
-              color: AppTheme.light,
-              border: Border.all(
-                  color: AppTheme.darkColor, width: 2)),
-          countrySearchPlaceholder: "Selectionner un Pays",
-          ///Disabled Dropdown box decoration to style your dropdown selector [OPTIONAL PARAMETER]  (USE with disabled dropdownDecoration)
-          disabledDropdownDecoration: BoxDecoration(
-              borderRadius:
-              const BorderRadius.all(Radius.circular(30)),
-              color: Colors.grey.shade300,
-              border: Border.all(
-                  color: AppTheme.darkColor.withOpacity(0.4), width: 1)),
-          dropdownItemStyle: Theme.of(context)
-              .textTheme
-              .bodyText2!
-              .copyWith(
-              color: AppTheme.backgroundColor,
-              fontSize: 14,
-              fontWeight: FontWeight.w500),
-          onCountryChanged: (value) {
-            c.country(value);
-          },
+        SizedBox(
+          height: 80,
+          child: CSCPicker(
+            showCities: false,
+            showStates: false,
+            countryDropdownLabel: c.country.value,
+            defaultCountry: CscCountry.France,
+            flagState: CountryFlag.DISABLE,
+            selectedItemStyle: Theme.of(context)
+                .textTheme
+                .bodyText2!
+                .copyWith(
+                color: AppTheme.darkColor,
+                fontSize: 18,
+                fontWeight: FontWeight.w500),
+            dropdownDecoration: BoxDecoration(
+                borderRadius:
+                const BorderRadius.all(Radius.circular(30)),
+                color: AppTheme.light,
+                border: Border.all(
+                    color: AppTheme.darkColor, width: .5)),
+            countrySearchPlaceholder: "Selectionner un Pays",
+            ///Disabled Dropdown box decoration to style your dropdown selector [OPTIONAL PARAMETER]  (USE with disabled dropdownDecoration)
+            disabledDropdownDecoration: BoxDecoration(
+                borderRadius:
+                const BorderRadius.all(Radius.circular(30)),
+                color: Colors.grey.shade300,
+                border: Border.all(
+                    color: AppTheme.darkColor.withOpacity(0.4), width: 1)),
+            dropdownItemStyle: Theme.of(context)
+                .textTheme
+                .bodyText2!
+                .copyWith(
+                color: AppTheme.backgroundColor,
+                fontSize: 14,
+                fontWeight: FontWeight.w500),
+            onCountryChanged: (value) {
+              c.country(value);
+            },
+          ),
         ),
         Row(
           verticalDirection: VerticalDirection.down,
