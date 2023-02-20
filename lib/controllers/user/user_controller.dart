@@ -9,21 +9,24 @@ import 'package:get/get.dart';
 import '../../config/constants.dart';
 import '../../models/User.dart';
 import '../../models/UserCar.dart';
+import '../../services/auth/get_user_car.dart';
 import '../../services/provider/api_provider.dart';
 
 class UserController extends GetxController {
 
+  late final Future getCarList;
+
   //get user carlist
-  final RxList<UserCar> userCarList = <UserCar>[].obs;
+  final userCarList = <UserCar>[].obs;
 
   final userID = ''.obs;
 
   final isLoading = false.obs;
 
   @override
-  void onReady() {
-    getUserCarList();
-    super.onReady();
+  void onInit() async{
+    super.onInit();
+    getCarList = await getUserCarList();
   }
 
   @override
@@ -37,34 +40,29 @@ class UserController extends GetxController {
   Future getUserCarList() async {
     try {
       isLoading(true);
-      await ApiProvider().getData('/user').then((value) {
-        final body = jsonDecode(value.body)['data'];
-        userID.value = body['_id'];
-        return User.fromJson(body);
-      });
-
-      final res = await ApiProvider().getData('/car/getUserCars?userId=$userID');
-      final body = jsonDecode(res.body)['data'];
-
-      if (res.statusCode == STATUS_OK) {
-
-        userCarList.clear();
-        final tt = body.map((e) => e).toList();
-        // final data = body.map<UserCar>((e) => userCarFromJson(e)).toList();
-        // userCarList.addAll(body.map<UserCar>((e) => userCarFromJson(e)).toList());
-        // final datas = userCar;FromJson(jsonDecode(body));
-        printInfo(info: '${jsonEncode(tt)}');
-        // userCarList.assignAll(body.map<UserCar>((e) => UserCar.fromJson(e)).toList());
-        // userCarList.addAll(data);
+      final cars = await CarService().fetchUserCarList();
+      if(cars.isNotEmpty){
+        userCarList.assignAll(cars);
+        return cars;
       }
+
+      return null;
+
     } catch (e) {
-      printError(info: e.toString());
-      Get.snackbar('Error', e.toString(), duration: Duration(seconds: 5));
+      Get.snackbar('Error', e.toString(),snackPosition: SnackPosition.BOTTOM, duration: const Duration(seconds: 5));
     }finally{
       isLoading(false);
     }
   }
 
-
+  void fetchCars() async {
+    try {
+      isLoading(true);
+      var cars = await CarService().fetchUserCarList();
+      userCarList.assignAll(cars);
+    } finally {
+      isLoading(false);
+    }
+  }
 
 }

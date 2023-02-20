@@ -47,5 +47,21 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
+	<key>LSRequiresIPhoneOS</key>
+    <true/>
+    <key>NSCameraUsageDescription</key>
+    <string>I need this permission to upload photo</string>
+    <key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+    <string>Always and when in use!</string>
+    <key>NSLocationAlwaysUsageDescription</key>
+    <string>Can i have location always?</string>
+    <key>NSLocationUsageDescription</key>
+    <string>Older devices need location.</string>
+    <key>NSLocationWhenInUseUsageDescription</key>
+    <string>Need location when in use</string>
+    <key>NSMicrophoneUsageDescription</key>
+    <string>I need this permission to upload photo</string>
+    <key>NSPhotoLibraryUsageDescription</key>
+    <string>I need this permission to upload photo</string>
 </dict>
 </plist>
