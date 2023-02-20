@@ -5,20 +5,18 @@ part 'Advice.g.dart';
 
 @JsonSerializable()
 class Advice {
-  final String? id;
+  @JsonKey(name: '_id') final String? id;
   final String? user;
   final int? note;
   final String? comment;
   final String? car;
-  final int? v;
 
   Advice({
-    this.id,
-    this.user,
-    this.note,
-    this.comment,
-    this.car,
-    this.v,
+    required this.id,
+    required this.user,
+    required this.note,
+    required this.comment,
+    required this.car,
   });
 
   factory Advice.fromJson(Map<String, dynamic> json) => _$AdviceFromJson(json);

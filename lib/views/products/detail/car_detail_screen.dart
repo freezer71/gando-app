@@ -1,8 +1,5 @@
 
-import 'package:flutter/foundation.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:gando/config/config.dart';
 import 'package:gando/models/Car.dart';
 import 'package:gando/views/products/detail/widget/car_detail_infomation.dart';
 import 'package:gando/views/products/detail/widget/my_appbar.dart';
@@ -11,17 +8,6 @@ class CarDetailScreen extends StatelessWidget {
   final Car car;
 
   CarDetailScreen(this.car);
-
-  // GoogleMapController? mapController;
-
-  //contrller for Google map
-  // CameraPosition? cameraPosition;
-
-  String location = "Tapez une adresse";
-
-  // late LatLng newlatlang = Config.latLng;
-
-  // Map<MarkerId, Marker> markers = <MarkerId, Marker>{};
 
   @override
   Widget build(BuildContext context) {

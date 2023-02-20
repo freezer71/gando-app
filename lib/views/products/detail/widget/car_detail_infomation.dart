@@ -87,7 +87,7 @@ class NextCarInfo extends StatelessWidget {
                       ],
                       borderRadius: const BorderRadius.only(topRight: Radius.circular(10), bottomRight: Radius.circular(10))
                     ),
-                    child: Text('${car.advice!.length} /5', style: Theme.of(context).textTheme.bodyText2!.copyWith(
+                    child: Text('${car.note} /5', style: Theme.of(context).textTheme.bodyText2!.copyWith(
                         color: AppTheme.darkColor,
                         fontSize: 15,
                         fontWeight: FontWeight.bold)),
@@ -164,7 +164,7 @@ class CarInfo extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          '${car.pricePerDay} €',
+          '${car.pricePerDay} €/jour',
           style: const TextStyle(
             color: Colors.white,
             fontSize: 24,

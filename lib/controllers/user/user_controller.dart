@@ -24,9 +24,9 @@ class UserController extends GetxController {
   final isLoading = false.obs;
 
   @override
-  void onInit() async{
+  void onInit() {
+    getCarList = getUserCarList();
     super.onInit();
-    getCarList = await getUserCarList();
   }
 
   @override
@@ -41,12 +41,12 @@ class UserController extends GetxController {
     try {
       isLoading(true);
       final cars = await CarService().fetchUserCarList();
-      if(cars.isNotEmpty){
-        userCarList.assignAll(cars);
+
+      if(cars.isNotEmpty) {
         return cars;
       }
 
-      return null;
+      return [];
 
     } catch (e) {
       Get.snackbar('Error', e.toString(),snackPosition: SnackPosition.BOTTOM, duration: const Duration(seconds: 5));

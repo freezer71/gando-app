@@ -7,6 +7,7 @@ import 'Owner.dart';
 
 part 'Car.g.dart';
 
+
 @JsonSerializable()
 class Car {
   final String? status;
@@ -23,7 +24,7 @@ class Car {
   final String? nextTechnicalInspection;
   final int? numberOfPlaces;
   final int? numberOfDoors;
-  final int? note;
+  final double? note;
   final List<String>? equipment;
   final Owner? owner;
   final bool? isCreated;
