@@ -42,7 +42,7 @@ class MyGandoScreen extends StatelessWidget {
       'lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum  ',
       8,
       2,
-      carList,
+      [],
       true,
       '5/5',
       DateTime.now(),

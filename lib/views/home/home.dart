@@ -258,7 +258,6 @@ class _HomeScreenState extends State<HomeScreen>
                   child: GetX<CarController>(
                       init: CarController(),
                       builder: (controller) {
-                        printInfo(info: 'carList: ${controller.carList.length}');
                       return ListView.builder(
                         physics: const BouncingScrollPhysics(),
                         scrollDirection: Axis.horizontal,

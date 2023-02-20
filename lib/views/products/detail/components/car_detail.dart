@@ -103,7 +103,7 @@ class _CarDetailPageState extends State<CarDetailPage> {
       'lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum  ',
       8,
       2,
-      carList,
+      [],
       true,
       '5/5',
       DateTime.now(),
@@ -242,7 +242,7 @@ class _CarDetailPageState extends State<CarDetailPage> {
           Container(
             padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 14),
             decoration: BoxDecoration(
-              borderRadius: const BorderRadius.all(Radius.circular(20)),
+              borderRadius: const BorderRadius.all(Radius.circular(16)),
               color: AppTheme.darkColor,
             ),
             child: Text(
@@ -271,7 +271,7 @@ class _CarDetailPageState extends State<CarDetailPage> {
           ),
           const SizedBox(width: 8),
           Text(
-            '4.8 (53 avis)',
+            '${car.note!}/5 (${car.advice!.length} avis)',
             style: Theme.of(context).textTheme.bodyText2!.copyWith(
                 color: AppTheme.darkColor,
                 fontSize: 14,

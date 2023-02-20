@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:gando/controllers/car_controller.dart';
 import 'package:gando/generated/assets.dart';
@@ -13,8 +14,7 @@ const String MAP_STYLE = 'mapbox://styles/caviaros/clc1oz5yc001p14ox3uvw1ynu';
 
 //API PROVIDER ----------------------
 const String APP_URL ='https://mygando.com';
-const String DEV_URL = 'https://api.mygando.com';
-const String API_URL = 'https://dev.mygando.com';
+const String API_URL = kDebugMode ? 'https://dev.mygando.com' : 'https://api.mygando.com';
 const String APP_FILE = 'https://file.mygando.com/public/';
 
 const int STATUS_OK = 200;
