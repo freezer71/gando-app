@@ -30,7 +30,9 @@ class EditArticleScreen extends GetView<EditArticleController> {
 
   @override
   Widget build(BuildContext context) {
+
     Get.lazyPut(() => EditArticleController());
+
     return Obx(() {
       return Scaffold(
         backgroundColor: AppTheme.backgroundColor.withOpacity(0.9),
@@ -524,16 +526,18 @@ class EditArticleScreen extends GetView<EditArticleController> {
                 InkWell(
                   onTap: () {},
                   child: Container(
-                      padding: EdgeInsets.all(4.5),
+                      padding: const EdgeInsets.all(4.5),
                       decoration: BoxDecoration(
-                          color: AppTheme.primaryColor,
-                          borderRadius: const BorderRadius.only(
-                              topRight: Radius.circular(8),
-                              bottomRight: Radius.circular(8))),
+                        color: AppTheme.primaryColor,
+                        borderRadius: const BorderRadius.only(
+                          topRight: Radius.circular(8),
+                          bottomRight: Radius.circular(8),
+                        ),
+                      ),
                       child: const Icon(
                         Icons.add,
                         size: 40,
-                      )),
+                      ),),
                 ),
               ],
             ),
@@ -637,8 +641,7 @@ class EditArticleScreen extends GetView<EditArticleController> {
                   repeat: ImageRepeat.noRepeat,
                   alignment: Alignment.topCenter,
                   image: CachedNetworkImageProvider(
-                      APP_FILE + article.images.avant34! ??
-                          APP_FILE + '1675603931368.jpg'),
+                      APP_FILE + article.images.avant34!),
                 ),
                 borderRadius: const BorderRadius.only(
                     topLeft: Radius.circular(16),

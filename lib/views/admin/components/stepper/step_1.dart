@@ -44,6 +44,7 @@ class Step1State extends State<Step1> {
   List<Widget> _buildBodyTextField(BuildContext context) =>
       [
         CustomTextFormField(
+            key: Get.keys[0],
             controller: c.brandController.value,
             keyboardType: TextInputType.text,
             validator: (value) {
@@ -66,6 +67,7 @@ class Step1State extends State<Step1> {
             hintText: 'Marque'),
         const SizedBox(height: 20),
         CustomTextFormField(
+            key: Get.keys[1],
             controller: c.modelController.value,
             keyboardType: TextInputType.text,
             validator: (value) {
@@ -88,6 +90,7 @@ class Step1State extends State<Step1> {
             hintText: 'Modèle'),
         const SizedBox(height: 20),
         CustomTextFormField(
+            key: Get.keys[2],
             controller: c.typeController.value,
             keyboardType: TextInputType.text,
             validator: (value) {
@@ -150,6 +153,7 @@ class Step1State extends State<Step1> {
             height: 10,
           ),
           DropdownDatePicker(
+            key: Get.keys[4],
             inputDecoration: InputDecoration(
               filled: true,
               fillColor: AppTheme.light,
@@ -224,13 +228,13 @@ class Step1State extends State<Step1> {
             height: 10,
           ),
           CustomTextFormField(
-              key: Get.keys[1],
+              key: Get.keys[5],
               controller: c.numberplateController.value,
               keyboardType: TextInputType.text,
               validator: (value) {
-                if (!value!.isEmail) {
+                if (!value!.isNotEmpty) {
                   return "Plaque d\'immatriculation invalid";
-                  // return 'amount Is not valid';
+                  // return amount Is not valid';
                 }
                 return null;
               },
@@ -269,11 +273,11 @@ class Step1State extends State<Step1> {
             height: 10,
           ),
           CustomTextFormField(
-              key: Get.keys[1],
+              key: Get.keys[6],
               controller: c.fuelController.value,
-              keyboardType: TextInputType.emailAddress,
+              keyboardType: TextInputType.text,
               validator: (value) {
-                if (!value!.isEmail) {
+                if (!value!.isNotEmpty) {
                   return "Carburant invalid";
                   // return 'amount Is not valid';
                 }
@@ -412,7 +416,7 @@ class Step1State extends State<Step1> {
           Row(
             children: [
               Expanded(
-                  child: ElevatedButton(
+                  child: c.selectedFile.value == null ? ElevatedButton(
                       style: ButtonStyle(
                         backgroundColor:
                         MaterialStateProperty.resolveWith<Color>(
@@ -426,7 +430,8 @@ class Step1State extends State<Step1> {
                         )),
                       ),
                       onPressed: () {
-
+                        // get image from galerie or camera
+                        _getImage();
                       },
                       child: SizedBox(
                         width: Get.width / 1.5,
@@ -435,11 +440,63 @@ class Step1State extends State<Step1> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
-                            Icon(Icons.photo_library_outlined,
-                              color: AppTheme.primaryColor, size: 40,),
+                            Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Icon(Icons.photo_camera_outlined,
+                                  color: AppTheme.primaryColor, size: 40,),
+                                Text("Prendre une photo",
+                                    style: TextStyle(
+                                        fontSize: 15,
+                                        color: AppTheme.primaryColor)),
+                              ],
+                            ),
                           ],
                         ),
-                      ))),
+                      )) : Card(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(30.0),
+                        ),
+                        child: Stack(
+                          fit: StackFit.loose,
+                          clipBehavior: Clip.none,
+                          children: [
+                            // round button to delete image
+
+                            Container(
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(30),
+                              ),
+                              child: Image.file(
+                                c.selectedFile.value!,
+                                width: Get.width,
+                                height: 150,
+                                fit: BoxFit.cover,
+                                repeat: ImageRepeat.noRepeat,
+                              ),
+                            ),
+                            Positioned(
+                              top: -10,
+                              right: -10,
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  color: AppTheme.redColor,
+                                  borderRadius: BorderRadius.circular(30),
+                                ),
+                                child: IconButton(
+                                  icon: Icon(Icons.delete_outline,
+                                    color: AppTheme.light,),
+                                  onPressed: () {
+                                    c.selectedFile.value = null;
+                                  },
+                                ),
+                              ),
+                            ),
+
+                          ],
+                        ),
+                      )),
             ],
           )
         ],
@@ -466,16 +523,18 @@ class Step1State extends State<Step1> {
             height: 10,
           ),
           DropdownDatePicker(
+            key: Get.keys[7],
             inputDecoration: InputDecoration(
               filled: true,
+              contentPadding: EdgeInsets.zero,
               fillColor: AppTheme.light,
               disabledBorder: OutlineInputBorder(
-                borderSide: BorderSide(color: AppTheme.darkColor, width: 1.0),
+                borderSide: BorderSide(color: AppTheme.darkColor, width: .5),
                 borderRadius: BorderRadius.circular(30),
                 gapPadding: 0,
               ),
               enabledBorder: OutlineInputBorder(
-                borderSide: BorderSide(color: AppTheme.darkColor, width: 1.0),
+                borderSide: BorderSide(color: AppTheme.darkColor, width: .5),
                 borderRadius: BorderRadius.circular(30),
                 gapPadding: 0,
               ),
@@ -490,11 +549,11 @@ class Step1State extends State<Step1> {
             isFormValidator: true,
             // optional
             startYear:
-            DateTime.parse('1969-07-20 20:18:04Z').year,
+            DateTime.now().year,
             // optional
-            endYear: DateTime.now().year,
+            endYear: DateTime.now().year + 10,
             // optional
-            width: 2,
+            width: 1,
             // optional
             selectedDay: DateTime.now().day,
             // optional
@@ -753,6 +812,7 @@ class Step1State extends State<Step1> {
             height: 10,
           ),
           CustomDropdownButton2(
+            key: Get.keys[3],
             hint: 'Selectionner Kilometrage',
             // dropdownPadding: const EdgeInsets.symmetric(horizontal: 10),
             dropdownDecoration: BoxDecoration(
@@ -777,5 +837,115 @@ class Step1State extends State<Step1> {
         ],
       ),
     );
+  }
+
+  void _getImage() {
+    // show bottom sheet on row button included icons to select camera or gallery maxheight is 100
+    Get.bottomSheet(
+      Container(
+        height: 100,
+        decoration: const BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(20),
+            topRight: Radius.circular(20),
+          ),
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(4.0),
+              child: Expanded(
+                child:
+              ElevatedButton(
+                style: ButtonStyle(
+                  backgroundColor:
+                  MaterialStateProperty.all(AppTheme.primaryColor),
+                  overlayColor: MaterialStateProperty.all(AppTheme.primaryColor),
+                  shape: MaterialStateProperty.all(RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20.0),
+                  )),
+                ),
+                onPressed: () {
+                  Get.back();
+                  c.pickImage('camera');
+                },
+                child: Row(
+                  children: [
+                    Icon(Icons.camera_alt_outlined, color: AppTheme.darkColor),
+                    const SizedBox(width: 10,),
+                    Text('Camera', style: TextStyle(color: AppTheme.darkColor),),
+                  ],
+                ),
+              ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(4.0),
+              child: Expanded(child:
+              ElevatedButton(
+                style: ButtonStyle(
+                  backgroundColor:
+                  MaterialStateProperty.all(AppTheme.primaryColor),
+                  overlayColor: MaterialStateProperty.all(AppTheme.primaryColor),
+                  shape: MaterialStateProperty.all(RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20.0),
+                  )),
+                ),
+                onPressed: () {
+                  Get.back();
+                  c.pickImage('gallery');
+                },
+                child: Row(
+                  children: [
+                    Icon(Icons.photo_library_outlined, color: AppTheme.darkColor),
+                    const SizedBox(width: 10,),
+                    const Text('Gallery', style: TextStyle(color: Colors.black),),
+                  ],
+                ),
+              ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+
+    // Get.bottomSheet(
+    //   Container(
+    //
+    //     height: Get.height / 2,
+    //     decoration: const BoxDecoration(
+    //       color: Colors.white,
+    //       borderRadius: BorderRadius.only(
+    //         topLeft: Radius.circular(20),
+    //         topRight: Radius.circular(20),
+    //       ),
+    //     ),
+    //     child: Column(
+    //       children: [
+    //         ListTile(
+    //           leading: const Icon(Icons.camera_alt),
+    //           title: const Text('Camera'),
+    //           onTap: () async {
+    //             c.pickImage('camera');
+    //           },
+    //         ),
+    //         ListTile(
+    //           leading: const Icon(Icons.image),
+    //           title: const Text('Gallery'),
+    //           onTap: () async{
+    //             c.pickImage('gallery');
+    //           },
+    //         ),
+    //       ],
+    //     ),
+    //   ),
+    // );
+
+
+
+
   }
 }

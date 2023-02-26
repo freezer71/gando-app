@@ -1,15 +1,221 @@
 
 
+import 'dart:io';
+
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
+import 'package:gando/config/textstyle.dart';
+import 'package:get/get_rx/get_rx.dart';
+import 'package:get/get_state_manager/src/simple/get_controllers.dart';
+import 'package:get/get_utils/get_utils.dart';
+import 'package:http_parser/http_parser.dart';
+import 'package:image_cropper/image_cropper.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:multi_select_flutter/util/multi_select_item.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 import '../../models/Equipment.dart';
 
 class AddArticlesController extends GetxController {
   var currentStep = 0.obs;
 
+  File? _image;
+  File? _image1;
+  File? _image2;
+  File? _image3;
+  File? _image4;
+  File? _image5;
+
+  int? _choosedImage;
+  RxBool inProcess = false.obs;
+  List<MultipartFile> multipartImageList = <MultipartFile>[];
+
+  Rx<File?> selectedFile = Rx<File?>(null);
+  File? _selectedFile1;
+  File? _selectedFile2;
+  File? _selectedFile3;
+  File? _selectedFile4;
+  File? _selectedFile5;
+
+  final _picker = ImagePicker();
+
+  void _onStatusRequestedCamera(status) {
+    if (status != PermissionStatus.granted) {
+      if (Platform.isIOS) {
+        openAppSettings();
+      } else {
+        if (status == PermissionStatus.permanentlyDenied) {
+          openAppSettings();
+        }
+      }
+    } else {
+      getImage(ImageSource.camera);
+    }
+  }
+
+  void _onStatusRequested(status) {
+    if (status != PermissionStatus.granted) {
+      if (Platform.isIOS) {
+        openAppSettings();
+      } else {
+        if (status == PermissionStatus.permanentlyDenied) {
+          openAppSettings();
+        }
+      }
+    } else {
+      getImage(ImageSource.gallery);
+    }
+  }
+
+
+  Future requestPermission(Permission permission) async {
+    final result = await permission.request();
+    return result;
+  }
+
+  void _askPermissionCamera({num}) {
+    requestPermission(Permission.camera).then(_onStatusRequestedCamera);
+  }
+
+  void _askPermissionStorage({num}) {
+    requestPermission(Permission.storage).then(_onStatusRequested);
+  }
+
+  void _askPermissionPhotos() {
+    requestPermission(Permission.photos).then(_onStatusRequested);
+
+    void _onStatusRequestedCamera(status) {
+      if (status != PermissionStatus.granted) {
+        if (Platform.isIOS) {
+          openAppSettings();
+        } else {
+          if (status == PermissionStatus.permanentlyDenied) {
+            openAppSettings();
+          }
+        }
+      } else {
+        getImage(ImageSource.camera);
+      }
+    }
+  }
+
+  void getImage(ImageSource source) async {
+    inProcess(true);
+    final pickedFile = await _picker.getImage(source: source);
+    if (pickedFile != null) {
+      _image = File(pickedFile.path);
+    }
+
+    if (_image != null) {
+      final cropped = await ImageCropper().cropImage(
+          sourcePath: _image!.path,
+          aspectRatio: const CropAspectRatio(ratioX: 1, ratioY: 1),
+          compressQuality: 70,
+          maxWidth: 500,
+          maxHeight: 500,
+          cropStyle: CropStyle.rectangle,
+          compressFormat: ImageCompressFormat.jpg,
+          uiSettings : [
+            AndroidUiSettings(
+              initAspectRatio: CropAspectRatioPreset.original,
+              toolbarColor: Colors.white,
+              toolbarTitle: 'Cropper',
+              statusBarColor: AppTheme.primaryColor,
+              activeControlsWidgetColor: AppTheme.primaryColor,
+              cropFrameColor: Colors.white,
+              cropGridColor: Colors.white,
+              toolbarWidgetColor: AppTheme.redColor,
+              backgroundColor: Colors.white,
+            ),
+            IOSUiSettings(
+              title: 'Cropper',
+            )
+          ]
+      );
+
+        if (cropped != null) {
+          switch (_choosedImage) {
+            case null: // Enter this block if mark == 0
+              if (selectedFile.value != null && selectedFile.value!.existsSync()) {
+                selectedFile.value!.deleteSync();
+              }
+              selectedFile.value = File(cropped.path);
+              break;
+            case 1:
+              _selectedFile1 = File(cropped.path);
+              addMultiImages(_selectedFile1);
+              _choosedImage = null;
+              break;
+            case 2:
+              _selectedFile2 = File(cropped.path);
+              addMultiImages(_selectedFile2);
+              _choosedImage = null;
+              break;
+            case 3: // Enter this block if mark == 1 or mark == 2 or mark == 3
+              _selectedFile3 = File(cropped.path);
+              addMultiImages(_selectedFile3);
+              _choosedImage = null;
+              break;
+            case 4: // Enter this block if mark == 1 or mark == 2 or mark == 3
+              _selectedFile4 = File(cropped.path);
+              addMultiImages(_selectedFile4);
+              _choosedImage = null;
+              break;
+            case 5: // Enter this block if mark == 1 or mark == 2 or mark == 3
+              _selectedFile5 = File(cropped.path);
+              addMultiImages(_selectedFile5);
+              _choosedImage = null;
+              break;
+            default:
+              if (source.toString() == 'ImageSource.camera' &&
+                  _image!.existsSync()) {
+                _image!.deleteSync();
+              }
+              _image = null;
+              inProcess(false);
+              _choosedImage = null;
+              break; // this is a good habit, in case you change default to something else later.
+          }
+        } else {
+          inProcess(false);
+        }
+    }
+  }
+
+  Future addMultiImages(selectedFile) async{
+    final String filename = selectedFile!.path.split('/').last;
+    final img = await MultipartFile.fromFile(selectedFile!.path,
+        filename: filename,
+        contentType: MediaType('image', 'jpg'));
+    return multipartImageList.add(img);
+  }
+
   //---------- step 1 -------------//
+  ImageSource? selectedImageSource;
+
+  void pickImage(imageSource) async {
+
+    switch (imageSource) {
+      case 'camera':
+        getImage(ImageSource.camera);
+        break;
+      case 'gallery':
+        getImage(ImageSource.gallery);
+        break;
+      default:
+        print('No image selected.');
+    }
+
+    final pickedFile = await ImagePicker().pickImage(source: selectedImageSource!);
+
+    if (pickedFile != null) {
+      selectedImage.value = File(pickedFile.path);
+    } else {
+      print('No image selected.');
+    }
+  }
+
+
   Rx<TextEditingController> brandController = TextEditingController().obs;
   Rx<TextEditingController> modelController = TextEditingController().obs;
   Rx<TextEditingController> typeController = TextEditingController().obs;
@@ -17,6 +223,8 @@ class AddArticlesController extends GetxController {
   Rx<TextEditingController> numberplateController = TextEditingController().obs;
   Rx<TextEditingController> fuelController = TextEditingController().obs;
   RxString yearController = ''.obs;
+  // image picker
+  Rx<File> selectedImage = File('').obs;
 
   final List<String> itemsKilometer = [
     '0-50 000 Km',
@@ -49,9 +257,9 @@ class AddArticlesController extends GetxController {
   RxList<Equipment> selectedEquipments = <Equipment>[].obs;
 
   final RxString selectedKilometer = ''.obs;
-  RxBool gearboxValue = false.obs;
-  RxInt selectedPlaces = 2.obs;
-  RxInt selectedDoor = 0.obs;
+  RxBool gearboxValue = true.obs; // manual = true, automatic = false
+  RxInt selectedPlaces = 4.obs;
+  RxInt selectedDoor = 5.obs;
   RxString selectedGearbox = ''.obs;
   // ---- step 1 -----------------//
 
@@ -96,5 +304,31 @@ class AddArticlesController extends GetxController {
   }
 
   @override
-  void onClose() {}
+  void onClose() {
+    if (selectedFile.value != null && selectedFile.value!.existsSync()) {
+      selectedFile.value!.deleteSync();
+      selectedFile.value = null;
+      _selectedFile1 = null;
+      _selectedFile2 = null;
+      _selectedFile3 = null;
+      _selectedFile4 = null;
+      _selectedFile5 = null;
+    }else if(_selectedFile1 != null && _selectedFile1!.existsSync()){
+      _selectedFile1!.deleteSync();
+
+    }else if(_selectedFile2 != null && _selectedFile2!.existsSync()){
+      _selectedFile2!.deleteSync();
+
+    }else if(_selectedFile3 != null && _selectedFile3!.existsSync()){
+      _selectedFile3!.deleteSync();
+
+    }else if(_selectedFile4 != null && _selectedFile4!.existsSync()){
+      _selectedFile4!.deleteSync();
+
+    }else if(_selectedFile5 != null && _selectedFile5!.existsSync()){
+      _selectedFile5!.deleteSync();
+    }
+    multipartImageList.clear();
+    super.onClose();
+  }
 }

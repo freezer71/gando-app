@@ -5,7 +5,6 @@ import 'package:gando/config/textstyle.dart';
 import 'package:gando/controllers/addArticles/add_articles_controller.dart';
 import 'package:gando/views/admin/components/add_articles_stepper.dart';
 import 'package:get/get.dart';
-import 'package:get/get_state_manager/src/simple/get_view.dart';
 import 'package:linear_step_indicator/linear_step_indicator.dart';
 
 class AddArticlesScreen extends GetView<AddArticlesController> {

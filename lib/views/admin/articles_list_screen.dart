@@ -39,9 +39,8 @@ class ArticleListScreen extends GetView<UserController> {
         body: Stack(
           children: [
             FutureBuilder(
-              key: UniqueKey(),
               future: controller.getCarList,
-              initialData: false,
+              initialData: controller.userCarList,
               builder: (BuildContext context, AsyncSnapshot snapshot) {
                 userCarList = snapshot.data;
                 switch (snapshot.connectionState) {
@@ -106,9 +105,7 @@ class ArticleListScreen extends GetView<UserController> {
                                       alignment: Alignment.center,
                                       fit: BoxFit.cover,
                                       image: CachedNetworkImageProvider(APP_FILE +
-                                          userCarList[index].images.avant34!, errorListener: () {
-                                        print('${APP_FILE + userCarList[index].images.avant34!}', );
-                                      }),
+                                          userCarList[index].images.avant34!,),
                                     ),
                                     color: AppTheme.primaryColor,
                                     borderRadius: BorderRadius.circular(16),

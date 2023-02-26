@@ -53,8 +53,8 @@ class Step4State extends State<Step4> {
 
                 ), textAlign: TextAlign.center,),
                 Container(
-                  padding: EdgeInsets.all(10),
-                  margin: EdgeInsets.symmetric(vertical: 10),
+                  padding: const EdgeInsets.all(10),
+                  margin: const EdgeInsets.symmetric(vertical: 10),
                   decoration: BoxDecoration(
                     color: AppTheme.light,
                     borderRadius: BorderRadius.circular(30),
@@ -89,13 +89,13 @@ class Step4State extends State<Step4> {
                       boxShadow: [
                         BoxShadow(
                           color: Colors.black.withOpacity(0.4),
-                          offset: Offset(0, 2),
+                          offset: const Offset(0, 2),
                           blurRadius: 2,
                         ),
                       ]
                   )
               ),
-              SizedBox(width: 10,),
+              const SizedBox(width: 10,),
               Text('Disponible', style: Theme
                   .of(context)
                   .textTheme

@@ -110,7 +110,7 @@ class _StepperArticlesState extends State<StepperArticles> {
       body: Container(
         padding: const EdgeInsets.only(top: 80.0),
         child: Stepper(
-          currentStep: this.currentStep,
+          currentStep: currentStep,
           steps: steps,
           margin: EdgeInsets.zero,
           type: StepperType.horizontal,
@@ -121,7 +121,7 @@ class _StepperArticlesState extends State<StepperArticles> {
           },
           controlsBuilder: (context, controls){
             return Container(
-              padding: EdgeInsets.symmetric(vertical: 20),
+              padding: const EdgeInsets.symmetric(vertical: 20),
               child: Row(
                 children: [
                   if (currentStep != 0)
@@ -134,15 +134,15 @@ class _StepperArticlesState extends State<StepperArticles> {
                             )),
                             backgroundColor: MaterialStateProperty.all(AppTheme.redColor)
                         ),
-                        child: Text("Précédent"),
+                        child: const Text("Précédent"),
                         onPressed: controls.onStepCancel,
                       ),
                     ),
-                  SizedBox(width: 10,),
+                  const SizedBox(width: 10,),
                   Expanded(
                     child: ElevatedButton(
                       style: ButtonStyle(
-                        padding: MaterialStateProperty.all(EdgeInsets.symmetric(vertical: 20)),
+                        padding: MaterialStateProperty.all(const EdgeInsets.symmetric(vertical: 20)),
                         shape: MaterialStateProperty.all(RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(30),
                         )),
@@ -165,9 +165,32 @@ class _StepperArticlesState extends State<StepperArticles> {
                 if (currentStep == 0 &&
                     Step1State.form1.currentState!.validate()) {
                   currentStep = currentStep + 1;
-                } else if (currentStep == 1 &&
+                } else if (currentStep == 2 &&
                     Step2State.form2.currentState!.validate()) {
                   currentStep = currentStep + 1;
+                } else if (currentStep == 3 &&
+                    Step3State.form3.currentState!.validate()) {
+                  currentStep = currentStep + 1;
+                } else if (currentStep == 4 &&
+                    Step4State.form4.currentState!.validate()) {
+                  currentStep = currentStep + 1;
+                }else {
+                  // show modal error:
+                  Get.dialog(
+                    AlertDialog(
+                      title: Text("Erreur"),
+                      content: Text("Veuillez remplir tous les champs"),
+                      actions: [
+                        TextButton(
+                          onPressed: () {
+                            Get.back();
+                          },
+                          child: Text("OK"),
+                        )
+                      ],
+                    ),
+                  );
+
                 }
               } else {
                 currentStep = 0;
