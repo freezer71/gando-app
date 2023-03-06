@@ -1,6 +1,7 @@
 import 'dart:collection';
 
 import 'package:flutter/material.dart';
+import 'package:gando/controllers/addArticles/add_articles_controller.dart';
 import 'package:gando/views/admin/components/stepper/step_4.dart';
 import 'package:get/get.dart';
 
@@ -21,6 +22,19 @@ class StepperArticles extends StatefulWidget {
 
 class _StepperArticlesState extends State<StepperArticles> {
   var currentStep = 0;
+
+  final c = Get.put(AddArticlesController());
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    c.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -162,35 +176,37 @@ class _StepperArticlesState extends State<StepperArticles> {
           onStepContinue: () {
             setState(() {
               if (currentStep < steps.length - 1) {
-                if (currentStep == 0 &&
-                    Step1State.form1.currentState!.validate()) {
-                  currentStep = currentStep + 1;
+                if (currentStep == 0 && Step1State.form1.currentState!.validate()) {
+                  if(c.selectedFile.value != null){
+                    if(c.selectedEquipments.isNotEmpty){
+                     currentStep = currentStep + 1;
+                     printInfo(info: "currentStep: $currentStep");
+                    }else{
+                      _showErrorDialog("Veuillez choisir au moins un équipement\n s'il vous plait");
+                    }
+                  }else{
+                    _showErrorDialog("Veuillez prendre une image du controle technique");
+                  }
+                } else if (currentStep == 1) {
+                  if(c.selectedFile1.value != null &&
+                      c.selectedFile2.value != null &&
+                      c.selectedFile3.value != null &&
+                      c.selectedFile4.value != null &&
+                      c.selectedFile5.value != null){
+                    Step2State.form2.currentState!.save();
+                    currentStep = currentStep + 1;
+                  }else{
+                    _showErrorDialog("Veuillez choisir les images du véhicule s'il vous plait");
+                  }
                 } else if (currentStep == 2 &&
-                    Step2State.form2.currentState!.validate()) {
-                  currentStep = currentStep + 1;
-                } else if (currentStep == 3 &&
                     Step3State.form3.currentState!.validate()) {
                   currentStep = currentStep + 1;
-                } else if (currentStep == 4 &&
+                } else if (currentStep == 3 &&
                     Step4State.form4.currentState!.validate()) {
                   currentStep = currentStep + 1;
                 }else {
                   // show modal error:
-                  Get.dialog(
-                    AlertDialog(
-                      title: Text("Erreur"),
-                      content: Text("Veuillez remplir tous les champs"),
-                      actions: [
-                        TextButton(
-                          onPressed: () {
-                            Get.back();
-                          },
-                          child: Text("OK"),
-                        )
-                      ],
-                    ),
-                  );
-
+                  _showErrorDialog("Veuillez remplir tous les champs");
                 }
               } else {
                 currentStep = 0;
@@ -207,6 +223,31 @@ class _StepperArticlesState extends State<StepperArticles> {
             });
           },
         ),
+      ),
+    );
+  }
+
+  _showErrorDialog(text){
+    Get.dialog(
+      AlertDialog(
+        backgroundColor: AppTheme.light,
+        title: Text("Erreur", style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+          color: AppTheme.redColor,
+          fontWeight: FontWeight.w800,
+        ),),
+        content: Text(text, style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+          color: AppTheme.darkColor,
+        ),),
+        actions: [
+          TextButton(
+            onPressed: () {
+              Get.back();
+            },
+            child: Text("OK", style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+              color: AppTheme.darkColor,
+            ),),
+          )
+        ],
       ),
     );
   }

@@ -28,6 +28,12 @@ class Step1State extends State<Step1> {
   final c = Get.put(AddArticlesController());
 
   @override
+  void dispose() {
+    c.onClose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Obx(() {
       return Container(
@@ -454,49 +460,55 @@ class Step1State extends State<Step1> {
                             ),
                           ],
                         ),
-                      )) : Card(
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(30.0),
-                        ),
-                        child: Stack(
-                          fit: StackFit.loose,
-                          clipBehavior: Clip.none,
-                          children: [
-                            // round button to delete image
-
-                            Container(
+                      ),) : Stack(
+                        fit: StackFit.loose,
+                        clipBehavior: Clip.none,
+                        children: [
+                          Container(
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(30),
+                            ),
+                            child: ShaderMask(
+                              shaderCallback: (rect) {
+                                return LinearGradient(
+                                  begin: Alignment.topCenter,
+                                  end: Alignment.bottomCenter,
+                                  colors: [Colors.black.withOpacity(0.8), Colors.transparent],
+                                ).createShader(Rect.fromLTRB(0, 350, rect.width, 100));
+                              },
+                              blendMode: BlendMode.darken,
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(8),
+                                child: Image.file(
+                                  c.selectedFile.value!,
+                                  width: Get.width,
+                                  height: 160,
+                                  fit: BoxFit.cover,
+                                  repeat: ImageRepeat.noRepeat,
+                                ),
+                              ),
+                            ),
+                          ),
+                          Positioned(
+                            top: -10,
+                            right: -10,
+                            child: Container(
                               decoration: BoxDecoration(
+                                color: AppTheme.redColor,
                                 borderRadius: BorderRadius.circular(30),
                               ),
-                              child: Image.file(
-                                c.selectedFile.value!,
-                                width: Get.width,
-                                height: 150,
-                                fit: BoxFit.cover,
-                                repeat: ImageRepeat.noRepeat,
+                              child: IconButton(
+                                icon: Icon(Icons.delete_outline,
+                                  color: AppTheme.light,),
+                                onPressed: () {
+                                  c.selectedFile.value = null;
+                                },
                               ),
                             ),
-                            Positioned(
-                              top: -10,
-                              right: -10,
-                              child: Container(
-                                decoration: BoxDecoration(
-                                  color: AppTheme.redColor,
-                                  borderRadius: BorderRadius.circular(30),
-                                ),
-                                child: IconButton(
-                                  icon: Icon(Icons.delete_outline,
-                                    color: AppTheme.light,),
-                                  onPressed: () {
-                                    c.selectedFile.value = null;
-                                  },
-                                ),
-                              ),
-                            ),
+                          ),
 
-                          ],
-                        ),
-                      )),
+                        ],
+                      ),),
             ],
           )
         ],
@@ -637,7 +649,7 @@ class Step1State extends State<Step1> {
           ),
         ),
         onConfirm: (results) {
-          results.map((e) => c.selectedEquipments.value = e);
+          results.map((e) => c.selectedEquipments.add(e)).toList();
           // c.selectedEquipments.add(results.asMap());
           // printInfo(info: _selectedEquipments.toString());
         },
@@ -840,6 +852,7 @@ class Step1State extends State<Step1> {
   }
 
   void _getImage() {
+    c.choosedImage.value = 5;
     // show bottom sheet on row button included icons to select camera or gallery maxheight is 100
     Get.bottomSheet(
       Container(

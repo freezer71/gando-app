@@ -20,22 +20,22 @@ class AddArticlesController extends GetxController {
   var currentStep = 0.obs;
 
   File? _image;
-  File? _image1;
-  File? _image2;
-  File? _image3;
-  File? _image4;
-  File? _image5;
+  File? image1;
+  File? image2;
+  File? image3;
+  File? image4;
+  File? image5;
 
-  int? _choosedImage;
+  RxInt choosedImage = 0.obs;
   RxBool inProcess = false.obs;
   List<MultipartFile> multipartImageList = <MultipartFile>[];
 
   Rx<File?> selectedFile = Rx<File?>(null);
-  File? _selectedFile1;
-  File? _selectedFile2;
-  File? _selectedFile3;
-  File? _selectedFile4;
-  File? _selectedFile5;
+  Rx<File?> selectedFile1 = Rx<File?>(null);
+  Rx<File?> selectedFile2 = Rx<File?>(null);
+  Rx<File?> selectedFile3 = Rx<File?>(null);
+  Rx<File?> selectedFile4 = Rx<File?>(null);
+  Rx<File?> selectedFile5 = Rx<File?>(null);
 
   final _picker = ImagePicker();
 
@@ -73,18 +73,18 @@ class AddArticlesController extends GetxController {
     return result;
   }
 
-  void _askPermissionCamera({num}) {
+  void askPermissionCamera({num}) {
     requestPermission(Permission.camera).then(_onStatusRequestedCamera);
   }
 
-  void _askPermissionStorage({num}) {
+  void askPermissionStorage({num}) {
     requestPermission(Permission.storage).then(_onStatusRequested);
   }
 
-  void _askPermissionPhotos() {
+  void askPermissionPhotos() {
     requestPermission(Permission.photos).then(_onStatusRequested);
 
-    void _onStatusRequestedCamera(status) {
+    void onStatusRequestedCamera(status) {
       if (status != PermissionStatus.granted) {
         if (Platform.isIOS) {
           openAppSettings();
@@ -120,11 +120,11 @@ class AddArticlesController extends GetxController {
               initAspectRatio: CropAspectRatioPreset.original,
               toolbarColor: Colors.white,
               toolbarTitle: 'Cropper',
+              toolbarWidgetColor: AppTheme.darkColor,
               statusBarColor: AppTheme.primaryColor,
               activeControlsWidgetColor: AppTheme.primaryColor,
               cropFrameColor: Colors.white,
               cropGridColor: Colors.white,
-              toolbarWidgetColor: AppTheme.redColor,
               backgroundColor: Colors.white,
             ),
             IOSUiSettings(
@@ -134,46 +134,41 @@ class AddArticlesController extends GetxController {
       );
 
         if (cropped != null) {
-          switch (_choosedImage) {
-            case null: // Enter this block if mark == 0
-              if (selectedFile.value != null && selectedFile.value!.existsSync()) {
-                selectedFile.value!.deleteSync();
-              }
-              selectedFile.value = File(cropped.path);
+          switch (choosedImage.value) {
+            case 0:
+              selectedFile1.value = File(cropped.path);
+              addMultiImages(selectedFile1);
+              choosedImage(0);
+              update();
               break;
             case 1:
-              _selectedFile1 = File(cropped.path);
-              addMultiImages(_selectedFile1);
-              _choosedImage = null;
+              selectedFile2.value = File(cropped.path);
+              addMultiImages(selectedFile2);
+              choosedImage(0);
+              update();
               break;
-            case 2:
-              _selectedFile2 = File(cropped.path);
-              addMultiImages(_selectedFile2);
-              _choosedImage = null;
+            case 2: // Enter this block if mark == 1 or mark == 2 or mark == 3
+              selectedFile3.value = File(cropped.path);
+              addMultiImages(selectedFile3);
+              choosedImage(0);
+              update();
               break;
             case 3: // Enter this block if mark == 1 or mark == 2 or mark == 3
-              _selectedFile3 = File(cropped.path);
-              addMultiImages(_selectedFile3);
-              _choosedImage = null;
+              selectedFile4.value = File(cropped.path);
+              addMultiImages(selectedFile4);
+              choosedImage(0);
+              update();
               break;
             case 4: // Enter this block if mark == 1 or mark == 2 or mark == 3
-              _selectedFile4 = File(cropped.path);
-              addMultiImages(_selectedFile4);
-              _choosedImage = null;
-              break;
-            case 5: // Enter this block if mark == 1 or mark == 2 or mark == 3
-              _selectedFile5 = File(cropped.path);
-              addMultiImages(_selectedFile5);
-              _choosedImage = null;
+              selectedFile5.value = File(cropped.path);
+              addMultiImages(selectedFile5);
+              choosedImage(0);
+              update();
               break;
             default:
-              if (source.toString() == 'ImageSource.camera' &&
-                  _image!.existsSync()) {
-                _image!.deleteSync();
-              }
-              _image = null;
-              inProcess(false);
-              _choosedImage = null;
+              selectedFile.value = File(cropped.path);
+              choosedImage(0);
+              update();
               break; // this is a good habit, in case you change default to something else later.
           }
         } else {
@@ -292,15 +287,10 @@ class AddArticlesController extends GetxController {
 
   @override
   void onInit() {
+    super.onInit();
     items.value = equipmentsList
         .map((data) => MultiSelectItem<Equipment>(data, data.name))
         .toList();
-    super.onInit();
-  }
-
-  @override
-  void onReady() {
-    super.onReady();
   }
 
   @override
@@ -308,27 +298,42 @@ class AddArticlesController extends GetxController {
     if (selectedFile.value != null && selectedFile.value!.existsSync()) {
       selectedFile.value!.deleteSync();
       selectedFile.value = null;
-      _selectedFile1 = null;
-      _selectedFile2 = null;
-      _selectedFile3 = null;
-      _selectedFile4 = null;
-      _selectedFile5 = null;
-    }else if(_selectedFile1 != null && _selectedFile1!.existsSync()){
-      _selectedFile1!.deleteSync();
+      selectedFile1.value = null;
+      selectedFile2.value = null;
+      selectedFile3.value = null;
+      selectedFile4.value = null;
+      selectedFile5.value = null;
+    }else if(selectedFile1 != null && selectedFile1.value!.existsSync()){
+      selectedFile1.value!.deleteSync();
 
-    }else if(_selectedFile2 != null && _selectedFile2!.existsSync()){
-      _selectedFile2!.deleteSync();
+    }else if(selectedFile2 != null && selectedFile2.value!.existsSync()){
+      selectedFile2.value!.deleteSync();
 
-    }else if(_selectedFile3 != null && _selectedFile3!.existsSync()){
-      _selectedFile3!.deleteSync();
+    }else if(selectedFile3 != null && selectedFile3.value!.existsSync()){
+      selectedFile3.value!.deleteSync();
 
-    }else if(_selectedFile4 != null && _selectedFile4!.existsSync()){
-      _selectedFile4!.deleteSync();
+    }else if(selectedFile4 != null && selectedFile4.value!.existsSync()){
+      selectedFile4.value!.deleteSync();
 
-    }else if(_selectedFile5 != null && _selectedFile5!.existsSync()){
-      _selectedFile5!.deleteSync();
+    }else if(selectedFile5 != null && selectedFile5.value!.existsSync()){
+      selectedFile5.value!.deleteSync();
     }
     multipartImageList.clear();
+    // dispose all controllers
+    brandController.value.dispose();
+    modelController.value.dispose();
+    typeController.value.dispose();
+    distanceController.value.dispose();
+    numberplateController.value.dispose();
+    fuelController.value.dispose();
+    yearController.value= '';
+    descriptionController.value.dispose();
+    addressController.value.dispose();
+    cityController.value.dispose();
+    postalCodeController.value.dispose();
+    dayPriceController.value.dispose();
+    weekPriceController.value.dispose();
+    monthPriceController.value.dispose();
     super.onClose();
   }
 }

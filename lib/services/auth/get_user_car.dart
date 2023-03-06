@@ -20,7 +20,7 @@ class CarService extends GetxService {
       userID.value = body['_id'];
     });
 
-    final res = await ApiProvider().getData('/car/getUserCars?userId=$userID');
+    final res = await ApiProvider().getData('/annonce/getUserCars?userId=$userID');
     final body = jsonDecode(res.body)['data'];
 
     if (res.statusCode == 200) {

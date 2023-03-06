@@ -2,6 +2,15 @@
 class Assets {
   Assets._();
 
+  static const String assetsAfricanPeriPeri = 'assets/african_peri_peri.png';
+  static const String assetsAussieBarbequeVeg = 'assets/aussie_barbeque_veg.png';
+  static const String assetsBagIcon = 'assets/bag_icon.png';
+  static const String assetsHomeIcon = 'assets/home_icon.png';
+  static const String assetsIndiTandooriPaneer = 'assets/indi_tandoori_paneer.png';
+  static const String assetsJamaicanJerkVeg = 'assets/jamaican_jerk_veg.png';
+  static const String assetsPizza = 'assets/pizza.png';
+  static const String assetsSearchIcon = 'assets/search_icon.PNG';
+  static const String assetsSweetAndTangy = 'assets/sweet_and_tangy.png';
   static const String imagesAv = 'assets/images/av.png';
   static const String imagesBentley = 'assets/images/bentley.png';
   static const String imagesBrandingIcon = 'assets/images/branding-icon.png';

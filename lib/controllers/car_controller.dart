@@ -38,7 +38,7 @@ class CarController extends GetxController {
     try {
       isLoading(true);
 
-      final res = await ApiProvider().getData('/car/getAll');
+      final res = await ApiProvider().getData('/annonce/all');
       final body = jsonDecode(res.body)['data'];
 
       if (res.statusCode == STATUS_OK) {
