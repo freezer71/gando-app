@@ -24,7 +24,7 @@ import '../../widget/appBarWidget.dart';
 import '../../widget/customTextFormField.dart';
 
 class EditArticleScreen extends GetView<EditArticleController> {
-  final UserCar article;
+  final Car article;
 
   EditArticleScreen({Key? key, required this.article}) : super(key: key);
 
@@ -287,7 +287,7 @@ class EditArticleScreen extends GetView<EditArticleController> {
             height: 10,
           ),
           Text(
-              'En cochant cette option, vous autorisezes jeunes conducteurs de 0 à 2 ans\nd\'experience loués votre véhicule. En contreparie, 16% sera ajoutés en plus \nsur le prix final de la location',
+              'En cochant cette option, vous autorisezes jeunes conducteurs de 0 à 3 ans\nd\'experience loués votre véhicule. En contreparie, 16% sera ajoutés en plus \nsur le prix final de la location',
               style: Theme.of(context).textTheme.bodyText2!.copyWith(
                   color: AppTheme.darkColor,
                   fontSize: 12,
@@ -641,7 +641,7 @@ class EditArticleScreen extends GetView<EditArticleController> {
                   repeat: ImageRepeat.noRepeat,
                   alignment: Alignment.topCenter,
                   image: CachedNetworkImageProvider(
-                      APP_FILE + article.images.avant34!),
+                      APP_FILE + article.images!.avant34!),
                 ),
                 borderRadius: const BorderRadius.only(
                     topLeft: Radius.circular(16),

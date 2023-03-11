@@ -318,7 +318,7 @@ class UploadState extends State<Upload> {
             height: 10,
           ),
           Text(
-              'En cochant cette option, vous autorisezes jeunes conducteurs de 0 à 2 ansd\'experience loués\nvotre véhicule. En contreparie, 30% sera ajoutés en plus \nsur le prix final de la location',
+              'En cochant cette option, vous autorisezes jeunes conducteurs de 0 à 2 ansd\'experience loués\nvotre véhicule. En contreparie, 20% sera ajoutés en plus \nsur le prix final de la location',
               style: Theme
                   .of(context)
                   .textTheme

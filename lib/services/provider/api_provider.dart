@@ -21,13 +21,15 @@ class ApiProvider {
   Future<void> _getToken() async {
     if(box.hasData('token') && box.read('token') != null) {
       token = await box.read('token');
+      print('TOKEN===========>>>> : $token');
     }
   }
 
+  // TODO : change token to bearer token
   _setHeaders() => {
     'Content-type': 'application/json',
     'Accept': 'application/json',
-    'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYzZTVlYmExMjE3YzkwMjBiNzFlYjI3YyIsInN0YXR1cyI6ImVuIGF0dGVudGUiLCJpYXQiOjE2NzYwMTMzNTcsImV4cCI6MTY3NjYxMzM1N30.8loZ4IZJrYwTfSuCohScK_Kc0ylcFm6xcWhGIjA3ZF4'
+    'Authorization': 'Bearer $token',
   };
 
   Future<http.Response> getData(apiUrl) async {

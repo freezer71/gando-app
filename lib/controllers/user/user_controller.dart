@@ -7,6 +7,7 @@ import 'dart:io';
 import 'package:get/get.dart';
 
 import '../../config/constants.dart';
+import '../../models/Car.dart';
 import '../../models/User.dart';
 import '../../models/UserCar.dart';
 import '../../services/auth/get_user_car.dart';
@@ -17,7 +18,7 @@ class UserController extends GetxController {
   late final Future getCarList;
 
   //get user carlist
-  final userCarList = <UserCar>[].obs;
+  final RxList<Car> userCarList = <Car>[].obs;
 
   final userID = ''.obs;
 
@@ -32,22 +33,21 @@ class UserController extends GetxController {
   @override
   void onClose() {
     userCarList.clear();
+    getCarList.ignore();
     super.onClose();
   }
-
 
   // get user from api
   Future getUserCarList() async {
     try {
       isLoading(true);
-      final cars = await CarService().fetchUserCarList();
+      userCarList.value = await CarService().fetchUserCarList();
 
-      if(cars.isNotEmpty) {
-        return cars;
+      if(userCarList.isNotEmpty) {
+        return userCarList;
+      }else{
+        return [];
       }
-
-      return [];
-
     } catch (e) {
       Get.snackbar('Error', e.toString(),snackPosition: SnackPosition.BOTTOM, duration: const Duration(seconds: 5));
     }finally{
@@ -55,10 +55,10 @@ class UserController extends GetxController {
     }
   }
 
-  void fetchCars() async {
+  Future fetchCars() async {
     try {
       isLoading(true);
-      var cars = await CarService().fetchUserCarList();
+      final cars = await CarService().fetchUserCarList();
       userCarList.assignAll(cars);
     } finally {
       isLoading(false);

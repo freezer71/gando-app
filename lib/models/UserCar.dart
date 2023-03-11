@@ -1,27 +1,24 @@
 
 // annotation
+import 'package:gando/models/Car.dart';
+import 'package:gando/models/Owner.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 import 'Images.dart';
 import 'Location.dart';
+import 'OwnerCar.dart';
 
 part 'UserCar.g.dart';
 
-
 @JsonSerializable()
 class UserCar {
+  final OwnerCar owner;
+  final List<Car>? cars;
+
   UserCar({
-    required this.id,
-    required this.brand,
-    // required this.address,
-    required this.status,
-    required this.images,
+    required this.owner,
+    required this.cars,
   });
-  @JsonKey(name: '_id') String id;
-  String brand;
-  // @JsonKey(name: 'address') String address;
-  String status;
-  Images images;
 
   factory UserCar.fromJson(Map<String, dynamic> json) => _$UserCarFromJson(json);
 

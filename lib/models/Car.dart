@@ -11,13 +11,14 @@ part 'Car.g.dart';
 @JsonSerializable()
 class Car {
   final String? status;
+  @JsonKey(name: '_id')
   final String? id;
   final String? brand;
   final String? model;
   final String? type;
   final Location? location;
   final int? year;
-  final int? mileage;
+  final String? mileage;
   final String? licensePlate;
   final String? gearbox;
   final String? fuel;
@@ -26,6 +27,7 @@ class Car {
   final int? numberOfDoors;
   final double? note;
   final List<String>? equipment;
+  final List<String>? options;
   final Owner? owner;
   final bool? isCreated;
   final Images? images;
@@ -60,6 +62,7 @@ class Car {
     this.numberOfDoors,
     this.note,
     this.equipment,
+    this.options,
     this.owner,
     this.isCreated,
     this.images,

@@ -9,9 +9,13 @@ class Owner {
   final bool? askingForValidation;
   final List<dynamic>? favouriteCar;
   final Notification? notification;
+  @JsonKey(name: '_id')
   final String? id;
   final String? nextEmail;
   final String? registrationDate;
+  final int? success_reservation_count;
+  final String? prenom;
+  final String? photo;
   final String? accountType;
   final String? status;
   final int? forgotValidedCode;
@@ -30,6 +34,9 @@ class Owner {
     this.favouriteCar,
     this.notification,
     this.id,
+    this.prenom,
+    this.photo,
+    this.success_reservation_count,
     this.nextEmail,
     this.registrationDate,
     this.accountType,

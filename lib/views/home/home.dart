@@ -1,13 +1,11 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/foundation.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_map_marker_cluster/flutter_map_marker_cluster.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:flutter_svg/parser.dart';
-import 'package:gando/config/config.dart';
 import 'package:gando/config/textstyle.dart';
 import 'package:gando/controllers/car_controller.dart';
 import 'package:gando/helpers/global_function.dart';
@@ -17,14 +15,11 @@ import 'package:gando/models/Car.dart';
 import 'package:gando/views/home/components/home_card.dart';
 import 'package:gando/views/home/filters/big_filter_bottomsheet.dart';
 import 'package:gando/views/home/filters/date_filter_range.dart';
-import 'package:gando/views/products/available/available_car_screen.dart';
-import 'package:gando/views/products/detail/widget/car_detail_infomation.dart';
 import 'package:get/get.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:lottie/lottie.dart' as LottieFiles;
 
 import '../../generated/assets.dart';
-import '../products/available/widget/car_list_item.dart';
 
 enum SingingCharacter { list, map }
 
@@ -49,6 +44,8 @@ class _HomeScreenState extends State<HomeScreen>
 
   final controller = Get.put(CarController());
 
+  final gf = GlobalFunction();
+
   //map
   final PopupController _popupController = PopupController();
   final _mapController = MapController();
@@ -69,10 +66,16 @@ class _HomeScreenState extends State<HomeScreen>
   ];
   List<Marker> _markers = [];
 
+  late List<Car>? carList;
+
   // late Car car;
 
   @override
   void initState() {
+    carList = controller.carList;
+
+    printInfo(info: "CAR LIST ====>>>>> : ${jsonEncode(carList)}");
+
     tabController = TabController(length: 2, vsync: this);
     _markers = _latLngList
         .map((point) =>
@@ -189,7 +192,7 @@ class _HomeScreenState extends State<HomeScreen>
                 zoom: 12,
                 maxZoom: 16,
                 minZoom: 3,
-                // center: LatLng(double.parse(carList.first.location.lat), double.parse(carList.first.location.long)),
+                center: LatLng(16.251214,-61.574373),
                 // rotation: 180.0,
                 keepAlive: true,
                 enableScrollWheel: true,
@@ -231,12 +234,12 @@ class _HomeScreenState extends State<HomeScreen>
                 ),
                 MarkerLayer(
                   markers: [
-                    ...List.generate(carList.length, (index) =>
+                    ...List.generate(carList!.length, (index) =>
                         Marker(
-                          point: LatLng(double.parse(carList[index].location!.lat!), double.parse(carList[index].location!.long!)),
+                          point: LatLng(16.251214,-61.574373),
                           width: 50,
                           height: 50,
-                          builder: (context) => GlobalFunction().lottieFile,
+                          builder: (context) => GlobalFunction.lottieFile,
                         ),),
                   ],
                 ),
@@ -269,12 +272,13 @@ class _HomeScreenState extends State<HomeScreen>
                 ),
               ),
             ),
-            Positioned(child: Container(
+            Positioned(
+              child: Container(
               decoration: BoxDecoration(
                   color: AppTheme.light,
                 borderRadius: const BorderRadius.only(bottomLeft: Radius.circular(20), bottomRight: Radius.circular(20))
               ),
-              height: Platform.isAndroid ? 160 : 180 )),
+              height: Platform.isAndroid ? 160 : 180 ),),
             buildAppBar(),
           ],
         ),

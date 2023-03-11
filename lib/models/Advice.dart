@@ -5,7 +5,8 @@ part 'Advice.g.dart';
 
 @JsonSerializable()
 class Advice {
-  @JsonKey(name: '_id') final String? id;
+  @JsonKey(name: '_id')
+  final String? id;
   final String? user;
   final int? note;
   final String? comment;

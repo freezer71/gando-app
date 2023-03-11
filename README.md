@@ -4,6 +4,18 @@ A new Flutter project.
 
 ## Getting Started
 
+
+## How to run
+
+### Android
+
+1. Install Flutter SDK
+2. Run `flutter doctor` to check if everything is ok
+3. flutter pub run build_runner build --delete-conflicting-outputs
+4. flutter run
+5. Enjoy
+
+
 This project is a starting point for a Flutter application.
 
 A few resources to get you started if this is your first Flutter project:

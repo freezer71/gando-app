@@ -32,7 +32,7 @@ class CarDetailInfomation extends StatelessWidget {
                 blurStyle: BlurStyle.normal),
           ],
           borderRadius: BorderRadius.circular(20),
-          image: DecorationImage(image: CachedNetworkImageProvider(APP_FILE+car.images!.avant34!), alignment: Alignment.topCenter, repeat: ImageRepeat.noRepeat, fit: BoxFit.cover, )),
+          image: DecorationImage(image: CachedNetworkImageProvider(car.images!.avant34!), alignment: Alignment.topCenter, repeat: ImageRepeat.noRepeat, fit: BoxFit.cover, )),
       child: NextCarInfo(car: car),
     ).paddingZero;
   }
@@ -87,7 +87,7 @@ class NextCarInfo extends StatelessWidget {
                       ],
                       borderRadius: const BorderRadius.only(topRight: Radius.circular(10), bottomRight: Radius.circular(10))
                     ),
-                    child: Text('${car.note} /5', style: Theme.of(context).textTheme.bodyText2!.copyWith(
+                    child: Text('${car.note ?? 0} /5', style: Theme.of(context).textTheme.bodyText2!.copyWith(
                         color: AppTheme.darkColor,
                         fontSize: 15,
                         fontWeight: FontWeight.bold)),
