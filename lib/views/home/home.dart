@@ -9,6 +9,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gando/config/textstyle.dart';
 import 'package:gando/controllers/car_controller.dart';
 import 'package:gando/helpers/global_function.dart';
+
 // imprt constants
 import 'package:gando/config/constants.dart';
 import 'package:gando/models/Car.dart';
@@ -41,14 +42,14 @@ class _HomeScreenState extends State<HomeScreen>
 
   String location = "Tapez une adresse";
   late AnimationController _topColorAnimationController;
-
   final controller = Get.put(CarController());
-
   final gf = GlobalFunction();
 
   //map
   final PopupController _popupController = PopupController();
+
   final _mapController = MapController();
+
   final double _zoom = 7;
   final List<LatLng> _latLngList = [
     LatLng(13, 77.5),
@@ -64,18 +65,17 @@ class _HomeScreenState extends State<HomeScreen>
     LatLng(13.159, 77.55),
     LatLng(13.17, 77.55),
   ];
+
   List<Marker> _markers = [];
 
-  late List<Car>? carList;
-
   // late Car car;
+  late List<Car>? carList;
 
   @override
   void initState() {
+
+    super.initState();
     carList = controller.carList;
-
-    printInfo(info: "CAR LIST ====>>>>> : ${jsonEncode(carList)}");
-
     tabController = TabController(length: 2, vsync: this);
     _markers = _latLngList
         .map((point) =>
@@ -84,19 +84,13 @@ class _HomeScreenState extends State<HomeScreen>
           width: 60,
           height: 60,
           builder: (context) =>
-          const Icon(
-            Icons.pin_drop,
-            size: 60,
-            color: Colors.blueAccent,
-          ),
-        )).toList();
-    super.initState();
-  }
-
-
-  @override
-  void dispose() {
-    super.dispose();
+            const Icon(
+              Icons.pin_drop,
+              size: 60,
+              color: Colors.blueAccent,
+            ),
+        ),
+    ).toList();
   }
 
   @override
@@ -117,7 +111,7 @@ class _HomeScreenState extends State<HomeScreen>
               bottom: TabBar(
                 controller: tabController,
                 indicatorColor: AppTheme.darkColor,
-                padding: EdgeInsets.symmetric(horizontal: 30),
+                padding: const EdgeInsets.symmetric(horizontal: 30),
                 indicatorWeight: 3,
                 tabs: [
                   Tab(
@@ -175,7 +169,7 @@ class _HomeScreenState extends State<HomeScreen>
             ),
           ),
           body: tabView(context),
-          bottomNavigationBar: Container(height: 50,color: AppTheme.light,),
+          bottomNavigationBar: Container(height: 50, color: AppTheme.light,),
         ),
       );
 
@@ -186,65 +180,71 @@ class _HomeScreenState extends State<HomeScreen>
         Stack(
           clipBehavior: Clip.none,
           children: [
-            FlutterMap(
-              mapController: _mapController,
-              options: MapOptions(
-                zoom: 12,
-                maxZoom: 16,
-                minZoom: 3,
-                center: LatLng(16.251214,-61.574373),
-                // rotation: 180.0,
-                keepAlive: true,
-                enableScrollWheel: true,
-                scrollWheelVelocity: 0.005,
-                // onPositionChanged: (MapPosition position, bool hasGesture) {
-                //   // Your logic here. `hasGesture` dictates whether the change
-                //   // was due to a user interaction or something else. `position` is
-                //   // the new position of the map.
-                // },
-              ),
-              children: [
-                TileLayer(
-                  urlTemplate: MAP_URL_DARK,
-                  userAgentPackageName: 'com.gando.rentcar.app',
-                  additionalOptions: const {
-                    'accessToken': TOKEN_MAP,
-                    'id': MAP_STYLE
+            Obx(() {
+              return FlutterMap(
+                mapController: _mapController,
+                options: MapOptions(
+                  zoom: 12,
+                  maxZoom: 16,
+                  minZoom: 3,
+                  center: LatLng(16.251214, -61.574373),
+                  // rotation: 180.0,
+                  keepAlive: true,
+                  enableScrollWheel: true,
+                  scrollWheelVelocity: 0.005,
+                  onPositionChanged: (MapPosition position, bool hasGesture) {
+                    // Your logic here. `hasGesture` dictates whether the change
+                    // was due to a user interaction or something else. `position` is
+                    // the new position of the map.
+                    // print(position.center!.toString());
+
+                    // get annonce by location
+                    // controller.getAnnonceByLocation(position.center!.latitude, position.center!.longitude, 10);
                   },
-                  retinaMode: MediaQuery
-                      .of(context)
-                      .devicePixelRatio > 1.0,
-                  // tileBounds: LatLngBounds(
-                  //   LatLng(32.2934590056236, 24.328924534719548),
-                  //   LatLng(21.792152188247265, 37.19854583903912),
-                  // ),
-                  errorImage: const NetworkImage(
-                      'https://tile.openstreetmap.org/18/0/0.png'),
-                  // tileBuilder: (context, widget, tile) =>
-                  //     Stack(
-                  //       fit: StackFit.passthrough,
-                  //       children: [
-                  //         widget,
-                  //         Center(
-                  //           child:
-                  //           Text('${tile.coords.x.floor()} : ${tile.coords.y.floor()} : ${tile.coords.z.floor()}'),
-                  //         ),
-                  //       ],
-                  //     )
                 ),
-                MarkerLayer(
-                  markers: [
-                    ...List.generate(carList!.length, (index) =>
-                        Marker(
-                          point: LatLng(16.251214,-61.574373),
-                          width: 50,
-                          height: 50,
-                          builder: (context) => GlobalFunction.lottieFile,
-                        ),),
-                  ],
-                ),
-              ],
-            ),
+                children: [
+                  TileLayer(
+                    urlTemplate: MAP_URL_DARK,
+                    userAgentPackageName: 'com.gando.rentcar.app',
+                    additionalOptions: const {
+                      'accessToken': TOKEN_MAP,
+                      'id': MAP_STYLE
+                    },
+                    retinaMode: MediaQuery
+                        .of(context)
+                        .devicePixelRatio > 1.0,
+                    // tileBounds: LatLngBounds(
+                    //   LatLng(32.2934590056236, 24.328924534719548),
+                    //   LatLng(21.792152188247265, 37.19854583903912),
+                    // ),
+                    errorImage: const NetworkImage(
+                        'https://tile.openstreetmap.org/18/0/0.png'),
+                    // tileBuilder: (context, widget, tile) =>
+                    //     Stack(
+                    //       fit: StackFit.passthrough,
+                    //       children: [
+                    //         widget,
+                    //         Center(
+                    //           child:
+                    //           Text('${tile.coords.x.floor()} : ${tile.coords.y.floor()} : ${tile.coords.z.floor()}'),
+                    //         ),
+                    //       ],
+                    //     )
+                  ),
+                  MarkerLayer(
+                    markers: [
+                      ...List.generate(carList!.length, (index) =>
+                          Marker(
+                            point: LatLng(16.251214, -61.574373),
+                            width: 50,
+                            height: 50,
+                            builder: (context) => GlobalFunction.lottieFile,
+                          ),),
+                    ],
+                  ),
+                ],
+              );
+            }),
             Positioned(
               left: 0,
               right: 0,
@@ -261,24 +261,27 @@ class _HomeScreenState extends State<HomeScreen>
                   child: GetX<CarController>(
                       init: CarController(),
                       builder: (controller) {
-                      return ListView.builder(
-                        physics: const BouncingScrollPhysics(),
-                        scrollDirection: Axis.horizontal,
-                        padding: const EdgeInsets.only(top: 0, bottom: 0),
-                        itemCount: controller.carList.length,
-                        itemBuilder: (context, index) => HomeCardCar(index, controller.carList[index]),
-                      );
-                  }),
+                        return ListView.builder(
+                          physics: const BouncingScrollPhysics(),
+                          scrollDirection: Axis.horizontal,
+                          padding: const EdgeInsets.only(top: 0, bottom: 0),
+                          itemCount: controller.carList.length,
+                          itemBuilder: (context, index) =>
+                              HomeCardCar(index, controller.carList[index]),
+                        );
+                      }),
                 ),
               ),
             ),
             Positioned(
               child: Container(
-              decoration: BoxDecoration(
-                  color: AppTheme.light,
-                borderRadius: const BorderRadius.only(bottomLeft: Radius.circular(20), bottomRight: Radius.circular(20))
-              ),
-              height: Platform.isAndroid ? 160 : 180 ),),
+                  decoration: BoxDecoration(
+                      color: AppTheme.light,
+                      borderRadius: const BorderRadius.only(
+                          bottomLeft: Radius.circular(20),
+                          bottomRight: Radius.circular(20))
+                  ),
+                  height: Platform.isAndroid ? 160 : 180),),
             buildAppBar(),
           ],
         ),
@@ -296,16 +299,19 @@ class _HomeScreenState extends State<HomeScreen>
                       scrollDirection: Axis.vertical,
                       padding: const EdgeInsets.only(top: 180, bottom: 80),
                       itemCount: controller.carList.length,
-                      itemBuilder: (context, index) => HomeCardCar(index, controller.carList[index]),
+                      itemBuilder: (context, index) =>
+                          HomeCardCar(index, controller.carList[index]),
                     );
                   }),
             ),
             Positioned(child: Container(
-              decoration: BoxDecoration(
-                  color: AppTheme.light,
-                  borderRadius: const BorderRadius.only(bottomLeft: Radius.circular(20), bottomRight: Radius.circular(20))
-              ),
-              height: Platform.isAndroid ? 160 : 180)),
+                decoration: BoxDecoration(
+                    color: AppTheme.light,
+                    borderRadius: const BorderRadius.only(
+                        bottomLeft: Radius.circular(20),
+                        bottomRight: Radius.circular(20))
+                ),
+                height: Platform.isAndroid ? 160 : 180)),
             buildAppBar(),
           ],
         )
@@ -342,9 +348,9 @@ class _HomeScreenState extends State<HomeScreen>
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
-                      const Expanded(child: const SizedBox( )),
+                      const Expanded(child: const SizedBox()),
                       SizedBox(
-                        width: Get.width -90,
+                        width: Get.width - 90,
                         child: Card(
                           elevation: 6,
                           shape: RoundedRectangleBorder(
@@ -375,8 +381,8 @@ class _HomeScreenState extends State<HomeScreen>
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 crossAxisAlignment: CrossAxisAlignment.center,
-                                children:  [
-                                   const Icon(Icons.location_on_outlined,
+                                children: [
+                                  const Icon(Icons.location_on_outlined,
                                       color: Colors.grey),
                                   SizedBox(
                                     width: Get.width / 2.3,
@@ -391,7 +397,7 @@ class _HomeScreenState extends State<HomeScreen>
 
                                     ),
                                   ),
-                                  Expanded(child: const SizedBox( )),
+                                  Expanded(child: const SizedBox()),
                                   Container(
                                       margin: EdgeInsets.zero,
                                       padding: EdgeInsets.zero,
@@ -414,16 +420,17 @@ class _HomeScreenState extends State<HomeScreen>
                               )),
                         ),
                       ),
-                      const Expanded(child: const SizedBox( width: 10,)),
+                      const Expanded(child: const SizedBox(width: 10,)),
                       IconButton(
-                          // icon: _globalWidget.customNotifIcon(8, AppTheme.secondaryColor.withOpacity(0.5)),
-                          icon: SvgPicture.asset(Assets.svgVector, width: 30, color: AppTheme.darkColor,),
+                        // icon: _globalWidget.customNotifIcon(8, AppTheme.secondaryColor.withOpacity(0.5)),
+                          icon: SvgPicture.asset(Assets.svgVector, width: 30,
+                            color: AppTheme.darkColor,),
                           onPressed: () {
                             Get.bottomSheet(
                                 showFilterBottomSheet(context));
                             // Navigator.push(context, MaterialPageRoute(builder: (context) => NotificationPage()));
                           }),
-                      const Expanded(child: const SizedBox( )),
+                      const Expanded(child: const SizedBox()),
                     ],
                   ),
                 ),

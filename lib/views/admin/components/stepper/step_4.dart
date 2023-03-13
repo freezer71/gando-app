@@ -33,7 +33,7 @@ class Step4State extends State<Step4> {
           autovalidateMode: AutovalidateMode.always,
           child: Container(
             width: Get.width,
-            height: Get.height,
+            height: Get.height / 1.8,
             padding: EdgeInsets.zero,
             child: ListView(
               scrollDirection: Axis.vertical,
@@ -67,7 +67,6 @@ class Step4State extends State<Step4> {
                   ),
                 ),
                 _buildCalender(),
-                const SizedBox(height: 200,),
               ],
             ),
           ),
@@ -163,6 +162,52 @@ class Step4State extends State<Step4> {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
+        // Container(
+        //   margin: const EdgeInsets.symmetric(vertical: 20),
+        //   decoration: BoxDecoration(
+        //     borderRadius: BorderRadius.circular(20),
+        //     color: AppTheme.light,
+        //   ),
+        //   child: SfDateRangePicker(
+        //       key: Get.keys[0],
+        //       controller: c.dateRangePickerController1.value,
+        //       initialSelectedRange: PickerDateRange(c.initialDate.value, c.initialDate.value),
+        //       view: DateRangePickerView.month,
+        //       selectionMode: DateRangePickerSelectionMode.range,
+        //       selectionTextStyle: const TextStyle(color: Colors.white, fontSize: 20),
+        //       selectionColor: Colors.blue,
+        //       enablePastDates: false,
+        //       startRangeSelectionColor: AppTheme.primaryColor,
+        //       endRangeSelectionColor: AppTheme.primaryColor,
+        //       rangeSelectionColor: AppTheme.primaryColor,
+        //       onSelectionChanged: (DateRangePickerSelectionChangedArgs args) {
+        //         if (args.value is PickerDateRange) {
+        //           final startDate = args.value.startDate;
+        //           final endDate = args.value.endDate;
+        //           print("SELECT DATE 1 ========>>>>> : ${startDate} - ${endDate}");
+        //         }
+        //       },
+        //       rangeTextStyle: const TextStyle(color: Colors.white, fontSize: 16),
+        //       yearCellStyle: DateRangePickerYearCellStyle(
+        //         disabledDatesDecoration:BoxDecoration(
+        //             color: AppTheme.redColor,
+        //             border: Border.all(color: const Color(0xFFB6B6B6), width: 1),
+        //             shape: BoxShape.circle),
+        //         disabledDatesTextStyle: const TextStyle(color: Colors.black),
+        //         leadingDatesDecoration:BoxDecoration(
+        //             color: AppTheme.primaryColor,
+        //             border: Border.all(color: AppTheme.redColor, width: 1),
+        //             shape: BoxShape.circle),
+        //         leadingDatesTextStyle: TextStyle(color: AppTheme.redColor,),
+        //         textStyle:  TextStyle(color: AppTheme.darkColor,),
+        //         todayCellDecoration: BoxDecoration(
+        //             color: AppTheme.primaryColor,
+        //             border: Border.all(color: AppTheme.redColor, width: 1),
+        //             shape: BoxShape.circle),
+        //         todayTextStyle: TextStyle(color: AppTheme.light),
+        //       )
+        //   ),
+        // ),
         Container(
           margin: EdgeInsets.symmetric(vertical: 20),
           decoration: BoxDecoration(
@@ -170,51 +215,26 @@ class Step4State extends State<Step4> {
             color: AppTheme.light,
           ),
           child: SfDateRangePicker(
+              key: Get.keys[1],
+              controller: c.dateRangePickerController2.value,
               initialSelectedRange: PickerDateRange(c.initialDate.value, c.initialDate.value),
               view: DateRangePickerView.month,
               selectionMode: DateRangePickerSelectionMode.range,
-              selectionTextStyle: const TextStyle(color: Colors.white),
+              selectionTextStyle: const TextStyle(color: Colors.white, fontSize: 20),
               selectionColor: Colors.blue,
+              enablePastDates: false,
               startRangeSelectionColor: AppTheme.redColor,
               endRangeSelectionColor: AppTheme.redColor,
-              rangeSelectionColor: AppTheme.primaryColor,
-              rangeTextStyle: const TextStyle(color: Colors.white, fontSize: 20),
-              yearCellStyle: DateRangePickerYearCellStyle(
-                disabledDatesDecoration:BoxDecoration(
-                    color: AppTheme.redColor,
-                    border: Border.all(color: const Color(0xFFB6B6B6), width: 1),
-                    shape: BoxShape.circle),
-                disabledDatesTextStyle: const TextStyle(color: Colors.black),
-                leadingDatesDecoration:BoxDecoration(
-                    color: AppTheme.primaryColor,
-                    border: Border.all(color: AppTheme.redColor, width: 1),
-                    shape: BoxShape.circle),
-                leadingDatesTextStyle: TextStyle(color: AppTheme.redColor,),
-                textStyle:  TextStyle(color: AppTheme.darkColor,),
-                todayCellDecoration: BoxDecoration(
-                    color: AppTheme.primaryColor,
-                    border: Border.all(color: AppTheme.redColor, width: 1),
-                    shape: BoxShape.circle),
-                todayTextStyle: TextStyle(color: AppTheme.light),
-              )
-          ),
-        ),
-        Container(
-          margin: EdgeInsets.symmetric(vertical: 20),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(20),
-            color: AppTheme.light,
-          ),
-          child: SfDateRangePicker(
-              initialSelectedRange: PickerDateRange(c.initialDate.value, c.initialDate.value),
-              view: DateRangePickerView.month,
-              selectionMode: DateRangePickerSelectionMode.range,
-              selectionTextStyle: const TextStyle(color: Colors.white),
-              selectionColor: Colors.blue,
-              startRangeSelectionColor: AppTheme.primaryColor,
-              endRangeSelectionColor: AppTheme.primaryColor,
               rangeSelectionColor: AppTheme.redColor,
-              rangeTextStyle: const TextStyle(color: Colors.white, fontSize: 20),
+              onSelectionChanged: (DateRangePickerSelectionChangedArgs args) {
+                if (args.value is PickerDateRange) {
+                  final startDate = args.value.startDate;
+                  final endDate = args.value.endDate;
+                  c.selectedAvailability!.value = [startDate, endDate];
+                  print("SELECT DATE ========>>>>> : ${c.selectedAvailability}");
+                }
+              },
+              rangeTextStyle: const TextStyle(color: Colors.white, fontSize: 16),
               yearCellStyle: DateRangePickerYearCellStyle(
                 disabledDatesDecoration:BoxDecoration(
                     color: AppTheme.redColor,

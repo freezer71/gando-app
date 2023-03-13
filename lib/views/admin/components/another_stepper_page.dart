@@ -21,32 +21,38 @@ class StepperArticles extends StatefulWidget {
 }
 
 class _StepperArticlesState extends State<StepperArticles> {
-  var currentStep = 0;
+  late int currentStep;
 
   final c = Get.put(AddArticlesController());
 
   @override
   void initState() {
+    currentStep = 0;
     super.initState();
   }
 
   @override
   void dispose() {
-    c.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    var mapData = HashMap<String, String>();
-    mapData["first_name"] = Step1State.controllerFirstName.text;
-    mapData["last_name"] = Step1State.controllerLastName.text;
-    mapData["date_of_birth"] = Step1State.controllerDateOfBirth.text;
-    mapData["gender"] = Step1State.controllerGender.text;
-
-    mapData["email"] = Step2State.controllerEmail.text;
-    mapData["address"] = Step2State.controllerAddress.text;
-    mapData["mobile_no"] = Step2State.controllerMobileNo.text;
+    var mapData = HashMap<String, dynamic>();
+    // mapData.addAll({
+    //   'title': c.titleController.value.text,
+    //   'description': c.descriptionController.value.text,
+    //   'price': c.priceController.value.text,
+    //   'category': c.categoryController.value.text,
+    //   'subCategory': c.subCategoryController.value.text,
+    //   'city': c.cityController.value.text,
+    //   'region': c.regionController.value.text,
+    //   'country': c.countryController.value.text,
+    //   'address': c.addressController.value.text,
+    //   'mobileNo': c.mobileNoController.value.text,
+    //   'email': c.emailController.value.text,
+    // });
+    //
 
     List<Step> steps = [
       Step(
@@ -84,6 +90,7 @@ class _StepperArticlesState extends State<StepperArticles> {
         content: Step3(),
         state: currentStep == 2 ? StepState.editing : StepState.indexed,
         isActive: currentStep == 2 ? true : false,
+
       ),
       Step(
         title: Container().marginZero.paddingZero,
@@ -115,6 +122,7 @@ class _StepperArticlesState extends State<StepperArticles> {
       backgroundColor: AppTheme.backgroundColor,
       appBar: CustomAppBar(
         leading: IconButton(onPressed: (){
+          // pop scope with modal
           Get.back();
         }, icon: Icon(Icons.arrow_back_ios_outlined, color: AppTheme.darkColor,),),
         title: widget.title,
@@ -148,8 +156,8 @@ class _StepperArticlesState extends State<StepperArticles> {
                             )),
                             backgroundColor: MaterialStateProperty.all(AppTheme.redColor)
                         ),
-                        child: const Text("Précédent"),
                         onPressed: controls.onStepCancel,
+                        child: const Text("Précédent"),
                       ),
                     ),
                   const SizedBox(width: 10,),
@@ -175,7 +183,7 @@ class _StepperArticlesState extends State<StepperArticles> {
           },
           onStepContinue: () {
             setState(() {
-              if (currentStep < steps.length - 1) {
+              // if (currentStep < steps.length - 1) {
                 if (currentStep == 0 && Step1State.form1.currentState!.validate()) {
                   if(c.selectedFile.value != null){
                     if(c.selectedEquipments.isNotEmpty){
@@ -198,19 +206,58 @@ class _StepperArticlesState extends State<StepperArticles> {
                   }else{
                     _showErrorDialog("Veuillez choisir les images du véhicule s'il vous plait");
                   }
-                } else if (currentStep == 2 &&
-                    Step3State.form3.currentState!.validate()) {
+                } else if (currentStep == 2 && Step3State.form3.currentState!.validate()) {
+                  Step3State.form3.currentState!.save();
                   currentStep = currentStep + 1;
-                } else if (currentStep == 3 &&
-                    Step4State.form4.currentState!.validate()) {
+                } else if (currentStep == 3 && Step4State.form4.currentState!.validate()) {
+                  Step4State.form4.currentState!.save();
                   currentStep = currentStep + 1;
+                  printInfo(info: "mapData: ${mapData.toString()}");
+                  printInfo(info: "FINAL STEP CALLLL =====>>>: ${currentStep}");
+                } else if (currentStep == steps.length - 1 && UploadState.finalForm.currentState!.validate()) {
+                  // Step4State.form4.currentState!.save();
+                  mapData.addAll({
+                    "brand": c.brandController.value,
+                    "model": c.modelController.value,
+                    "type": c.typeController.value,
+                    "year": c.yearController.value,
+                    "mileage": c.selectedKilometer.value,
+                    "licensePlate": c.numberplateController.value,
+                    "gearbox": c.selectedGearbox.value,
+                    "fuel": c.selectedFuel.value,
+                    "nextTechnicalInspection":"2023-05-26",
+                    "technicalInspectionImage":"12165453784.jpg",
+                    "numberOfPlaces":9,
+                    "numberOfDoors":4,
+                    "equipment":["GPS", "Radio", "HIFI","Bluetooth"],
+                    "avant34":"1675603931368.jpg",
+                    "lateral":"1675603931368.jpg",
+                    "ariere34":"1675603931368.jpg",
+                    "interieur":"1675603931368.jpg",
+                    "supplementaire":"1675603931368.jpg",
+                    "description": "Le tout nouveau Audi Q8 disponnilbe",
+                    "address":"adresse exacte de la voiture",
+                    "zipCode":"97130",
+                    "city":"Paris",
+                    "pricePerDay": 10.99,
+                    "pricePerWeek":70.99,
+                    "pricePerMonth":300.99,
+                    "youngDriver": true
+                  });
+                  printInfo(info: "mapData: ${mapData.toString()}");
+
+                  printInfo(info: "FINAL STEP =====>>>: ${currentStep}");
+
+                  // upload data
+                  c.uploadData();
+
                 }else {
                   // show modal error:
                   _showErrorDialog("Veuillez remplir tous les champs");
                 }
-              } else {
-                currentStep = 0;
-              }
+              // } else {
+              //   currentStep = 0;
+              // }
             });
           },
           onStepCancel: () {

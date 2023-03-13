@@ -35,6 +35,26 @@ class CarController extends GetxController {
     super.onClose();
   }
 
+  Future getAnnonceByLocation(double lat, double long, int range) async {
+    try {
+      isLoading(true);
+
+      final res = await ApiProvider().getData('/annonce/all?lat=$lat&long=$long&range=$range');
+      final body = jsonDecode(res.body)['data'];
+
+      if (res.statusCode == STATUS_OK) {
+        carList.clear();
+        carList.addAll(body.map<Car>((e) => Car.fromJson(e)).toList());
+        update();
+      }
+    } catch (e) {
+      printError(info: e.toString());
+      Get.snackbar('Error', e.toString());
+    }finally{
+      isLoading(false);
+    }
+  }
+
   // load car from api
   Future getAllCar() async {
     const lat = 43.774483;
@@ -69,9 +89,7 @@ class CarController extends GetxController {
       final body = jsonDecode(res.body)['data'];
 
       if (res.statusCode == STATUS_OK) {
-         // car.value = Car.fromJson(body);
-         printInfo(info: "CAR++++++>>>>>>>>>>>>>   "+body.toString());
-         return car;
+         return car = body.map<Car>((e) => Car.fromJson(e)).toList();
       } else {
         throw Exception('Failed to load car');
       }

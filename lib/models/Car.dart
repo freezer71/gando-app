@@ -33,9 +33,9 @@ class Car {
   final Images? images;
   final List<dynamic>? disponibility;
   final int? creationStep;
-  final int? pricePerDay;
-  final int? pricePerWeek;
-  final int? pricePerMonth;
+  final double? pricePerDay;
+  final double? pricePerWeek;
+  final double? pricePerMonth;
   final bool? youngDriver;
   final String? city;
   final String? zipCode;

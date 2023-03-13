@@ -43,25 +43,21 @@ class CarService extends GetxService {
     super.onClose();
   }
 
-
-
   Future<List<Car>> fetchUserCarList() async {
-
     try {
-      final res = await ApiProvider().getData('/annonce/userAnnonce?userId=640a55aaff53333c4265cb7c');
+      final res = await ApiProvider().getData('/annonce/userAnnonce');
       final body = jsonDecode(res.body)['data'];
 
       if (res.statusCode == STATUS_OK) {
-        printInfo(info: 'USER CAR LIST ========>  : ${body['cars'][0]}');
         final List<Car> cars = body['cars'].map<Car>((json) => Car.fromJson(json)).toList();
         return cars;
       } else {
-        return [];
+        return <Car>[];
       }
     }catch(e){
       Get.snackbar('Error', e.toString(),snackPosition: SnackPosition.BOTTOM, duration: const Duration(seconds: 15));
-      printError(info: 'ERROR ========>  : ${e.toString()}');
-      return [];
+      printError(info: 'ERROR ========> lll  : ${e.toString()}');
+      return <Car>[];
     } finally {
       isLoading(false);
     }
