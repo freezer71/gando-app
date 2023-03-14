@@ -7,10 +7,9 @@ import 'package:gando/views/admin/components/add_articles_stepper.dart';
 import 'package:get/get.dart';
 import 'package:linear_step_indicator/linear_step_indicator.dart';
 
-class AddArticlesScreen extends GetView<AddArticlesController> {
+class AddArticlesScreen extends GetView {
   @override
   Widget build(BuildContext context) {
-    Get.lazyPut(() => AddArticlesController());
     return const AddArticlesStepper();
   }
 
@@ -54,62 +53,60 @@ class AddArticlesScreen extends GetView<AddArticlesController> {
     extendBodyBehindAppBar: false,
     body: Obx(() => Padding(
       padding: const EdgeInsets.only(top: 100.0),
-      child: Expanded(
-        child: Stepper(
-          type: StepperType.horizontal,
-          steps: buildStep(context),
-          physics: BouncingScrollPhysics(),
-          currentStep: controller.currentStep.value,
-          onStepContinue: () {
-            if (controller.currentStep.value ==
-                buildStep(context).length - 1) {
-              print("Send data to server");
-            } else {
-              controller.currentStep.value++;
-            }
-          },
-          onStepCancel: () {
-            controller.currentStep.value == 0
-                ? null
-                : controller.currentStep.value--;
-          },
-          onStepTapped: (index) {
-            controller.currentStep.value = index;
-          },
-          controlsBuilder: (context, controls) {
-            return Container(
-              decoration: BoxDecoration(
-                borderRadius: const BorderRadius.only(
-                    bottomLeft: Radius.circular(20),
-                    bottomRight: Radius.circular(20)),
-                color: AppTheme.redColor,
-              ),
-              child: Row(
-                children: [
+      child: Stepper(
+        type: StepperType.horizontal,
+        steps: buildStep(context),
+        physics: BouncingScrollPhysics(),
+        currentStep: controller.currentStep.value,
+        onStepContinue: () {
+          if (controller.currentStep.value ==
+              buildStep(context).length - 1) {
+            print("Send data to server");
+          } else {
+            controller.currentStep.value++;
+          }
+        },
+        onStepCancel: () {
+          controller.currentStep.value == 0
+              ? null
+              : controller.currentStep.value--;
+        },
+        onStepTapped: (index) {
+          controller.currentStep.value = index;
+        },
+        controlsBuilder: (context, controls) {
+          return Container(
+            decoration: BoxDecoration(
+              borderRadius: const BorderRadius.only(
+                  bottomLeft: Radius.circular(20),
+                  bottomRight: Radius.circular(20)),
+              color: AppTheme.redColor,
+            ),
+            child: Row(
+              children: [
+                Expanded(
+                  child: ElevatedButton(
+                    child: Text(controller.currentStep.value ==
+                        buildStep(context).length - 1
+                        ? "Submit"
+                        : "Next"),
+                    onPressed: controls.onStepContinue,
+                  ),
+                ),
+                const SizedBox(
+                  width: 16,
+                ),
+                if (controller.currentStep.value != 0)
                   Expanded(
                     child: ElevatedButton(
-                      child: Text(controller.currentStep.value ==
-                          buildStep(context).length - 1
-                          ? "Submit"
-                          : "Next"),
-                      onPressed: controls.onStepContinue,
+                      child: Text("Previous"),
+                      onPressed: controls.onStepCancel,
                     ),
                   ),
-                  const SizedBox(
-                    width: 16,
-                  ),
-                  if (controller.currentStep.value != 0)
-                    Expanded(
-                      child: ElevatedButton(
-                        child: Text("Previous"),
-                        onPressed: controls.onStepCancel,
-                      ),
-                    ),
-                ],
-              ),
-            );
-          },
-        ),
+              ],
+            ),
+          );
+        },
       ),
     )),
   );

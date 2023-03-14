@@ -6,16 +6,13 @@ import 'package:get/get.dart';
 import '../../../../config/textstyle.dart';
 
 class Step3 extends StatefulWidget {
-
   @override
   State<StatefulWidget> createState() {
     return Step3State();
   }
-
 }
 
 class Step3State extends State<Step3> {
-
   static final form3 = GlobalKey<FormState>();
   static TextEditingController controllerEmail = TextEditingController();
   static TextEditingController controllerAddress = TextEditingController();
@@ -35,8 +32,7 @@ class Step3State extends State<Step3> {
                 ..._buildBody(),
               ],
             ),
-          )
-      );
+          ));
     });
   }
 
@@ -164,30 +160,49 @@ class Step3State extends State<Step3> {
 
         // dropdown2 zip code with seach bar only int max 5
 
-        CustomDropdownButton2(
-          key: Get.keys[3],
-          hint: 'Code postal',
-          // dropdownPadding: const EdgeInsets.symmetric(horizontal: 10),
-          dropdownDecoration: BoxDecoration(
-            color: AppTheme.darkColor,
-            borderRadius: BorderRadius.circular(10),
-          ),
-          dropdownWidth: Get.width - 40,
-          buttonWidth: Get.width,
-          buttonHeight: 60,
-          buttonDecoration: BoxDecoration(
-              color: AppTheme.darkColor.withOpacity(0.8),
-              borderRadius: BorderRadius.circular(30)),
-          dropdownItems: c.itemsZipCode,
-          value: c.selectedZipCode.value.isNotEmpty
-              ? c.selectedZipCode.value
-              : null,
-          // value: selectedEquipment,
-          onChanged: (value) {
-            c.selectedZipCode.value = value!;
-          },
-        ),
-
+        FutureBuilder(
+            future: c.fetchZipCode,
+            initialData: null,
+            builder: (context, AsyncSnapshot snap) {
+              // all state of the future snapshot
+              if (snap.connectionState == ConnectionState.waiting) {
+                return Center(child: CircularProgressIndicator());
+              } else if (snap.connectionState == ConnectionState.done) {
+                // check if the data is null
+                if (snap.data == null) {
+                  return Center(child: Text('No data'));
+                } else {
+                  // if the data is not null
+                  return Obx(() {
+                    return CustomDropdownButton2(
+                      key: Get.keys[3],
+                      hint: 'Code postal',
+                      // dropdownPadding: const EdgeInsets.symmetric(horizontal: 10),
+                      dropdownDecoration: BoxDecoration(
+                        color: AppTheme.darkColor,
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      dropdownWidth: Get.width - 40,
+                      buttonWidth: Get.width,
+                      buttonHeight: 60,
+                      buttonDecoration: BoxDecoration(
+                          color: AppTheme.darkColor.withOpacity(0.8),
+                          borderRadius: BorderRadius.circular(30)),
+                      dropdownItems: snap.data,
+                      value: c.selectedZipCode.value.isNotEmpty
+                          ? c.selectedZipCode.value
+                          : null,
+                      // value: selectedEquipment,
+                      onChanged: (value) {
+                        c.selectedZipCode.value = value!;
+                      },
+                    );
+                  });
+                }
+              } else {
+                return Center(child: Text('Error'));
+              }
+            }),
 
         // TextFormField(
         //   minLines: 1,
@@ -229,5 +244,4 @@ class Step3State extends State<Step3> {
         //   },
         // ),
       ];
-
 }

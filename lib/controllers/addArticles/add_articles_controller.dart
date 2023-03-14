@@ -1,8 +1,12 @@
+import 'dart:collection';
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:gando/config/constants.dart';
 import 'package:gando/config/textstyle.dart';
+import 'package:gando/services/provider/api_provider.dart';
 import 'package:get/get_rx/get_rx.dart';
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 import 'package:get/get_utils/get_utils.dart';
@@ -18,7 +22,6 @@ import '../../models/Equipment.dart';
 import '../../navigation.dart';
 
 class AddArticlesController extends GetxController {
-  var currentStep = 0.obs;
 
   File? _image;
   File? image1;
@@ -28,7 +31,9 @@ class AddArticlesController extends GetxController {
   File? image5;
 
   RxInt choosedImage = 0.obs;
+  RxInt currentStep = 0.obs;
   RxBool inProcess = false.obs;
+  RxBool isLoading = false.obs;
   List<MultipartFile> multipartImageList = <MultipartFile>[];
 
   Rx<File?> selectedFile = Rx<File?>(null);
@@ -136,38 +141,38 @@ class AddArticlesController extends GetxController {
         switch (choosedImage.value) {
           case 0:
             selectedFile1.value = File(cropped.path);
-            addMultiImages(selectedFile1);
+            // addMultiImages(selectedFile1);
             choosedImage(0);
-            update();
+            // update();
             break;
           case 1:
             selectedFile2.value = File(cropped.path);
-            addMultiImages(selectedFile2);
+            // addMultiImages(selectedFile2);
             choosedImage(0);
-            update();
+            // update();
             break;
           case 2: // Enter this block if mark == 1 or mark == 2 or mark == 3
             selectedFile3.value = File(cropped.path);
-            addMultiImages(selectedFile3);
+            // addMultiImages(selectedFile3);
             choosedImage(0);
-            update();
+            // update();
             break;
           case 3: // Enter this block if mark == 1 or mark == 2 or mark == 3
             selectedFile4.value = File(cropped.path);
-            addMultiImages(selectedFile4);
+            // addMultiImages(selectedFile4);
             choosedImage(0);
-            update();
+            // update();
             break;
           case 4: // Enter this block if mark == 1 or mark == 2 or mark == 3
             selectedFile5.value = File(cropped.path);
-            addMultiImages(selectedFile5);
+            // addMultiImages(selectedFile5);
             choosedImage(0);
-            update();
+            // update();
             break;
           default:
             selectedFile.value = File(cropped.path);
             choosedImage(0);
-            update();
+            // update();
             break; // this is a good habit, in case you change default to something else later.
         }
       } else {
@@ -257,7 +262,7 @@ class AddArticlesController extends GetxController {
   ];
 
   final RxList<MultiSelectItem> items = <MultiSelectItem>[].obs;
-  RxList<Equipment> selectedEquipments = <Equipment>[].obs;
+  RxList<String> selectedEquipments = <String>[].obs;
 
   final RxString selectedKilometer = ''.obs;
   final RxString selectedFuel = ''.obs;
@@ -278,130 +283,13 @@ class AddArticlesController extends GetxController {
   //-------------- step 2 --------------//
 
   // ------------- step 3 -------------//
+  late final Future fetchZipCode;
   Rx<TextEditingController> descriptionController = TextEditingController().obs;
   Rx<TextEditingController> addressController = TextEditingController().obs;
   Rx<TextEditingController> cityController = TextEditingController().obs;
   Rx<TextEditingController> postalCodeController = TextEditingController().obs;
   final RxString selectedZipCode = ''.obs;
-  final RxList<String> itemsZipCode = [
-    "971",
-    "97122",
-    "97123",
-    "97100",
-    "97125",
-    "97130",
-    "97140",
-    "97126",
-    "97113",
-    "97128",
-    "97112",
-    "97127",
-    "97129",
-    "97139",
-    "97190",
-    "97160",
-    "97111",
-    "97170",
-    "97131",
-    "97110",
-    "97116",
-    "97117",
-    "97120",
-    "97180",
-    "97115",
-    "97118",
-    "97134",
-    "97150",
-    "97130",
-    "97136",
-    "97137",
-    "97114",
-    "97141",
-    "973",
-    "972",
-    "974",
-    "97425",
-    "97412",
-    "97413",
-    "97414",
-    "97427",
-    "97420",
-    "97419",
-    "97440",
-    "97470",
-    "97400",
-    "97438",
-    "97439",
-    "97441",
-    "97434",
-    "97480",
-    "97436",
-    "97450",
-    "97460",
-    "97442",
-    "97410",
-    "97433",
-    "97430",
-    "97426",
-    "97437",
-    "97216",
-    "97218",
-    "97222",
-    "97222",
-    "97221",
-    "97224",
-    "97250",
-    "97200",
-    "97240",
-    "97218",
-    "97213",
-    "97232",
-    "97214",
-    "97218",
-    "97225",
-    "97290",
-    "97260",
-    "97226",
-    "97250",
-    "97211",
-    "97215",
-    "97231",
-    "97227",
-    "97228",
-    "97230",
-    "97270",
-    "97212",
-    "97250",
-    "97280",
-    "97229",
-    "97223",
-    "97220",
-    "97213",
-    "97233",
-    "97317",
-    "97319",
-    "97330",
-    "97300",
-    "97340",
-    "97350",
-    "97310",
-    "97355",
-    "97360",
-    "97370",
-    "97351",
-    "97356",
-    "97314",
-    "97316",
-    "97390",
-    "97354",
-    "97311",
-    "97312",
-    "97313",
-    "97320",
-    "97370",
-    "97315"
-  ].obs;
-
+  RxList<String> itemsZipCode = <String>[].obs;
   // ------------- step 3 -------------//
 
   //---------- step 4 ----------------//
@@ -414,6 +302,7 @@ class AddArticlesController extends GetxController {
   //------------Step 4 --------------//
 
   //----------Final step -----------//
+  FormData? formData;
   RxBool youngDriver = false.obs;
   Rx<TextEditingController> dayPriceController =
       TextEditingController(text: '30').obs;
@@ -423,27 +312,95 @@ class AddArticlesController extends GetxController {
       TextEditingController(text: '400').obs;
 
   Future uploadData() async {
-    // try/catch call service to upload data if success show success dialog and navigate to home page
-    // if fail show error dialog
+
     try {
-      await Future.delayed(const Duration(seconds: 2));
-      Get.dialog(
-        const AlertDialog(
-          title: Text('Success'),
-          content: Text('Your car has been added successfully'),
+      // final data = ;
+
+      // printInfo(info: "DATA=======>: ${data}");
+      formData = FormData.fromMap({
+        "year": yearController.value,
+        "type": typeController.value.text,
+        "model": modelController.value.text,
+        "brand": brandController.value.text,
+        "fuel": selectedFuel.value,
+        "gearbox": gearboxValue.value ? "manuelle" : "automatique",
+        "licensePlate": numberplateController.value.text,
+        "mileage": selectedKilometer.value,
+        "numberOfDoors": selectedDoor.value,
+        "numberOfPlaces": selectedPlaces.value,
+        "equipment": selectedEquipments.map((element) => element.toString()).toList(),
+        "nextTechnicalInspection": DateTime.now().toString(), // replace by date
+        // image section to be added
+        "technical_inspection_image": await MultipartFile.fromFile(selectedFile.value!.path,
+          filename: "technical_inspection_image",
+          contentType: MediaType('image', 'jpg'),
         ),
-      );
-      // Get.offAllNamed(Routes.home);
+        "ariere34":await MultipartFile.fromFile(selectedFile1.value!.path,
+          filename: "ariere34",
+          contentType: MediaType('image', 'jpg'),
+        ),
+        "lateral": await MultipartFile.fromFile(selectedFile2.value!.path,
+          filename: "lateral",
+          contentType: MediaType('image', 'jpg'),
+        ),
+        "avant34": await MultipartFile.fromFile(selectedFile3.value!.path,
+          filename: "avant34",
+          contentType: MediaType('image', 'jpg'),
+        ),
+        "interieur": await MultipartFile.fromFile(selectedFile4.value!.path,
+          filename: "interieur",
+          contentType: MediaType('image', 'jpg'),
+        ),
+        "supplementaire": await MultipartFile.fromFile(selectedFile5.value!.path,
+          filename: "supplementaire",
+          contentType: MediaType('image', 'jpg'),
+        ),
+        // end image section
+        "description": descriptionController.value.text,
+        "address": addressController.value.text,
+        "pricePerMonth": monthPriceController.value.text,
+        "pricePerWeek": weekPriceController.value.text,
+        "pricePerDay": dayPriceController.value.text,
+        "city": cityController.value.text,
+        "zipCode": selectedZipCode.value,
+        "undisponibilityType": "disponnible",
+        "undisponibility" : [
+          {
+            "start": selectedAvailability![0],
+            "end": selectedAvailability![1] ?? selectedAvailability![0]
+          }
+        ],
+        "youngDriver": youngDriver.value ? true : false,
+      });
+
+      // try/catch call service to upload data if success show success dialog and navigate to home page
+      // if fail show error dialog
+      // printInfo(info: "MAP DATA=======UPLOAD=>>>: ${jsonDecode(formData.toString())}");
+
+      final res = await ApiProvider().dioConnect("/annonce/add", formData);
+      final body = res.data;
+
+      printInfo(info: "RESULT UPLOAD DATA ======>>>: ${body}");
+
+      if (res.statusCode == STATUS_OK) {
+        Get.dialog(
+          const AlertDialog(
+            title: Text('Success'),
+            content: Text('Your car has been added successfully'),
+          ),
+        );
+        // Get.offAllNamed(Routes.home);
+      }
     } catch (e) {
       Get.dialog(
-        const AlertDialog(
-          title: Text('Error'),
-          content: Text('Something went wrong'),
+        AlertDialog(
+          title: const Text('Une erreur est survenue'),
+          content: Text('$e'),
         ),
       );
+    }finally{
+      isLoading(false);
     }
-
-
 
   }
 
@@ -452,6 +409,7 @@ class AddArticlesController extends GetxController {
   @override
   void onInit() {
     super.onInit();
+    fetchZipCode = getZipCode();
     items.value = equipmentsList
         .map((data) => MultiSelectItem<Equipment>(data, data.name))
         .toList();
@@ -461,12 +419,6 @@ class AddArticlesController extends GetxController {
   void onClose() {
     if (selectedFile.value != null && selectedFile.value!.existsSync()) {
       selectedFile.value!.deleteSync();
-      selectedFile.value = null;
-      selectedFile1.value = null;
-      selectedFile2.value = null;
-      selectedFile3.value = null;
-      selectedFile4.value = null;
-      selectedFile5.value = null;
     } else if (selectedFile1 != null && selectedFile1.value!.existsSync()) {
       selectedFile1.value!.deleteSync();
     } else if (selectedFile2 != null && selectedFile2.value!.existsSync()) {
@@ -496,4 +448,24 @@ class AddArticlesController extends GetxController {
     monthPriceController.value.dispose();
     super.onClose();
   }
+
+  // ----------------- function step 3 -----------------//
+  // get zip code from api
+  Future<List<String>> getZipCode() async {
+    try {
+      final res = await ApiProvider().getData("/utils/zipCode");
+      final body = jsonDecode(res.body)['data'];
+
+      if (res.statusCode == STATUS_OK) {
+        itemsZipCode.value = body.map<String>((e) => e.toString()).toList();
+        printInfo(info: "ZIP CODE: ${itemsZipCode.toString()}");
+        return itemsZipCode;
+      }else {
+        return itemsZipCode.value = [];
+      }
+    } catch (e) {
+      return itemsZipCode.value = [];
+    }
+  }
+
 }

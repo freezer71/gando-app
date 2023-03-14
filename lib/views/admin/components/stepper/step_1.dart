@@ -329,78 +329,80 @@ class Step1State extends State<Step1> {
           const SizedBox(
             height: 10,
           ),
-          Row(
-            children: [
-              Expanded(
-                  child: ElevatedButton(
-                      style: ButtonStyle(
-                        backgroundColor:
-                        MaterialStateProperty.resolveWith<Color>(
-                              (Set<MaterialState> states) =>
-                          c.gearboxValue.value
-                              ? AppTheme.light
-                              : AppTheme.primaryColor,
+          Container(
+            child: Row(
+              children: [
+                Expanded(
+                    child: ElevatedButton(
+                        style: ButtonStyle(
+                          backgroundColor:
+                          MaterialStateProperty.resolveWith<Color>(
+                                (Set<MaterialState> states) =>
+                            c.gearboxValue.value
+                                ? AppTheme.light
+                                : AppTheme.primaryColor,
+                          ),
+                          overlayColor:
+                          MaterialStateProperty.all(Colors.transparent),
+                          shape: MaterialStateProperty.all(RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20.0),
+                          )),
                         ),
-                        overlayColor:
-                        MaterialStateProperty.all(Colors.transparent),
-                        shape: MaterialStateProperty.all(RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(20.0),
-                        )),
-                      ),
-                      onPressed: () {
-                        c.gearboxValue.value = !c.gearboxValue.value;
-                      },
-                      child: SizedBox(
-                        width: Get.width / 1.5,
-                        height: 50,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text("Automatique",
-                                style: TextStyle(
-                                    fontSize: 15,
-                                    color: c.gearboxValue.value
-                                        ? AppTheme.darkColor
-                                        : AppTheme.light)),
-                          ],
+                        onPressed: () {
+                          c.gearboxValue.value = !c.gearboxValue.value;
+                        },
+                        child: SizedBox(
+                          width: Get.width / 1.5,
+                          height: 50,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text("Automatique",
+                                  style: TextStyle(
+                                      fontSize: 15,
+                                      color: c.gearboxValue.value
+                                          ? AppTheme.darkColor
+                                          : AppTheme.light)),
+                            ],
+                          ),
+                        ))),
+                SizedBox(width: 20,),
+                Expanded(
+                    child: ElevatedButton(
+                        style: ButtonStyle(
+                          backgroundColor:
+                          MaterialStateProperty.resolveWith<Color>(
+                                (Set<MaterialState> states) =>
+                            !c.gearboxValue.value
+                                ? AppTheme.light
+                                : AppTheme.primaryColor,
+                          ),
+                          overlayColor:
+                          MaterialStateProperty.all(Colors.transparent),
+                          shape: MaterialStateProperty.all(RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20.0),
+                          )),
                         ),
-                      ))),
-              SizedBox(width: 20,),
-              Expanded(
-                  child: ElevatedButton(
-                      style: ButtonStyle(
-                        backgroundColor:
-                        MaterialStateProperty.resolveWith<Color>(
-                              (Set<MaterialState> states) =>
-                          !c.gearboxValue.value
-                              ? AppTheme.light
-                              : AppTheme.primaryColor,
-                        ),
-                        overlayColor:
-                        MaterialStateProperty.all(Colors.transparent),
-                        shape: MaterialStateProperty.all(RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(20.0),
-                        )),
-                      ),
-                      onPressed: () {
-                        c.gearboxValue.value = !c.gearboxValue.value;
-                      },
-                      child: SizedBox(
-                        width: Get.width / 1.5,
-                        height: 50,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text("Manuelle",
-                                style: TextStyle(
-                                    fontSize: 15,
-                                    color: !c.gearboxValue.value
-                                        ? AppTheme.darkColor
-                                        : AppTheme.light)),
-                          ],
-                        ),
-                      ))),
-            ],
+                        onPressed: () {
+                          c.gearboxValue.value = !c.gearboxValue.value;
+                        },
+                        child: SizedBox(
+                          width: Get.width / 1.5,
+                          height: 50,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text("Manuelle",
+                                  style: TextStyle(
+                                      fontSize: 15,
+                                      color: !c.gearboxValue.value
+                                          ? AppTheme.darkColor
+                                          : AppTheme.light)),
+                            ],
+                          ),
+                        ))),
+              ],
+            ),
           )
         ],
       ),
@@ -677,7 +679,8 @@ class Step1State extends State<Step1> {
           ),
         ),
         onConfirm: (results) {
-          results.map((e) => c.selectedEquipments.add(e)).toList();
+          c.selectedEquipments.clear();
+          results.map((e) => c.selectedEquipments.add(e.name)).toList();
           // c.selectedEquipments.add(results.asMap());
           // printInfo(info: _selectedEquipments.toString());
         },
@@ -900,31 +903,28 @@ class Step1State extends State<Step1> {
           children: [
             Padding(
               padding: const EdgeInsets.all(4.0),
-              child: Expanded(
-                child:
-                ElevatedButton(
-                  style: ButtonStyle(
-                    backgroundColor:
-                    MaterialStateProperty.all(AppTheme.primaryColor),
-                    overlayColor: MaterialStateProperty.all(
-                        AppTheme.primaryColor),
-                    shape: MaterialStateProperty.all(RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20.0),
-                    )),
-                  ),
-                  onPressed: () {
-                    Get.back();
-                    c.pickImage('camera');
-                  },
-                  child: Row(
-                    children: [
-                      Icon(
-                          Icons.camera_alt_outlined, color: AppTheme.darkColor),
-                      const SizedBox(width: 10,),
-                      Text(
-                        'Camera', style: TextStyle(color: AppTheme.darkColor),),
-                    ],
-                  ),
+              child: ElevatedButton(
+                style: ButtonStyle(
+                  backgroundColor:
+                  MaterialStateProperty.all(AppTheme.primaryColor),
+                  overlayColor: MaterialStateProperty.all(
+                      AppTheme.primaryColor),
+                  shape: MaterialStateProperty.all(RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20.0),
+                  )),
+                ),
+                onPressed: () {
+                  Get.back();
+                  c.pickImage('camera');
+                },
+                child: Row(
+                  children: [
+                    Icon(
+                        Icons.camera_alt_outlined, color: AppTheme.darkColor),
+                    const SizedBox(width: 10,),
+                    Text(
+                      'Camera', style: TextStyle(color: AppTheme.darkColor),),
+                  ],
                 ),
               ),
             ),

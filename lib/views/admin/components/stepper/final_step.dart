@@ -71,10 +71,10 @@ class UploadState extends State<Upload> {
                     if(num >= 10) {
                       final val = num == null || num < 1 ? 10 : num - 10;
                       c.dayPriceController.value.text = '$val';
-                      c.update();
+                     
                     }else {
                       c.dayPriceController.value.text = '0';
-                      c.update();
+                     
                     }
                   },
                   child: Container(
@@ -119,10 +119,10 @@ class UploadState extends State<Upload> {
                     if(num > 0 || num == 0) {
                       final val =  num + 10;
                       c.dayPriceController.value.text = '$val';
-                      c.update();
+                     
                     }else {
                       c.dayPriceController.value.text = '0';
-                      c.update();
+                     
                     }
                   },
                   child: Container(
@@ -175,10 +175,10 @@ class UploadState extends State<Upload> {
                     if(num >= 10){
                       final val = num == null || num < 1 ? 10 : num - 10;
                       c.weekPriceController.value.text = '$val';
-                      c.update();
+                     
                     }else {
                       c.weekPriceController.value.text = '0';
-                      c.update();
+                     
                     }
                   },
                   child: Container(
@@ -231,10 +231,8 @@ class UploadState extends State<Upload> {
                     if(num > 0 || num == 0){
                       final val =  num + 10;
                       c.weekPriceController.value.text = '$val';
-                      c.update();
                     }else {
                       c.weekPriceController.value.text = '10';
-                      c.update();
                     }
                   },
                   child: Container(
@@ -285,10 +283,9 @@ class UploadState extends State<Upload> {
                     if(num >= 10){
                       final val = num == null || num < 1 ? 10 : num - 10;
                       c.monthPriceController.value.text = '$val';
-                      c.update();
+                     
                     }else {
                       c.monthPriceController.value.text = '0';
-                      c.update();
                     }
                   },
                   child: Container(
@@ -332,10 +329,8 @@ class UploadState extends State<Upload> {
                     if(num > 0 || num == 0){
                       final val =  num + 10;
                       c.monthPriceController.value.text = '$val';
-                      c.update();
                     }else {
                       c.monthPriceController.value.text = '10';
-                      c.update();
                     }
                   },
                   child: Container(
@@ -379,7 +374,6 @@ class UploadState extends State<Upload> {
                 value: c.youngDriver.value,
                 onChanged: (value) {
                   c.youngDriver.value = value;
-                  c.update();
                 },
                 activeColor: AppTheme.primaryColor,
                 activeTrackColor: AppTheme.primaryColor.withOpacity(0.5),
