@@ -14,6 +14,7 @@ import 'package:get/route_manager.dart';
 import 'package:http_parser/http_parser.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:intl/intl.dart';
 import 'package:multi_select_flutter/util/multi_select_item.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
@@ -270,6 +271,9 @@ class AddArticlesController extends GetxController {
   RxInt selectedPlaces = 4.obs;
   RxInt selectedDoor = 5.obs;
   RxString selectedGearbox = ''.obs;
+  RxString selectedDayTech = ''.obs;
+  RxString selectedMonthTech = ''.obs;
+  RxString selectedYearTech = ''.obs;
   // ---- step 1 -----------------//
 
   // ------------- step 2 ---------//
@@ -312,96 +316,125 @@ class AddArticlesController extends GetxController {
       TextEditingController(text: '400').obs;
 
   Future uploadData() async {
+    final nextTechnicalInspection = '${selectedYearTech.value}-${selectedMonthTech.value}-${selectedDayTech.value}';
+    final setIndisponibility = selectedAvailability!.value.length > 0
+        ? "indisponible"
+        : "disponible";
+    final unDisponibility = '[{"start": "${DateFormat('yyyy-MM-dd').format(selectedAvailability![0])}","end": "${DateFormat('yyyy-MM-dd').format(selectedAvailability![0]) != null ? DateFormat('yyyy-MM-dd').format(selectedAvailability![1]) : DateFormat('yyyy-MM-dd').format(selectedAvailability![0])}"}]';
+
+    formData = FormData.fromMap({
+      "year": yearController.value.toString(),
+      "type": typeController.value.text.toString(),
+      "model": modelController.value.text.toString(),
+      "brand": brandController.value.text.toString(),
+      "fuel": selectedFuel.value.toString(),
+      "gearbox": gearboxValue.value ? "manuelle" : "automatique",
+      "licensePlate": numberplateController.value.text.toString(),
+      "mileage": selectedKilometer.value.toString(),
+      "numberOfDoors": selectedDoor.value.toString(),
+      "numberOfPlaces": selectedPlaces.value.toString(),
+      "equipment": selectedEquipments.toString(),
+      "nextTechnicalInspection": nextTechnicalInspection, // replace by date
+      // image section to be added
+      "technical_inspection_image": await MultipartFile.fromFile(selectedFile.value!.path,
+        filename: selectedFile.value!.path.split('/').last,
+        contentType: MediaType('image', 'jpg'),
+      ),
+      "ariere34":await MultipartFile.fromFile(selectedFile1.value!.path,
+        filename: selectedFile1.value!.path.split('/').last,
+        contentType: MediaType('image', 'jpg'),
+      ),
+      "lateral": await MultipartFile.fromFile(selectedFile2.value!.path,
+        filename: selectedFile2.value!.path.split('/').last,
+        contentType: MediaType('image', 'jpg'),
+      ),
+      "avant34": await MultipartFile.fromFile(selectedFile3.value!.path,
+        filename: selectedFile3.value!.path.split('/').last,
+        contentType: MediaType('image', 'jpg'),
+      ),
+      "interieur": await MultipartFile.fromFile(selectedFile4.value!.path,
+        filename: selectedFile4.value!.path.split('/').last,
+        contentType: MediaType('image', 'jpg'),
+      ),
+      "supplementaire": await MultipartFile.fromFile(selectedFile5.value!.path,
+        filename: selectedFile5.value!.path.split('/').last,
+        contentType: MediaType('image', 'jpg'),
+      ),
+      // end image section
+      "description": descriptionController.value.text.toString(),
+      "address": addressController.value.text.toString(),
+      "pricePerMonth": monthPriceController.value.text.toString(),
+      "pricePerWeek": weekPriceController.value.text.toString(),
+      "pricePerDay": dayPriceController.value.text.toString(),
+      "city": cityController.value.text.toString(),
+      "zipCode": selectedZipCode.value.toString(),
+      "undisponibilityType": setIndisponibility,
+      "undisponibility": '$unDisponibility',
+      "youngDriver": youngDriver.value ? true : false,
+    });
+
+     // printInfo(info: "FORM DATA ======>>>: ${formData!.fields}");
 
     try {
-      // final data = ;
 
-      // printInfo(info: "DATA=======>: ${data}");
-      formData = FormData.fromMap({
-        "year": yearController.value,
-        "type": typeController.value.text,
-        "model": modelController.value.text,
-        "brand": brandController.value.text,
-        "fuel": selectedFuel.value,
-        "gearbox": gearboxValue.value ? "manuelle" : "automatique",
-        "licensePlate": numberplateController.value.text,
-        "mileage": selectedKilometer.value,
-        "numberOfDoors": selectedDoor.value,
-        "numberOfPlaces": selectedPlaces.value,
-        "equipment": selectedEquipments.map((element) => element.toString()).toList(),
-        "nextTechnicalInspection": DateTime.now().toString(), // replace by date
-        // image section to be added
-        "technical_inspection_image": await MultipartFile.fromFile(selectedFile.value!.path,
-          filename: "technical_inspection_image",
-          contentType: MediaType('image', 'jpg'),
-        ),
-        "ariere34":await MultipartFile.fromFile(selectedFile1.value!.path,
-          filename: "ariere34",
-          contentType: MediaType('image', 'jpg'),
-        ),
-        "lateral": await MultipartFile.fromFile(selectedFile2.value!.path,
-          filename: "lateral",
-          contentType: MediaType('image', 'jpg'),
-        ),
-        "avant34": await MultipartFile.fromFile(selectedFile3.value!.path,
-          filename: "avant34",
-          contentType: MediaType('image', 'jpg'),
-        ),
-        "interieur": await MultipartFile.fromFile(selectedFile4.value!.path,
-          filename: "interieur",
-          contentType: MediaType('image', 'jpg'),
-        ),
-        "supplementaire": await MultipartFile.fromFile(selectedFile5.value!.path,
-          filename: "supplementaire",
-          contentType: MediaType('image', 'jpg'),
-        ),
-        // end image section
-        "description": descriptionController.value.text,
-        "address": addressController.value.text,
-        "pricePerMonth": monthPriceController.value.text,
-        "pricePerWeek": weekPriceController.value.text,
-        "pricePerDay": dayPriceController.value.text,
-        "city": cityController.value.text,
-        "zipCode": selectedZipCode.value,
-        "undisponibilityType": "disponnible",
-        "undisponibility" : [
-          {
-            "start": selectedAvailability![0],
-            "end": selectedAvailability![1] ?? selectedAvailability![0]
-          }
-        ],
-        "youngDriver": youngDriver.value ? true : false,
-      });
-
-      // try/catch call service to upload data if success show success dialog and navigate to home page
-      // if fail show error dialog
-      // printInfo(info: "MAP DATA=======UPLOAD=>>>: ${jsonDecode(formData.toString())}");
-
-      final res = await ApiProvider().dioConnect("/annonce/add", formData);
+      final res = await ApiProvider().addNewAnnonce("/annonce/add", formData, CancelToken());
       final body = res.data;
 
-      printInfo(info: "RESULT UPLOAD DATA ======>>>: ${body}");
+      printInfo(info: "RESULT UPLOAD DATA ======>>>: $body");
 
       if (res.statusCode == STATUS_OK) {
-        Get.dialog(
-          const AlertDialog(
-            title: Text('Success'),
-            content: Text('Your car has been added successfully'),
+
+        Get.defaultDialog(
+          title: 'Félicitation',
+          backgroundColor: AppTheme.light,
+          content: Column(
+            children: [
+              SizedBox(height: 20),
+              Text('Votre annonce a été publiée avec succès'),
+            ],
           ),
+          textConfirm: 'OK',
+          confirmTextColor: Colors.white,
+          onConfirm: () {
+            Get.offAllNamed(Routes.home);
+          },
         );
-        // Get.offAllNamed(Routes.home);
       }
     } catch (e) {
-      Get.dialog(
-        AlertDialog(
-          title: const Text('Une erreur est survenue'),
-          content: Text('$e'),
+      printInfo(info: "ERROR UPLOAD DATA ======>>>: ${e.toString()}");
+      Get.defaultDialog(
+        title: 'Erreur',
+        titleStyle: Theme.of(Get.context!).textTheme.bodyText1!.copyWith(
+          color: AppTheme.darkColor,
+          fontSize: 18,
+          fontWeight: FontWeight.w600,
         ),
+        backgroundColor: AppTheme.light,
+        content: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text('Une erreur est survenue, veuillez réessayer\n$e', style:
+                Theme.of(Get.context!).textTheme.bodyLarge!.copyWith(
+                  color: AppTheme.darkColor,
+                  fontSize: 18,
+                  fontWeight: FontWeight.w500,
+                ), textAlign: TextAlign.center,),
+            ),
+          ],
+        ),
+        textConfirm: 'OK',
+        buttonColor: AppTheme.primaryColor,
+        confirmTextColor: AppTheme.light,
+        onConfirm: () {
+          Get.back();
+        },
       );
     }finally{
       isLoading(false);
     }
-
   }
 
   //----------Final step -----------//

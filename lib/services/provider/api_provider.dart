@@ -22,15 +22,15 @@ class ApiProvider {
   Future<void> _getToken() async {
     if(box.hasData('token') && box.read('token') != null) {
       token = await box.read('token');
-
       printInfo(info: 'TOKEN============> : $token');
     }
   }
 
   // TODO : change token to bearer token
   _setHeaders() => {
-    'Content-type': 'application/json',
+    'Content-type': 'application/x-www-form-urlencoded',
     'Accept': 'application/json',
+    'Charset': 'utf-8',
     'Authorization': 'Bearer $token',
   };
 
@@ -41,6 +41,14 @@ class ApiProvider {
     return await http.get(fullUrl, headers: _setHeaders());
   }
 
+  Future<http.Response> postData(apiUrl, data) async {
+    await _getToken();
+    final fullUrl = Uri.parse(API_URL + apiUrl);
+    print('URL==$fullUrl');
+    printInfo(info: 'DATA====>>  $data');
+    return await http.post(fullUrl, body: data, headers: _setHeaders());
+  }
+
   Future<Response> dioConnect(url, data) async {
     finalUrl = "$API_URL$url";
     print('url : $finalUrl');
@@ -48,19 +56,17 @@ class ApiProvider {
 
     try {
       await _getToken();
-      dio.options.headers["accept"] = "*/*";
-      dio.options.headers["authorization"] = "Bearer $token";
-      dio.options.headers['content-Type'] = 'multipart/form-data; charset=utf-8';
+      dio.options.headers['accept'] = "application/json";
+      dio.options.headers['authorization'] = "Bearer $token";
+      // dio.options.headers['content-type'] = 'application/x-www-form-urlencoded';
+      dio.options.headers['content-type'] = 'multipart/form-data';
 
       // dio.options.headers['authenticate_client'] = '427620db3b5aeffd7da95bff1e02c58e91f2b7c8394cabc1db92aabe2a918ded';
       dio.options.connectTimeout = 30000; // 30s
       dio.options.receiveTimeout = 25000; // 25s
 
-      final res = await dio.post("https://dev.mygando.com/annonce/add", data: data, cancelToken: apiToken);
-      final resData = res.data;
-      print('resData : $resData');
+      return await dio.post(finalUrl, data: data, cancelToken: apiToken);
 
-      return resData;
     } on DioError catch (e) {
       if (e.type == DioErrorType.response) {
         int? statusCode = e.response!.statusCode;
@@ -85,12 +91,11 @@ class ApiProvider {
 
   // add annonce
 
-  Future addNewAnnonce(url, formData) async{
+  Future<Response> addNewAnnonce(url, formData, cancelToken) async{
     await _getToken();
     finalUrl = "$API_URL$url";
     print('url : $finalUrl');
     print('postData : ${formData.toString()}');
-    // printInfo(info: '======Bearer $token');
 
     try{
       dio.options.headers["accept"] = "application/json";
@@ -99,21 +104,12 @@ class ApiProvider {
       dio.options.connectTimeout = 30000; //5s
       dio.options.receiveTimeout = 25000;
 
-      final res = await dio.post(
+      return await dio.post(
           finalUrl,
           data: formData,
-          cancelToken: apiToken
+          cancelToken: cancelToken
       );
-
-      if(res.statusCode == 200) {
-        print(res.data.toString());
-        return res.data!;
-      }else {
-        // print("DATA ELSE FAILED====" + res.toString());
-        return res.data!;
-      }
     } on DioError catch (e) {
-      printInfo(info: e.toString());
       if (e.type == DioErrorType.response) {
         int? statusCode = e.response!.statusCode;
         if (statusCode == STATUS_NOT_FOUND) {
@@ -121,7 +117,7 @@ class ApiProvider {
         } else if (statusCode == STATUS_INTERNAL_ERROR) {
           throw "Internal Server Error ${e.toString()}";
         } else {
-          throw e.error.message.toString();
+          throw e.response!.data!['message'].toString() ;
         }
       } else if (e.type == DioErrorType.connectTimeout) {
         throw e.message.toString();

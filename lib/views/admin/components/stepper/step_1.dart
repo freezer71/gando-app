@@ -597,12 +597,15 @@ class Step1State extends State<Step1> {
                 .month,
             showMonth: true,
             // optional
-            onChangedDay: (value) =>
-                print('onChangedDay: $value'),
-            onChangedMonth: (value) =>
-                print('onChangedMonth: $value'),
-            onChangedYear: (value) =>
-                print('onChangedYear: $value'),
+            onChangedDay: (value) {
+              c.selectedDayTech.value = value!;
+            },
+            onChangedMonth: (value) {
+              c.selectedMonthTech.value = value!;
+            },
+            onChangedYear: (value) {
+              c.selectedYearTech.value = value!;
+            },
             boxDecoration: BoxDecoration(
                 border: Border.all(color: Colors.transparent, width: 0.0)),
             // optional
