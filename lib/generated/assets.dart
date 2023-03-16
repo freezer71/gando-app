@@ -30,6 +30,7 @@ class Assets {
   static const String svgImg = 'assets/svg/img.png';
   static const String svgVector = 'assets/svg/vector.svg';
   static const String zip128154DriverSteeringWheelMapMarkerTaxiRentCarSharing = 'assets/lotties/zip/128154-driver-steering-wheel-map-marker-taxi-rent-car-sharing.zip';
+  static const String zip15144AttentionSign = 'assets/lotties/zip/15144-attention-sign.zip';
   static const String zip57028Contrato = 'assets/lotties/zip/57028-contrato.zip';
 
 }

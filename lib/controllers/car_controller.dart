@@ -17,12 +17,14 @@ class CarController extends GetxController {
   // init car List
   late RxList<Car> carList = <Car>[].obs;
 
+  late Rx<Car> car = Car().obs;
+
   // cancel token
   final cancelToken = CancelToken();
 
   @override
   void onReady() {
-    loadCar();
+    getAllCar();
     super.onReady();
   }
 
@@ -33,12 +35,36 @@ class CarController extends GetxController {
     super.onClose();
   }
 
-  // load car from api
-  Future loadCar() async {
+  Future getAnnonceByLocation(double lat, double long, int range) async {
     try {
       isLoading(true);
 
-      final res = await ApiProvider().getData('/car/getAll');
+      final res = await ApiProvider().getData('/annonce/all?lat=$lat&long=$long&range=$range');
+      final body = jsonDecode(res.body)['data'];
+
+      if (res.statusCode == STATUS_OK) {
+        carList.clear();
+        carList.addAll(body.map<Car>((e) => Car.fromJson(e)).toList());
+        update();
+      }
+    } catch (e) {
+      printError(info: e.toString());
+      Get.snackbar('Error', e.toString());
+    }finally{
+      isLoading(false);
+    }
+  }
+
+  // load car from api
+  Future getAllCar() async {
+    const lat = 43.774483;
+    const long = 7.49754;
+    const range = 50;
+
+    try {
+      isLoading(true);
+
+      final res = await ApiProvider().getData('/annonce/all?lat=$lat&long=$long&range=$range');
       final body = jsonDecode(res.body)['data'];
 
       if (res.statusCode == STATUS_OK) {
@@ -53,4 +79,27 @@ class CarController extends GetxController {
     }
 
   }
+
+  // get unique car by id from api
+  Future getCarById(String id) async {
+    try {
+      isLoading(true);
+
+      final res = await ApiProvider().getData('/annonce/?carId=640b5d0c4605806ae6fc0cf5');
+      final body = jsonDecode(res.body)['data'];
+
+      if (res.statusCode == STATUS_OK) {
+         return car = body.map<Car>((e) => Car.fromJson(e)).toList();
+      } else {
+        throw Exception('Failed to load car');
+      }
+    } catch (e) {
+      printError(info: e.toString());
+      Get.snackbar('Error', e.toString());
+    }finally{
+      isLoading(false);
+    }
+  }
+
+
 }

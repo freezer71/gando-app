@@ -24,13 +24,15 @@ import '../../widget/appBarWidget.dart';
 import '../../widget/customTextFormField.dart';
 
 class EditArticleScreen extends GetView<EditArticleController> {
-  final UserCar article;
+  final Car article;
 
   EditArticleScreen({Key? key, required this.article}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+
     Get.lazyPut(() => EditArticleController());
+
     return Obx(() {
       return Scaffold(
         backgroundColor: AppTheme.backgroundColor.withOpacity(0.9),
@@ -285,7 +287,7 @@ class EditArticleScreen extends GetView<EditArticleController> {
             height: 10,
           ),
           Text(
-              'En cochant cette option, vous autorisezes jeunes conducteurs de 0 à 2 ans\nd\'experience loués votre véhicule. En contreparie, 16% sera ajoutés en plus \nsur le prix final de la location',
+              'En cochant cette option, vous autorisezes jeunes conducteurs de 0 à 3 ans\nd\'experience loués votre véhicule. En contreparie, 16% sera ajoutés en plus \nsur le prix final de la location',
               style: Theme.of(context).textTheme.bodyText2!.copyWith(
                   color: AppTheme.darkColor,
                   fontSize: 12,
@@ -524,16 +526,18 @@ class EditArticleScreen extends GetView<EditArticleController> {
                 InkWell(
                   onTap: () {},
                   child: Container(
-                      padding: EdgeInsets.all(4.5),
+                      padding: const EdgeInsets.all(4.5),
                       decoration: BoxDecoration(
-                          color: AppTheme.primaryColor,
-                          borderRadius: const BorderRadius.only(
-                              topRight: Radius.circular(8),
-                              bottomRight: Radius.circular(8))),
+                        color: AppTheme.primaryColor,
+                        borderRadius: const BorderRadius.only(
+                          topRight: Radius.circular(8),
+                          bottomRight: Radius.circular(8),
+                        ),
+                      ),
                       child: const Icon(
                         Icons.add,
                         size: 40,
-                      )),
+                      ),),
                 ),
               ],
             ),
@@ -637,8 +641,7 @@ class EditArticleScreen extends GetView<EditArticleController> {
                   repeat: ImageRepeat.noRepeat,
                   alignment: Alignment.topCenter,
                   image: CachedNetworkImageProvider(
-                      APP_FILE + article.images.avant34! ??
-                          APP_FILE + '1675603931368.jpg'),
+                      APP_FILE + article.images!.avant34!),
                 ),
                 borderRadius: const BorderRadius.only(
                     topLeft: Radius.circular(16),

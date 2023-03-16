@@ -23,7 +23,7 @@ import 'edit_article_screen.dart';
 class ArticleListScreen extends GetView<UserController> {
   ArticleListScreen({super.key});
 
-  late List<UserCar> userCarList;
+  late List<Car> userCarList;
 
   @override
   Widget build(BuildContext context) {
@@ -39,9 +39,8 @@ class ArticleListScreen extends GetView<UserController> {
         body: Stack(
           children: [
             FutureBuilder(
-              key: UniqueKey(),
               future: controller.getCarList,
-              initialData: false,
+              initialData: controller.userCarList,
               builder: (BuildContext context, AsyncSnapshot snapshot) {
                 userCarList = snapshot.data;
                 switch (snapshot.connectionState) {
@@ -92,7 +91,7 @@ class ArticleListScreen extends GetView<UserController> {
                             itemCount: userCarList.length,
                             itemBuilder: (context, index) {
                               return Dismissible(
-                                key: Key(userCarList[index].id),
+                                key: Key(userCarList[index].id!),
                                 direction: DismissDirection.endToStart,
                                 onDismissed: (v) {
                                   _showModalDialog();
@@ -105,13 +104,15 @@ class ArticleListScreen extends GetView<UserController> {
                                       repeat: ImageRepeat.noRepeat,
                                       alignment: Alignment.center,
                                       fit: BoxFit.cover,
-                                      image: CachedNetworkImageProvider(APP_FILE +
-                                          userCarList[index].images.avant34!, errorListener: () {
-                                        print('${APP_FILE + userCarList[index].images.avant34!}', );
-                                      }),
+                                      image: CachedNetworkImageProvider(userCarList[index].images!.avant34!,),
                                     ),
-                                    color: AppTheme.primaryColor,
-                                    borderRadius: BorderRadius.circular(16),
+                                    color: AppTheme.redColor,
+                                    borderRadius: const BorderRadius.only(
+                                      topLeft: Radius.circular(20),
+                                      topRight: Radius.circular(20),
+                                      bottomLeft: Radius.circular(20),
+                                      bottomRight: Radius.circular(20),
+                                    ),
                                   ),
                                   margin: const EdgeInsets.symmetric(
                                       horizontal: 20.0, vertical: 10),

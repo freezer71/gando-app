@@ -1,6 +1,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.gando.rentcar.app">
     <uses-permission android:name="android.permission.INTERNET"/>
+    <!-- camera and gallery -->
+    <uses-permission android:name="android.permission.CAMERA"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
 <!--    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>-->
 <!--    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>-->
 <!--    <uses-permission android:name="android.permission.ACCESS_LOCATION_EXTRA_COMMANDS"/>-->
@@ -34,6 +37,11 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
+       <activity
+           android:name="com.yalantis.ucrop.UCropActivity"
+           android:screenOrientation="portrait"
+           android:exported="false"
+           android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
        <activity
            android:name="com.aboutyou.dart_packages.sign_in_with_apple.SignInWithAppleCallback"
            android:exported="true"

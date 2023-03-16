@@ -14,20 +14,52 @@ class CarService extends GetxService {
 
   final userID = ''.obs;
 
-  Future<List<UserCar>> fetchUserCarList() async {
-    await ApiProvider().getData('/user').then((value) {
-      final body = jsonDecode(value.body)['data'];
-      userID.value = body['_id'];
-    });
+  final isLoading = false.obs;
 
-    final res = await ApiProvider().getData('/car/getUserCars?userId=$userID');
-    final body = jsonDecode(res.body)['data'];
+  Future getUserId() async {
+    try {
+      final res = await ApiProvider().getData('/user');
+      final body = jsonDecode(res.body)['data'];
+      if (res.statusCode == 200) {
+        userID(body['_id']);
+        printInfo(info: 'USER ID ========>  : ${userID.value}');
+      }
+    } catch (e) {
+      Get.snackbar('Error', e.toString(),snackPosition: SnackPosition.BOTTOM, duration: const Duration(seconds: 5));
+      return [];
+    } finally {
+      isLoading(false);
+    }
+  }
 
-    if (res.statusCode == 200) {
-      final List<UserCar> cars = body.map<UserCar>((json) => UserCar.fromJson(json)).toList();
-      return cars;
-    } else {
-      throw Exception('Failed to load cars');
+  @override
+  onInit() {
+    super.onInit();
+    // getUserId();
+  }
+
+  @override
+  onClose() {
+    super.onClose();
+  }
+
+  Future<List<Car>> fetchUserCarList() async {
+    try {
+      final res = await ApiProvider().getData('/annonce/userAnnonce');
+      final body = jsonDecode(res.body)['data'];
+
+      if (res.statusCode == STATUS_OK) {
+        final List<Car> cars = body['cars'].map<Car>((json) => Car.fromJson(json)).toList();
+        return cars;
+      } else {
+        return <Car>[];
+      }
+    }catch(e){
+      Get.snackbar('Error', e.toString(),snackPosition: SnackPosition.BOTTOM, duration: const Duration(seconds: 15));
+      printError(info: 'ERROR ========> lll  : ${e.toString()}');
+      return <Car>[];
+    } finally {
+      isLoading(false);
     }
   }
 }

@@ -11,6 +11,8 @@ import 'package:gando/widget/reusable/cache_image_network.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
+import '../../../../controllers/car_controller.dart';
+
 class CarDetailPage extends StatefulWidget {
   final Car car;
 
@@ -21,6 +23,9 @@ class CarDetailPage extends StatefulWidget {
 }
 
 class _CarDetailPageState extends State<CarDetailPage> {
+
+  final controller = Get.put(CarController());
+
   int _quantity = 0;
   late Car car;
   late List<String> _carImagesList = [];
@@ -88,9 +93,21 @@ class _CarDetailPageState extends State<CarDetailPage> {
 
   late ProfileSeller profileSeller;
 
+  getCar () async {
+    await controller.getCarById(widget.car.id!);
+    // car = controller.car.value;
+    printInfo(info: 'car: ${controller.car.toJson()}');
+    // _carImagesList.addAll([APP_FILE+car.images!.supplementaire.toString(),
+    //   APP_FILE+car.images!.avant34.toString(),
+    //   APP_FILE+car.images!.ariere34.toString(),
+    //   APP_FILE+car.images!.lateral.toString(),
+    //   APP_FILE+car.images!.interieur.toString(),]
+    // );
+  }
+
   @override
   void initState() {
-    car = widget.car;
+    getCar();
     _carImagesList.addAll([APP_FILE+car.images!.supplementaire.toString(),
         APP_FILE+car.images!.avant34.toString(),
         APP_FILE+car.images!.ariere34.toString(),
@@ -583,7 +600,7 @@ class _CarDetailPageState extends State<CarDetailPage> {
                   fontWeight: FontWeight.w900),
             ),
             Text(
-              '• 18 ans minimum\n • Jeunes conducteurs autorisés de 0 à 2 ans',
+              '• 18 ans minimum\n • Jeunes conducteurs autorisés de 0 à 3 ans',
               style: Theme.of(context).textTheme.bodyText2!.copyWith(
                   color: AppTheme.darkColor,
                   fontSize: 12,

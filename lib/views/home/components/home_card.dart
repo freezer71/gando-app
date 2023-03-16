@@ -5,6 +5,7 @@ import 'package:gando/models/Car.dart';
 import 'package:gando/views/products/detail/car_detail_screen.dart';
 import 'package:gando/views/products/detail/components/car_detail.dart';
 import 'package:gando/views/products/detail/widget/car_detail_infomation.dart';
+import 'package:get/get.dart';
 
 class HomeCardCar extends StatelessWidget {
   final int index;
@@ -19,7 +20,7 @@ class HomeCardCar extends StatelessWidget {
           context,
           MaterialPageRoute(
             builder: (context) {
-              return CarDetailPage(car: car);
+              return CarDetailPage(car: car );
             },
           ),
         );
@@ -32,22 +33,22 @@ class HomeCardCar extends StatelessWidget {
     return CarDetailInfomation(car: car);
   }
 
-  Widget _buildOldHomeCardCar(BuildContext context, car) {
-    return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 30),
-      child: Stack(
-        children: [
-          CarDetailInfomation(car: car),
-          // Positioned(
-          //   right: 10,
-          //   top: 10,
-          //   child: Image.asset(
-          //     car.image,
-          //     height: 90,
-          //   ),
-          // )
-        ],
-      ),
-    );
-  }
+  // Widget _buildOldHomeCardCar(BuildContext context, car) {
+  //   return Container(
+  //     margin: const EdgeInsets.symmetric(horizontal: 30),
+  //     child: Stack(
+  //       children: [
+  //         CarDetailInfomation(car: car),
+  //         // Positioned(
+  //         //   right: 10,
+  //         //   top: 10,
+  //         //   child: Image.asset(
+  //         //     car.image,
+  //         //     height: 90,
+  //         //   ),
+  //         // )
+  //       ],
+  //     ),
+  //   );
+  // }
 }

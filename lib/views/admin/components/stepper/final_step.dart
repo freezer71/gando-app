@@ -9,25 +9,26 @@ import '../../../../controllers/addArticles/add_articles_controller.dart';
 
 class Upload extends StatefulWidget {
 
-  var mapInfo = HashMap<String, String>();
+  var mapInfo = HashMap<String, dynamic>();
 
   Upload(this.mapInfo);
 
   @override
   State<StatefulWidget> createState() {
-    // TODO: implement createState
     return UploadState();
   }
 }
 
 class UploadState extends State<Upload> {
+  static final finalForm = GlobalKey<FormState>();
 
   final c = Get.put(AddArticlesController());
 
   @override
   Widget build(BuildContext context) {
     return Obx(() {
-      return Container(
+      return Form(
+        key: finalForm,
         child: Column(
           children: [
             ..._buildPrice(context),
@@ -67,13 +68,17 @@ class UploadState extends State<Upload> {
                 InkWell(
                   onTap: () {
                     final num = int.parse(c.dayPriceController.value.text);
-                    if(num >= 10){
+                    if(num >= 10) {
                       final val = num == null || num < 1 ? 10 : num - 10;
                       c.dayPriceController.value.text = '$val';
+                     
+                    }else {
+                      c.dayPriceController.value.text = '0';
+                     
                     }
                   },
                   child: Container(
-                      padding: EdgeInsets.all(4.5),
+                      padding: const EdgeInsets.all(4.5),
                       decoration: BoxDecoration(
                           color: AppTheme.redColor,
                           borderRadius: const BorderRadius.only(
@@ -82,14 +87,16 @@ class UploadState extends State<Upload> {
                       child: const Icon(
                         Icons.remove,
                         size: 40,
-                      )),
-                ),
+                      ),
+                  ),
+                ).marginZero,
                 SizedBox(
                   width: Get.width / 2,
                   child: TextFormFieldWrapper(
                     borderFocusedColor: AppTheme.primaryColor,
                     borderRadius: 0,
                     formField: TextFormField(
+                      key: Get.keys[0],
                       controller: c.dayPriceController.value,
                       keyboardType: TextInputType.number,
                       autofocus: false,
@@ -109,9 +116,13 @@ class UploadState extends State<Upload> {
                 InkWell(
                   onTap: () {
                     final num = int.parse(c.dayPriceController.value.text);
-                    if(num > 0 || num == 0){
+                    if(num > 0 || num == 0) {
                       final val =  num + 10;
                       c.dayPriceController.value.text = '$val';
+                     
+                    }else {
+                      c.dayPriceController.value.text = '0';
+                     
                     }
                   },
                   child: Container(
@@ -120,11 +131,12 @@ class UploadState extends State<Upload> {
                           color: AppTheme.primaryColor,
                           borderRadius: const BorderRadius.only(
                               topRight: Radius.circular(8),
-                              bottomRight: Radius.circular(8))),
+                              bottomRight: Radius.circular(8),),),
                       child: const Icon(
                         Icons.add,
                         size: 40,
-                      )),
+                      ),
+                  ),
                 ),
               ],
             ),
@@ -146,7 +158,9 @@ class UploadState extends State<Upload> {
                       .copyWith(
                       color: AppTheme.darkColor,
                       fontSize: 14,
-                      fontWeight: FontWeight.w600)),
+                      fontWeight: FontWeight.w600,
+                  ),
+              ),
             ),
             const SizedBox(
               height: 10,
@@ -156,7 +170,17 @@ class UploadState extends State<Upload> {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 InkWell(
-                  onTap: () {},
+                  onTap: () {
+                    final num = int.parse(c.weekPriceController.value.text);
+                    if(num >= 10){
+                      final val = num == null || num < 1 ? 10 : num - 10;
+                      c.weekPriceController.value.text = '$val';
+                     
+                    }else {
+                      c.weekPriceController.value.text = '0';
+                     
+                    }
+                  },
                   child: Container(
                       padding: const EdgeInsets.all(4.5),
                       decoration: BoxDecoration(
@@ -167,7 +191,8 @@ class UploadState extends State<Upload> {
                       child: const Icon(
                         Icons.remove,
                         size: 40,
-                      )),
+                      ),
+                  ),
                 ),
                 SizedBox(
                   width: Get.width / 2,
@@ -175,9 +200,16 @@ class UploadState extends State<Upload> {
                     borderFocusedColor: AppTheme.primaryColor,
                     borderRadius: 0,
                     formField: TextFormField(
+                      key: Get.keys[1],
                       controller: c.weekPriceController.value,
                       keyboardType: TextInputType.number,
-                      autofocus: false,
+                      autofocus: true,
+                      validator: (value) {
+                        if (value!.isEmpty) {
+                          return 'Veuillez entrer le prix de la semaine';
+                        }
+                        return null;
+                      },
                       style: TextStyle(color: AppTheme.darkColor),
                       textAlign: TextAlign.center,
                       decoration: InputDecoration(
@@ -186,15 +218,25 @@ class UploadState extends State<Upload> {
                           border: InputBorder.none,
                           hintText: 'Prix semaine',
                           hintStyle: TextStyle(
-                              color: AppTheme.darkColor.withOpacity(0.5))),
+                            color: AppTheme.darkColor.withOpacity(0.5),
+                          ),
+                      ),
                     ),
                     // position: TextFormFieldPosition.alone,
                   ),
                 ),
                 InkWell(
-                  onTap: () {},
+                  onTap: () {
+                    final num = int.parse(c.weekPriceController.value.text);
+                    if(num > 0 || num == 0){
+                      final val =  num + 10;
+                      c.weekPriceController.value.text = '$val';
+                    }else {
+                      c.weekPriceController.value.text = '10';
+                    }
+                  },
                   child: Container(
-                      padding: EdgeInsets.all(4.5),
+                      padding: const EdgeInsets.all(4.5),
                       decoration: BoxDecoration(
                           color: AppTheme.primaryColor,
                           borderRadius: const BorderRadius.only(
@@ -203,7 +245,8 @@ class UploadState extends State<Upload> {
                       child: const Icon(
                         Icons.add,
                         size: 40,
-                      )),
+                      ),
+                  ),
                 ),
               ],
             ),
@@ -235,7 +278,16 @@ class UploadState extends State<Upload> {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 InkWell(
-                  onTap: () {},
+                  onTap: () {
+                    final num = int.parse(c.monthPriceController.value.text);
+                    if(num >= 10){
+                      final val = num == null || num < 1 ? 10 : num - 10;
+                      c.monthPriceController.value.text = '$val';
+                     
+                    }else {
+                      c.monthPriceController.value.text = '0';
+                    }
+                  },
                   child: Container(
                       padding: EdgeInsets.all(4.5),
                       decoration: BoxDecoration(
@@ -254,6 +306,7 @@ class UploadState extends State<Upload> {
                     borderFocusedColor: AppTheme.primaryColor,
                     borderRadius: 0,
                     formField: TextFormField(
+                      key: Get.keys[2],
                       controller: c.monthPriceController.value,
                       keyboardType: TextInputType.number,
                       autofocus: false,
@@ -271,7 +324,15 @@ class UploadState extends State<Upload> {
                   ),
                 ),
                 InkWell(
-                  onTap: () {},
+                  onTap: () {
+                    final num = int.parse(c.monthPriceController.value.text);
+                    if(num > 0 || num == 0){
+                      final val =  num + 10;
+                      c.monthPriceController.value.text = '$val';
+                    }else {
+                      c.monthPriceController.value.text = '10';
+                    }
+                  },
                   child: Container(
                       padding: const EdgeInsets.all(4.5),
                       decoration: BoxDecoration(
@@ -309,16 +370,23 @@ class UploadState extends State<Upload> {
                       fontSize: 20,
                       fontWeight: FontWeight.w900)),
               const SizedBox(width: 10,),
-              Switch(value: c.youngDriver.value, onChanged: (v) {
-                c.youngDriver.value = v;
-              })
+              Obx(() => Switch(
+                value: c.youngDriver.value,
+                onChanged: (value) {
+                  c.youngDriver.value = value;
+                },
+                activeColor: AppTheme.primaryColor,
+                activeTrackColor: AppTheme.primaryColor.withOpacity(0.5),
+                inactiveThumbColor: AppTheme.redColor,
+                inactiveTrackColor: AppTheme.redColor.withOpacity(0.5),
+              ))
             ],
           ),
           const SizedBox(
             height: 10,
           ),
           Text(
-              'En cochant cette option, vous autorisezes jeunes conducteurs de 0 à 2 ansd\'experience loués\nvotre véhicule. En contreparie, 20% sera ajoutés en plus \nsur le prix final de la location',
+              'En cochant cette option, vous authorisés les jeunes conducteurs de 0 à 3 ans d\'experience loués\nvotre véhicule. En contreparie, 20% sera ajoutés en plus sur le prix final de la location',
               style: Theme
                   .of(context)
                   .textTheme
