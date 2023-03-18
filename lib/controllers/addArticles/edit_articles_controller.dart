@@ -2,13 +2,31 @@
 
 
 
+import 'dart:convert';
+
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:multi_select_flutter/util/multi_select_item.dart';
 
+import '../../config/constants.dart';
+import '../../models/Car.dart';
 import '../../models/Equipment.dart';
+import '../../services/provider/api_provider.dart';
 
 class EditArticleController extends GetxController{
+
+  EditArticleController({this.id});
+
+  late final id;
+
+  final carId = ''.obs;
+
+  final RxBool isLoading = false.obs;
+
+  late final Future futureGetCar;
+
+  late Car car;
 
   Rx<TextEditingController> addressController = TextEditingController().obs;
 
@@ -55,9 +73,11 @@ class EditArticleController extends GetxController{
 
   // ready
   @override
-  void onReady() {
-    addressController.value.text = 'address';
-    super.onReady();
+  void onInit() {
+    super.onInit();
+    carId.value = id;
+    futureGetCar = getAnnonceById(carId.value);
+    printInfo(info: "CAR ID===>>: $carId");
   }
 
 
@@ -66,5 +86,27 @@ class EditArticleController extends GetxController{
     descriptionController.close();
     addressController.close();
     super.dispose();
+  }
+
+  Future<Car> getAnnonceById(carId) async {
+    isLoading(true);
+    try {
+      final res = await ApiProvider().getData('/annonce/carId=$carId');
+      final body = jsonDecode(res.body)['data'];
+
+      printInfo(info: "BODY CAR===>>: $body");
+
+      if (res.statusCode == STATUS_OK) {
+        car = Car.fromJson(body);
+        return car;
+      }
+      return Car();
+    } catch (e) {
+      printError(info: e.toString());
+      Get.snackbar('Error', e.toString());
+      return Car();
+    } finally {
+      isLoading(false);
+    }
   }
 }

@@ -32,6 +32,7 @@ class UserController extends GetxController {
   void onInit() {
     super.onInit();
     getCarList = getUserCarList();
+    // check called route name and get user id
     getUserProfile = getUser();
   }
 

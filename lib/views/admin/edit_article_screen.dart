@@ -24,145 +24,183 @@ import '../../widget/appBarWidget.dart';
 import '../../widget/customTextFormField.dart';
 
 class EditArticleScreen extends GetView<EditArticleController> {
-  final Car article;
+  final Car car;
 
-  EditArticleScreen({Key? key, required this.article}) : super(key: key);
+  EditArticleScreen({Key? key, required this.car}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
 
-    Get.lazyPut(() => EditArticleController());
-
-    return Obx(() {
-      return Scaffold(
-        backgroundColor: AppTheme.backgroundColor.withOpacity(0.9),
-        appBar: CustomAppBar(
-          leading: IconButton(
-            onPressed: () {
-              Get.back();
-            },
-            icon: Icon(
-              Icons.arrow_back_ios_outlined,
-              color: AppTheme.darkColor,
-            ),
-          ),
-          title: 'Modifier mon annonce',
-        ),
-        body: Container(
-          child: ListView(
-            scrollDirection: Axis.vertical,
-            children: [
-              const SizedBox(
-                height: 20,
-              ),
-              Column(
-                children: [
-                  _buildVehicle(context), //header
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                          article.brand != null
-                              ? 'Photo conforme'
-                              : 'Photo non conforme',
-                          style: Theme.of(context)
-                              .textTheme
-                              .bodyText2!
-                              .copyWith(
-                                  color: AppTheme.darkColor,
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.w500)),
-                      SizedBox(
-                        width: 10,
-                      ),
-                      Text('En savoir plus',
-                          style: Theme.of(context)
-                              .textTheme
-                              .bodyText2!
-                              .copyWith(
-                                  color: AppTheme.primaryColor,
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.w500)),
-                      SizedBox(
-                        width: 4,
-                      ),
-                      Icon(
-                        Icons.info_outline_rounded,
-                        color: AppTheme.darkColor.withOpacity(0.5),
-                        size: 15,
-                      )
-                    ],
+    return GetBuilder<EditArticleController>(
+      assignId: true,
+      init: EditArticleController(id: car.id),
+      builder: (logic) {
+        return FutureBuilder(
+            future: controller.futureGetCar,
+            builder: (BuildContext context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const Scaffold(
+                  body: Center(
+                    child: CircularProgressIndicator(),
                   ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  _buildDescription(context),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  Container(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 20, vertical: 20),
-                    child: Column(
-                      children: [
-                        Text('Adresse du vehicule',
-                            style: Theme.of(context)
-                                .textTheme
-                                .bodyText2!
-                                .copyWith(
-                                    color: AppTheme.darkColor,
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w500)),
-                        const SizedBox(
-                          height: 10,
+                );
+              } else if (snapshot.connectionState == ConnectionState.done) {
+                if (snapshot.hasError) {
+                  return const Scaffold(
+                    body: Center(
+                      child: Text('Error'),
+                    ),
+                  );
+                } else {
+                  final Car car = snapshot.data;
+                  return Obx(() {
+                    return Scaffold(
+                      backgroundColor: AppTheme.backgroundColor.withOpacity(
+                          0.9),
+                      appBar: CustomAppBar(
+                        leading: IconButton(
+                          onPressed: () {
+                            Get.back();
+                          },
+                          icon: Icon(
+                            Icons.arrow_back_ios_outlined,
+                            color: AppTheme.darkColor,
+                          ),
                         ),
-                        CustomTextFormField(
-                          controller: controller.addressController.value,
-                          keyboardType: TextInputType.text,
-                          autofocus: false,
-                          enabled: true,
-                          formatter: [],
-                          validator: (String) {},
-                          hintText: '',
-                          onChanged: (String) {},
-                          onSaved: (String) {},
-                        )
-                      ],
-                    ),
+                        title: 'Modifier mon annonce',
+                      ),
+                      body: Container(
+                        child: ListView(
+                          scrollDirection: Axis.vertical,
+                          children: [
+                            const SizedBox(
+                              height: 20,
+                            ),
+                            Column(
+                              children: [
+                                _buildVehicle(context, car), //header
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                        car.toString() == 'true'
+                                            ? 'Photo conforme'
+                                            : 'Photo non conforme',
+                                        style: Theme
+                                            .of(context)
+                                            .textTheme
+                                            .bodyText2!
+                                            .copyWith(
+                                            color: AppTheme.darkColor,
+                                            fontSize: 12,
+                                            fontWeight: FontWeight.w500)),
+                                    const SizedBox(
+                                      width: 10,
+                                    ),
+                                    Text('En savoir plus',
+                                        style: Theme
+                                            .of(context)
+                                            .textTheme
+                                            .bodyText2!
+                                            .copyWith(
+                                            color: AppTheme.primaryColor,
+                                            fontSize: 12,
+                                            fontWeight: FontWeight.w500)),
+                                    const SizedBox(
+                                      width: 4,
+                                    ),
+                                    Icon(
+                                      Icons.info_outline_rounded,
+                                      color: AppTheme.darkColor.withOpacity(
+                                          0.5),
+                                      size: 15,
+                                    )
+                                  ],
+                                ),
+                                const SizedBox(
+                                  height: 20,
+                                ),
+                                _buildDescription(context),
+                                const SizedBox(
+                                  height: 20,
+                                ),
+                                Container(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 20, vertical: 20),
+                                  child: Column(
+                                    children: [
+                                      Text('Adresse du vehicule',
+                                          style: Theme
+                                              .of(context)
+                                              .textTheme
+                                              .bodyText2!
+                                              .copyWith(
+                                              color: AppTheme.darkColor,
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.w500)),
+                                      const SizedBox(
+                                        height: 10,
+                                      ),
+                                      CustomTextFormField(
+                                        controller: controller.addressController
+                                            .value,
+                                        keyboardType: TextInputType.text,
+                                        autofocus: false,
+                                        enabled: true,
+                                        formatter: [],
+                                        validator: (String) {},
+                                        hintText: '',
+                                        onChanged: (String) {},
+                                        onSaved: (String) {},
+                                      )
+                                    ],
+                                  ),
+                                ),
+                                Container(
+                                  padding: EdgeInsets.symmetric(
+                                      horizontal: 20, vertical: 20),
+                                  child: Column(
+                                    children: [
+                                      ..._buildPrice(context),
+                                      _buildKilometer(context),
+                                      ..._buildEquipment(context),
+                                      _buildDriverCondition(context),
+                                    ],
+                                  ),
+                                ),
+                                const SizedBox(
+                                  height: 20,
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+                      bottomNavigationBar: Container(
+                        color: Colors.white,
+                        height: 90,
+                        padding: const EdgeInsets.symmetric(horizontal: 24),
+                        child: Column(
+                          children: [
+                            const SizedBox(height: 15),
+                            _buildBottomButton(label: 'Valider'),
+                            // const SizedBox(height: 36),
+                          ],
+                        ),
+                      ),
+                    );
+                  });
+                }
+              } else {
+                return const Scaffold(
+                  body: Center(
+                    child: Text('Error'),
                   ),
-                  Container(
-                    padding: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-                    child: Column(
-                      children: [
-                        ..._buildPrice(context),
-                        _buildKilometer(context),
-                        ..._buildEquipment(context),
-                        _buildDriverCondition(context),
-                      ],
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                ],
-              ),
-            ],
-          ),
-        ),
-        bottomNavigationBar: Container(
-          color: Colors.white,
-          height: 90,
-          padding: const EdgeInsets.symmetric(horizontal: 24),
-          child: Column(
-            children: [
-              const SizedBox(height: 15),
-              _buildBottomButton(label: 'Valider'),
-              // const SizedBox(height: 36),
-            ],
-          ),
-        ),
-      );
-    });
+                );
+              }
+            });
+      },
+    );
   }
 
   Widget _buildBottomButton({label}) {
@@ -204,28 +242,37 @@ class EditArticleScreen extends GetView<EditArticleController> {
     );
   }
 
-  Widget _buildDescription(context) => Container(
+  Widget _buildDescription(context) =>
+      Container(
         padding: const EdgeInsets.symmetric(horizontal: 20),
         child: TextFormField(
           minLines: 5,
           maxLines: 7,
           controller: controller.descriptionController.value,
-          style: Theme.of(context).textTheme.bodyText2!.copyWith(
-                fontWeight: FontWeight.w600,
-                fontSize: 18,
-                overflow: TextOverflow.visible,
-                color: AppTheme.darkColor,
-              ),
+          style: Theme
+              .of(context)
+              .textTheme
+              .bodyText2!
+              .copyWith(
+            fontWeight: FontWeight.w600,
+            fontSize: 18,
+            overflow: TextOverflow.visible,
+            color: AppTheme.darkColor,
+          ),
           keyboardType: TextInputType.text,
           decoration: InputDecoration(
             filled: true,
             fillColor: AppTheme.light,
-            labelStyle: Theme.of(context).textTheme.bodyText2!.copyWith(
-                  fontWeight: FontWeight.w500,
-                  fontSize: 18,
-                  overflow: TextOverflow.visible,
-                  color: AppTheme.darkColor.withOpacity(0.5),
-                ),
+            labelStyle: Theme
+                .of(context)
+                .textTheme
+                .bodyText2!
+                .copyWith(
+              fontWeight: FontWeight.w500,
+              fontSize: 18,
+              overflow: TextOverflow.visible,
+              color: AppTheme.darkColor.withOpacity(0.5),
+            ),
             enabledBorder: OutlineInputBorder(
                 borderSide: BorderSide(
                   color: AppTheme.darkColor,
@@ -269,7 +316,11 @@ class EditArticleScreen extends GetView<EditArticleController> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text('Frais jeune conducteur',
-                  style: Theme.of(context).textTheme.bodyText2!.copyWith(
+                  style: Theme
+                      .of(context)
+                      .textTheme
+                      .bodyText2!
+                      .copyWith(
                       color: AppTheme.darkColor,
                       fontSize: 20,
                       fontWeight: FontWeight.w900)),
@@ -288,7 +339,11 @@ class EditArticleScreen extends GetView<EditArticleController> {
           ),
           Text(
               'En cochant cette option, vous autorisezes jeunes conducteurs de 0 à 3 ans\nd\'experience loués votre véhicule. En contreparie, 16% sera ajoutés en plus \nsur le prix final de la location',
-              style: Theme.of(context).textTheme.bodyText2!.copyWith(
+              style: Theme
+                  .of(context)
+                  .textTheme
+                  .bodyText2!
+                  .copyWith(
                   color: AppTheme.darkColor,
                   fontSize: 12,
                   fontWeight: FontWeight.w400))
@@ -303,7 +358,11 @@ class EditArticleScreen extends GetView<EditArticleController> {
       child: Column(
         children: [
           Text('Kilometrage',
-              style: Theme.of(context).textTheme.bodyText2!.copyWith(
+              style: Theme
+                  .of(context)
+                  .textTheme
+                  .bodyText2!
+                  .copyWith(
                   color: AppTheme.darkColor,
                   fontSize: 16,
                   fontWeight: FontWeight.w500)),
@@ -337,11 +396,16 @@ class EditArticleScreen extends GetView<EditArticleController> {
     );
   }
 
-  List<Widget> _buildEquipment(context) => [
+  List<Widget> _buildEquipment(context) =>
+      [
         Row(
           children: [
             Text('Equipements',
-                style: Theme.of(context).textTheme.bodyText2!.copyWith(
+                style: Theme
+                    .of(context)
+                    .textTheme
+                    .bodyText2!
+                    .copyWith(
                     color: AppTheme.darkColor,
                     fontSize: 20,
                     fontWeight: FontWeight.w900)),
@@ -353,7 +417,8 @@ class EditArticleScreen extends GetView<EditArticleController> {
         ),
       ];
 
-  Widget _buildMultiChoiceChip() => MultiSelectDialogField(
+  Widget _buildMultiChoiceChip() =>
+      MultiSelectDialogField(
         items: controller.items,
         title: Text(
           "Equipements",
@@ -393,14 +458,19 @@ class EditArticleScreen extends GetView<EditArticleController> {
         },
       );
 
-  List<Widget> _buildPrice(BuildContext context) => [
+  List<Widget> _buildPrice(BuildContext context) =>
+      [
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Padding(
               padding: const EdgeInsets.only(left: 22.0),
               child: Text('Prix jour',
-                  style: Theme.of(context).textTheme.bodyText2!.copyWith(
+                  style: Theme
+                      .of(context)
+                      .textTheme
+                      .bodyText2!
+                      .copyWith(
                       color: AppTheme.darkColor,
                       fontSize: 14,
                       fontWeight: FontWeight.w600)),
@@ -475,7 +545,11 @@ class EditArticleScreen extends GetView<EditArticleController> {
             Padding(
               padding: const EdgeInsets.only(left: 22.0),
               child: Text('Prix semaine',
-                  style: Theme.of(context).textTheme.bodyText2!.copyWith(
+                  style: Theme
+                      .of(context)
+                      .textTheme
+                      .bodyText2!
+                      .copyWith(
                       color: AppTheme.darkColor,
                       fontSize: 14,
                       fontWeight: FontWeight.w600)),
@@ -526,18 +600,18 @@ class EditArticleScreen extends GetView<EditArticleController> {
                 InkWell(
                   onTap: () {},
                   child: Container(
-                      padding: const EdgeInsets.all(4.5),
-                      decoration: BoxDecoration(
-                        color: AppTheme.primaryColor,
-                        borderRadius: const BorderRadius.only(
-                          topRight: Radius.circular(8),
-                          bottomRight: Radius.circular(8),
-                        ),
+                    padding: const EdgeInsets.all(4.5),
+                    decoration: BoxDecoration(
+                      color: AppTheme.primaryColor,
+                      borderRadius: const BorderRadius.only(
+                        topRight: Radius.circular(8),
+                        bottomRight: Radius.circular(8),
                       ),
-                      child: const Icon(
-                        Icons.add,
-                        size: 40,
-                      ),),
+                    ),
+                    child: const Icon(
+                      Icons.add,
+                      size: 40,
+                    ),),
                 ),
               ],
             ),
@@ -552,7 +626,11 @@ class EditArticleScreen extends GetView<EditArticleController> {
             Padding(
               padding: const EdgeInsets.only(left: 22.0),
               child: Text('Prix mois',
-                  style: Theme.of(context).textTheme.bodyText2!.copyWith(
+                  style: Theme
+                      .of(context)
+                      .textTheme
+                      .bodyText2!
+                      .copyWith(
                       color: AppTheme.darkColor,
                       fontSize: 14,
                       fontWeight: FontWeight.w600)),
@@ -620,7 +698,7 @@ class EditArticleScreen extends GetView<EditArticleController> {
         ),
       ];
 
-  Widget _buildVehicle(context) {
+  Widget _buildVehicle(context, Car article) {
     return Card(
       shape: RoundedRectangleBorder(
         side: BorderSide(color: AppTheme.primaryColor),
@@ -641,7 +719,7 @@ class EditArticleScreen extends GetView<EditArticleController> {
                   repeat: ImageRepeat.noRepeat,
                   alignment: Alignment.topCenter,
                   image: CachedNetworkImageProvider(
-                      APP_FILE + article.images!.avant34!),
+                      APP_FILE + (article.images!.ariere34!.isNotEmpty ? article.images!.ariere34! :  '')  ),
                 ),
                 borderRadius: const BorderRadius.only(
                     topLeft: Radius.circular(16),

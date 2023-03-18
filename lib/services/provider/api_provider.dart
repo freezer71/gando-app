@@ -135,7 +135,7 @@ class ApiProvider {
   Future<Response> dioGet(url, data) async {
     finalUrl = '$API_URL$url';
     print('url : $finalUrl');
-    print('getData : $data');
+    print('getData : ${data.toString()}');
 
     try {
       await _getToken();

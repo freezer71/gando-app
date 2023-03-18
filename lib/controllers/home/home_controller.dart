@@ -16,21 +16,6 @@ class HomeController extends GetxController{
   @override
   Future onReady() async{
     super.onReady();
-    await loadProduct();
   }
 
-  Future loadProduct() async{
-    try{
-      isLoading(true);
-      final res = await  ApiProvider().dioConnect('/voiture/getAll', {});
-      final body = res.data;
-      if(res.statusCode == STATUS_OK){
-        printInfo(info: '$body');
-      }
-    }catch(e){
-      rethrow;
-    }finally{
-      isLoading(false);
-    }
-  }
 }

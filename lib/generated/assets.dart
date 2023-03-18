@@ -24,12 +24,14 @@ class Assets {
   static const String imagesMaserati = 'assets/images/maserati.png';
   static const String imagesRollsRoyce = 'assets/images/rolls_royce.png';
   static const String lotties128154DriverSteeringWheelMapMarkerTaxiRentCarSharing = 'assets/lotties/128154-driver-steering-wheel-map-marker-taxi-rent-car-sharing.json';
+  static const String lotties135726MapMarker = 'assets/lotties/135726-map-marker.json';
   static const String lotties77365LocationLottieAnimation = 'assets/lotties/77365-location-lottie-animation.json';
   static const String lotties98979EmpyList = 'assets/lotties/98979-empy-list.json';
   static const String lottiesSuccess = 'assets/lotties/success.json';
   static const String svgImg = 'assets/svg/img.png';
   static const String svgVector = 'assets/svg/vector.svg';
   static const String zip128154DriverSteeringWheelMapMarkerTaxiRentCarSharing = 'assets/lotties/zip/128154-driver-steering-wheel-map-marker-taxi-rent-car-sharing.zip';
+  static const String zip135726MapMarker = 'assets/lotties/zip/135726-map-marker.zip';
   static const String zip15144AttentionSign = 'assets/lotties/zip/15144-attention-sign.zip';
   static const String zip57028Contrato = 'assets/lotties/zip/57028-contrato.zip';
 
