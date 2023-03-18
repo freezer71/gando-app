@@ -59,8 +59,8 @@ class CarController extends GetxController {
 
   // load car from api
   Future<List<Car>> getAllCar() async {
-    const lat = 43.774483;
-    const long = 7.49754;
+    const lat = 0;
+    const long = 0;
     const range = 10000000;
 
     try {
@@ -69,16 +69,16 @@ class CarController extends GetxController {
       final res = await ApiProvider().getData('/annonce/all?lat=$lat&long=$long&range=$range');
       final body = jsonDecode(res.body)['data'];
 
-      if (res.statusCode == STATUS_OK) {
+      if (body['status'] == "SUCCESS") {
         carList.addAll(body.map<Car>((e) => Car.fromJson(e)).toList());
         return carList;
+      }else{
+        return <Car>[];
       }
-
-      return [];
     } catch (e) {
       printError(info: e.toString());
       Get.snackbar('Error', e.toString());
-      return [];
+      return <Car>[];
     }finally{
       isLoading(false);
     }

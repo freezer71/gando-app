@@ -117,7 +117,9 @@ class _CarDetailPageState extends State<CarDetailPage> {
         APP_FILE+car.images!.interieur.toString(),]
     );
 
-    profileSeller = Owner();
+    profileSeller = Owner(
+
+    );
 
   }
 

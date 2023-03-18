@@ -35,170 +35,170 @@ class EditArticleScreen extends GetView<EditArticleController> {
       assignId: true,
       init: EditArticleController(id: car.id),
       builder: (logic) {
-        return FutureBuilder(
-            future: controller.futureGetCar,
-            builder: (BuildContext context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return const Scaffold(
-                  body: Center(
-                    child: CircularProgressIndicator(),
-                  ),
-                );
-              } else if (snapshot.connectionState == ConnectionState.done) {
-                if (snapshot.hasError) {
+        return Scaffold(
+          backgroundColor: AppTheme.backgroundColor.withOpacity(
+              0.9),
+          appBar: CustomAppBar(
+            leading: IconButton(
+              onPressed: () {
+                Get.back();
+              },
+              icon: Icon(
+                Icons.arrow_back_ios_outlined,
+                color: AppTheme.darkColor,
+              ),
+            ),
+            title: 'Modifier mon annonce',
+          ),
+          body: FutureBuilder(
+              future: controller.futureGetCar,
+              builder: (BuildContext context, AsyncSnapshot snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
                   return const Scaffold(
                     body: Center(
-                      child: Text('Error'),
+                      child: CircularProgressIndicator(),
                     ),
                   );
-                } else {
-                  final Car car = snapshot.data;
-                  return Obx(() {
-                    return Scaffold(
-                      backgroundColor: AppTheme.backgroundColor.withOpacity(
-                          0.9),
-                      appBar: CustomAppBar(
-                        leading: IconButton(
-                          onPressed: () {
-                            Get.back();
-                          },
-                          icon: Icon(
-                            Icons.arrow_back_ios_outlined,
-                            color: AppTheme.darkColor,
-                          ),
-                        ),
-                        title: 'Modifier mon annonce',
+                }else if (snapshot.connectionState == ConnectionState.done) {
+                  if (snapshot.hasError) {
+                    return const Scaffold(
+                      body: Center(
+                        child: Text('Error'),
                       ),
-                      body: Container(
-                        child: ListView(
-                          scrollDirection: Axis.vertical,
-                          children: [
-                            const SizedBox(
-                              height: 20,
-                            ),
-                            Column(
-                              children: [
-                                _buildVehicle(context, car), //header
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
+                    );
+                  } else {
+                    final Car car = snapshot.data;
+                    return Container(
+                      child: ListView(
+                        scrollDirection: Axis.vertical,
+                        children: [
+                          const SizedBox(
+                            height: 20,
+                          ),
+                          Column(
+                            children: [
+                              _buildVehicle(context, car), //header
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text(
+                                      true
+                                          ? 'Photo conforme'
+                                          : 'Photo non conforme',
+                                      style: Theme
+                                          .of(context)
+                                          .textTheme
+                                          .bodyText2!
+                                          .copyWith(
+                                          color: AppTheme.darkColor,
+                                          fontSize: 12,
+                                          fontWeight: FontWeight.w500)),
+                                  const SizedBox(
+                                    width: 10,
+                                  ),
+                                  Text('En savoir plus',
+                                      style: Theme
+                                          .of(context)
+                                          .textTheme
+                                          .bodyText2!
+                                          .copyWith(
+                                          color: AppTheme.primaryColor,
+                                          fontSize: 12,
+                                          fontWeight: FontWeight.w500)),
+                                  const SizedBox(
+                                    width: 4,
+                                  ),
+                                  Icon(
+                                    Icons.info_outline_rounded,
+                                    color: AppTheme.darkColor.withOpacity(
+                                        0.5),
+                                    size: 15,
+                                  )
+                                ],
+                              ),
+                              const SizedBox(
+                                height: 20,
+                              ),
+                              _buildDescription(context),
+                              const SizedBox(
+                                height: 20,
+                              ),
+                              Container(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 20, vertical: 20),
+                                child: Column(
                                   children: [
-                                    Text(
-                                        car.toString() == 'true'
-                                            ? 'Photo conforme'
-                                            : 'Photo non conforme',
+                                    Text('Adresse du vehicule',
                                         style: Theme
                                             .of(context)
                                             .textTheme
                                             .bodyText2!
                                             .copyWith(
                                             color: AppTheme.darkColor,
-                                            fontSize: 12,
+                                            fontSize: 16,
                                             fontWeight: FontWeight.w500)),
                                     const SizedBox(
-                                      width: 10,
+                                      height: 10,
                                     ),
-                                    Text('En savoir plus',
-                                        style: Theme
-                                            .of(context)
-                                            .textTheme
-                                            .bodyText2!
-                                            .copyWith(
-                                            color: AppTheme.primaryColor,
-                                            fontSize: 12,
-                                            fontWeight: FontWeight.w500)),
-                                    const SizedBox(
-                                      width: 4,
-                                    ),
-                                    Icon(
-                                      Icons.info_outline_rounded,
-                                      color: AppTheme.darkColor.withOpacity(
-                                          0.5),
-                                      size: 15,
+                                    CustomTextFormField(
+                                      controller: controller.addressController
+                                          .value,
+                                      keyboardType: TextInputType.text,
+                                      autofocus: false,
+                                      enabled: true,
+                                      formatter: [],
+                                      validator: (String) {},
+                                      hintText: '',
+                                      onChanged: (String) {},
+                                      onSaved: (String) {},
                                     )
                                   ],
                                 ),
-                                const SizedBox(
-                                  height: 20,
+                              ),
+                              Container(
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: 20, vertical: 20),
+                                child: Column(
+                                  children: [
+                                    ..._buildPrice(context),
+                                    _buildKilometer(context),
+                                    ..._buildEquipment(context),
+                                    _buildDriverCondition(context),
+                                  ],
                                 ),
-                                _buildDescription(context),
-                                const SizedBox(
-                                  height: 20,
-                                ),
-                                Container(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 20, vertical: 20),
-                                  child: Column(
-                                    children: [
-                                      Text('Adresse du vehicule',
-                                          style: Theme
-                                              .of(context)
-                                              .textTheme
-                                              .bodyText2!
-                                              .copyWith(
-                                              color: AppTheme.darkColor,
-                                              fontSize: 16,
-                                              fontWeight: FontWeight.w500)),
-                                      const SizedBox(
-                                        height: 10,
-                                      ),
-                                      CustomTextFormField(
-                                        controller: controller.addressController
-                                            .value,
-                                        keyboardType: TextInputType.text,
-                                        autofocus: false,
-                                        enabled: true,
-                                        formatter: [],
-                                        validator: (String) {},
-                                        hintText: '',
-                                        onChanged: (String) {},
-                                        onSaved: (String) {},
-                                      )
-                                    ],
-                                  ),
-                                ),
-                                Container(
-                                  padding: EdgeInsets.symmetric(
-                                      horizontal: 20, vertical: 20),
-                                  child: Column(
-                                    children: [
-                                      ..._buildPrice(context),
-                                      _buildKilometer(context),
-                                      ..._buildEquipment(context),
-                                      _buildDriverCondition(context),
-                                    ],
-                                  ),
-                                ),
-                                const SizedBox(
-                                  height: 20,
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
-                      ),
-                      bottomNavigationBar: Container(
-                        color: Colors.white,
-                        height: 90,
-                        padding: const EdgeInsets.symmetric(horizontal: 24),
-                        child: Column(
-                          children: [
-                            const SizedBox(height: 15),
-                            _buildBottomButton(label: 'Valider'),
-                            // const SizedBox(height: 36),
-                          ],
-                        ),
+                              ),
+                              const SizedBox(
+                                height: 20,
+                              ),
+                            ],
+                          ),
+                        ],
                       ),
                     );
-                  });
+                  }
+                } else {
+                  return const Scaffold(
+                    body: Center(
+                      child: Text('Error'),
+                    ),
+                  );
                 }
-              } else {
-                return const Scaffold(
-                  body: Center(
-                    child: Text('Error'),
-                  ),
-                );
+
               }
-            });
+          ),
+          bottomNavigationBar: Container(
+            color: Colors.white,
+            height: 90,
+            padding: const EdgeInsets.symmetric(horizontal: 24),
+            child: Column(
+              children: [
+                const SizedBox(height: 15),
+                _buildBottomButton(label: 'Valider'),
+                // const SizedBox(height: 36),
+              ],
+            ),
+          ),
+        );
       },
     );
   }
@@ -483,26 +483,37 @@ class EditArticleScreen extends GetView<EditArticleController> {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 InkWell(
-                  onTap: () {},
+                  onTap: () {
+                    final num = int.parse(controller.dayPrice.value.text);
+                    if(num >= 10) {
+                      final val = num == null || num < 1 ? 10 : num - 10;
+                      controller.dayPrice.value.text = '$val';
+
+                    }else {
+                      controller.dayPrice.value.text = '0';
+                    }
+                  },
                   child: Container(
-                      padding: EdgeInsets.all(4.5),
-                      decoration: BoxDecoration(
-                          color: AppTheme.redColor,
-                          borderRadius: BorderRadius.only(
-                              topLeft: Radius.circular(8),
-                              bottomLeft: Radius.circular(8))),
-                      child: Icon(
-                        Icons.remove,
-                        size: 40,
-                      )),
-                ),
+                    padding: const EdgeInsets.all(4.5),
+                    decoration: BoxDecoration(
+                        color: AppTheme.redColor,
+                        borderRadius: const BorderRadius.only(
+                            topLeft: Radius.circular(8),
+                            bottomLeft: Radius.circular(8))),
+                    child: const Icon(
+                      Icons.remove,
+                      size: 40,
+                    ),
+                  ),
+                ).marginZero,
                 SizedBox(
                   width: Get.width / 2,
                   child: TextFormFieldWrapper(
                     borderFocusedColor: AppTheme.primaryColor,
                     borderRadius: 0,
                     formField: TextFormField(
-                      controller: controller.dayPrice,
+                      key: Get.keys[0],
+                      controller: controller.dayPrice.value,
                       keyboardType: TextInputType.number,
                       autofocus: false,
                       style: TextStyle(color: AppTheme.darkColor),
@@ -519,18 +530,27 @@ class EditArticleScreen extends GetView<EditArticleController> {
                   ),
                 ),
                 InkWell(
-                  onTap: () {},
+                  onTap: () {
+                    final num = int.parse(controller.dayPrice.value.text);
+                    if(num > 0 || num == 0) {
+                      final val =  num + 10;
+                      controller.dayPrice.value.text = '$val';
+                    }else {
+                      controller.dayPrice.value.text = '0';
+                    }
+                  },
                   child: Container(
-                      padding: const EdgeInsets.all(4.5),
-                      decoration: BoxDecoration(
-                          color: AppTheme.primaryColor,
-                          borderRadius: const BorderRadius.only(
-                              topRight: Radius.circular(8),
-                              bottomRight: Radius.circular(8))),
-                      child: const Icon(
-                        Icons.add,
-                        size: 40,
-                      )),
+                    padding: const EdgeInsets.all(4.5),
+                    decoration: BoxDecoration(
+                      color: AppTheme.primaryColor,
+                      borderRadius: const BorderRadius.only(
+                        topRight: Radius.circular(8),
+                        bottomRight: Radius.circular(8),),),
+                    child: const Icon(
+                      Icons.add,
+                      size: 40,
+                    ),
+                  ),
                 ),
               ],
             ),
@@ -545,14 +565,16 @@ class EditArticleScreen extends GetView<EditArticleController> {
             Padding(
               padding: const EdgeInsets.only(left: 22.0),
               child: Text('Prix semaine',
-                  style: Theme
-                      .of(context)
-                      .textTheme
-                      .bodyText2!
-                      .copyWith(
-                      color: AppTheme.darkColor,
-                      fontSize: 14,
-                      fontWeight: FontWeight.w600)),
+                style: Theme
+                    .of(context)
+                    .textTheme
+                    .bodyText2!
+                    .copyWith(
+                  color: AppTheme.darkColor,
+                  fontSize: 14,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
             ),
             const SizedBox(
               height: 10,
@@ -562,18 +584,28 @@ class EditArticleScreen extends GetView<EditArticleController> {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 InkWell(
-                  onTap: () {},
+                  onTap: () {
+                    final num = int.parse(controller.weekPrice.value.text);
+                    if(num >= 10){
+                      final val = num == null || num < 1 ? 10 : num - 10;
+                      controller.weekPrice.value.text = '$val';
+
+                    }else {
+                      controller.weekPrice.value.text = '0';
+                    }
+                  },
                   child: Container(
-                      padding: const EdgeInsets.all(4.5),
-                      decoration: BoxDecoration(
-                          color: AppTheme.redColor,
-                          borderRadius: const BorderRadius.only(
-                              topLeft: Radius.circular(8),
-                              bottomLeft: Radius.circular(8))),
-                      child: const Icon(
-                        Icons.remove,
-                        size: 40,
-                      )),
+                    padding: const EdgeInsets.all(4.5),
+                    decoration: BoxDecoration(
+                        color: AppTheme.redColor,
+                        borderRadius: const BorderRadius.only(
+                            topLeft: Radius.circular(8),
+                            bottomLeft: Radius.circular(8))),
+                    child: const Icon(
+                      Icons.remove,
+                      size: 40,
+                    ),
+                  ),
                 ),
                 SizedBox(
                   width: Get.width / 2,
@@ -581,37 +613,53 @@ class EditArticleScreen extends GetView<EditArticleController> {
                     borderFocusedColor: AppTheme.primaryColor,
                     borderRadius: 0,
                     formField: TextFormField(
-                      controller: controller.weekPrice,
+                      key: Get.keys[1],
+                      controller: controller.weekPrice.value,
                       keyboardType: TextInputType.number,
-                      autofocus: false,
+                      autofocus: true,
+                      validator: (value) {
+                        if (value!.isEmpty) {
+                          return 'Veuillez entrer le prix de la semaine';
+                        }
+                        return null;
+                      },
                       style: TextStyle(color: AppTheme.darkColor),
                       textAlign: TextAlign.center,
                       decoration: InputDecoration(
-                          filled: true,
-                          fillColor: AppTheme.light,
-                          border: InputBorder.none,
-                          hintText: 'Prix Jour',
-                          hintStyle: TextStyle(
-                              color: AppTheme.darkColor.withOpacity(0.5))),
+                        filled: true,
+                        fillColor: AppTheme.light,
+                        border: InputBorder.none,
+                        hintText: 'Prix semaine',
+                        hintStyle: TextStyle(
+                          color: AppTheme.darkColor.withOpacity(0.5),
+                        ),
+                      ),
                     ),
                     // position: TextFormFieldPosition.alone,
                   ),
                 ),
                 InkWell(
-                  onTap: () {},
+                  onTap: () {
+                    final num = int.parse(controller.weekPrice.value.text);
+                    if(num > 0 || num == 0){
+                      final val =  num + 10;
+                      controller.weekPrice.value.text = '$val';
+                    }else {
+                      controller.weekPrice.value.text = '10';
+                    }
+                  },
                   child: Container(
                     padding: const EdgeInsets.all(4.5),
                     decoration: BoxDecoration(
-                      color: AppTheme.primaryColor,
-                      borderRadius: const BorderRadius.only(
-                        topRight: Radius.circular(8),
-                        bottomRight: Radius.circular(8),
-                      ),
-                    ),
+                        color: AppTheme.primaryColor,
+                        borderRadius: const BorderRadius.only(
+                            topRight: Radius.circular(8),
+                            bottomRight: Radius.circular(8))),
                     child: const Icon(
                       Icons.add,
                       size: 40,
-                    ),),
+                    ),
+                  ),
                 ),
               ],
             ),
@@ -643,7 +691,16 @@ class EditArticleScreen extends GetView<EditArticleController> {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 InkWell(
-                  onTap: () {},
+                  onTap: () {
+                    final num = int.parse(controller.monthPrice.value.text);
+                    if(num >= 10){
+                      final val = num == null || num < 1 ? 10 : num - 10;
+                      controller.monthPrice.value.text = '$val';
+
+                    }else {
+                      controller.monthPrice.value.text = '0';
+                    }
+                  },
                   child: Container(
                       padding: EdgeInsets.all(4.5),
                       decoration: BoxDecoration(
@@ -662,7 +719,8 @@ class EditArticleScreen extends GetView<EditArticleController> {
                     borderFocusedColor: AppTheme.primaryColor,
                     borderRadius: 0,
                     formField: TextFormField(
-                      controller: controller.monthPrice,
+                      key: Get.keys[2],
+                      controller: controller.monthPrice.value,
                       keyboardType: TextInputType.number,
                       autofocus: false,
                       style: TextStyle(color: AppTheme.darkColor),
@@ -671,7 +729,7 @@ class EditArticleScreen extends GetView<EditArticleController> {
                           filled: true,
                           fillColor: AppTheme.light,
                           border: InputBorder.none,
-                          hintText: 'Prix Jour',
+                          hintText: 'Prix mois',
                           hintStyle: TextStyle(
                               color: AppTheme.darkColor.withOpacity(0.5))),
                     ),
@@ -679,7 +737,15 @@ class EditArticleScreen extends GetView<EditArticleController> {
                   ),
                 ),
                 InkWell(
-                  onTap: () {},
+                  onTap: () {
+                    final num = int.parse(controller.monthPrice.value.text);
+                    if(num > 0 || num == 0){
+                      final val =  num + 10;
+                      controller.monthPrice.value.text = '$val';
+                    }else {
+                      controller.monthPrice.value.text = '10';
+                    }
+                  },
                   child: Container(
                       padding: const EdgeInsets.all(4.5),
                       decoration: BoxDecoration(
@@ -712,14 +778,14 @@ class EditArticleScreen extends GetView<EditArticleController> {
           children: [
             Container(
               height: Get.height / 5,
-              width: Get.width / 1.55,
+              width: Get.width / 1.58,
               decoration: BoxDecoration(
                 image: DecorationImage(
                   fit: BoxFit.cover,
                   repeat: ImageRepeat.noRepeat,
                   alignment: Alignment.topCenter,
                   image: CachedNetworkImageProvider(
-                      APP_FILE + (article.images!.ariere34!.isNotEmpty ? article.images!.ariere34! :  '')  ),
+                      (article.images!.ariere34!.isNotEmpty ? article.images!.ariere34! :  '')  ),
                 ),
                 borderRadius: const BorderRadius.only(
                     topLeft: Radius.circular(16),
