@@ -3,10 +3,11 @@ import 'package:gando/config/textstyle.dart';
 import 'package:gando/models/ProfileSeller.dart';
 import 'package:get/get.dart';
 
+import '../../models/Owner.dart';
 import '../../widget/appBarWidget.dart';
 
 class SellerProfileScreen extends StatelessWidget {
-  final ProfileSeller seller;
+  final Owner seller;
 
   const SellerProfileScreen({Key? key, required this.seller}) : super(key: key);
 
@@ -36,14 +37,14 @@ class SellerProfileScreen extends StatelessWidget {
                     child: CircleAvatar(
                       backgroundColor: AppTheme.backgroundColor,
                       backgroundImage: AssetImage(
-                        seller.image,
+                        seller.photo!,
                       ),
                     ),
                   ),
                   SizedBox(
                     height: 20,
                   ),
-                  Text(seller.name,
+                  Text(seller.prenom!,
                       style: Theme.of(context).textTheme.bodyText2!.copyWith(
                           color: AppTheme.darkColor,
                           fontSize: 22,
@@ -59,7 +60,7 @@ class SellerProfileScreen extends StatelessWidget {
                         width: 10,
                       ),
                       Text(
-                          seller.isRecommended
+                          seller.isUserValidated!
                               ? 'Profil recommandé'
                               : 'Pas recommandé',
                           style: Theme.of(context)
@@ -81,7 +82,7 @@ class SellerProfileScreen extends StatelessWidget {
                         padding: const EdgeInsets.symmetric(
                             vertical: 4, horizontal: 4),
                         decoration: BoxDecoration(
-                          borderRadius: BorderRadius.all(Radius.circular(8)),
+                          borderRadius: const BorderRadius.all(Radius.circular(8)),
                           color: AppTheme.primaryColor,
                         ),
                         child: Icon(
@@ -92,7 +93,7 @@ class SellerProfileScreen extends StatelessWidget {
                       SizedBox(
                         width: 10,
                       ),
-                      Text(seller.rate,
+                      Text(seller.prenom!.toString(),
                           style: Theme.of(context)
                               .textTheme
                               .bodyText2!
@@ -117,7 +118,7 @@ class SellerProfileScreen extends StatelessWidget {
                     child: Center(
                       child: Column(
                         children: [
-                          Text(seller.description,
+                          Text(seller.prenom!,
                               style: Theme.of(context)
                                   .textTheme
                                   .bodyText2!
@@ -129,7 +130,7 @@ class SellerProfileScreen extends StatelessWidget {
                             height: 40,
                             color: AppTheme.darkColor,
                           ),
-                          Text('Membres depuis ${seller.createdAt.year}',
+                          Text('Membres depuis ${seller.registrationDate!}',
                               style: Theme.of(context)
                                   .textTheme
                                   .bodyText2!
@@ -142,7 +143,7 @@ class SellerProfileScreen extends StatelessWidget {
                             color: AppTheme.darkColor,
                           ),
                           Text(
-                              '${seller.bookingCount} locations déja effectuées',
+                              '${seller.success_reservation_count} locations déja effectuées',
                               style: Theme.of(context)
                                   .textTheme
                                   .bodyText2!
@@ -154,7 +155,7 @@ class SellerProfileScreen extends StatelessWidget {
                             height: 40,
                             color: AppTheme.darkColor,
                           ),
-                          Text('${seller.garage} véhicule en location',
+                          Text('${seller.success_reservation_count} véhicule en location',
                               style: Theme.of(context)
                                   .textTheme
                                   .bodyText2!
@@ -265,7 +266,7 @@ class SellerProfileScreen extends StatelessWidget {
                   fit: BoxFit.cover,
                   repeat: ImageRepeat.noRepeat,
                   alignment: Alignment.topCenter,
-                  image: AssetImage(seller.cars[0].images!.ariere34!),
+                  image: AssetImage(seller.photo!),
                 ),
                 borderRadius: const BorderRadius.only(topLeft: Radius.circular(16), bottomLeft: Radius.circular(16)),
               ),
@@ -282,13 +283,13 @@ class SellerProfileScreen extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Text('${seller.cars[0].brand} \n ${seller.cars[0].model}',
+                  Text('${seller.prenom}',
                       textAlign: TextAlign.center,
                       style: Theme.of(context).textTheme.bodyText2!.copyWith(
                           color: AppTheme.backgroundColor,
                           fontSize: 14,
                           fontWeight: FontWeight.w700)),
-                  Text('${seller.cars[0].pricePerDay} €',
+                  Text('${seller.money} €',
                       textAlign: TextAlign.center,
                       style: Theme.of(context).textTheme.bodyText2!.copyWith(
                           color: AppTheme.backgroundColor,

@@ -23,7 +23,6 @@ class ProfileScreen extends GetView<UserController> {
 
   @override
   Widget build(BuildContext context) {
-    Get.lazyPut(() => UserController());
 
     return Scaffold(
       backgroundColor: AppTheme.backgroundColor,

@@ -11,6 +11,8 @@ import '../models/Car.dart';
 
 class CarController extends GetxController {
 
+  late final Future futureGetCar;
+
   /// initialize loading
   final RxBool isLoading = false.obs;
 
@@ -23,9 +25,9 @@ class CarController extends GetxController {
   final cancelToken = CancelToken();
 
   @override
-  void onReady() {
-    getAllCar();
-    super.onReady();
+  void onInit() {
+    super.onInit();
+    futureGetCar = getAllCar();
   }
 
   @override
@@ -56,10 +58,10 @@ class CarController extends GetxController {
   }
 
   // load car from api
-  Future getAllCar() async {
+  Future<List<Car>> getAllCar() async {
     const lat = 43.774483;
     const long = 7.49754;
-    const range = 50;
+    const range = 10000000;
 
     try {
       isLoading(true);
@@ -69,11 +71,14 @@ class CarController extends GetxController {
 
       if (res.statusCode == STATUS_OK) {
         carList.addAll(body.map<Car>((e) => Car.fromJson(e)).toList());
-        update();
+        return carList;
       }
+
+      return [];
     } catch (e) {
       printError(info: e.toString());
       Get.snackbar('Error', e.toString());
+      return [];
     }finally{
       isLoading(false);
     }
@@ -81,21 +86,22 @@ class CarController extends GetxController {
   }
 
   // get unique car by id from api
-  Future getCarById(String id) async {
+  Future<Car> getCarById(String id) async {
     try {
       isLoading(true);
 
-      final res = await ApiProvider().getData('/annonce/?carId=640b5d0c4605806ae6fc0cf5');
+      final res = await ApiProvider().getData('/annonce/?carId=$id');
       final body = jsonDecode(res.body)['data'];
 
       if (res.statusCode == STATUS_OK) {
-         return car = body.map<Car>((e) => Car.fromJson(e)).toList();
+         return car.value = body.map<Car>((e) => Car.fromJson(e));
       } else {
-        throw Exception('Failed to load car');
+        return car.value = Car();
       }
     } catch (e) {
       printError(info: e.toString());
       Get.snackbar('Error', e.toString());
+      return car.value = Car();
     }finally{
       isLoading(false);
     }

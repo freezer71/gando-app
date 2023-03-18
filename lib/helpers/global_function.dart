@@ -97,7 +97,8 @@ class GlobalFunction {
     SmartDialog.dismiss();
   }
 
-  static get lottieFile => LottieBuilder.asset(Assets.lotties77365LocationLottieAnimation, height: 180, fit: BoxFit.cover,);
+  static get lottieFile => Lottie.asset(Assets.lotties77365LocationLottieAnimation, height: 180, fit: BoxFit.cover,);
+  static get myLocationLottieFile => LottieBuilder.asset(Assets.lotties135726MapMarker, height: 180, fit: BoxFit.cover,);
 
   final defaultPinTheme = PinTheme(
     width: 70,

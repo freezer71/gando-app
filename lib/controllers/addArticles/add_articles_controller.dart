@@ -373,8 +373,6 @@ class AddArticlesController extends GetxController {
       "youngDriver": youngDriver.value ? true : false,
     });
 
-     // printInfo(info: "FORM DATA ======>>>: ${formData!.fields}");
-
     try {
 
       final res = await ApiProvider().addNewAnnonce("/annonce/add", formData, CancelToken());
@@ -388,7 +386,7 @@ class AddArticlesController extends GetxController {
           title: 'Félicitation',
           backgroundColor: AppTheme.light,
           content: Column(
-            children: [
+            children: const [
               SizedBox(height: 20),
               Text('Votre annonce a été publiée avec succès'),
             ],

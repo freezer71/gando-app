@@ -12,6 +12,7 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
 import '../../../../controllers/car_controller.dart';
+import '../../../../models/Owner.dart';
 
 class CarDetailPage extends StatefulWidget {
   final Car car;
@@ -91,23 +92,24 @@ class _CarDetailPageState extends State<CarDetailPage> {
     },
   ];
 
-  late ProfileSeller profileSeller;
+  late Owner profileSeller;
 
-  getCar () async {
-    await controller.getCarById(widget.car.id!);
-    // car = controller.car.value;
-    printInfo(info: 'car: ${controller.car.toJson()}');
-    // _carImagesList.addAll([APP_FILE+car.images!.supplementaire.toString(),
-    //   APP_FILE+car.images!.avant34.toString(),
-    //   APP_FILE+car.images!.ariere34.toString(),
-    //   APP_FILE+car.images!.lateral.toString(),
-    //   APP_FILE+car.images!.interieur.toString(),]
-    // );
-  }
+  // getCar () async {
+  //   await controller.getCarById(widget.car.id!);
+  //   // car = controller.car.value;
+  //   printInfo(info: 'car: ${controller.car.toJson()}');
+  //   // _carImagesList.addAll([APP_FILE+car.images!.supplementaire.toString(),
+  //   //   APP_FILE+car.images!.avant34.toString(),
+  //   //   APP_FILE+car.images!.ariere34.toString(),
+  //   //   APP_FILE+car.images!.lateral.toString(),
+  //   //   APP_FILE+car.images!.interieur.toString(),]
+  //   // );
+  // }
 
   @override
   void initState() {
-    getCar();
+    super.initState();
+    car = widget.car;
     _carImagesList.addAll([APP_FILE+car.images!.supplementaire.toString(),
         APP_FILE+car.images!.avant34.toString(),
         APP_FILE+car.images!.ariere34.toString(),
@@ -115,19 +117,8 @@ class _CarDetailPageState extends State<CarDetailPage> {
         APP_FILE+car.images!.interieur.toString(),]
     );
 
-    profileSeller = ProfileSeller(
-      'Marco DEGARDIO',
-      'assets/images/av.png',
-      'lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum  ',
-      8,
-      2,
-      [],
-      true,
-      '5/5',
-      DateTime.now(),
-    );
+    profileSeller = Owner();
 
-    super.initState();
   }
 
   @override
@@ -289,7 +280,7 @@ class _CarDetailPageState extends State<CarDetailPage> {
           ),
           const SizedBox(width: 8),
           Text(
-            '${car.note!}/5 (${car.advice!.length} avis)',
+            '/5 ( avis)',
             style: Theme.of(context).textTheme.bodyText2!.copyWith(
                 color: AppTheme.darkColor,
                 fontSize: 14,

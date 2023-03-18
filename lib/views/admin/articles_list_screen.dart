@@ -138,7 +138,7 @@ class ArticleListScreen extends GetView<UserController> {
                                             children: [
                                               IconButton(
                                                   onPressed: () {
-                                                    Get.to(() => EditArticleScreen(article: userCarList[index],));
+                                                    Get.to(() => EditArticleScreen(car: userCarList[index],));
                                                   },
                                                   icon: const Icon(Icons.edit)),
                                               IconButton(
