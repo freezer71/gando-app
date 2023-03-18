@@ -209,7 +209,7 @@ class Step4State extends State<Step4> {
         //   ),
         // ),
         Container(
-          margin: EdgeInsets.symmetric(vertical: 20),
+          margin: const EdgeInsets.symmetric(vertical:  10),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(20),
             color: AppTheme.light,
@@ -220,12 +220,13 @@ class Step4State extends State<Step4> {
               initialSelectedRange: PickerDateRange(c.initialDate.value, c.initialDate.value),
               view: DateRangePickerView.month,
               selectionMode: DateRangePickerSelectionMode.range,
-              selectionTextStyle: const TextStyle(color: Colors.white, fontSize: 20),
+              selectionTextStyle: TextStyle(color: c.selectedAvailability!.isNotEmpty ? AppTheme.light : AppTheme.darkColor, fontSize: 20),
               selectionColor: Colors.blue,
               enablePastDates: false,
-              startRangeSelectionColor: AppTheme.redColor,
+              startRangeSelectionColor: c.selectedAvailability!.isNotEmpty ? AppTheme.redColor : AppTheme.light,
               endRangeSelectionColor: AppTheme.redColor,
               rangeSelectionColor: AppTheme.redColor,
+              showTodayButton: false,
               onSelectionChanged: (DateRangePickerSelectionChangedArgs args) {
                 if (args.value is PickerDateRange) {
                   final startDate = args.value.startDate;
@@ -255,6 +256,17 @@ class Step4State extends State<Step4> {
               )
           ),
         ),
+        Container(
+          child: Center(
+            child: FloatingActionButton(
+              backgroundColor: AppTheme.redColor,
+              onPressed: () {
+                c.selectedAvailability!.value = [];
+              },
+              child: Icon(Icons.clear, color: AppTheme.light,),
+            ),
+          ),
+        )
       ],
     );
   }

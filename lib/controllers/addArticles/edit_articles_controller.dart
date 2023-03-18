@@ -36,10 +36,10 @@ class EditArticleController extends GetxController{
   """).obs;
 
 
-  TextEditingController kilometerController = TextEditingController();
-  TextEditingController dayPrice = TextEditingController(text: '30');
-  TextEditingController weekPrice = TextEditingController(text: '160');
-  TextEditingController monthPrice = TextEditingController(text: '400');
+  Rx<TextEditingController> kilometerController = TextEditingController().obs;
+  Rx<TextEditingController> dayPrice = TextEditingController(text: '').obs;
+  Rx<TextEditingController> weekPrice = TextEditingController(text: '').obs;
+  Rx<TextEditingController> monthPrice = TextEditingController(text: '').obs;
 
   final List<String> itemsKilometer = [
     '0-50 000 Km',
@@ -77,7 +77,6 @@ class EditArticleController extends GetxController{
     super.onInit();
     carId.value = id;
     futureGetCar = getAnnonceById(carId.value);
-    printInfo(info: "CAR ID===>>: $carId");
   }
 
 
@@ -91,13 +90,23 @@ class EditArticleController extends GetxController{
   Future<Car> getAnnonceById(carId) async {
     isLoading(true);
     try {
-      final res = await ApiProvider().getData('/annonce/carId=$carId');
+      final res = await ApiProvider().getData('/annonce?carId=$carId');
       final body = jsonDecode(res.body)['data'];
-
-      printInfo(info: "BODY CAR===>>: $body");
 
       if (res.statusCode == STATUS_OK) {
         car = Car.fromJson(body);
+        printInfo(info: car.toJson().toString());
+        // init value
+        addressController.value.text = car.address!;
+        descriptionController.value.text = car.description!;
+        // selectedKilometer.value = car.mileage!;
+        // youngDriver.value = car.youngDriver!;
+        // selectedEquipments.addAll(car.equipment!.map<Equipment>((e) => Equipment.fromJson(jsonDecode(e))).toList());
+        // kilometerController.text = car.mileage!;
+        // dayPrice.text = car.pricePerDay!.toString();
+        // weekPrice.text = car.pricePerWeek!.toString();
+        // monthPrice.text = car.pricePerMonth!.toString();
+
         return car;
       }
       return Car();

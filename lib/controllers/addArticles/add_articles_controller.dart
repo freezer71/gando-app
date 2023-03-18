@@ -318,8 +318,8 @@ class AddArticlesController extends GetxController {
   Future uploadData() async {
     final nextTechnicalInspection = '${selectedYearTech.value}-${selectedMonthTech.value}-${selectedDayTech.value}';
     final setIndisponibility = selectedAvailability!.value.length > 0
-        ? "indisponible"
-        : "disponible";
+        ? "indisponnible"
+        : "disponnible";
     final unDisponibility = '[{"start": "${DateFormat('yyyy-MM-dd').format(selectedAvailability![0])}","end": "${DateFormat('yyyy-MM-dd').format(selectedAvailability![0]) != null ? DateFormat('yyyy-MM-dd').format(selectedAvailability![1]) : DateFormat('yyyy-MM-dd').format(selectedAvailability![0])}"}]';
 
     formData = FormData.fromMap({
@@ -376,22 +376,30 @@ class AddArticlesController extends GetxController {
     try {
 
       final res = await ApiProvider().addNewAnnonce("/annonce/add", formData, CancelToken());
-      final body = res.data;
-
-      printInfo(info: "RESULT UPLOAD DATA ======>>>: $body");
+      // final body = res.data;
 
       if (res.statusCode == STATUS_OK) {
 
         Get.defaultDialog(
           title: 'Félicitation',
+          titleStyle: Theme.of(Get.context!).textTheme.bodyText1!.copyWith(
+            color: AppTheme.darkColor,
+            fontSize: 22,
+            fontWeight: FontWeight.bold,
+          ),
           backgroundColor: AppTheme.light,
           content: Column(
-            children: const [
+            children: [
               SizedBox(height: 20),
-              Text('Votre annonce a été publiée avec succès'),
+              Text('Votre annonce a été publiée avec succès', style: TextStyle(
+                color: AppTheme.darkColor,
+                fontSize: 18,
+                fontWeight: FontWeight.w400,
+              ), textAlign: TextAlign.center,),
             ],
           ),
           textConfirm: 'OK',
+          buttonColor: AppTheme.primaryColor,
           confirmTextColor: Colors.white,
           onConfirm: () {
             Get.offAllNamed(Routes.home);
@@ -399,7 +407,7 @@ class AddArticlesController extends GetxController {
         );
       }
     } catch (e) {
-      printInfo(info: "ERROR UPLOAD DATA ======>>>: ${e.toString()}");
+      printInfo(info: "ERROR UPLOAD DATA ======>>>: ${e.runtimeType}");
       Get.defaultDialog(
         title: 'Erreur',
         titleStyle: Theme.of(Get.context!).textTheme.bodyText1!.copyWith(

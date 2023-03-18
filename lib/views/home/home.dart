@@ -191,14 +191,83 @@ class _HomeScreenState extends State<HomeScreen>
                 child: Text('Une erreur est survenue'),
               );
             } else {
-              if(snapshot.data == null){
+              final data = snapshot.data.length > 0 ? controller.carList.addAll(snapshot.data) : null;
+              if(snapshot.data == null) {
                 return const Center(
-                  child: Text('Aucune voiture disponible'),
+                  child: Text('Aucune voiture disponible', style: TextStyle(color: Colors.black),),
                 );
               }else{
-                controller.carList = snapshot.data;
-                printInfo(info: "CAR LIST HOME ====>>: ${controller.carList.first
-                    .location!.coordinates!}");
+                if (snapshot.data.length == 0){
+                  final myLocation = LatLng(16.258052, -61.566089);
+                  return Stack(
+                    clipBehavior: Clip.none,
+                    children: [
+                      FlutterMap(
+                        mapController: _mapController,
+                        options: MapOptions(
+                          zoom: 10,
+                          maxZoom: 16,
+                          minZoom: 2,
+                          center: myLocation,
+                          // rotation: 180.0,
+                          keepAlive: true,
+                          enableScrollWheel: true,
+                          scrollWheelVelocity: 0.003,
+                          onPositionChanged: (MapPosition position,
+                              bool hasGesture) {
+                            // Your logic here. `hasGesture` dictates whether the change
+                            // was due to a user interaction or something else. `position` is
+                            // the new position of the map.
+                            // print(position.center!.toString());
+
+                            // get annonce by location
+                            // controller.getAnnonceByLocation(position.center!.latitude, position.center!.longitude, 10);
+                          },
+                        ),
+                        children: [
+                          TileLayer(
+                            urlTemplate: MAP_URL_DARK,
+                            userAgentPackageName: 'com.gando.rentcar.app',
+                            additionalOptions: const {
+                              'accessToken': TOKEN_MAP,
+                              'id': MAP_STYLE
+                            },
+                            retinaMode: MediaQuery
+                                .of(context)
+                                .devicePixelRatio > 1.0,
+                            // tileBounds: LatLngBounds(
+                            //   LatLng(32.2934590056236, 24.328924534719548),
+                            //   LatLng(21.792152188247265, 37.19854583903912),
+                            // ),
+                            errorImage: const NetworkImage(
+                                'https://tile.openstreetmap.org/18/0/0.png'),
+                            // tileBuilder: (context, widget, tile) =>
+                            //     Stack(
+                            //       fit: StackFit.passthrough,
+                            //       children: [
+                            //         widget,
+                            //         Center(
+                            //           child:
+                            //           Text('${tile.coords.x.floor()} : ${tile.coords.y.floor()} : ${tile.coords.z.floor()}'),
+                            //         ),
+                            //       ],
+                            //     )
+                          ),
+                        ],
+                      ),
+                      Positioned(
+                        child: Container(
+                            decoration: BoxDecoration(
+                                color: AppTheme.light,
+                                borderRadius: const BorderRadius.only(
+                                    bottomLeft: Radius.circular(20),
+                                    bottomRight: Radius.circular(20))
+                            ),
+                            height: Platform.isAndroid ? 160 : 180),),
+                      buildAppBar(),
+                    ],
+                  );
+                }
                 final initialCoordinates = LatLng(
                     controller.carList.first.location!.coordinates![1],
                     controller.carList.first.location!.coordinates![0]);
@@ -258,11 +327,13 @@ class _HomeScreenState extends State<HomeScreen>
                           //     )
                         ),
                         MarkerLayer(
+                          rotate: false,
                             markers: _buildMarkers(controller.carList)
                         ),
                         MarkerLayer(
                           markers: [
                             Marker(
+                              rotate: false,
                               // get my location
                               point: initialCoordinates,
                               width: 50,
