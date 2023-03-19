@@ -7,6 +7,8 @@ import 'package:gando/views/products/detail/components/car_detail.dart';
 import 'package:gando/views/products/detail/widget/car_detail_infomation.dart';
 import 'package:get/get.dart';
 
+import '../../../controllers/car_controller.dart';
+
 class HomeCardCar extends StatelessWidget {
   final int index;
   final Car car;
@@ -16,14 +18,16 @@ class HomeCardCar extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) {
-              return CarDetailPage(car: car );
-            },
-          ),
-        );
+        // Navigator.push(
+        //   context,
+        //   MaterialPageRoute(
+        //     builder: (context) {
+        //       return CarDetailPage(car: car);
+        //     },
+        //   ),
+        // );
+
+        Get.to(() => CarDetailPage(car: car), transition: Transition.cupertino, arguments: car.id, );
       },
       child: _buildNextHomeCardCar(context, car),
     );

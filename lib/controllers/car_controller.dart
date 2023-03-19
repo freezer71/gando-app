@@ -11,7 +11,14 @@ import '../models/Car.dart';
 
 class CarController extends GetxController {
 
+  CarController({this.id});
+
+  late final id;
+
+  final carId = ''.obs;
+
   late final Future futureGetCar;
+  late final Future futureGetCarById;
 
   /// initialize loading
   final RxBool isLoading = false.obs;
@@ -34,6 +41,7 @@ class CarController extends GetxController {
   void onClose() {
     cancelToken.cancel();
     carList.clear();
+    futureGetCarById = Future.value();
     super.onClose();
   }
 
@@ -59,9 +67,9 @@ class CarController extends GetxController {
 
   // load car from api
   Future<List<Car>> getAllCar() async {
-    const lat = 0;
-    const long = 0;
-    const range = 10000000;
+    const lat = -61.74436024;
+    const long = 16.01911314;
+    const range = 100000;
 
     try {
       isLoading(true);
@@ -69,16 +77,19 @@ class CarController extends GetxController {
       final res = await ApiProvider().getData('/annonce/all?lat=$lat&long=$long&range=$range');
       final body = jsonDecode(res.body)['data'];
 
-      if (body['status'] == "SUCCESS") {
+      // printInfo(info: "CAR DATA ========> : ${body}");
+
+      if (res.statusCode == STATUS_OK) {
         carList.addAll(body.map<Car>((e) => Car.fromJson(e)).toList());
         return carList;
-      }else{
-        return <Car>[];
       }
+
+      return [];
+
     } catch (e) {
       printError(info: e.toString());
       Get.snackbar('Error', e.toString());
-      return <Car>[];
+      return [];
     }finally{
       isLoading(false);
     }
@@ -86,18 +97,18 @@ class CarController extends GetxController {
   }
 
   // get unique car by id from api
-  Future<Car> getCarById(String id) async {
+  Future<Car> getCarById(id) async {
     try {
       isLoading(true);
 
-      final res = await ApiProvider().getData('/annonce/?carId=$id');
+      final res = await ApiProvider().getData('/annonce?carId=${id}');
       final body = jsonDecode(res.body)['data'];
 
       if (res.statusCode == STATUS_OK) {
-         return car.value = body.map<Car>((e) => Car.fromJson(e));
-      } else {
-        return car.value = Car();
+        car.value = Car.fromJson(body);
+        return car.value;
       }
+      return car.value = Car();
     } catch (e) {
       printError(info: e.toString());
       Get.snackbar('Error', e.toString());
@@ -106,6 +117,5 @@ class CarController extends GetxController {
       isLoading(false);
     }
   }
-
 
 }
