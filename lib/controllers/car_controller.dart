@@ -18,7 +18,7 @@ class CarController extends GetxController {
   final carId = ''.obs;
 
   late final Future futureGetCar;
-  late final Future futureGetCarById;
+  late final Future<List<Car>> futureGetCarById;
 
   /// initialize loading
   final RxBool isLoading = false.obs;
@@ -41,7 +41,6 @@ class CarController extends GetxController {
   void onClose() {
     cancelToken.cancel();
     carList.clear();
-    futureGetCarById = Future.value();
     super.onClose();
   }
 

@@ -6,6 +6,7 @@
 // import 'package:finpay/view/splash/splash.dart';
 // import 'package:finpay/view/splash/welcome_screen.dart';
 // import 'package:finpay/view/tab_screen.dart';
+import 'package:gando/controllers/car_controller.dart';
 import 'package:gando/views/authentication/PreLogin/PreLogin.dart';
 import 'package:gando/views/authentication/resetPassword/change_password.dart';
 import 'package:gando/views/authentication/resetPassword/reset_password.dart';
@@ -14,6 +15,7 @@ import 'package:gando/views/authentication/signin/signin_screen.dart';
 import 'package:gando/views/authentication/signup/signup_screen.dart';
 import 'package:gando/views/bottom_navigation_bar.dart';
 import 'package:gando/views/onboarding.dart';
+import 'package:gando/views/products/detail/components/car_detail.dart';
 import 'package:gando/views/splashscreen/splash_screen.dart';
 import 'package:get/get.dart';
 
@@ -67,6 +69,11 @@ class AppPages {
       // binding: SplashScreenBinding(),
     ),
     GetPage(
+      name: Routes.CAR_DETAIL,
+      page: () => CarDetailPage(car: Get.arguments,),
+      // binding: SplashScreenBinding(),
+    ),
+    GetPage(
       name: Routes.welcome,
       page: () => OnboardingScreen(),
       middlewares: [
@@ -116,6 +123,7 @@ abstract class Routes {
   Routes._();
 
   static const home = '/home';
+  static const CAR_DETAIL = '/car-detail';
   static const newPwd = '/set-new-password';
   static const resetPwd = '/reset-password';
   static const forgotPwd = '/forgot-password';

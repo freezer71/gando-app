@@ -42,7 +42,8 @@ class _HomeScreenState extends State<HomeScreen>
 
   String location = "Tapez une adresse";
   late AnimationController _topColorAnimationController;
-  final controller = Get.put(CarController());
+
+  // final controller = Get.put(CarController());
   final gf = GlobalFunction();
 
   //map
@@ -92,295 +93,314 @@ class _HomeScreenState extends State<HomeScreen>
     tabController = TabController(length: 2, vsync: this);
   }
 
+
+  @override
+  void dispose() {
+    tabController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
-     return DefaultTabController(
-        length: 2,
-        child: Scaffold(
-          backgroundColor: AppTheme.backgroundColor,
-          extendBody: true,
-          extendBodyBehindAppBar: true,
-          appBar: PreferredSize(
-            preferredSize: const Size.fromHeight(50.0),
-            // here the desired height
-            child: AppBar(
-              backgroundColor: Colors.transparent,
-              elevation: 0,
-              automaticallyImplyLeading: false,
-              bottom: TabBar(
-                controller: tabController,
-                indicatorColor: AppTheme.darkColor,
-                padding: const EdgeInsets.symmetric(horizontal: 30),
-                indicatorWeight: 3,
-                tabs: [
-                  Tab(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(
-                          Icons.map_outlined,
-                          color: AppTheme.darkColor.withOpacity(0.5),
-                        ),
-                        const SizedBox(
-                          width: 10,
-                        ),
-                        Text(
-                          'Plan',
-                          style: Theme
-                              .of(context)
-                              .textTheme
-                              .bodyText2!
-                              .copyWith(
-                              fontWeight: FontWeight.w900,
-                              fontSize: 18,
-                              color: AppTheme.darkColor),
-                        ),
-                      ],
-                    ),
+    return DefaultTabController(
+      length: 2,
+      child: Scaffold(
+        backgroundColor: AppTheme.backgroundColor,
+        extendBody: true,
+        extendBodyBehindAppBar: true,
+        appBar: PreferredSize(
+          preferredSize: const Size.fromHeight(50.0),
+          // here the desired height
+          child: AppBar(
+            backgroundColor: Colors.transparent,
+            elevation: 0,
+            automaticallyImplyLeading: false,
+            bottom: TabBar(
+              controller: tabController,
+              indicatorColor: AppTheme.darkColor,
+              padding: const EdgeInsets.symmetric(horizontal: 30),
+              indicatorWeight: 3,
+              tabs: [
+                Tab(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(
+                        Icons.map_outlined,
+                        color: AppTheme.darkColor.withOpacity(0.5),
+                      ),
+                      const SizedBox(
+                        width: 10,
+                      ),
+                      Text(
+                        'Plan',
+                        style: Theme
+                            .of(context)
+                            .textTheme
+                            .bodyText2!
+                            .copyWith(
+                            fontWeight: FontWeight.w900,
+                            fontSize: 18,
+                            color: AppTheme.darkColor),
+                      ),
+                    ],
                   ),
-                  Tab(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(
-                          Icons.format_list_bulleted_rounded,
-                          color: AppTheme.darkColor.withOpacity(0.5),
-                        ),
-                        const SizedBox(
-                          width: 10,
-                        ),
-                        Text(
-                          'Liste',
-                          style: Theme
-                              .of(context)
-                              .textTheme
-                              .bodyText2!
-                              .copyWith(
-                              fontWeight: FontWeight.w900,
-                              fontSize: 18,
-                              color: AppTheme.darkColor),
-                        ),
-                      ],
-                    ),
+                ),
+                Tab(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(
+                        Icons.format_list_bulleted_rounded,
+                        color: AppTheme.darkColor.withOpacity(0.5),
+                      ),
+                      const SizedBox(
+                        width: 10,
+                      ),
+                      Text(
+                        'Liste',
+                        style: Theme
+                            .of(context)
+                            .textTheme
+                            .bodyText2!
+                            .copyWith(
+                            fontWeight: FontWeight.w900,
+                            fontSize: 18,
+                            color: AppTheme.darkColor),
+                      ),
+                    ],
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
           ),
-          body: tabView(context),
-          bottomNavigationBar: Container(height: 50, color: AppTheme.light,),
         ),
-      );
+        body: tabView(context),
+        bottomNavigationBar: Container(height: 50, color: AppTheme.light,),
+      ),
+    );
   }
 
   Widget tabView(BuildContext context) {
     return TabBarView(
       controller: tabController,
       children: [
-        FutureBuilder(
-          future: controller.futureGetCar,
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return const Center(
+        GetBuilder<CarController>(
+          assignId: true,
+          builder: (logic) {
+            return FutureBuilder(
+              future: logic.futureGetCar,
+              initialData: const Center(
                 child: CircularProgressIndicator(),
-              );
-            } else if (snapshot.hasError) {
-              return const Center(
-                child: Text('Une erreur est survenue'),
-              );
-            } else {
-              final data = snapshot.data;
-              if(snapshot.data == null) {
-                return const Center(
-                  child: Text('Aucune voiture disponible', style: TextStyle(color: Colors.black),),
-                );
-              }else{
-                // if (snapshot.data.length <= 0){
-                //   final myLocation = LatLng(16.258052, -61.566089);
-                //   return Stack(
-                //     clipBehavior: Clip.none,
-                //     children: [
-                //       FlutterMap(
-                //         mapController: _mapController,
-                //         options: MapOptions(
-                //           zoom: 10,
-                //           maxZoom: 16,
-                //           minZoom: 2,
-                //           center: myLocation,
-                //           // rotation: 180.0,
-                //           keepAlive: true,
-                //           enableScrollWheel: true,
-                //           scrollWheelVelocity: 0.003,
-                //           onPositionChanged: (MapPosition position,
-                //               bool hasGesture) {
-                //             // Your logic here. `hasGesture` dictates whether the change
-                //             // was due to a user interaction or something else. `position` is
-                //             // the new position of the map.
-                //             // print(position.center!.toString());
-                //
-                //             // get annonce by location
-                //             // controller.getAnnonceByLocation(position.center!.latitude, position.center!.longitude, 10);
-                //           },
-                //         ),
-                //         children: [
-                //           TileLayer(
-                //             urlTemplate: MAP_URL_DARK,
-                //             userAgentPackageName: 'com.gando.rentcar.app',
-                //             additionalOptions: const {
-                //               'accessToken': TOKEN_MAP,
-                //               'id': MAP_STYLE
-                //             },
-                //             retinaMode: MediaQuery
-                //                 .of(context)
-                //                 .devicePixelRatio > 1.0,
-                //             // tileBounds: LatLngBounds(
-                //             //   LatLng(32.2934590056236, 24.328924534719548),
-                //             //   LatLng(21.792152188247265, 37.19854583903912),
-                //             // ),
-                //             errorImage: const NetworkImage(
-                //                 'https://tile.openstreetmap.org/18/0/0.png'),
-                //             // tileBuilder: (context, widget, tile) =>
-                //             //     Stack(
-                //             //       fit: StackFit.passthrough,
-                //             //       children: [
-                //             //         widget,
-                //             //         Center(
-                //             //           child:
-                //             //           Text('${tile.coords.x.floor()} : ${tile.coords.y.floor()} : ${tile.coords.z.floor()}'),
-                //             //         ),
-                //             //       ],
-                //             //     )
-                //           ),
-                //         ],
-                //       ),
-                //       Positioned(
-                //         child: Container(
-                //             decoration: BoxDecoration(
-                //                 color: AppTheme.light,
-                //                 borderRadius: const BorderRadius.only(
-                //                     bottomLeft: Radius.circular(20),
-                //                     bottomRight: Radius.circular(20))
-                //             ),
-                //             height: Platform.isAndroid ? 160 : 180),),
-                //       buildAppBar(),
-                //     ],
-                //   );
-                // }
-                final initialCoordinates = LatLng(
-                    controller.carList.first.location!.coordinates![1],
-                    controller.carList.first.location!.coordinates![0]);
+              ),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const Center(
+                    child: CircularProgressIndicator(),
+                  );
+                } else if (snapshot.hasError) {
+                  return const Center(
+                    child: Text('Une erreur est survenue'),
+                  );
+                } else if (snapshot.hasData) {
+                  final data = <Car>[];
+                  data.addAll(snapshot.data);
+                  if (snapshot.data == null) {
+                    return const Center(
+                      child: Text('Aucune voiture disponible', style: TextStyle(
+                          color: Colors.black),),
+                    );
+                  } else {
+                    // if (snapshot.data.length <= 0){
+                    //   final myLocation = LatLng(16.258052, -61.566089);
+                    //   return Stack(
+                    //     clipBehavior: Clip.none,
+                    //     children: [
+                    //       FlutterMap(
+                    //         mapController: _mapController,
+                    //         options: MapOptions(
+                    //           zoom: 10,
+                    //           maxZoom: 16,
+                    //           minZoom: 2,
+                    //           center: myLocation,
+                    //           // rotation: 180.0,
+                    //           keepAlive: true,
+                    //           enableScrollWheel: true,
+                    //           scrollWheelVelocity: 0.003,
+                    //           onPositionChanged: (MapPosition position,
+                    //               bool hasGesture) {
+                    //             // Your logic here. `hasGesture` dictates whether the change
+                    //             // was due to a user interaction or something else. `position` is
+                    //             // the new position of the map.
+                    //             // print(position.center!.toString());
+                    //
+                    //             // get annonce by location
+                    //             // controller.getAnnonceByLocation(position.center!.latitude, position.center!.longitude, 10);
+                    //           },
+                    //         ),
+                    //         children: [
+                    //           TileLayer(
+                    //             urlTemplate: MAP_URL_DARK,
+                    //             userAgentPackageName: 'com.gando.rentcar.app',
+                    //             additionalOptions: const {
+                    //               'accessToken': TOKEN_MAP,
+                    //               'id': MAP_STYLE
+                    //             },
+                    //             retinaMode: MediaQuery
+                    //                 .of(context)
+                    //                 .devicePixelRatio > 1.0,
+                    //             // tileBounds: LatLngBounds(
+                    //             //   LatLng(32.2934590056236, 24.328924534719548),
+                    //             //   LatLng(21.792152188247265, 37.19854583903912),
+                    //             // ),
+                    //             errorImage: const NetworkImage(
+                    //                 'https://tile.openstreetmap.org/18/0/0.png'),
+                    //             // tileBuilder: (context, widget, tile) =>
+                    //             //     Stack(
+                    //             //       fit: StackFit.passthrough,
+                    //             //       children: [
+                    //             //         widget,
+                    //             //         Center(
+                    //             //           child:
+                    //             //           Text('${tile.coords.x.floor()} : ${tile.coords.y.floor()} : ${tile.coords.z.floor()}'),
+                    //             //         ),
+                    //             //       ],
+                    //             //     )
+                    //           ),
+                    //         ],
+                    //       ),
+                    //       Positioned(
+                    //         child: Container(
+                    //             decoration: BoxDecoration(
+                    //                 color: AppTheme.light,
+                    //                 borderRadius: const BorderRadius.only(
+                    //                     bottomLeft: Radius.circular(20),
+                    //                     bottomRight: Radius.circular(20))
+                    //             ),
+                    //             height: Platform.isAndroid ? 160 : 180),),
+                    //       buildAppBar(),
+                    //     ],
+                    //   );
+                    // }
+                    final initialCoordinates = LatLng(
+                        data.first.location!.coordinates![1],
+                        data.first.location!.coordinates![0]);
 
-                return Stack(
-                  clipBehavior: Clip.none,
-                  children: [
-                    FlutterMap(
-                      mapController: _mapController,
-                      options: MapOptions(
-                        zoom: 9,
-                        maxZoom: 16,
-                        minZoom: 2,
-                        center: initialCoordinates,
-                        // rotation: 180.0,
-                        keepAlive: true,
-                        enableScrollWheel: true,
-                        scrollWheelVelocity: 0.003,
-                        onPositionChanged: (MapPosition position,
-                            bool hasGesture) {
-                          // Your logic here. `hasGesture` dictates whether the change
-                          // was due to a user interaction or something else. `position` is
-                          // the new position of the map.
-                          // print(position.center!.toString());
-
-                          // get annonce by location
-                          // controller.getAnnonceByLocation(position.center!.latitude, position.center!.longitude, 10);
-                        },
-                      ),
+                    return Stack(
+                      clipBehavior: Clip.none,
                       children: [
-                        TileLayer(
-                          urlTemplate: MAP_URL_DARK,
-                          userAgentPackageName: 'com.gando.rentcar.app',
-                          additionalOptions: const {
-                            'accessToken': TOKEN_MAP,
-                            'id': MAP_STYLE
-                          },
-                          retinaMode: MediaQuery
-                              .of(context)
-                              .devicePixelRatio > 1.0,
-                          // tileBounds: LatLngBounds(
-                          //   LatLng(32.2934590056236, 24.328924534719548),
-                          //   LatLng(21.792152188247265, 37.19854583903912),
-                          // ),
-                          errorImage: const NetworkImage(
-                              'https://tile.openstreetmap.org/18/0/0.png'),
-                          // tileBuilder: (context, widget, tile) =>
-                          //     Stack(
-                          //       fit: StackFit.passthrough,
-                          //       children: [
-                          //         widget,
-                          //         Center(
-                          //           child:
-                          //           Text('${tile.coords.x.floor()} : ${tile.coords.y.floor()} : ${tile.coords.z.floor()}'),
-                          //         ),
-                          //       ],
-                          //     )
-                        ),
-                        MarkerLayer(
-                          rotate: true,
-                            markers: _buildMarkers(controller.carList)
-                        ),
-                        MarkerLayer(
-                          markers: [
-                            Marker(
-                              rotate: false,
-                              // get my location
-                              point: initialCoordinates,
-                              width: 50,
-                              height: 50,
-                              builder: (context) => GlobalFunction.myLocationLottieFile,
+                        FlutterMap(
+                          mapController: _mapController,
+                          options: MapOptions(
+                            zoom: 9,
+                            maxZoom: 16,
+                            minZoom: 2,
+                            center: initialCoordinates,
+                            // rotation: 180.0,
+                            keepAlive: true,
+                            enableScrollWheel: true,
+                            scrollWheelVelocity: 0.003,
+                            onPositionChanged: (MapPosition position,
+                                bool hasGesture) {
+                              // Your logic here. `hasGesture` dictates whether the change
+                              // was due to a user interaction or something else. `position` is
+                              // the new position of the map.
+                              // print(position.center!.toString());
+
+                              // get annonce by location
+                              // controller.getAnnonceByLocation(position.center!.latitude, position.center!.longitude, 10);
+                            },
+                          ),
+                          children: [
+                            TileLayer(
+                              urlTemplate: MAP_URL_DARK,
+                              userAgentPackageName: 'com.gando.rentcar.app',
+                              additionalOptions: const {
+                                'accessToken': TOKEN_MAP,
+                                'id': MAP_STYLE
+                              },
+                              retinaMode: MediaQuery
+                                  .of(context)
+                                  .devicePixelRatio > 1.0,
+                              // tileBounds: LatLngBounds(
+                              //   LatLng(32.2934590056236, 24.328924534719548),
+                              //   LatLng(21.792152188247265, 37.19854583903912),
+                              // ),
+                              errorImage: const NetworkImage(
+                                  'https://tile.openstreetmap.org/18/0/0.png'),
+                              // tileBuilder: (context, widget, tile) =>
+                              //     Stack(
+                              //       fit: StackFit.passthrough,
+                              //       children: [
+                              //         widget,
+                              //         Center(
+                              //           child:
+                              //           Text('${tile.coords.x.floor()} : ${tile.coords.y.floor()} : ${tile.coords.z.floor()}'),
+                              //         ),
+                              //       ],
+                              //     )
+                            ),
+                            MarkerLayer(
+                                rotate: true,
+                                markers: _buildMarkers(logic.carList)
+                            ),
+                            MarkerLayer(
+                              markers: [
+                                Marker(
+                                  rotate: false,
+                                  // get my location
+                                  point: initialCoordinates,
+                                  width: 50,
+                                  height: 50,
+                                  builder: (context) =>
+                                  GlobalFunction.myLocationLottieFile,
+                                ),
+                              ],
                             ),
                           ],
                         ),
-                      ],
-                    ),
-                    Positioned(
-                      left: 0,
-                      right: 0,
-                      bottom: Get.height / 8,
-                      child: GestureDetector(
-                        onVerticalDragUpdate: (c) {
-                          // setState(() {
-                          //   tabController.index = 1;
-                          // });
-                        },
-                        child: Container(
-                          height: Get.height / 3.8,
-                          // margin: const EdgeInsets.only(top: 80.0),
-                          child: ListView.builder(
-                            physics: const BouncingScrollPhysics(),
-                            scrollDirection: Axis.horizontal,
-                            padding: EdgeInsets.zero,
-                            itemCount: controller.carList.length,
-                            itemBuilder: (context, index) =>
-                                HomeCardCar(index, controller.carList[index]),
+                        Positioned(
+                          left: 0,
+                          right: 0,
+                          bottom: Get.height / 8,
+                          child: GestureDetector(
+                            onVerticalDragUpdate: (c) {
+                              // setState(() {
+                              //   tabController.index = 1;
+                              // });
+                            },
+                            child: Container(
+                              height: Get.height / 3.8,
+                              // margin: const EdgeInsets.only(top: 80.0),
+                              child: ListView.builder(
+                                physics: const BouncingScrollPhysics(),
+                                scrollDirection: Axis.horizontal,
+                                padding: EdgeInsets.zero,
+                                itemCount: data.length,
+                                itemBuilder: (context, index) =>
+                                    HomeCardCar(index, data[index]),
+                              ),
+                            ),
                           ),
                         ),
-                      ),
-                    ),
-                    Positioned(
-                      child: Container(
-                          decoration: BoxDecoration(
-                              color: AppTheme.light,
-                              borderRadius: const BorderRadius.only(
-                                  bottomLeft: Radius.circular(20),
-                                  bottomRight: Radius.circular(20))
-                          ),
-                          height: Platform.isAndroid ? 160 : 180),),
-                    buildAppBar(),
-                  ],
-                );
-              }
-            }
+                        Positioned(
+                          child: Container(
+                              decoration: BoxDecoration(
+                                  color: AppTheme.light,
+                                  borderRadius: const BorderRadius.only(
+                                      bottomLeft: Radius.circular(20),
+                                      bottomRight: Radius.circular(20))
+                              ),
+                              height: Platform.isAndroid ? 160 : 180),),
+                        buildAppBar(),
+                      ],
+                    );
+                  }
+                }
 
+                return Container();
+              },
+            );
           },
         ),
         Stack(

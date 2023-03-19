@@ -8,6 +8,7 @@ import 'package:gando/views/products/detail/widget/car_detail_infomation.dart';
 import 'package:get/get.dart';
 
 import '../../../controllers/car_controller.dart';
+import '../../../navigation.dart';
 
 class HomeCardCar extends StatelessWidget {
   final int index;
@@ -27,7 +28,7 @@ class HomeCardCar extends StatelessWidget {
         //   ),
         // );
 
-        Get.to(() => CarDetailPage(car: car), transition: Transition.cupertino, arguments: car.id, );
+        Get.toNamed(Routes.CAR_DETAIL, arguments: car);
       },
       child: _buildNextHomeCardCar(context, car),
     );
