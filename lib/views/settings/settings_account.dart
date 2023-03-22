@@ -142,7 +142,25 @@ class SettingsAccountScreen extends StatelessWidget {
           }, formatter: [], onChanged: (v) {  }, onSaved: (v) {  }, hintText: 'Mot de passe',
         ),
         const SizedBox(height: 20),
-        _buildSubmitButton(context, () {}, delete: true),
+        _buildSubmitButton(context, () {
+          Get.defaultDialog(
+            title: 'Supprimer mon compte',
+            middleText: 'Voulez-vous vraiment supprimer votre compte ?',
+            textConfirm: 'Oui',
+            textCancel: 'Non',
+            confirmTextColor: Colors.white,
+            cancelTextColor: Colors.white,
+            buttonColor: AppTheme.redColor,
+            onConfirm: () {
+              // show loading on confirm
+              AccountSettingController.to.deleteAccount();
+
+            },
+            onCancel: () {
+              Get.back();
+            },
+          );
+        }, delete: true),
       ];
 
   Widget _buildSubmitButton(BuildContext context, Callback func, {delete} ){

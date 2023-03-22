@@ -26,7 +26,7 @@ class User {
   final String? birthplace;
   final Address? address;
   final String? civility;
-  final String? picture;
+  final String? photo;
   final String? description;
   final bool? askingForValidation;
   final List<dynamic>? favouriteCar;
@@ -52,7 +52,7 @@ class User {
     this.birthplace,
     this.address,
     this.civility,
-    this.picture,
+    this.photo,
     this.description,
     this.askingForValidation,
     this.favouriteCar,

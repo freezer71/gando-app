@@ -44,7 +44,7 @@ class Step2State extends State<Step2> {
       padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 5),
       child: Column(
         children: [
-          Text('Photos Conforme',
+          Text('Photos Conformes',
               style: Theme
                   .of(context)
                   .textTheme
@@ -260,39 +260,35 @@ class Step2State extends State<Step2> {
           children: [
             Padding(
               padding: const EdgeInsets.all(4.0),
-              child: Expanded(
-                child:
-                ElevatedButton(
-                  style: ButtonStyle(
-                    backgroundColor:
-                    MaterialStateProperty.all(AppTheme.primaryColor),
-                    overlayColor: MaterialStateProperty.all(
-                        AppTheme.primaryColor),
-                    shape: MaterialStateProperty.all(RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20.0),
-                    )),
-                  ),
-                  onPressed: () {
-                    controller.askPermissionCamera();
-                    FocusScope.of(context).unfocus();
-                    Navigator.pop(context, true);
-                  },
-                  child: Row(
-                    children: [
-                      Icon(
-                          Icons.camera_alt_outlined, color: AppTheme.darkColor),
-                      const SizedBox(width: 10,),
-                      Text(
-                        'Camera', style: TextStyle(color: AppTheme.darkColor),),
-                    ],
-                  ),
+              child: ElevatedButton(
+                style: ButtonStyle(
+                  backgroundColor:
+                  MaterialStateProperty.all(AppTheme.primaryColor),
+                  overlayColor: MaterialStateProperty.all(
+                      AppTheme.primaryColor),
+                  shape: MaterialStateProperty.all(RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20.0),
+                  )),
+                ),
+                onPressed: () {
+                  controller.askPermissionCamera();
+                  FocusScope.of(context).unfocus();
+                  Navigator.pop(context, true);
+                },
+                child: Row(
+                  children: [
+                    Icon(
+                        Icons.camera_alt_outlined, color: AppTheme.darkColor),
+                    const SizedBox(width: 10,),
+                    Text(
+                      'Camera', style: TextStyle(color: AppTheme.darkColor),),
+                  ],
                 ),
               ),
             ),
             Padding(
               padding: const EdgeInsets.all(4.0),
-              child: Expanded(child:
-              ElevatedButton(
+              child: ElevatedButton(
                 style: ButtonStyle(
                   backgroundColor:
                   MaterialStateProperty.all(AppTheme.primaryColor),
@@ -320,7 +316,6 @@ class Step2State extends State<Step2> {
                       'Gallery', style: TextStyle(color: Colors.black),),
                   ],
                 ),
-              ),
               ),
             ),
           ],

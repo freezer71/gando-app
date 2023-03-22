@@ -47,7 +47,6 @@ class CarController extends GetxController {
   Future getAnnonceByLocation(double lat, double long, int range) async {
     try {
       isLoading(true);
-
       final res = await ApiProvider().getData('/annonce/all?lat=$lat&long=$long&range=$range');
       final body = jsonDecode(res.body)['data'];
 

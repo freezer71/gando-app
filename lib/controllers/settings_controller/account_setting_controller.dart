@@ -1,9 +1,14 @@
 
 
 
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:gando/config/constants.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+
+import '../../services/provider/api_provider.dart';
 
 class AccountSettingController extends GetxController{
 
@@ -66,5 +71,20 @@ class AccountSettingController extends GetxController{
   @override
   void onReady() {
     super.onReady();
+  }
+
+  Future deleteAccount() async {
+    try {
+      isLoading(true);
+      final res = await ApiProvider().dioConnect('/user/deleteAccount', null);
+
+      if(res.statusCode == STATUS_OK) {
+        Get.offAllNamed('/login');
+      }
+    } catch (e) {
+      print(e);
+    } finally {
+      isLoading(false);
+    }
   }
 }

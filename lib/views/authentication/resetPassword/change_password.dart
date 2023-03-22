@@ -43,62 +43,56 @@ class ChangePasswordScreen extends StatelessWidget {
           onTap: () {
             FocusScope.of(context).requestFocus(FocusNode());
           },
-          child: Column(
+          child: ListView(
+            physics: const ClampingScrollPhysics(),
+            padding: EdgeInsets.only(
+              left: 20,
+              right: 20,
+              top: AppBar().preferredSize.height + 50,
+            ),
             children: [
-              Expanded(
-                child: ListView(
-                  physics: const ClampingScrollPhysics(),
-                  padding: EdgeInsets.only(
-                    left: 20,
-                    right: 20,
-                    top: AppBar().preferredSize.height + 50,
+              Hero(
+                  tag: 'logo',
+                  child: Image.asset(
+                      'assets/images/gando-logo.png', height: 140)),
+              const SizedBox(
+                height: 35,
+              ),
+              Center(
+                child: Text(
+                  "Changer votre mot de passe",
+                  style: Theme
+                      .of(context)
+                      .textTheme
+                      .bodyText2!
+                      .copyWith(
+                    fontWeight: FontWeight.w900,
+                    fontSize: 18,
+                    overflow: TextOverflow.ellipsis,
+                    color: HexColor(AppTheme.primaryColorString!),
                   ),
-                  children: [
-                    Hero(
-                        tag: 'logo',
-                        child: Image.asset(
-                            'assets/images/gando-logo.png', height: 140)),
-                    const SizedBox(
-                      height: 35,
-                    ),
-                    Center(
-                      child: Text(
-                        "Changer votre mot de passe",
-                        style: Theme
-                            .of(context)
-                            .textTheme
-                            .bodyText2!
-                            .copyWith(
-                          fontWeight: FontWeight.w900,
-                          fontSize: 18,
-                          overflow: TextOverflow.ellipsis,
-                          color: HexColor(AppTheme.primaryColorString!),
-                        ),
+                ),
+              ),
+              Center(
+                child: Padding(
+                  padding: const EdgeInsets.all(18.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const SizedBox(height: 20,),
+                      buildInput(context),
+                      const SizedBox(height: 40,),
+                      SubmitWithLoadingButton(
+                        text: 'Valider'.toUpperCase(),
+                        onPressed: () {
+                          controller.changePassword();
+                        },
+                        isLoading: controller.isLoading.value,
                       ),
-                    ),
-                    Center(
-                      child: Padding(
-                        padding: const EdgeInsets.all(18.0),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            const SizedBox(height: 20,),
-                            buildInput(context),
-                            const SizedBox(height: 40,),
-                            SubmitWithLoadingButton(
-                              text: 'Valider'.toUpperCase(),
-                              onPressed: () {
-                                controller.changePassword();
-                              },
-                              isLoading: controller.isLoading.value,
-                            ),
 
-                          ],
-                        ),
-                      ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
             ],

@@ -333,74 +333,78 @@ class Step1State extends State<Step1> {
             child: Row(
               children: [
                 Expanded(
-                    child: ElevatedButton(
-                        style: ButtonStyle(
-                          backgroundColor:
-                          MaterialStateProperty.resolveWith<Color>(
-                                (Set<MaterialState> states) =>
-                            c.gearboxValue.value
-                                ? AppTheme.light
-                                : AppTheme.primaryColor,
-                          ),
-                          overlayColor:
-                          MaterialStateProperty.all(Colors.transparent),
-                          shape: MaterialStateProperty.all(RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(20.0),
-                          )),
+                  child: ElevatedButton(
+                      style: ButtonStyle(
+                        backgroundColor:
+                        MaterialStateProperty.resolveWith<Color>(
+                              (Set<MaterialState> states) =>
+                          c.gearboxValue.value
+                              ? AppTheme.light
+                              : AppTheme.primaryColor,
                         ),
-                        onPressed: () {
-                          c.gearboxValue.value = !c.gearboxValue.value;
-                        },
-                        child: SizedBox(
-                          width: Get.width / 1.5,
-                          height: 50,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text("Automatique",
-                                  style: TextStyle(
-                                      fontSize: 15,
-                                      color: c.gearboxValue.value
-                                          ? AppTheme.darkColor
-                                          : AppTheme.light)),
-                            ],
-                          ),
-                        ))),
-                SizedBox(width: 20,),
+                        overlayColor:
+                        MaterialStateProperty.all(Colors.transparent),
+                        shape: MaterialStateProperty.all(RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20.0),
+                        )),
+                      ),
+                      onPressed: () {
+                        c.gearboxValue.value = !c.gearboxValue.value;
+                      },
+                      child: SizedBox(
+                        width: Get.width / 1.5,
+                        height: 50,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text("Automatique",
+                                style: TextStyle(
+                                    fontSize: 15,
+                                    color: c.gearboxValue.value
+                                        ? AppTheme.darkColor
+                                        : AppTheme.light)),
+                          ],
+                        ),
+                      )),
+                ),
+                const SizedBox(
+                  width: 10,
+                ),
                 Expanded(
-                    child: ElevatedButton(
-                        style: ButtonStyle(
-                          backgroundColor:
-                          MaterialStateProperty.resolveWith<Color>(
-                                (Set<MaterialState> states) =>
-                            !c.gearboxValue.value
-                                ? AppTheme.light
-                                : AppTheme.primaryColor,
-                          ),
-                          overlayColor:
-                          MaterialStateProperty.all(Colors.transparent),
-                          shape: MaterialStateProperty.all(RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(20.0),
-                          )),
+                  child: ElevatedButton(
+                      style: ButtonStyle(
+                        backgroundColor:
+                        MaterialStateProperty.resolveWith<Color>(
+                              (Set<MaterialState> states) =>
+                          !c.gearboxValue.value
+                              ? AppTheme.light
+                              : AppTheme.primaryColor,
                         ),
-                        onPressed: () {
-                          c.gearboxValue.value = !c.gearboxValue.value;
-                        },
-                        child: SizedBox(
-                          width: Get.width / 1.5,
-                          height: 50,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text("Manuelle",
-                                  style: TextStyle(
-                                      fontSize: 15,
-                                      color: !c.gearboxValue.value
-                                          ? AppTheme.darkColor
-                                          : AppTheme.light)),
-                            ],
-                          ),
-                        ))),
+                        overlayColor:
+                        MaterialStateProperty.all(Colors.transparent),
+                        shape: MaterialStateProperty.all(RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20.0),
+                        )),
+                      ),
+                      onPressed: () {
+                        c.gearboxValue.value = !c.gearboxValue.value;
+                      },
+                      child: SizedBox(
+                        width: Get.width / 1.5,
+                        height: 50,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text("Manuelle",
+                                style: TextStyle(
+                                    fontSize: 15,
+                                    color: !c.gearboxValue.value
+                                        ? AppTheme.darkColor
+                                        : AppTheme.light)),
+                          ],
+                        ),
+                      )),
+                ),
               ],
             ),
           )
@@ -933,8 +937,7 @@ class Step1State extends State<Step1> {
             ),
             Padding(
               padding: const EdgeInsets.all(4.0),
-              child: Expanded(child:
-              ElevatedButton(
+              child: ElevatedButton(
                 style: ButtonStyle(
                   backgroundColor:
                   MaterialStateProperty.all(AppTheme.primaryColor),
@@ -957,7 +960,6 @@ class Step1State extends State<Step1> {
                       'Gallery', style: TextStyle(color: Colors.black),),
                   ],
                 ),
-              ),
               ),
             ),
           ],

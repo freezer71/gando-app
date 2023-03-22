@@ -32,11 +32,6 @@ class AuthController extends GetxController {
   }
 
   @override
-  void onReady() {
-    super.onReady();
-  }
-
-  @override
   void dispose() {
     forgotEmailController.value.dispose();
     forgotPasswordFormKey.currentState?.reset();
@@ -58,7 +53,7 @@ class AuthController extends GetxController {
       final body = res.data;
       if (res.statusCode == STATUS_OK) {
         printInfo(info: '${body['data']}');
-        return Get.offNamed(Routes.resetPwd, arguments: {'email': forgotEmailController.value.text});
+        return Get.toNamed(Routes.resetPwd, arguments: {'email': forgotEmailController.value.text});
       }
     } catch (e) {
       Get.defaultDialog(
@@ -108,7 +103,7 @@ class AuthController extends GetxController {
       final body = res.data;
 
       if (res.statusCode == STATUS_OK) {
-        printInfo(info: '${body['data']}');
+        printInfo(info: '${body}');
         return Get.offNamed(Routes.home);
       }
     } catch (e) {

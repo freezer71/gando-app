@@ -42,76 +42,67 @@ class ForgotPasswordScreen extends StatelessWidget {
           onTap: () {
             FocusScope.of(context).requestFocus(FocusNode());
           },
-          child: Column(
+          child: ListView(
+            physics: const ClampingScrollPhysics(),
+            padding: EdgeInsets.only(
+              left: 20,
+              right: 20,
+              top: AppBar().preferredSize.height + 50,
+            ),
             children: [
-              Expanded(
-                child: ListView(
-                  physics: const ClampingScrollPhysics(),
-                  padding: EdgeInsets.only(
-                    left: 20,
-                    right: 20,
-                    top: AppBar().preferredSize.height + 50,
+              Hero(
+                  tag: 'logo',
+                  child: Image.asset('assets/images/gando-logo.png',
+                      height: 140)),
+              const SizedBox(
+                height: 35,
+              ),
+              Center(
+                child: Text(
+                  "Récuperer votre mot de passe",
+                  style: Theme
+                      .of(context)
+                      .textTheme
+                      .bodyText2!
+                      .copyWith(
+                    fontWeight: FontWeight.w900,
+                    fontSize: 18,
+                    overflow: TextOverflow.ellipsis,
+                    color: HexColor(AppTheme.primaryColorString!),
                   ),
-                  children: [
-                    Hero(
-                        tag: 'logo',
-                        child: Image.asset('assets/images/gando-logo.png',
-                            height: 140)),
-                    const SizedBox(
-                      height: 35,
-                    ),
-                    Center(
-                      child: Text(
-                        "Récuperer votre mot de passe",
-                        style: Theme
-                            .of(context)
-                            .textTheme
-                            .bodyText2!
-                            .copyWith(
-                          fontWeight: FontWeight.w900,
-                          fontSize: 18,
-                          overflow: TextOverflow.ellipsis,
-                          color: HexColor(AppTheme.primaryColorString!),
+                ),
+              ),
+              Center(
+                child: Padding(
+                  padding: const EdgeInsets.all(18.0),
+                  child: Form(
+                    key: controller.forgotPasswordFormKey,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const SizedBox(
+                          height: 20,
                         ),
-                      ),
-                    ),
-                    Center(
-                      child: Padding(
-                        padding: const EdgeInsets.all(18.0),
-                        child: Form(
-                          key: controller.forgotPasswordFormKey,
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              const SizedBox(
-                                height: 20,
-                              ),
-                              buildInput(context),
-                              const SizedBox(
-                                height: 20,
-                              ),
-                              // submitButton(context),
-
-                              SubmitWithLoadingButton(
-                                onPressed: () {
-                                  if (controller.forgotPasswordFormKey
-                                      .currentState!.validate()) {
-                                    controller.forgotPasswordFormKey
-                                        .currentState!.save();
-                                    controller.forgotPassword();
-                                  }
-                                },
-                                text: 'Récuperer',
-                                isLoading: controller.isLoading.value,
-                              ),
-
-                            ],
-                          ),
+                        buildInput(context),
+                        const SizedBox(
+                          height: 20,
                         ),
-                      ),
+                        SubmitWithLoadingButton(
+                          onPressed: () async{
+                            if (controller.forgotPasswordFormKey
+                                .currentState!.validate()) {
+                              // controller.forgotPasswordFormKey
+                              //     .currentState!.save();
+                              await controller.forgotPassword();
+                            }
+                          },
+                          text: 'Récuperer',
+                          isLoading: controller.isLoading.value,
+                        ),
+                      ],
                     ),
-                  ],
+                  ),
                 ),
               ),
             ],
@@ -119,47 +110,6 @@ class ForgotPasswordScreen extends StatelessWidget {
         ),
       );
     });
-  }
-
-  Widget submitButton(BuildContext context) {
-    return TextButton(
-      onPressed: () {
-        if (controller.forgotPasswordFormKey.currentState!.validate()) {
-          controller.forgotPasswordFormKey.currentState!.save();
-          controller.forgotPassword();
-        }
-      },
-      style: ButtonStyle(
-        backgroundColor: MaterialStateProperty.resolveWith<Color>(
-                (Set<MaterialState> states) => AppTheme.primaryColor
-        ),
-        overlayColor: MaterialStateProperty.all(Colors.transparent),
-        shape: MaterialStateProperty.all(
-          RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(30.0),
-          ),
-        ),
-      ),
-      child: Container(
-        height: 40,
-        width: Get.width / 1.3,
-        padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 10),
-        child: Center(
-          child: Text(
-            'Récuperer'.toUpperCase(),
-            style: Theme
-                .of(context)
-                .textTheme
-                .bodyText2!
-                .copyWith(
-              fontWeight: FontWeight.w900,
-              fontSize: 16,
-              color: AppTheme.backgroundColor,
-            ),
-          ),
-        ),
-      ),
-    );
   }
 
   Widget buildInput(BuildContext context) {

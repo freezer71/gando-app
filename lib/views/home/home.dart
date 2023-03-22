@@ -187,12 +187,10 @@ class _HomeScreenState extends State<HomeScreen>
       children: [
         GetBuilder<CarController>(
           assignId: true,
+          autoRemove: false,
           builder: (logic) {
             return FutureBuilder(
               future: logic.futureGetCar,
-              initialData: const Center(
-                child: CircularProgressIndicator(),
-              ),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return const Center(
@@ -203,12 +201,66 @@ class _HomeScreenState extends State<HomeScreen>
                     child: Text('Une erreur est survenue'),
                   );
                 } else if (snapshot.hasData) {
-                  final data = <Car>[];
+                  final data = <Car>[] ;
                   data.addAll(snapshot.data);
-                  if (snapshot.data == null) {
-                    return const Center(
-                      child: Text('Aucune voiture disponible', style: TextStyle(
-                          color: Colors.black),),
+                  if (!data.isNotEmpty) {
+                    return Stack(
+                      children: [
+                        FlutterMap(
+                          mapController: _mapController,
+                          options: MapOptions(
+                            zoom: 10,
+                            maxZoom: 16,
+                            minZoom: 2,
+                            center: LatLng(16.258052, -61.566089),
+                            // rotation: 180.0,
+                            keepAlive: true,
+                            enableScrollWheel: true,
+                            scrollWheelVelocity: 0.003,
+                            onPositionChanged: (MapPosition position,
+                                bool hasGesture) {
+                              // Your logic here. `hasGesture` dictates whether the change
+                              // was due to a user interaction or something else. `
+
+                              // if (hasGesture) {
+                              //   // Your logic here.
+                              // }
+                            },
+                          ),
+                          children: [
+                            TileLayer(
+                              urlTemplate: MAP_URL_DARK,
+                              userAgentPackageName: 'com.gando.rentcar.app',
+                              additionalOptions: const {
+                                'accessToken': TOKEN_MAP,
+                                'id': MAP_STYLE
+                              },
+                              retinaMode: MediaQuery
+                                  .of(context)
+                                  .devicePixelRatio > 1.0,
+                              // tileBounds: LatLngBounds(
+                              //   LatLng(32.2934590056236, 24.328924534719548),
+                              //   LatLng(21.792152188247265, 37.19854583903912),
+                              // ),
+                              errorImage: const NetworkImage(
+                                  'https://tile.openstreetmap.org/18/0/0.png'),
+                            ),
+                            MarkerLayer(
+                              markers: _buildMarkers(data),
+                            ),
+                          ],
+                        ),
+                        Positioned(
+                          child: Container(
+                              decoration: BoxDecoration(
+                                  color: AppTheme.light,
+                                  borderRadius: const BorderRadius.only(
+                                      bottomLeft: Radius.circular(20),
+                                      bottomRight: Radius.circular(20))
+                              ),
+                              height: Platform.isAndroid ? 160 : 180),),
+                        buildAppBar(),
+                      ],
                     );
                   } else {
                     // if (snapshot.data.length <= 0){
