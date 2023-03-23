@@ -160,9 +160,9 @@ class SignInScreen extends StatelessWidget {
 
   Widget submitButton(BuildContext context) {
     return TextButton(
-      onPressed: () {
+      onPressed: () async{
         if(controller.signInFormKey.currentState!.validate()){
-          controller.signIn();
+          await controller.signIn();
         }
       },
       style: ButtonStyle(

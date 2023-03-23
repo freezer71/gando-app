@@ -34,79 +34,70 @@ class ForgotPasswordScreen extends StatelessWidget {
             },
           ),
         ),
-        body: InkWell(
-          focusColor: Colors.transparent,
-          highlightColor: Colors.transparent,
-          hoverColor: Colors.transparent,
-          splashColor: Colors.transparent,
-          onTap: () {
-            FocusScope.of(context).requestFocus(FocusNode());
-          },
-          child: ListView(
-            physics: const ClampingScrollPhysics(),
-            padding: EdgeInsets.only(
-              left: 20,
-              right: 20,
-              top: AppBar().preferredSize.height + 50,
-            ),
-            children: [
-              Hero(
-                  tag: 'logo',
-                  child: Image.asset('assets/images/gando-logo.png',
-                      height: 140)),
-              const SizedBox(
-                height: 35,
-              ),
-              Center(
-                child: Text(
-                  "Récuperer votre mot de passe",
-                  style: Theme
-                      .of(context)
-                      .textTheme
-                      .bodyText2!
-                      .copyWith(
-                    fontWeight: FontWeight.w900,
-                    fontSize: 18,
-                    overflow: TextOverflow.ellipsis,
-                    color: HexColor(AppTheme.primaryColorString!),
-                  ),
-                ),
-              ),
-              Center(
-                child: Padding(
-                  padding: const EdgeInsets.all(18.0),
-                  child: Form(
-                    key: controller.forgotPasswordFormKey,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        const SizedBox(
-                          height: 20,
-                        ),
-                        buildInput(context),
-                        const SizedBox(
-                          height: 20,
-                        ),
-                        SubmitWithLoadingButton(
-                          onPressed: () async{
-                            if (controller.forgotPasswordFormKey
-                                .currentState!.validate()) {
-                              // controller.forgotPasswordFormKey
-                              //     .currentState!.save();
-                              await controller.forgotPassword();
-                            }
-                          },
-                          text: 'Récuperer',
-                          isLoading: controller.isLoading.value,
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-            ],
+        body: ListView(
+          physics: const ClampingScrollPhysics(),
+          padding: EdgeInsets.only(
+            left: 20,
+            right: 20,
+            top: AppBar().preferredSize.height + 50,
           ),
+          children: [
+            Hero(
+                tag: 'logo',
+                child: Image.asset('assets/images/gando-logo.png',
+                    height: 140)),
+            const SizedBox(
+              height: 35,
+            ),
+            Center(
+              child: Text(
+                "Récuperer votre mot de passe",
+                style: Theme
+                    .of(context)
+                    .textTheme
+                    .bodyText2!
+                    .copyWith(
+                  fontWeight: FontWeight.w900,
+                  fontSize: 18,
+                  overflow: TextOverflow.ellipsis,
+                  color: HexColor(AppTheme.primaryColorString!),
+                ),
+              ),
+            ),
+            Center(
+              child: Padding(
+                padding: const EdgeInsets.all(18.0),
+                child: Form(
+                  key: controller.forgotPasswordFormKey,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      buildInput(context),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      SubmitWithLoadingButton(
+                        onPressed: () async {
+                          if (controller.forgotPasswordFormKey
+                              .currentState!.validate()) {
+                            // controller.forgotPasswordFormKey
+                            //     .currentState!.save();
+                            await controller.forgotPassword();
+                          }
+                        },
+                        text: 'Récuperer',
+                        isLoading: controller.isLoading.value,
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          ],
         ),
       );
     });
@@ -116,7 +107,7 @@ class ForgotPasswordScreen extends StatelessWidget {
     return Column(
       children: [
         CustomTextFormField(
-            key: Get.keys[1],
+            key: Get.keys[9],
             keyboardType: TextInputType.emailAddress,
             controller: controller.forgotEmailController.value,
             validator: (value) {

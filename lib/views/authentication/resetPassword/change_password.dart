@@ -139,7 +139,7 @@ class ChangePasswordScreen extends StatelessWidget {
     return Column(
       children: [
         CustomTextFormField(
-            key: Get.keys[0],
+            key: Get.keys[7],
             keyboardType: TextInputType.visiblePassword,
             controller: controller.recoverPassword.value,
             validator: (value) {
@@ -162,7 +162,7 @@ class ChangePasswordScreen extends StatelessWidget {
             hintText: 'Nouveau mot de passe'),
         const SizedBox(height: 15,),
         CustomTextFormField(
-            key: Get.keys[1],
+            key: Get.keys[8],
             obscureText: true,
             controller: controller.confirmRecoverPassword.value,
             keyboardType: TextInputType.visiblePassword,
