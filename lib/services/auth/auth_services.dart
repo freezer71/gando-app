@@ -14,17 +14,31 @@ class AuthService extends GetxService {
 
   @override
   void onReady() async {
-    if(box.hasData('token') && box.read('token') != null){
-      box.write('authenticated', true);
-      if(box.read('authenticated')) {
-        isLoggedIn(true);
-        printInfo(info: 'User is authenticated from local storage : ${box.read('token')}');
-      }
-    }
-    printInfo(info: 'AuthService is ready');
-    printInfo(info: 'User is authenticated : ${box.read('authenticated')}');
-    printInfo(info: 'User token : ${box.read('token')}');
     super.onReady();
+    // check onboarding status
+    if(box.hasData('onboarding') && box.read('onboarding') != null){
+      if(box.read('onboarding')) {
+        //check authentication status
+        if(box.hasData('token') && box.read('token') != null){
+          box.write('authenticated', true);
+          if(box.read('authenticated')) {
+            isLoggedIn(true);
+            printInfo(info: 'AuthService is ready');
+            printInfo(info: 'User is authenticated : ${box.read('authenticated')}');
+            printInfo(info: 'User token : ${box.read('token')}');
+          }
+        }else{
+          await logout();
+        }
+      }else{
+        printInfo(info: 'User has not seen onboarding');
+        Get.offAllNamed(Routes.welcome);
+      }
+    }else{
+      box.writeIfNull('onboarding', false);
+      printInfo(info: 'User has not seen onboarding');
+      Get.offAllNamed(Routes.welcome);
+    }
   }
 
   Future<void> handleSignOut() async => await GoogleSignIn().signOut();
@@ -47,7 +61,7 @@ class AuthService extends GetxService {
     await box.remove('authenticated');
     await handleSignOut();
     isLoggedIn(false);
-    Get.offAllNamed(Routes.signIn);
+    Get.offAllNamed(Routes.preLogin);
     printInfo(info: 'User is logged out');
   }
 

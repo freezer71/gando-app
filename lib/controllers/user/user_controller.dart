@@ -31,8 +31,9 @@ class UserController extends GetxController {
   @override
   void onInit() {
     super.onInit();
+    // check if called route == annonce
+    // userID(Get.parameters['id']!);
     getCarList = getUserCarList();
-    // check called route name and get user id
     getUserProfile = getUser();
   }
 
@@ -57,7 +58,7 @@ class UserController extends GetxController {
       if (res.statusCode == 200) {
         return user(User.fromJson(body));
       }else{
-        return user(User());
+        return User();
       }
     } catch (e) {
       Get.snackbar('Error', e.toString(),snackPosition: SnackPosition.BOTTOM, margin: const EdgeInsets.only(bottom: 20,), duration: const Duration(seconds: 10));

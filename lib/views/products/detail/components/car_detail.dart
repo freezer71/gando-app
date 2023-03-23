@@ -25,8 +25,6 @@ class CarDetailPage extends StatefulWidget {
 
 class _CarDetailPageState extends State<CarDetailPage> {
 
-  final controller = Get.put(CarController());
-
   int _quantity = 0;
   late Car car;
   late List<String> _carImagesList = [];
@@ -41,6 +39,8 @@ class _CarDetailPageState extends State<CarDetailPage> {
     {'name': 'Siège enfant'},
     {'name': 'GPS'},
   ];
+
+  final controller = Get.put(CarController());
 
   final List featuresList = [
     {'name': 'Kilomètrage', 'icon': Icons.speed, 'value': '50-100 000 km'},
@@ -60,67 +60,52 @@ class _CarDetailPageState extends State<CarDetailPage> {
       'rate': '5/5',
       'image': 'assets/images/av.png',
       'description':
-          'Voiture propre et conforme a l\'annonce\n Facile a conduire et qui roule tres bien.'
+      'Voiture propre et conforme a l\'annonce\n Facile a conduire et qui roule tres bien.'
     },
     {
       'name': 'Marco',
       'rate': '4/5',
       'image': 'assets/images/av.png',
       'description':
-          'Voiture propre et conforme a l\'annonce\n Facile a conduire et qui roule tres bien.'
+      'Voiture propre et conforme a l\'annonce\n Facile a conduire et qui roule tres bien.'
     },
     {
       'name': 'Vicent',
       'rate': '3/5',
       'image': 'assets/images/av.png',
       'description':
-          'Voiture propre et conforme a l\'annonce\n Facile a conduire et qui roule tres bien.'
+      'Voiture propre et conforme a l\'annonce\n Facile a conduire et qui roule tres bien.'
     },
     {
       'name': 'Thierry',
       'rate': '5/5',
       'image': 'assets/images/av.png',
       'description':
-          'Voiture propre et conforme a l\'annonce\n Facile a conduire et qui roule tres bien.'
+      'Voiture propre et conforme a l\'annonce\n Facile a conduire et qui roule tres bien.'
     },
     {
       'name': 'Nagulan',
       'rate': '4/5',
       'image': 'assets/images/av.png',
       'description':
-          'Voiture propre et conforme a l\'annonce\n Facile a conduire et qui roule tres bien.'
+      'Voiture propre et conforme a l\'annonce\n Facile a conduire et qui roule tres bien.'
     },
   ];
 
   late Owner profileSeller;
 
-  // getCar () async {
-  //   await controller.getCarById(widget.car.id!);
-  //   // car = controller.car.value;
-  //   printInfo(info: 'car: ${controller.car.toJson()}');
-  //   // _carImagesList.addAll([APP_FILE+car.images!.supplementaire.toString(),
-  //   //   APP_FILE+car.images!.avant34.toString(),
-  //   //   APP_FILE+car.images!.ariere34.toString(),
-  //   //   APP_FILE+car.images!.lateral.toString(),
-  //   //   APP_FILE+car.images!.interieur.toString(),]
-  //   // );
-  // }
-
   @override
   void initState() {
     super.initState();
     car = widget.car;
-    _carImagesList.addAll([APP_FILE+car.images!.supplementaire.toString(),
-        APP_FILE+car.images!.avant34.toString(),
-        APP_FILE+car.images!.ariere34.toString(),
-        APP_FILE+car.images!.lateral.toString(),
-        APP_FILE+car.images!.interieur.toString(),]
+    _carImagesList.addAll([
+      car.images!.supplementaire.toString(),
+      car.images!.avant34.toString(),
+      car.images!.ariere34.toString(),
+      car.images!.lateral.toString(),
+      car.images!.interieur.toString(),
+    ]
     );
-
-    profileSeller = Owner(
-
-    );
-
   }
 
   @override
@@ -132,91 +117,127 @@ class _CarDetailPageState extends State<CarDetailPage> {
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       backgroundColor: AppTheme.backgroundColor.withOpacity(0.9),
       extendBody: true,
       extendBodyBehindAppBar: true,
-      body: Stack(
-        children: [
-          CustomScrollView(
-            slivers: [
-              SliverAppBar(
-                pinned: true,
-                automaticallyImplyLeading: true,
-                backgroundColor: AppTheme.backgroundColor,
-                expandedHeight: Get.height / 3.5,
-                leading: IconButton(
-                  icon: Icon(
-                    Icons.arrow_back_ios_outlined,
-                    color: AppTheme.light,
-                  ),
-                  onPressed: () => Navigator.pop(context),
-                ),
-                flexibleSpace: FlexibleSpaceBar(
-                  centerTitle: false,
-                  // title: Container(
-                  //   child: Text("${car.brand}", style: Theme.of(context).textTheme.bodyText2!.copyWith(
-                  //       color: AppTheme.darkColor,
-                  //       fontSize: 18,
-                  //       fontWeight: FontWeight.w900),),
-                  // ),
-                  background: CarouselSlider(
-                    items: _carImagesList
-                        .map((item) {
-                          printInfo(info: "item: $item");
-                      return Container(
-                        child: buildCacheNetworkImage(
-                            width: 0, height: 0, url: item),
-                      );
-                    })
-                        .toList(),
-                    options: CarouselOptions(
-                        initialPage: 0,
-                        aspectRatio: 1,
-                        viewportFraction: 1.0,
-                        enableInfiniteScroll: true,
-                        autoPlay: false,
-                        enlargeCenterPage: false,
-                        onPageChanged: (index, reason) {
-                          setState(() {
-                            _currentImageSlider = index;
-                          });
-                        }),
-                  ),
-                ),
-              ),
-              SliverToBoxAdapter(
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(
-                      vertical: 24.0, horizontal: 15),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+      body: GetBuilder<CarController>(
+        assignId: true,
+        builder: (logic) {
+          return FutureBuilder(
+            future: logic.getCarById(car.id!),
+            builder: (context, snapshot) {
+              // state
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return Center(
+                  child: CircularProgressIndicator(),
+                );
+              }
+              // error
+              else if (snapshot.hasError) {
+                return Center(
+                  child: Text('Une erreur est survenue !'),
+                );
+              }
+              // success
+              else if (snapshot.hasData){
+                if (snapshot.data != null){
+                  car = snapshot.data as Car;
+                  return Stack(
                     children: [
-                      ..._buildTitle(),
-                      const SizedBox(height: 20),
-                      ..._buildDescriptionPlanKilometer(),
-                      _buildSpacerHeight(),
-                      _buildSeller(),
-                      _buildSpacerHeight(),
-                      ..._buildDescription(),
-                      _buildSpacerHeight(),
-                      ..._buildCarCondition(),
-                      _buildSpacerHeight(),
-                      ..._buildEquipment(),
-                      _buildSpacerHeight(),
-                      ..._buildFeatures(),
-                      _buildSpacerHeight(),
-                      ..._buildReviews(),
-                      const SizedBox(height: 200),
+                      CustomScrollView(
+                        slivers: [
+                          SliverAppBar(
+                            pinned: true,
+                            automaticallyImplyLeading: true,
+                            backgroundColor: AppTheme.backgroundColor,
+                            expandedHeight: Get.height / 3.5,
+                            leading: IconButton(
+                              icon: Icon(
+                                Icons.arrow_back_ios_outlined,
+                                color: AppTheme.light,
+                              ),
+                              onPressed: () => Navigator.pop(context),
+                            ),
+                            flexibleSpace: FlexibleSpaceBar(
+                              centerTitle: false,
+                              // title: Container(
+                              //   child: Text("${car.brand}", style: Theme.of(context).textTheme.bodyText2!.copyWith(
+                              //       color: AppTheme.darkColor,
+                              //       fontSize: 18,
+                              //       fontWeight: FontWeight.w900),),
+                              // ),
+                              background: CarouselSlider(
+                                items: _carImagesList
+                                    .map((item) {
+                                  return Container(
+                                    width: Get.width,
+                                    height: Get.height,
+                                    child: buildCacheNetworkImage(
+                                        width: 0, height: 0, url: item),
+                                  );
+                                })
+                                    .toList(),
+                                options: CarouselOptions(
+                                    initialPage: 0,
+                                    aspectRatio: 1,
+                                    viewportFraction: 1.0,
+                                    enableInfiniteScroll: true,
+                                    autoPlay: false,
+                                    enlargeCenterPage: false,
+                                    onPageChanged: (index, reason) {
+                                      setState(() {
+                                        _currentImageSlider = index;
+                                      });
+                                    }),
+                              ),
+                            ),
+                          ),
+                          SliverToBoxAdapter(
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  vertical: 24.0, horizontal: 15),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  ..._buildTitle(),
+                                  const SizedBox(height: 20),
+                                  ..._buildDescriptionPlanKilometer(),
+                                  _buildSpacerHeight(),
+                                  _buildSeller(snapshot.data!.owner!),
+                                  _buildSpacerHeight(),
+                                  ..._buildDescription(snapshot.data!),
+                                  _buildSpacerHeight(),
+                                  ..._buildCarCondition(snapshot.data!),
+                                  _buildSpacerHeight(),
+                                  ..._buildEquipment(snapshot.data!),
+                                  _buildSpacerHeight(),
+                                  ..._buildFeatures(snapshot.data!),
+                                  _buildSpacerHeight(),
+                                  ..._buildReviews(snapshot.data!),
+                                  const SizedBox(height: 200),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      _buldFloatBar()
                     ],
-                  ),
-                ),
-              ),
-            ],
-          ),
-          _buldFloatBar()
-        ],
+                  );
+                }else{
+                  return Center(
+                    child: Text('Une erreur est survenue'),
+                  );
+                }
+              }
+
+              return Center(
+                child: Text('Une erreur est survenue'),
+              );
+            }
+          );
+        },
       ),
     );
   }
@@ -258,7 +279,11 @@ class _CarDetailPageState extends State<CarDetailPage> {
             ),
             child: Text(
               '${car.pricePerDay} €',
-              style: Theme.of(context).textTheme.bodyText2!.copyWith(
+              style: Theme
+                  .of(context)
+                  .textTheme
+                  .bodyText2!
+                  .copyWith(
                   color: AppTheme.backgroundColor,
                   fontSize: 28,
                   fontWeight: FontWeight.w900),
@@ -281,9 +306,23 @@ class _CarDetailPageState extends State<CarDetailPage> {
             ),
           ),
           const SizedBox(width: 8),
-          Text(
-            '/5 ( avis)',
-            style: Theme.of(context).textTheme.bodyText2!.copyWith(
+          car.note!.toInt() > 0 ? Text(
+            '${car.note}/5 ( avis)',
+            style: Theme
+                .of(context)
+                .textTheme
+                .bodyText2!
+                .copyWith(
+                color: AppTheme.darkColor,
+                fontSize: 14,
+                fontWeight: FontWeight.w900),
+          ) : Text(
+            'Aucun avis',
+            style: Theme
+                .of(context)
+                .textTheme
+                .bodyText2!
+                .copyWith(
                 color: AppTheme.darkColor,
                 fontSize: 14,
                 fontWeight: FontWeight.w900),
@@ -305,12 +344,16 @@ class _CarDetailPageState extends State<CarDetailPage> {
     return Container(height: 1, color: AppTheme.darkColor.withOpacity(0.3));
   }
 
-  List<Widget> _buildEquipment() {
+  List<Widget> _buildEquipment(Car car) {
     return [
       Row(
         children: [
           Text('Equipements',
-              style: Theme.of(context).textTheme.bodyText2!.copyWith(
+              style: Theme
+                  .of(context)
+                  .textTheme
+                  .bodyText2!
+                  .copyWith(
                   color: AppTheme.darkColor,
                   fontSize: 20,
                   fontWeight: FontWeight.w900)),
@@ -323,20 +366,25 @@ class _CarDetailPageState extends State<CarDetailPage> {
             key: Get.keys[2],
             shrinkWrap: true,
             physics: const NeverScrollableScrollPhysics(),
-            itemCount: equipmentsList.length,
+            itemCount: car.equipment!.length,
             gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 3,
                 mainAxisSpacing: 10,
                 crossAxisSpacing: 5,
                 childAspectRatio: 2),
-            itemBuilder: (context, index) => Container(
+            itemBuilder: (context, index) =>
+                Container(
                   decoration: BoxDecoration(
                       color: AppTheme.backgroundColor,
                       borderRadius: BorderRadius.circular(10)),
                   child: Center(
                     child: Text(
-                      equipmentsList[index]['name'],
-                      style: Theme.of(context).textTheme.bodyText2!.copyWith(
+                      car.equipment![index],
+                      style: Theme
+                          .of(context)
+                          .textTheme
+                          .bodyText2!
+                          .copyWith(
                           color: AppTheme.darkColor,
                           fontSize: 12,
                           fontWeight: FontWeight.w900),
@@ -348,8 +396,9 @@ class _CarDetailPageState extends State<CarDetailPage> {
     ];
   }
 
-  List<Widget> _buildReviews() {
-    Widget buildBox(index) => Container(
+  List<Widget> _buildReviews(Car car) {
+    Widget buildBox(index) =>
+        Container(
           height: 120,
           margin: EdgeInsets.symmetric(vertical: 10),
           width: Get.width,
@@ -382,15 +431,23 @@ class _CarDetailPageState extends State<CarDetailPage> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        reviewsList[index]['name'],
-                        style: Theme.of(context).textTheme.bodyText2!.copyWith(
+                        car.advice![index].comment!,
+                        style: Theme
+                            .of(context)
+                            .textTheme
+                            .bodyText2!
+                            .copyWith(
                             color: AppTheme.darkColor,
                             fontSize: 16,
                             fontWeight: FontWeight.w900),
                       ),
                       Text(
-                        reviewsList[index]['description'],
-                        style: Theme.of(context).textTheme.bodyText2!.copyWith(
+                        car.advice![index].comment!.toString(),
+                        style: Theme
+                            .of(context)
+                            .textTheme
+                            .bodyText2!
+                            .copyWith(
                             color: AppTheme.darkColor,
                             fontSize: 12,
                             fontWeight: FontWeight.w500),
@@ -414,11 +471,15 @@ class _CarDetailPageState extends State<CarDetailPage> {
                       ),
                     ),
                     _buildSpacerWidth(10.0),
-                    Text(reviewsList[index]['rate'],
-                        style: Theme.of(context).textTheme.bodyText2!.copyWith(
+                    Text("${car.advice![index].note}/5",
+                        style: Theme
+                            .of(context)
+                            .textTheme
+                            .bodyText2!
+                            .copyWith(
                             color: AppTheme.darkColor,
                             fontSize: 12,
-                            fontWeight: FontWeight.w500))
+                            fontWeight: FontWeight.w500),)
                   ],
                 )
               ],
@@ -431,17 +492,25 @@ class _CarDetailPageState extends State<CarDetailPage> {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Text('Avis',
-              style: Theme.of(context).textTheme.bodyText2!.copyWith(
+              style: Theme
+                  .of(context)
+                  .textTheme
+                  .bodyText2!
+                  .copyWith(
                   color: AppTheme.darkColor,
                   fontSize: 20,
                   fontWeight: FontWeight.w900)),
-          Container(
+          car.advice!.length > 3 ? SizedBox(
               width: 120,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   Text('Voir plus',
-                      style: Theme.of(context).textTheme.bodyText2!.copyWith(
+                      style: Theme
+                          .of(context)
+                          .textTheme
+                          .bodyText2!
+                          .copyWith(
                           color: AppTheme.darkColor,
                           fontSize: 16,
                           fontWeight: FontWeight.w500)),
@@ -450,21 +519,78 @@ class _CarDetailPageState extends State<CarDetailPage> {
                     color: AppTheme.darkColor,
                   )
                 ],
-              )),
+              )) : Container(),
         ],
       ),
       const SizedBox(height: 8),
-      Container(
+      car.advice!.isNotEmpty ? Container(
         height: Get.height / 1.6,
         child: Column(
-          children: List.generate(3, (index) => buildBox(index)),
+          children: List.generate(car.advice!.length, (index) => buildBox(index)),
         ),
-      ),
+      ) : Container(
+        height: Get.height / 5.6,
+        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
+        decoration: BoxDecoration(
+          borderRadius: const BorderRadius.all(Radius.circular(24)),
+          color: AppTheme.backgroundColor,
+        ),
+        child: Center(
+          child: Text(
+            'Aucun avis pour le moment',
+            style: Theme
+                .of(context)
+                .textTheme
+                .bodyText2!
+                .copyWith(
+                color: AppTheme.darkColor,
+                fontSize: 16,
+                fontWeight: FontWeight.w500),
+          ),
+        ),
+      )
     ];
   }
 
-  List<Widget> _buildFeatures() {
-    Widget buildBox(index) => Container(
+  // create liste of features
+
+
+  List<Widget> _buildFeatures(Car car) {
+    List buildFeatures(Car car) {
+      final features = [
+        {
+          'name': 'Kilomètrage',
+          'icon': Icons.speed,
+          'value': "${car.mileage}"
+        },
+        {
+          'name': 'Boite de vitesse',
+          'icon': Icons.cable_rounded,
+          'value': "${car.gearbox}"
+        },
+        {
+          'name': 'Places',
+          'icon': Icons.six_ft_apart_outlined,
+          'value': "${car.numberOfPlaces}"
+        },
+        {
+          'name': 'Carburant',
+          'icon': Icons.ev_station,
+          'value': "${car.fuel}"
+        },
+        {
+          'name': 'Portes',
+          'icon': Icons.car_crash_outlined,
+          'value': "${car.numberOfDoors}"
+        }
+      ];
+      return features;
+    }
+
+    final featuresList = buildFeatures(car);
+
+    Widget buildBox(index) =>
+        Container(
           decoration: BoxDecoration(
             borderRadius: BorderRadius.all(Radius.circular(10)),
             color: AppTheme.backgroundColor,
@@ -484,14 +610,22 @@ class _CarDetailPageState extends State<CarDetailPage> {
                     width: 8,
                   ),
                   Text(featuresList[index]['name'],
-                      style: Theme.of(context).textTheme.bodyText2!.copyWith(
+                      style: Theme
+                          .of(context)
+                          .textTheme
+                          .bodyText2!
+                          .copyWith(
                           color: AppTheme.darkColor,
                           fontSize: 12,
                           fontWeight: FontWeight.w900)),
                 ],
               ),
               Text(featuresList[index]['value'],
-                  style: Theme.of(context).textTheme.bodyText2!.copyWith(
+                  style: Theme
+                      .of(context)
+                      .textTheme
+                      .bodyText2!
+                      .copyWith(
                       color: AppTheme.redColor,
                       fontSize: 16,
                       overflow: TextOverflow.ellipsis,
@@ -502,7 +636,11 @@ class _CarDetailPageState extends State<CarDetailPage> {
 
     return [
       Text('Caratéristiques Techniques',
-          style: Theme.of(context).textTheme.bodyText2!.copyWith(
+          style: Theme
+              .of(context)
+              .textTheme
+              .bodyText2!
+              .copyWith(
               color: AppTheme.darkColor,
               fontSize: 20,
               fontWeight: FontWeight.w900)),
@@ -529,21 +667,45 @@ class _CarDetailPageState extends State<CarDetailPage> {
       Row(
         children: [
           Text('Forfait Kilometrique',
-              style: Theme.of(context).textTheme.bodyText2!.copyWith(
+              style: Theme
+                  .of(context)
+                  .textTheme
+                  .bodyText2!
+                  .copyWith(
                   color: AppTheme.darkColor,
                   fontSize: 20,
                   fontWeight: FontWeight.w900)),
           const SizedBox(width: 8),
           InkWell(
-            onTap: (){
+            onTap: () {
               Get.defaultDialog(
+                backgroundColor: AppTheme.backgroundColor,
                 title: 'Forfait Kilometrique',
-                content: Text('250 Km sont inclus pour 1 journée, au dela du forfait +0,24 €/km vous sera ajouté.'),
+                titleStyle: Theme
+                    .of(context)
+                    .textTheme
+                    .bodyText2!
+                    .copyWith(
+                    color: AppTheme.darkColor,
+                    fontSize: 20,
+                    fontWeight: FontWeight.w900),
+                content: Text(
+                  '250 Km sont inclus pour 1 journée, au dela du forfait +0,24 €/km vous sera ajouté.',
+                  style: Theme
+                      .of(context)
+                      .textTheme
+                      .bodyText2!
+                      .copyWith(
+                      color: AppTheme.darkColor,
+                      fontSize: 14,
+                      fontWeight: FontWeight.w400),
+                  textAlign: TextAlign.center,),
                 textConfirm: 'Ok',
                 confirmTextColor: Colors.white,
                 onConfirm: () {
                   Get.back();
                 },
+                buttonColor: AppTheme.primaryColor,
               );
             },
             child: Icon(
@@ -571,7 +733,7 @@ class _CarDetailPageState extends State<CarDetailPage> {
     ];
   }
 
-  List<Widget> _buildCarCondition() {
+  List<Widget> _buildCarCondition(Car car) {
     return [
       Container(
         decoration: BoxDecoration(
@@ -585,27 +747,24 @@ class _CarDetailPageState extends State<CarDetailPage> {
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              'Condition de location',
-              style: Theme.of(context).textTheme.bodyText2!.copyWith(
-                  color: AppTheme.darkColor,
-                  fontSize: 16,
-                  fontWeight: FontWeight.w900),
-            ),
-            Text(
-              '• 18 ans minimum\n • Jeunes conducteurs autorisés de 0 à 3 ans',
-              style: Theme.of(context).textTheme.bodyText2!.copyWith(
+            ...List.generate(car.options!.length, (index) => Text(
+              '• ${car.options![index]}',
+              style: Theme
+                  .of(context)
+                  .textTheme
+                  .bodyText2!
+                  .copyWith(
                   color: AppTheme.darkColor,
                   fontSize: 12,
                   fontWeight: FontWeight.w500),
-            ) // name of seller wiil be here
+            )),
           ],
         ),
       ),
     ];
   }
 
-  Widget _buildSeller() {
+  Widget _buildSeller(Owner owner) {
     return Container(
       height: 120,
       margin: EdgeInsets.zero,
@@ -624,8 +783,8 @@ class _CarDetailPageState extends State<CarDetailPage> {
               width: 65,
               child: CircleAvatar(
                 backgroundColor: AppTheme.backgroundColor,
-                backgroundImage: const AssetImage(
-                  'assets/images/av.png',
+                backgroundImage: NetworkImage(
+                  owner.photo.toString(),
                 ),
               ),
             ),
@@ -639,15 +798,28 @@ class _CarDetailPageState extends State<CarDetailPage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    car.owner!.money.toString(),
-                    style: Theme.of(context).textTheme.bodyText2!.copyWith(
+                    owner.prenom.toString(),
+                    style: Theme
+                        .of(context)
+                        .textTheme
+                        .bodyText2!
+                        .copyWith(
                         color: AppTheme.darkColor,
                         fontSize: 16,
                         fontWeight: FontWeight.w900),
                   ),
                   Text(
-                    '${car.owner!.loginType} locations déja effectuées\nMembres depuis ${DateTime.parse(car.owner!.registrationDate!).year}',
-                    style: Theme.of(context).textTheme.bodyText2!.copyWith(
+                    '${owner.success_reservation_count} location${owner
+                        .success_reservation_count!.toInt() > 0
+                        ? 's'
+                        : ''} déja effectuées\nMembres depuis ${DateTime
+                        .parse(owner.registrationDate!)
+                        .year}',
+                    style: Theme
+                        .of(context)
+                        .textTheme
+                        .bodyText2!
+                        .copyWith(
                         color: AppTheme.darkColor,
                         fontSize: 12,
                         fontWeight: FontWeight.w500),
@@ -659,17 +831,22 @@ class _CarDetailPageState extends State<CarDetailPage> {
             ElevatedButton(
                 style: ButtonStyle(
                     backgroundColor:
-                        MaterialStateProperty.all(AppTheme.redColor),
+                    MaterialStateProperty.all(AppTheme.redColor),
                     shape: MaterialStateProperty.all(RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10)))),
                 onPressed: () {
-                  Get.to(() => SellerProfileScreen(
-                        seller: profileSeller,
+                  Get.to(() =>
+                      SellerProfileScreen(
+                        seller: owner,
                       ));
                 },
                 child: Text(
                   'Voir le Profil',
-                  style: Theme.of(context).textTheme.bodyText2!.copyWith(
+                  style: Theme
+                      .of(context)
+                      .textTheme
+                      .bodyText2!
+                      .copyWith(
                       color: AppTheme.backgroundColor,
                       fontSize: 12,
                       fontWeight: FontWeight.w500),
@@ -680,23 +857,47 @@ class _CarDetailPageState extends State<CarDetailPage> {
     );
   }
 
-  List<Widget> _buildDescription() {
+  List<Widget> _buildDescription(Car car) {
     return [
       Text('Description du véhicule',
-          style: Theme.of(context).textTheme.bodyText2!.copyWith(
+          style: Theme
+              .of(context)
+              .textTheme
+              .bodyText2!
+              .copyWith(
               color: AppTheme.darkColor,
               fontSize: 18,
               fontWeight: FontWeight.w900)),
       const SizedBox(height: 8),
       ExpandableText(
-        'Lorem  tempor incididunt ut labore et Lorem ipsum Lorem ipsum dolor sit amet',
+        """
+        ${car.description}
+        lorem ipsum dolor sit amet, consectetur adipiscing elit.
+        lorem ipsum dolor sit amet, consectetur adipiscing elit.
+        lorem ipsum dolor sit amet, consectetur adipiscing elit.
+        lorem ipsum dolor sit amet, consectetur adipiscing elit.
+        
+        lorem ipsum dolor sit amet, consectetur adipiscing elit.
+        lorem ipsum dolor sit amet, consectetur adipiscing elit.
+        lorem ipsum dolor sit amet, consectetur adipiscing elit.
+        lorem ipsum dolor sit amet, consectetur adipiscing elit.
+        
+        """,
         expandText: ' Voir plus',
-        style: Theme.of(context).textTheme.bodyText2!.copyWith(
+        style: Theme
+            .of(context)
+            .textTheme
+            .bodyText2!
+            .copyWith(
             color: AppTheme.darkColor,
             fontSize: 14,
             fontWeight: FontWeight.w600),
         collapseText: ' Voir moins',
-        linkStyle: Theme.of(context).textTheme.bodyText2!.copyWith(
+        linkStyle: Theme
+            .of(context)
+            .textTheme
+            .bodyText2!
+            .copyWith(
             color: AppTheme.redColor,
             fontSize: 14,
             fontWeight: FontWeight.w600),
@@ -732,7 +933,11 @@ class _CarDetailPageState extends State<CarDetailPage> {
                 ),
                 const SizedBox(width: 20),
                 Text('$_quantity',
-                    style: Theme.of(context).textTheme.bodyText2!.copyWith(
+                    style: Theme
+                        .of(context)
+                        .textTheme
+                        .bodyText2!
+                        .copyWith(
                         color: AppTheme.darkColor,
                         fontWeight: FontWeight.w700,
                         fontSize: 18)),
@@ -753,7 +958,8 @@ class _CarDetailPageState extends State<CarDetailPage> {
   }
 
   Widget _buldFloatBar() {
-    buildAddCard() => Container(
+    buildAddCard() =>
+        Container(
           height: 58,
           width: Get.width / 1.2,
           decoration: BoxDecoration(
@@ -774,7 +980,8 @@ class _CarDetailPageState extends State<CarDetailPage> {
               // splashColor: const Color(0xFFEEEEEE),
               onTap: () {
                 //got to next page
-                Get.to(() => BookingScreen(
+                Get.to(() =>
+                    BookingScreen(
                       car: car,
                     ));
               },

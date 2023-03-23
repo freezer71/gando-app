@@ -100,12 +100,13 @@ class EditArticleController extends GetxController{
         addressController.value.text = car.address!;
         descriptionController.value.text = car.description!;
         // selectedKilometer.value = car.mileage!;
-        // youngDriver.value = car.youngDriver!;
-        // selectedEquipments.addAll(car.equipment!.map<Equipment>((e) => Equipment.fromJson(jsonDecode(e))).toList());
+        youngDriver.value = car.youngDriver!;
+        printInfo(info: car.equipment!.toString());
+        // selectedEquipments.addAll(car.equipment!.map((e, index) => Equipment(index, e)).toList());
         // kilometerController.text = car.mileage!;
-        // dayPrice.text = car.pricePerDay!.toString();
-        // weekPrice.text = car.pricePerWeek!.toString();
-        // monthPrice.text = car.pricePerMonth!.toString();
+        dayPrice.value.text = car.pricePerDay!.toString();
+        weekPrice.value.text = car.pricePerWeek!.toString();
+        monthPrice.value.text = car.pricePerMonth!.toString();
 
         return car;
       }
@@ -114,6 +115,36 @@ class EditArticleController extends GetxController{
       printError(info: e.toString());
       Get.snackbar('Error', e.toString());
       return Car();
+    } finally {
+      isLoading(false);
+    }
+  }
+
+
+  // edit car
+  Future editCar() async {
+    try {
+      isLoading(true);
+      final res = await ApiProvider().putData('/annonce', {
+        'carId': carId.value,
+        'address': addressController.value.text,
+        'description': descriptionController.value.text,
+        'mileage': selectedKilometer.value,
+        'youngDriver': youngDriver.value,
+        'equipment': selectedEquipments.map((e) => e.name).toList(),
+        'pricePerDay': dayPrice.value.text,
+        'pricePerWeek': weekPrice.value.text,
+        'pricePerMonth': monthPrice.value.text,
+      });
+      final body = res.data;
+
+      if (res.statusCode == STATUS_OK) {
+        Get.snackbar('Success', 'Car edited successfully');
+        Get.back();
+      }
+    } catch (e) {
+      printError(info: e.toString());
+      Get.snackbar('Error', e.toString());
     } finally {
       isLoading(false);
     }

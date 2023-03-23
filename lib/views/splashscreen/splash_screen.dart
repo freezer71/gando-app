@@ -23,32 +23,17 @@ class _SplashScreenState extends State<SplashScreen>
   late AnimationController controller;
   late Animation<double> animation;
 
-  late bool isViewed;
+  bool isViewed = false;
   final box = GetStorage();
 
   @override
   void initState() {
     super.initState();
     //like fetching login data in serveur or check token validite
-    Future<void>.delayed(const Duration(milliseconds: 3000), () {
-     try{
-       // box.erase();
-       if(box.hasData('onboarding')){
-         isViewed = box.read('onboarding');
-       }else{
-         box.writeIfNull('onboarding', false);
-         isViewed = false;
-       }
-       isViewed ? Get.offAllNamed(Routes.preLogin) : Get.offAllNamed(Routes.welcome) ;
-     }catch(e){
-       printError(info: '$e');
-     }
-    });
+    Future<void>.delayed(const Duration(milliseconds: 3000));
     Future.delayed(const Duration(milliseconds: 1000), () {
-      setState(() {
-        brandingLogoPosition = 0.30;
-        _visible = true;
-      });
+      brandingLogoPosition = 0.30;
+      _visible = true;
     });
     controller = AnimationController(
         vsync: this, duration: const Duration(milliseconds: 1000));
