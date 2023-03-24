@@ -65,6 +65,9 @@
     <string>I need this permission to upload photo</string>
     <key>NSAppleMusicUsageDescription</key>
     <string>I need this permission to upload photo</string>
-
+    <key>NSTemporaryDirectory</key>
+    <string>$(TMPDIR)</string>
+    <key>NSPhotoLibraryAddUsageDescription</key>
+    <string>I need this permission to upload photo</string>
 </dict>
 </plist>
