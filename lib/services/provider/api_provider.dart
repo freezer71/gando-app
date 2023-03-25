@@ -80,7 +80,7 @@ class ApiProvider {
 
   Future<User> editProfilePicture({required Map<String, dynamic> data}) async {
     http.Response response =
-        await putData(apiUrl: RemoteEndpoint.editPictureUser, data: data);
+        await putData1(apiUrl: RemoteEndpoint.editPictureUser, data: data);
     if (response.statusCode == 200) {
       return User.fromJson(_parseBody(response.body)["data"]);
     } else {
@@ -100,7 +100,7 @@ class ApiProvider {
 
   Future<bool> editPassword({required Map<String, dynamic> data}) async {
     http.Response response =
-        await putData(apiUrl: RemoteEndpoint.editPasswordUser, data: data);
+        await putData1(apiUrl: RemoteEndpoint.editPasswordUser, data: data);
     if (response.statusCode == 200) {
       return true;
     } else {
@@ -110,7 +110,7 @@ class ApiProvider {
 
   Future<bool> initEditMail({required Map<String, dynamic> data}) async {
     http.Response response =
-        await putData(apiUrl: RemoteEndpoint.initEditMailUser, data: data);
+        await putData1(apiUrl: RemoteEndpoint.initEditMailUser, data: data);
     if (response.statusCode == 200) {
       return true;
     } else {
@@ -120,7 +120,7 @@ class ApiProvider {
 
   Future<bool> verifyMail({required Map<String, dynamic> data}) async {
     http.Response response =
-        await putData(apiUrl: RemoteEndpoint.verifyMailUser, data: data);
+        await putData1(apiUrl: RemoteEndpoint.verifyMailUser, data: data);
     if (response.statusCode == 200) {
       return true;
     } else {
@@ -130,7 +130,7 @@ class ApiProvider {
 
   Future<User> editNameAndDescription(
       {required Map<String, dynamic> data}) async {
-    http.Response response = await putData(
+    http.Response response = await putData1(
         apiUrl: RemoteEndpoint.editNameAndDescriptionUser, data: data);
     if (response.statusCode == 200) {
       return User.fromJson(_parseBody(response.body)["data"]);
@@ -149,7 +149,7 @@ class ApiProvider {
     }
   }
 
-  Future<http.Response> putData(
+  Future<http.Response> putData1(
       {required String apiUrl, required Map<String, dynamic> data}) async {
     await _getToken();
     Map<String, String> headers = {
@@ -217,14 +217,13 @@ class ApiProvider {
     }
   }
 
-
-  Future<Response> putData(url, formData) async{
+  Future<Response> putData(url, formData) async {
     await _getToken();
     finalUrl = "$API_URL$url";
     print('url : $finalUrl');
     print('postData : ${formData.toString()}');
 
-    try{
+    try {
       dio.options.headers["accept"] = "application/json";
       dio.options.headers["authorization"] = "Bearer $token";
       dio.options.headers['content-Type'] = 'multipart/form-data';
@@ -232,8 +231,8 @@ class ApiProvider {
       dio.options.receiveTimeout = 25000;
 
       return await dio.put(
-          finalUrl,
-          data: formData,
+        finalUrl,
+        data: formData,
       );
     } on DioError catch (e) {
       if (e.type == DioErrorType.response) {
@@ -243,7 +242,7 @@ class ApiProvider {
         } else if (statusCode == STATUS_INTERNAL_ERROR) {
           throw "Internal Server Error ${e.toString()}";
         } else {
-          throw e.response!.data.toString() ;
+          throw e.response!.data.toString();
         }
       } else if (e.type == DioErrorType.connectTimeout) {
         throw e.message.toString();
@@ -251,12 +250,10 @@ class ApiProvider {
         throw 'cancel';
       }
       throw Exception(connErr);
-
     } finally {
       dio.close();
     }
   }
-
 
   // add annonce
 

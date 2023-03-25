@@ -73,7 +73,9 @@ class AppPages {
     ),
     GetPage(
       name: Routes.CAR_DETAIL,
-      page: () => CarDetailPage(car: Get.arguments,),
+      page: () => CarDetailPage(
+        car: Get.arguments,
+      ),
       // binding: SplashScreenBinding(),
     ),
     GetPage(

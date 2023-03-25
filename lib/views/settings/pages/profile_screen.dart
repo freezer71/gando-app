@@ -92,8 +92,6 @@ class ProfileScreen extends GetView<UserController> {
                                             () => EditProfileScreen());
                                         controller.user.value = response;
                                         controller.setState();
-                                        print(
-                                            "responseko ${response.firstname}");
                                       },
                                       style: ButtonStyle(
                                         backgroundColor: MaterialStateProperty
@@ -147,13 +145,8 @@ class ProfileScreen extends GetView<UserController> {
                                   ),
                                   child: TextFormField(
                                     enabled: false,
-                                    initialValue: controller
-                                                    .user.value.description ==
-                                                null ||
-                                            controller.user.value.description ==
-                                                " "
-                                        ? "Aucun biographie"
-                                        : "${controller.user.value.description}",
+                                    controller:
+                                        controller.descriptionController,
                                     //  key: AdPostView.descriptionFieldKey,
                                     maxLines: 15,
                                     style: TextStyle(color: AppTheme.darkColor),

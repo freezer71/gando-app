@@ -1,6 +1,3 @@
-
-
-
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
@@ -87,7 +84,7 @@ class AccountSettingController extends GetxController {
       isLoading(true);
       final res = await ApiProvider().dioConnect('/user/deleteAccount', null);
 
-      if(res.statusCode == STATUS_OK) {
+      if (res.statusCode == STATUS_OK) {
         Get.offAllNamed('/login');
       }
     } catch (e) {

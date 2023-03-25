@@ -5,33 +5,24 @@ import 'package:gando/config/textstyle.dart';
 import 'package:gando/config/tools.dart';
 import 'package:gando/controllers/user/user_controller.dart';
 import 'package:gando/navigation.dart';
+import 'package:gando/services/auth/auth_services.dart';
 import 'package:gando/services/repositories/user_repository.dart';
 import 'package:get/get.dart';
 import 'package:get_it/get_it.dart';
 import '../../models/User.dart' as client;
 
 class EditProfilController extends GetxController {
-  UserController userController = Get.put(UserController());
-  TextEditingController firstNameController = TextEditingController();
-  TextEditingController lastNameController = TextEditingController();
-  TextEditingController descriptionController = TextEditingController();
+  TextEditingController firstNameController =
+      TextEditingController(text: Get.find<AuthService>().user.value.firstname);
+  TextEditingController lastNameController =
+      TextEditingController(text: Get.find<AuthService>().user.value.lastname);
+  TextEditingController descriptionController = TextEditingController(
+      text: Get.find<AuthService>().user.value.description);
   Rx<int> numberTextDescription = 0.obs;
-  Rx<client.User> user = client.User().obs;
+  Rx<client.User> user = Get.find<AuthService>().user;
   final Rx<bool> isLoading = false.obs;
   final Rx<bool> isSuccess = false.obs;
   final UserRepository repository = GetIt.instance.get<UserRepository>();
-
-  @override
-  Future<void> onInit() async {
-    firstNameController =
-        TextEditingController(text: userController.user.value.firstname);
-    lastNameController =
-        TextEditingController(text: userController.user.value.lastname);
-    descriptionController =
-        TextEditingController(text: userController.user.value.description);
-    user = userController.user;
-    super.onInit();
-  }
 
   //edit first name, lastname and description
   Future<void> editNameAndDescription() async {

@@ -20,28 +20,29 @@ class AuthService extends GetxService {
   void onReady() async {
     super.onReady();
     // check onboarding status
-    if(box.hasData('onboarding') && box.read('onboarding') != null){
-      if(box.read('onboarding')) {
+    if (box.hasData('onboarding') && box.read('onboarding') != null) {
+      if (box.read('onboarding')) {
         //check authentication status
-        if(box.hasData('token') && box.read('token') != null){
+        if (box.hasData('token') && box.read('token') != null) {
           box.write('authenticated', true);
-          if(box.read('authenticated')) {
+          if (box.read('authenticated')) {
             isLoggedIn(true);
-            printInfo(info: 'AuthService is ready');
-            printInfo(info: 'User is authenticated : ${box.read('authenticated')}');
+            printInfo(info: 'AuthService is ready ${user.value.id}');
+            printInfo(
+                info: 'User is authenticated : ${box.read('authenticated')}');
             printInfo(info: 'User token : ${box.read('token')}');
           }
           if (user.value.id == null) {
             await getUser();
           }
-        }else{
+        } else {
           await logout();
         }
-      }else{
+      } else {
         printInfo(info: 'User has not seen onboarding');
         Get.offAllNamed(Routes.welcome);
       }
-    }else{
+    } else {
       box.writeIfNull('onboarding', false);
       printInfo(info: 'User has not seen onboarding');
       Get.offAllNamed(Routes.welcome);

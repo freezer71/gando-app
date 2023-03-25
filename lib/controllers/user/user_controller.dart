@@ -25,6 +25,7 @@ class UserController extends GetxController {
   final RxList<Car> userCarList = <Car>[].obs;
   final Rx<TextEditingController> pinController = TextEditingController().obs;
   TextEditingController phoneTxtController = TextEditingController();
+  TextEditingController descriptionController = TextEditingController();
   late StreamSubscription otpEventSubsc;
   Rx<client.User> user = Get.find<AuthService>().user;
   String countryCode = "+33";
@@ -44,6 +45,7 @@ class UserController extends GetxController {
     // check if called route == annonce
     // userID(Get.parameters['id']!);
     getCarList = getUserCarList();
+    setState();
     // check called route name and get user id
   }
 
@@ -55,13 +57,17 @@ class UserController extends GetxController {
   }
 
   void setState() {
+    print("user.value.description ${user.value.description}");
+    descriptionController.text =
+        user.value.description == null || user.value.description == " "
+            ? "Aucun biographie"
+            : "${user.value.description}";
     update();
   }
 
   //get user by id
   Future<client.User> getUserById() async {
     try {
-      print("idUser $idUser");
       client.User _user = await repository.getUserById(id: idUser!);
       user.value = _user;
       return _user;
