@@ -20,6 +20,7 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 
 import '../../models/Equipment.dart';
+import '../../models/CarBrandModel.dart';
 import '../../navigation.dart';
 
 class AddArticlesController extends GetxController {
@@ -264,7 +265,6 @@ class AddArticlesController extends GetxController {
 
   final RxList<MultiSelectItem> items = <MultiSelectItem>[].obs;
   RxList<String> selectedEquipments = <String>[].obs;
-
   final RxString selectedKilometer = ''.obs;
   final RxString selectedFuel = ''.obs;
   RxBool gearboxValue = true.obs; // manual = true, automatic = false
@@ -274,6 +274,8 @@ class AddArticlesController extends GetxController {
   RxString selectedDayTech = ''.obs;
   RxString selectedMonthTech = ''.obs;
   RxString selectedYearTech = ''.obs;
+
+
   // ---- step 1 -----------------//
 
   // ------------- step 2 ---------//
