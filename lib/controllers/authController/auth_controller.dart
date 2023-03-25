@@ -32,14 +32,9 @@ class AuthController extends GetxController {
   }
 
   @override
-  void onReady() {
-    super.onReady();
-  }
-
-  @override
   void dispose() {
     forgotEmailController.value.dispose();
-    forgotPasswordFormKey.currentState?.reset();
+    forgotPasswordFormKey.currentState!.reset();
     recoverPassword.value.dispose();
     confirmRecoverPassword.value.dispose();
     pinController.value.dispose();
@@ -48,22 +43,22 @@ class AuthController extends GetxController {
 
 
   //forgot password
-  Future<void> forgotPassword() async {
+  Future forgotPassword() async {
+    isLoading(true);
     try {
-      isLoading(true);
       final data = {
         'email': forgotEmailController.value.text,
       };
       final res = await ApiProvider().dioConnect('/authentication/sendRecoveryCode', data);
-      final body = res.data;
+      // final body = res.data;
+
       if (res.statusCode == STATUS_OK) {
-        printInfo(info: '${body['data']}');
-        return Get.offNamed(Routes.resetPwd, arguments: {'email': forgotEmailController.value.text});
+        Get.offNamed(Routes.resetPwd, arguments: {'email': forgotEmailController.value.text});
       }
     } catch (e) {
       Get.defaultDialog(
           title: 'Notification',
-          content: const Text('Echec de connexion, réessayer s\'il vous plait'));
+          content: Text("$e"));
       printError(info: '$e');
     } finally {
       isLoading(false);
@@ -77,7 +72,7 @@ class AuthController extends GetxController {
       final data = {
         'email': Get.arguments['email'],
         'code': Get.arguments['otp'],
-        'password': recoverPassword.value.text,
+        'newPassword': recoverPassword.value.text,
         'confirmPassword': confirmRecoverPassword.value.text,
       };
       final res = await ApiProvider().dioConnect('/authentication/resetPassword', data);
@@ -98,23 +93,20 @@ class AuthController extends GetxController {
 
   //verify pin
   Future<void> verifyPin() async {
+    isLoading(true);
+    final data = {
+      'validedCode': pinController.value.text,
+    };
     try {
-      isLoading(true);
-      final data = {
-        'validedCode': pinController.value.text,
-      };
-
-      final res = await ApiProvider().dioConnect('/authentication/verifyEmail', data);
-      final body = res.data;
+      final res = await ApiProvider().dioConnect('/user/verifyEmail', data);
 
       if (res.statusCode == STATUS_OK) {
-        printInfo(info: '${body['data']}');
-        return Get.offNamed(Routes.home);
+        return Get.offNamed(Routes.newPwd);
       }
     } catch (e) {
       Get.defaultDialog(
           title: 'Notification',
-          content: const Text('Echec de connexion, réessayer s\'il vous plait'));
+          content: Text('$e'));
       printError(info: '$e');
     } finally {
       isLoading(false);

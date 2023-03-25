@@ -6,6 +6,8 @@
 // import 'package:finpay/view/splash/splash.dart';
 // import 'package:finpay/view/splash/welcome_screen.dart';
 // import 'package:finpay/view/tab_screen.dart';
+import 'package:gando/controllers/car_controller.dart';
+import 'package:gando/views/admin/articles_list_screen.dart';
 import 'package:flutter/foundation.dart';
 import 'package:gando/bindings/profile_binding.dart';
 import 'package:gando/views/admin/verify_owner_screen.dart';
@@ -27,6 +29,7 @@ import 'package:gando/views/settings/pages/edit_profile_screen.dart';
 import 'package:gando/views/settings/pages/profile_screen.dart';
 import 'package:gando/views/settings/pages/verify_mail_screen.dart';
 import 'package:gando/views/settings/settings_account.dart';
+import 'package:gando/views/products/detail/components/car_detail.dart';
 import 'package:gando/views/splashscreen/splash_screen.dart';
 import 'package:get/get.dart';
 
@@ -69,6 +72,11 @@ class AppPages {
       // binding: SplashScreenBinding(),
     ),
     GetPage(
+      name: Routes.CAR_DETAIL,
+      page: () => CarDetailPage(car: Get.arguments,),
+      // binding: SplashScreenBinding(),
+    ),
+    GetPage(
       name: Routes.welcome,
       page: () => OnboardingScreen(),
       middlewares: [
@@ -84,6 +92,13 @@ class AppPages {
       name: Routes.home,
       page: () => const BottomNavigationBarPage(),
       binding: InitBindings(),
+      middlewares: [
+        AuthMiddlewares(),
+      ],
+    ),
+    GetPage(
+      name: Routes.MY_ANNONCE,
+      page: () => ArticleListScreen(),
       middlewares: [
         AuthMiddlewares(),
       ],
@@ -150,6 +165,8 @@ abstract class Routes {
 
   static const home = '/home';
   static const newPwd = '/set-new-password';
+  static const CAR_DETAIL = '/car-detail';
+  static const MY_ANNONCE = '/user/annonce';
   static const resetPwd = '/reset-password';
   static const forgotPwd = '/forgot-password';
   static const welcome = '/welcome';

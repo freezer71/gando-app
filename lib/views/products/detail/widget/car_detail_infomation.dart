@@ -55,14 +55,7 @@ class NextCarInfo extends StatelessWidget {
       children: [
         Column(
           children: [
-            // Container(
-            //   height: 120,
-            //   padding: EdgeInsets.symmetric(vertical: 15, horizontal: 15),
-            //   decoration: BoxDecoration(
-            //     borderRadius: const BorderRadius.only(topLeft: Radius.circular(20), topRight: Radius.circular(20)),
-            //       image: DecorationImage(image: AssetImage(car.image,), alignment: Alignment.center, repeat: ImageRepeat.noRepeat, fit: BoxFit.cover)),
-            // ),
-            Container(
+              car.note!.toInt() > 0 ? Container(
               padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.start,
@@ -87,14 +80,14 @@ class NextCarInfo extends StatelessWidget {
                       ],
                       borderRadius: const BorderRadius.only(topRight: Radius.circular(10), bottomRight: Radius.circular(10))
                     ),
-                    child: Text('${car.note ?? 0} /5', style: Theme.of(context).textTheme.bodyText2!.copyWith(
+                    child: Text('${car.note!.toDouble()} /5', style: Theme.of(context).textTheme.bodyText2!.copyWith(
                         color: AppTheme.darkColor,
                         fontSize: 15,
                         fontWeight: FontWeight.bold)),
                   ).marginZero
                 ],
               ),
-            )
+            ) : Container(),
           ],
         ),
         Container(

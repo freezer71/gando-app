@@ -14,7 +14,7 @@ const String MAP_STYLE = 'mapbox://styles/caviaros/clc1oz5yc001p14ox3uvw1ynu';
 
 //API PROVIDER ----------------------
 const String APP_URL ='https://mygando.com';
-const String API_URL = kDebugMode ? 'https://dev.mygando.com' : 'https://api.mygando.com';
+const String API_URL = !kDebugMode ? 'https://dev.mygando.com' : 'https://api.mygando.com';
 const String APP_FILE = 'https://mygando.com/file/public/';
 
 const int STATUS_OK = 200;

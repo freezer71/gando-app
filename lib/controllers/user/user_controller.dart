@@ -41,6 +41,8 @@ class UserController extends GetxController {
   @override
   Future<void> onInit() async {
     super.onInit();
+    // check if called route == annonce
+    // userID(Get.parameters['id']!);
     getCarList = getUserCarList();
     // check called route name and get user id
   }

@@ -36,8 +36,7 @@ class EditArticleScreen extends GetView<EditArticleController> {
       init: EditArticleController(id: car.id),
       builder: (logic) {
         return Scaffold(
-          backgroundColor: AppTheme.backgroundColor.withOpacity(
-              0.9),
+          backgroundColor: AppTheme.backgroundColor,
           appBar: CustomAppBar(
             leading: IconButton(
               onPressed: () {
@@ -309,9 +308,7 @@ class EditArticleScreen extends GetView<EditArticleController> {
       padding: EdgeInsets.symmetric(horizontal: 5, vertical: 20),
       child: Column(
         children: [
-          Divider(
-            color: AppTheme.darkColor,
-          ),
+          Divider(color: AppTheme.darkColor,),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -324,21 +321,24 @@ class EditArticleScreen extends GetView<EditArticleController> {
                       color: AppTheme.darkColor,
                       fontSize: 20,
                       fontWeight: FontWeight.w900)),
-              const SizedBox(
-                width: 10,
-              ),
-              Switch(
-                  value: controller.youngDriver.value,
-                  onChanged: (v) {
-                    controller.youngDriver.value = v;
-                  })
+              const SizedBox(width: 10,),
+              Obx(() => Switch(
+                value: controller.youngDriver.value,
+                onChanged: (value) {
+                  controller.youngDriver.value = value;
+                },
+                activeColor: AppTheme.primaryColor,
+                activeTrackColor: AppTheme.primaryColor.withOpacity(0.5),
+                inactiveThumbColor: AppTheme.redColor,
+                inactiveTrackColor: AppTheme.redColor.withOpacity(0.5),
+              ))
             ],
           ),
           const SizedBox(
             height: 10,
           ),
           Text(
-              'En cochant cette option, vous autorisezes jeunes conducteurs de 0 à 3 ans\nd\'experience loués votre véhicule. En contreparie, 16% sera ajoutés en plus \nsur le prix final de la location',
+              'En cochant cette option, vous authorisés les jeunes conducteurs de 0 à 3 ans d\'experience loués\nvotre véhicule. En contreparie, 20% sera ajoutés en plus sur le prix final de la location',
               style: Theme
                   .of(context)
                   .textTheme

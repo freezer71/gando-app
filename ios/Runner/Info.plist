@@ -50,7 +50,7 @@
 	<key>LSRequiresIPhoneOS</key>
     <true/>
     <key>NSCameraUsageDescription</key>
-    <string>I need this permission to upload photo</string>
+    <string>Nous demandons l'autorisation d'accéder à l'appareil photo et aux photos de votre appareil afin de vous permettre de prendre et de sauvegarder des photos directement depuis notre application. Vos photos ne seront pas utilisées à des fins autres que celles liées à l'utilisation de l'application, et ne seront jamais partagées avec des tiers sans votre consentement explicite.</string>
     <key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
     <string>Always and when in use!</string>
     <key>NSLocationAlwaysUsageDescription</key>
@@ -58,10 +58,16 @@
     <key>NSLocationUsageDescription</key>
     <string>Older devices need location.</string>
     <key>NSLocationWhenInUseUsageDescription</key>
-    <string>Need location when in use</string>
+    <string>Nous demandons l'autorisation d'accéder à votre position afin de vous permettre de trouver les points de collecte les plus proches de chez vous. Vos données de localisation ne seront pas utilisées à des fins autres que celles liées à l'utilisation de l'application, et ne seront jamais partagées avec des tiers sans votre consentement explicite.</string>
     <key>NSMicrophoneUsageDescription</key>
-    <string>I need this permission to upload photo</string>
+    <string>Nous demandons l'autorisation d'accéder à votre microphone afin de vous permettre de prendre et de sauvegarder des photos directement depuis notre application. Vos photos ne seront pas utilisées à des fins autres que celles liées à l'utilisation de l'application, et ne seront jamais partagées avec des tiers sans votre consentent explicite.</string>
     <key>NSPhotoLibraryUsageDescription</key>
-    <string>I need this permission to upload photo</string>
+    <string>Nous demandons l'autorisation d'accéder à l'appareil photo et aux photos de votre appareil afin de vous permettre de prendre et de sauvegarder des photos directement depuis notre application. Vos photos ne seront pas utilisées à des fins autres que celles liées à l'utilisation de l'application, et ne seront jamais partagées avec des tiers sans votre consentement explicite.</string>
+    <key>NSAppleMusicUsageDescription</key>
+    <string>Nous demandons l'autorisation d'accéder à l'appareil photo et aux photos de votre appareil afin de vous permettre de prendre et de sauvegarder des photos directement depuis notre application. Vos photos ne seront pas utilisées à des fins autres que celles liées à l'utilisation de l'application, et ne seront jamais partagées avec des tiers sans votre consentement explicite.</string>
+    <key>NSTemporaryDirectory</key>
+    <string>$(TMPDIR)</string>
+    <key>NSPhotoLibraryAddUsageDescription</key>
+    <string>Nous demandons l'autorisation d'accéder à l'appareil photo et aux photos de votre appareil afin de vous permettre de prendre et de sauvegarder des photos directement depuis notre application. Vos photos ne seront pas utilisées à des fins autres que celles liées à l'utilisation de l'application, et ne seront jamais partagées avec des tiers sans votre consentement explicite.</string>
 </dict>
 </plist>

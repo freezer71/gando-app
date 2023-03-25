@@ -42,6 +42,24 @@ class CarService extends GetxService {
     super.onClose();
   }
 
+  Future getCarBrands() async {
+    try {
+      final res = await ApiProvider().getData('/utils/carMarque');
+      final body = jsonDecode(res.body)['data'];
+
+      printInfo(info: 'CAR BRANDS ========>  : ${body}');
+
+      if (res.statusCode == STATUS_OK) {
+        return body;
+      }
+    } catch (e) {
+      Get.snackbar('Error', e.toString(),snackPosition: SnackPosition.BOTTOM, duration: const Duration(seconds: 5));
+      return [];
+    } finally {
+      isLoading(false);
+    }
+  }
+
   Future<List<Car>> fetchUserCarList() async {
     try {
       final res = await ApiProvider().getData('/annonce/userAnnonce');

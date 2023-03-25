@@ -157,9 +157,6 @@ class Step3State extends State<Step3> {
           },
         ),
         const SizedBox(height: 20),
-
-        // dropdown2 zip code with seach bar only int max 5
-
         FutureBuilder(
             future: c.fetchZipCode,
             initialData: null,

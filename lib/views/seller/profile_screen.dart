@@ -36,7 +36,7 @@ class SellerProfileScreen extends StatelessWidget {
                     height: 100,
                     child: CircleAvatar(
                       backgroundColor: AppTheme.backgroundColor,
-                      backgroundImage: AssetImage(
+                      backgroundImage: NetworkImage(
                         seller.photo!,
                       ),
                     ),
@@ -60,7 +60,7 @@ class SellerProfileScreen extends StatelessWidget {
                         width: 10,
                       ),
                       Text(
-                          seller.isUserValidated!
+                          seller.isUserValidated == true
                               ? 'Profil recommandé'
                               : 'Pas recommandé',
                           style: Theme.of(context)

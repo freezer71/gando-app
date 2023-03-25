@@ -23,13 +23,6 @@ class SocialAuthController extends GetxController{
   final checkAuth = Get.put(AuthService());
   final gf = GlobalFunction();
 
-
-  @override
-  void onReady() {
-    checkAuth.isLoggedIn.value ? Get.offNamed(Routes.home) : null;
-    super.onReady();
-  }
-
   Future signInWithSocial(String from) async{
     isLoading(true);
 

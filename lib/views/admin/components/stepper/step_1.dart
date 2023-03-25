@@ -3,6 +3,8 @@ import 'package:dropdown_button2/custom_dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:gando/controllers/addArticles/add_articles_controller.dart';
+import 'package:gando/controllers/car/car_brand_controller.dart';
+import 'package:gando/models/CarBrandModel.dart';
 import 'package:gando/models/Equipment.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
@@ -26,6 +28,7 @@ class Step1State extends State<Step1> {
   static TextEditingController controllerGender = TextEditingController();
 
   final c = Get.put(AddArticlesController());
+  final brandController = Get.put(CarBrandController());
 
   @override
   void initState() {
@@ -52,98 +55,176 @@ class Step1State extends State<Step1> {
     });
   }
 
-  List<Widget> _buildBodyTextField(BuildContext context) =>
-      [
-        CustomTextFormField(
-            key: Get.keys[0],
-            controller: c.brandController.value,
-            keyboardType: TextInputType.text,
-            validator: (value) {
-              if (!value!.isNotEmpty) {
-                return "Marque invalid";
-                // return 'amount Is not valid';
-              }
-              return null;
-            },
-            formatter: [
-              LengthLimitingTextInputFormatter(60),
-              FilteringTextInputFormatter.singleLineFormatter
-            ],
-            onChanged: (p) {
-              print('saved $p');
-            },
-            onSaved: (p) {
-              print('saved $p');
-            },
-            hintText: 'Marque'),
-        const SizedBox(height: 20),
-        CustomTextFormField(
-            key: Get.keys[1],
-            controller: c.modelController.value,
-            keyboardType: TextInputType.text,
-            validator: (value) {
-              if (!value!.isNotEmpty) {
-                return "Modèle invalid";
-                // return 'amount Is not valid';
-              }
-              return null;
-            },
-            formatter: [
-              LengthLimitingTextInputFormatter(60),
-              FilteringTextInputFormatter.singleLineFormatter
-            ],
-            onChanged: (p) {
-              print('saved $p');
-            },
-            onSaved: (p) {
-              print('saved $p');
-            },
-            hintText: 'Modèle'),
-        const SizedBox(height: 20),
-        CustomTextFormField(
-            key: Get.keys[2],
-            controller: c.typeController.value,
-            keyboardType: TextInputType.text,
-            validator: (value) {
-              if (!value!.isNotEmpty) {
-                return "Type invalid";
-                // return 'amount Is not valid';
-              }
-              return null;
-            },
-            formatter: [
-              LengthLimitingTextInputFormatter(60),
-              FilteringTextInputFormatter.singleLineFormatter
-            ],
-            onChanged: (p) {
-              print('saved $p');
-            },
-            onSaved: (p) {
-              print('saved $p');
-            },
-            hintText: 'Type'),
-        const SizedBox(height: 20),
-        _buildKilometer(context),
-        const SizedBox(height: 20),
-        _buildYearPlate(),
-        const SizedBox(height: 20),
-        _buildNumberPlate(),
-        const SizedBox(height: 20),
-        _buildFuel(),
-        const SizedBox(height: 20),
-        _buildGearBox(),
-        const SizedBox(height: 30),
-        _buildTechnicalControl(),
-        const SizedBox(height: 30),
-        _buildTechnicalControlPhoto(),
-        const SizedBox(height: 30),
-        ..._buildEquipment(context),
-        const SizedBox(height: 30),
-        _buildPlaces(),
-        const SizedBox(height: 30),
-        _buildDoors(),
-        const SizedBox(height: 30),
-      ];
+  List<Widget> _buildBodyTextField(BuildContext context) {
+
+    return [
+      GetBuilder<CarBrandController>(
+        assignId: true,
+        init: CarBrandController(),
+        builder: (controller) {
+          return FutureBuilder(
+              future: controller.futureGetCarBrands,
+              initialData: null,
+              builder: (BuildContext context, snapshot) {
+                // state
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const Center(child: CircularProgressIndicator());
+                } else if (snapshot.hasError) {
+                  return Center(child: Text('Error: ${snapshot.error}'));
+                } else {
+                  printInfo(info: "SNAP DATA ===> ${snapshot.data}");
+
+                  if (snapshot.data != null) {
+                    return Obx(() {
+                      return Column(
+                        children: [
+                          CustomDropdownButton2(
+                            key: Get.keys[0],
+                            hint: 'Marque',
+                            // dropdownPadding: const EdgeInsets.symmetric(horizontal: 10),
+                            dropdownDecoration: BoxDecoration(
+                              color: AppTheme.darkColor,
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            dropdownWidth: Get.width - 40,
+                            buttonWidth: Get.width,
+                            buttonHeight: 60,
+                            buttonDecoration: BoxDecoration(
+                                color: AppTheme.darkColor.withOpacity(0.8),
+                                borderRadius: BorderRadius.circular(30)),
+                            dropdownItems: controller.getBrandNames(snapshot.data),
+                            value: controller.selectedBrand.value,
+                            // value: selectedEquipment,
+                            onChanged: (value) {
+                              controller.selectedBrand(value);
+                              // update state
+                              print('selected BRAND = $value');
+                            },
+                          ),
+                          const SizedBox(height: 20),
+                          CustomDropdownButton2(
+                            key: Get.keys[1],
+                            hint: 'Model',
+                            // dropdownPadding: const EdgeInsets.symmetric(horizontal: 10),
+                            dropdownDecoration: BoxDecoration(
+                              color: AppTheme.darkColor,
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            dropdownWidth: Get.width - 40,
+                            buttonWidth: Get.width,
+                            buttonHeight: 60,
+                            buttonDecoration: BoxDecoration(
+                                color: AppTheme.darkColor.withOpacity(0.8),
+                                borderRadius: BorderRadius.circular(30)),
+                            dropdownItems: controller.getModelNames(snapshot.data),
+                            value: controller.selectedModel.value,
+                            // value: selectedEquipment,
+                            onChanged: (value) {
+                              controller.selectedModel(value);
+                              print('selected MODEL = $value');
+                            },
+                          ),
+                        ],
+                      );
+                    });
+                  } else {
+                    return Container();
+                  }
+                }
+              });
+        },
+      ),
+      // CustomTextFormField(
+      //     key: Get.keys[0],
+      //     controller: c.brandController.value,
+      //     keyboardType: TextInputType.text,
+      //     validator: (value) {
+      //       if (!value!.isNotEmpty) {
+      //         return "Marque invalid";
+      //         // return 'amount Is not valid';
+      //       }
+      //       return null;
+      //     },
+      //     formatter: [
+      //       LengthLimitingTextInputFormatter(60),
+      //       FilteringTextInputFormatter.singleLineFormatter
+      //     ],
+      //     onChanged: (p) {
+      //       print('saved $p');
+      //     },
+      //     onSaved: (p) {
+      //       print('saved $p');
+      //     },
+      //     hintText: 'Marque'),
+      // const SizedBox(height: 20),
+      // CustomTextFormField(
+      //     key: Get.keys[1],
+      //     controller: c.modelController.value,
+      //     keyboardType: TextInputType.text,
+      //     validator: (value) {
+      //       if (!value!.isNotEmpty) {
+      //         return "Modèle invalid";
+      //         // return 'amount Is not valid';
+      //       }
+      //       return null;
+      //     },
+      //     formatter: [
+      //       LengthLimitingTextInputFormatter(60),
+      //       FilteringTextInputFormatter.singleLineFormatter
+      //     ],
+      //     onChanged: (p) {
+      //       print('saved $p');
+      //     },
+      //     onSaved: (p) {
+      //       print('saved $p');
+      //     },
+      //     hintText: 'Modèle'),
+      const SizedBox(height: 20),
+      CustomTextFormField(
+          key: Get.keys[2],
+          controller: c.typeController.value,
+          keyboardType: TextInputType.text,
+          validator: (value) {
+            if (!value!.isNotEmpty) {
+              return "Type invalid";
+              // return 'amount Is not valid';
+            }
+            return null;
+          },
+          formatter: [
+            LengthLimitingTextInputFormatter(60),
+            FilteringTextInputFormatter.singleLineFormatter
+          ],
+          onChanged: (p) {
+            print('saved $p');
+          },
+          onSaved: (p) {
+            print('saved $p');
+          },
+          hintText: 'Type'),
+      const SizedBox(height: 20),
+      _buildKilometer(context),
+      const SizedBox(height: 20),
+      _buildYearPlate(),
+      const SizedBox(height: 20),
+      _buildNumberPlate(),
+      const SizedBox(height: 20),
+      _buildFuel(),
+      const SizedBox(height: 20),
+      _buildGearBox(),
+      const SizedBox(height: 30),
+      _buildTechnicalControl(),
+      const SizedBox(height: 30),
+      _buildTechnicalControlPhoto(),
+      const SizedBox(height: 30),
+      ..._buildEquipment(context),
+      const SizedBox(height: 30),
+      _buildPlaces(),
+      const SizedBox(height: 30),
+      _buildDoors(),
+      const SizedBox(height: 30),
+    ];
+  }
 
   Widget _buildYearPlate() {
     return Container(
@@ -333,74 +414,78 @@ class Step1State extends State<Step1> {
             child: Row(
               children: [
                 Expanded(
-                    child: ElevatedButton(
-                        style: ButtonStyle(
-                          backgroundColor:
-                          MaterialStateProperty.resolveWith<Color>(
-                                (Set<MaterialState> states) =>
-                            c.gearboxValue.value
-                                ? AppTheme.light
-                                : AppTheme.primaryColor,
-                          ),
-                          overlayColor:
-                          MaterialStateProperty.all(Colors.transparent),
-                          shape: MaterialStateProperty.all(RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(20.0),
-                          )),
+                  child: ElevatedButton(
+                      style: ButtonStyle(
+                        backgroundColor:
+                        MaterialStateProperty.resolveWith<Color>(
+                              (Set<MaterialState> states) =>
+                          c.gearboxValue.value
+                              ? AppTheme.light
+                              : AppTheme.primaryColor,
                         ),
-                        onPressed: () {
-                          c.gearboxValue.value = !c.gearboxValue.value;
-                        },
-                        child: SizedBox(
-                          width: Get.width / 1.5,
-                          height: 50,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text("Automatique",
-                                  style: TextStyle(
-                                      fontSize: 15,
-                                      color: c.gearboxValue.value
-                                          ? AppTheme.darkColor
-                                          : AppTheme.light)),
-                            ],
-                          ),
-                        ))),
-                SizedBox(width: 20,),
+                        overlayColor:
+                        MaterialStateProperty.all(Colors.transparent),
+                        shape: MaterialStateProperty.all(RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20.0),
+                        )),
+                      ),
+                      onPressed: () {
+                        c.gearboxValue.value = !c.gearboxValue.value;
+                      },
+                      child: SizedBox(
+                        width: Get.width / 1.5,
+                        height: 50,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text("Automatique",
+                                style: TextStyle(
+                                    fontSize: 15,
+                                    color: c.gearboxValue.value
+                                        ? AppTheme.darkColor
+                                        : AppTheme.light)),
+                          ],
+                        ),
+                      )),
+                ),
+                const SizedBox(
+                  width: 10,
+                ),
                 Expanded(
-                    child: ElevatedButton(
-                        style: ButtonStyle(
-                          backgroundColor:
-                          MaterialStateProperty.resolveWith<Color>(
-                                (Set<MaterialState> states) =>
-                            !c.gearboxValue.value
-                                ? AppTheme.light
-                                : AppTheme.primaryColor,
-                          ),
-                          overlayColor:
-                          MaterialStateProperty.all(Colors.transparent),
-                          shape: MaterialStateProperty.all(RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(20.0),
-                          )),
+                  child: ElevatedButton(
+                      style: ButtonStyle(
+                        backgroundColor:
+                        MaterialStateProperty.resolveWith<Color>(
+                              (Set<MaterialState> states) =>
+                          !c.gearboxValue.value
+                              ? AppTheme.light
+                              : AppTheme.primaryColor,
                         ),
-                        onPressed: () {
-                          c.gearboxValue.value = !c.gearboxValue.value;
-                        },
-                        child: SizedBox(
-                          width: Get.width / 1.5,
-                          height: 50,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text("Manuelle",
-                                  style: TextStyle(
-                                      fontSize: 15,
-                                      color: !c.gearboxValue.value
-                                          ? AppTheme.darkColor
-                                          : AppTheme.light)),
-                            ],
-                          ),
-                        ))),
+                        overlayColor:
+                        MaterialStateProperty.all(Colors.transparent),
+                        shape: MaterialStateProperty.all(RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20.0),
+                        )),
+                      ),
+                      onPressed: () {
+                        c.gearboxValue.value = !c.gearboxValue.value;
+                      },
+                      child: SizedBox(
+                        width: Get.width / 1.5,
+                        height: 50,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text("Manuelle",
+                                style: TextStyle(
+                                    fontSize: 15,
+                                    color: !c.gearboxValue.value
+                                        ? AppTheme.darkColor
+                                        : AppTheme.light)),
+                          ],
+                        ),
+                      )),
+                ),
               ],
             ),
           )
@@ -933,8 +1018,7 @@ class Step1State extends State<Step1> {
             ),
             Padding(
               padding: const EdgeInsets.all(4.0),
-              child: Expanded(child:
-              ElevatedButton(
+              child: ElevatedButton(
                 style: ButtonStyle(
                   backgroundColor:
                   MaterialStateProperty.all(AppTheme.primaryColor),
@@ -957,7 +1041,6 @@ class Step1State extends State<Step1> {
                       'Gallery', style: TextStyle(color: Colors.black),),
                   ],
                 ),
-              ),
               ),
             ),
           ],
@@ -1034,11 +1117,15 @@ class CustomDropdownDatePicker {
         child: DropdownButton<String>(
           hint: Text(
             hint,
-            style: Theme.of(context).textTheme.bodyText2!.copyWith(
-                  color: AppTheme.darkColor,
-                  fontSize: 16,
-                  fontWeight: FontWeight.w500,
-                ),
+            style: Theme
+                .of(context)
+                .textTheme
+                .bodyText2!
+                .copyWith(
+              color: AppTheme.darkColor,
+              fontSize: 16,
+              fontWeight: FontWeight.w500,
+            ),
           ),
           dropdownColor: AppTheme.darkColor,
           icon: Icon(
@@ -1049,11 +1136,15 @@ class CustomDropdownDatePicker {
           value: value,
           items: dropdownItems,
           onChanged: onChanged,
-          style: Theme.of(context).textTheme.bodyText2!.copyWith(
-                color: AppTheme.darkColor,
-                fontSize: 16,
-                fontWeight: FontWeight.w500,
-              ),
+          style: Theme
+              .of(context)
+              .textTheme
+              .bodyText2!
+              .copyWith(
+            color: AppTheme.darkColor,
+            fontSize: 16,
+            fontWeight: FontWeight.w500,
+          ),
         ),
       ),
     );
