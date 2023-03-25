@@ -102,8 +102,6 @@ class Step1State extends State<Step1> {
                             onChanged: (value) {
                               controller.changeBrand(value!);
                               c.brandController.value.text = value;
-                              // update state
-                              print('selected BRAND = $value');
                             },
                           ),
                           const SizedBox(height: 20),
@@ -126,7 +124,6 @@ class Step1State extends State<Step1> {
                             onChanged: (value) {
                               controller.changeModel(value!);
                               c.modelController.value.text = value;
-                              print('selected MODEL = $value');
                             },
                           ),
                         ],

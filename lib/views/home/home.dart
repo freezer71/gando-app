@@ -468,8 +468,7 @@ class _HomeScreenState extends State<HomeScreen>
                       scrollDirection: Axis.vertical,
                       padding: const EdgeInsets.only(top: 180, bottom: 120),
                       itemCount: controller.carList.length,
-                      itemBuilder: (context, index) =>
-                          HomeCardCar(index, controller.carList[index]),
+                      itemBuilder: (context, index) => HomeCardCar(index, controller.carList[index]),
                     );
                   }),
             ),
