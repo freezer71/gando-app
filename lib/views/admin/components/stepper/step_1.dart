@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:gando/controllers/addArticles/add_articles_controller.dart';
 import 'package:gando/controllers/car/car_brand_controller.dart';
+import 'package:gando/helpers/global_function.dart';
 import 'package:gando/models/CarBrandModel.dart';
 import 'package:gando/models/Equipment.dart';
 import 'package:get/get.dart';
@@ -60,8 +61,11 @@ class Step1State extends State<Step1> {
     return [
       GetBuilder<CarBrandController>(
         assignId: true,
+        didUpdateWidget: (oldWidget, newWidget) {
+          printInfo(info: "DID UPDATE WIDGET");
+        },
         init: CarBrandController(),
-        builder: (controller) {
+        builder: (CarBrandController controller) {
           return FutureBuilder(
               future: controller.futureGetCarBrands,
               initialData: null,
@@ -96,7 +100,8 @@ class Step1State extends State<Step1> {
                             value: controller.selectedBrand.value,
                             // value: selectedEquipment,
                             onChanged: (value) {
-                              controller.selectedBrand(value);
+                              controller.changeBrand(value!);
+                              c.brandController.value.text = value;
                               // update state
                               print('selected BRAND = $value');
                             },
@@ -116,11 +121,11 @@ class Step1State extends State<Step1> {
                             buttonDecoration: BoxDecoration(
                                 color: AppTheme.darkColor.withOpacity(0.8),
                                 borderRadius: BorderRadius.circular(30)),
-                            dropdownItems: controller.getModelNames(snapshot.data),
+                            dropdownItems: controller.getModelNames(),
                             value: controller.selectedModel.value,
-                            // value: selectedEquipment,
                             onChanged: (value) {
-                              controller.selectedModel(value);
+                              controller.changeModel(value!);
+                              c.modelController.value.text = value;
                               print('selected MODEL = $value');
                             },
                           ),
@@ -324,14 +329,14 @@ class Step1State extends State<Step1> {
               controller: c.numberplateController.value,
               keyboardType: TextInputType.text,
               validator: (value) {
-                if (!value!.isNotEmpty) {
-                  return "Plaque d\'immatriculation invalid";
+                if (!GlobalFunction().isValidNumberPlate(value!)) {
+                  return "Plaque d\'immatriculation invalide";
                   // return amount Is not valid';
                 }
                 return null;
               },
               formatter: [
-                LengthLimitingTextInputFormatter(60),
+                LengthLimitingTextInputFormatter(20),
                 FilteringTextInputFormatter.singleLineFormatter
               ],
               onChanged: (p) {

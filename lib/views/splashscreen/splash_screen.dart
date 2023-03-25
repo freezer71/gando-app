@@ -119,9 +119,9 @@ class _SplashScreenState extends State<SplashScreen>
                     child: Container(
                       width: 180,
                       height: 180,
-                      decoration:  BoxDecoration(
+                      decoration: const BoxDecoration(
                         image: DecorationImage(
-                          image: const AssetImage("assets/images/logo-splash.png"),
+                          image: AssetImage("assets/images/logo-splash.png"),
                         ),
                       ),
                     ),
