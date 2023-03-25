@@ -1,5 +1,3 @@
-
-
 import 'dart:convert';
 
 import 'package:gando/config/constants.dart';
@@ -11,7 +9,6 @@ import '../../models/User.dart';
 import '../../models/UserCar.dart';
 
 class CarService extends GetxService {
-
   final userID = ''.obs;
 
   final isLoading = false.obs;
@@ -25,7 +22,9 @@ class CarService extends GetxService {
         printInfo(info: 'USER ID ========>  : ${userID.value}');
       }
     } catch (e) {
-      Get.snackbar('Error', e.toString(),snackPosition: SnackPosition.BOTTOM, duration: const Duration(seconds: 5));
+      Get.snackbar('Error', e.toString(),
+          snackPosition: SnackPosition.TOP,
+          duration: const Duration(seconds: 5));
       return [];
     } finally {
       isLoading(false);
@@ -49,13 +48,17 @@ class CarService extends GetxService {
       final body = jsonDecode(res.body)['data'];
 
       if (res.statusCode == STATUS_OK) {
-        final List<Car> cars = body['cars'].map<Car>((json) => Car.fromJson(json)).toList();
+        final List<Car> cars =
+            body['cars'].map<Car>((json) => Car.fromJson(json)).toList();
+
         return cars;
       } else {
         return <Car>[];
       }
-    }catch(e){
-      Get.snackbar('Error', e.toString(),snackPosition: SnackPosition.BOTTOM, duration: const Duration(seconds: 15));
+    } catch (e) {
+      Get.snackbar('Error', e.toString(),
+          snackPosition: SnackPosition.TOP,
+          duration: const Duration(seconds: 15));
       printError(info: 'ERROR ========> lll  : ${e.toString()}');
       return <Car>[];
     } finally {

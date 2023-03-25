@@ -6,6 +6,9 @@
 // import 'package:finpay/view/splash/splash.dart';
 // import 'package:finpay/view/splash/welcome_screen.dart';
 // import 'package:finpay/view/tab_screen.dart';
+import 'package:flutter/foundation.dart';
+import 'package:gando/bindings/profile_binding.dart';
+import 'package:gando/views/admin/verify_owner_screen.dart';
 import 'package:gando/views/authentication/PreLogin/PreLogin.dart';
 import 'package:gando/views/authentication/resetPassword/change_password.dart';
 import 'package:gando/views/authentication/resetPassword/reset_password.dart';
@@ -14,6 +17,16 @@ import 'package:gando/views/authentication/signin/signin_screen.dart';
 import 'package:gando/views/authentication/signup/signup_screen.dart';
 import 'package:gando/views/bottom_navigation_bar.dart';
 import 'package:gando/views/onboarding.dart';
+import 'package:gando/views/settings/notification_screen.dart';
+import 'package:gando/views/settings/pages/coordonates/edit_phone_coordonates_screen.dart';
+import 'package:gando/views/settings/pages/coordonates/home_coordonates_screen.dart';
+import 'package:gando/views/settings/pages/coordonates/my_contact_detail_screen.dart';
+import 'package:gando/views/settings/pages/coordonates/summary_coordonate_screen.dart';
+import 'package:gando/views/settings/pages/coordonates/verify_phone_coordonate_screen.dart';
+import 'package:gando/views/settings/pages/edit_profile_screen.dart';
+import 'package:gando/views/settings/pages/profile_screen.dart';
+import 'package:gando/views/settings/pages/verify_mail_screen.dart';
+import 'package:gando/views/settings/settings_account.dart';
 import 'package:gando/views/splashscreen/splash_screen.dart';
 import 'package:get/get.dart';
 
@@ -30,35 +43,24 @@ class AppPages {
       name: Routes.preLogin,
       page: () => PreLogin(),
       binding: InitBindings(),
-      middlewares: [
-        IsFirstOpen(),
-        RequireVisitor()
-      ],
+      middlewares: [IsFirstOpen(), RequireVisitor()],
       // binding: SplashScreenBinding(),
     ),
     GetPage(
       name: Routes.forgotPwd,
       page: () => ForgotPasswordScreen(),
-      middlewares: [
-        IsFirstOpen(),
-        RequireVisitor()
-      ],
+      middlewares: [IsFirstOpen(), RequireVisitor()],
     ),
     GetPage(
       name: Routes.resetPwd,
       page: () => ResetRecoveryOtpScreen(),
-      middlewares: [
-        RequireVisitor()
-      ],
+      middlewares: [RequireVisitor()],
       // binding: SplashScreenBinding(),
     ),
     GetPage(
       name: Routes.newPwd,
       page: () => ChangePasswordScreen(),
-      middlewares: [
-        IsFirstOpen(),
-        RequireVisitor()
-      ],
+      middlewares: [IsFirstOpen(), RequireVisitor()],
       // binding: SplashScreenBinding(),
     ),
     GetPage(
@@ -89,26 +91,57 @@ class AppPages {
     GetPage(
       name: Routes.signIn,
       page: () => SignInScreen(),
-      middlewares: [
-        IsFirstOpen(),
-        RequireVisitor()
-      ],
+      middlewares: [IsFirstOpen(), RequireVisitor()],
     ),
     GetPage(
       name: Routes.signUp,
-      middlewares: [
-        IsFirstOpen(),
-        RequireVisitor()
-      ],
+      middlewares: [IsFirstOpen(), RequireVisitor()],
       page: () => SignUpScreen(),
     ),
-    // GetPage(
-    //   name: Routes.profile,
-    //   page: () => const ProfileView(),
-    //   middlewares: [
-    //     AuthGuard(),
-    //   ],
-    // ),
+    GetPage(
+        name: Routes.profile,
+        page: () => ProfileScreen(),
+        binding: ProfileBinding()),
+    GetPage(
+      name: Routes.editProfil,
+      page: () => EditProfileScreen(),
+      binding: InitBindings(),
+    ),
+    GetPage(
+        name: Routes.verifyPhoneCoordonate,
+        page: () => VerifyPhoneCoordonateScreen(),
+        binding: ProfileBinding()),
+    GetPage(
+        name: Routes.editPhoneCoordonate,
+        page: () => EditPhoneCoordonateScreen(),
+        binding: ProfileBinding()),
+    GetPage(
+        name: Routes.summaryCoordonate, page: () => SummaryCoordonateView()),
+    GetPage(name: Routes.homeCordonate, page: () => HomeCordonatesView()),
+    GetPage(
+      name: Routes.detailCordonate,
+      page: () => MyContactDetailScreen(),
+      binding: InitBindings(),
+    ),
+    GetPage(
+      name: Routes.verifyOwner,
+      page: () => VerifyOwnerScreen(),
+      binding: InitBindings(),
+    ),
+    GetPage(
+      name: Routes.settingAccount,
+      page: () => SettingsAccountScreen(),
+      binding: InitBindings(),
+    ),
+    GetPage(
+      name: Routes.verifyMail,
+      page: () => VerifyMailOtpScreen(),
+      binding: InitBindings(),
+    ),
+    GetPage(
+      name: Routes.notification,
+      page: () => NotificationScreen(),
+    ),
   ];
 }
 
@@ -125,5 +158,15 @@ abstract class Routes {
   static const signIn = '/login';
   static const signUp = '/register';
   static const profile = '/profile';
+  static const editProfil = '/edit-profil';
   static const splashScreen = '/splashScreen';
+  static const homeCordonate = "/home-coordonate";
+  static const detailCordonate = "/detail-coordonate";
+  static const editPhoneCoordonate = "/edit-phone-coordonate";
+  static const verifyPhoneCoordonate = "/verify-phone-coordonate";
+  static const summaryCoordonate = "/summary-coordonate";
+  static const verifyOwner = "/verify-owner";
+  static const notification = "/notification";
+  static const settingAccount = "/setting-account";
+  static const verifyMail = "/verify-mail";
 }

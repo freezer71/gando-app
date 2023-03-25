@@ -18,9 +18,15 @@ class NotificationScreen extends StatelessWidget {
       return Scaffold(
         backgroundColor: AppTheme.backgroundColor,
         appBar: CustomAppBar(
-          leading: IconButton(onPressed: (){
-            Get.back();
-          }, icon: Icon(Icons.arrow_back_ios_outlined, color: AppTheme.darkColor,),),
+          leading: IconButton(
+            onPressed: () {
+              Get.back();
+            },
+            icon: Icon(
+              Icons.arrow_back_ios_outlined,
+              color: AppTheme.darkColor,
+            ),
+          ),
           title: 'Notifications',
         ),
         body: ListView(
@@ -38,41 +44,26 @@ class NotificationScreen extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text('App',
-                            style: Theme
-                                .of(context)
+                            style: Theme.of(context)
                                 .textTheme
                                 .bodyText2!
                                 .copyWith(
-                                fontWeight: FontWeight.w900,
-                                fontSize: 14,
-                                overflow: TextOverflow.ellipsis,
-                                color: AppTheme.darkColor)),
-                        SizedBox(
-                          width: 5,
-                        ),
-                        Text('SMS',
-                            style: Theme
-                                .of(context)
-                                .textTheme
-                                .bodyText2!
-                                .copyWith(
-                                fontWeight: FontWeight.w900,
-                                fontSize: 14,
-                                overflow: TextOverflow.ellipsis,
-                                color: AppTheme.darkColor)),
+                                    fontWeight: FontWeight.w900,
+                                    fontSize: 14,
+                                    overflow: TextOverflow.ellipsis,
+                                    color: AppTheme.darkColor)),
                         SizedBox(
                           width: 5,
                         ),
                         Text('Email',
-                            style: Theme
-                                .of(context)
+                            style: Theme.of(context)
                                 .textTheme
                                 .bodyText2!
                                 .copyWith(
-                                fontWeight: FontWeight.w900,
-                                fontSize: 14,
-                                overflow: TextOverflow.ellipsis,
-                                color: AppTheme.darkColor)),
+                                    fontWeight: FontWeight.w900,
+                                    fontSize: 14,
+                                    overflow: TextOverflow.ellipsis,
+                                    color: AppTheme.darkColor)),
                         SizedBox(
                           width: 5,
                         ),
@@ -84,12 +75,10 @@ class NotificationScreen extends StatelessWidget {
             ),
             _createListMenu('Demande de locations', [
               c.locationApp.value,
-              c.locationSms.value,
               c.locationEmail.value,
             ]),
             _createListMenu('Confirmation de réservation', [
               c.bookingApp.value,
-              c.bookingSms.value,
               c.bookingEmail.value,
             ]),
             _createListMenu('Messages', [
@@ -97,11 +86,9 @@ class NotificationScreen extends StatelessWidget {
             ]),
             _createListMenu('Annulation de réservation', [
               c.cancelBookingApp.value,
-              c.cancelBookingSms.value,
             ]),
             _createListMenu('Contrat de location', [
               c.locationContractApp.value,
-              c.locationContractSms.value,
               c.locationContractEmail.value,
             ]),
             _createListMenu('Paiement', [
@@ -134,18 +121,16 @@ class NotificationScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildCheckbox(controller) =>
-      Checkbox(
-          fillColor: MaterialStateProperty.resolveWith<Color>(
-                (Set<MaterialState> states) =>
-            states.contains(MaterialState.disabled)
-                ? AppTheme.secondaryColor
-                : AppTheme.primaryColor,
-          ),
-          checkColor: AppTheme.secondaryColor,
-          value: controller,
-          onChanged: (value) {
-            controller = !controller;
-            // printInfo(info: '${c.locationApp.value}');
-          });
+  Widget _buildCheckbox(controller) => Checkbox(
+      fillColor: MaterialStateProperty.resolveWith<Color>(
+        (Set<MaterialState> states) => states.contains(MaterialState.disabled)
+            ? AppTheme.secondaryColor
+            : AppTheme.primaryColor,
+      ),
+      checkColor: AppTheme.secondaryColor,
+      value: controller,
+      onChanged: (value) {
+        controller = !controller;
+        // printInfo(info: '${c.locationApp.value}');
+      });
 }

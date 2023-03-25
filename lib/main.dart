@@ -1,25 +1,28 @@
 import 'dart:io';
 
+import 'package:country_code_picker/country_code_picker.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:gando/config/textstyle.dart';
+import 'package:gando/constants.dart';
 import 'package:gando/controllers/car_controller.dart';
 import 'package:gando/navigation.dart';
 import 'package:gando/services/auth/auth_services.dart';
 import 'package:gando/services/chat/chat_service.dart';
+import 'package:gando/services/navigation_service.dart';
 import 'package:gando/services/onboarding_services.dart';
 import 'package:gando/translations/locale_string.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
-
+import 'package:gando/di.dart' as di;
 import 'firebase_options.dart';
-
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await GetStorage.init();
+  await di.init();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
@@ -40,7 +43,7 @@ Future<void> main() async {
     DeviceOrientation.portraitDown,
   ]).then(
     (_) => runApp(
-     const MyApp(),
+      const MyApp(),
     ),
   );
 }
@@ -95,10 +98,15 @@ class _MyAppState extends State<MyApp> {
 
     return GetMaterialApp(
       title: 'Gando',
+      navigatorKey: NavigationService.navigatorKey,
       smartManagement: SmartManagement.onlyBuilder,
       navigatorObservers: [FlutterSmartDialog.observer],
       builder: FlutterSmartDialog.init(),
       locale: Get.deviceLocale,
+      supportedLocales: listSupportedtLocale,
+      localizationsDelegates: [
+        CountryLocalizations.delegate,
+      ],
       translations: LocaleString(),
       fallbackLocale: Get.fallbackLocale,
       theme: AppTheme.getTheme(),

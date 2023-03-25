@@ -1,32 +1,36 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:gando/config/textstyle.dart';
-import 'package:gando/controllers/settings_controller/account_setting_controller.dart';
-import 'package:gando/models/ProfileSeller.dart';
+import 'package:gando/controllers/user/edit_profile_controller.dart';
 import 'package:gando/widget/customTextFormField.dart';
+import 'package:gando/widget/submit_with_loading_button.dart';
 import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
 
 import '../../../widget/appBarWidget.dart';
-import '../../home/home.dart';
 
-class EditProfileScreen extends StatelessWidget {
-  final ProfileSeller seller;
-
-  EditProfileScreen({Key? key, required this.seller}) : super(key: key);
-
-  final c  = Get.put(AccountSettingController());
+class EditProfileScreen extends GetView<EditProfilController> {
+  const EditProfileScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppTheme.backgroundColor,
       appBar: CustomAppBar(
-        leading: IconButton(onPressed: (){
-          Get.back();
-        }, icon: Icon(Icons.arrow_back_ios_outlined, color: AppTheme.darkColor,),),
+        leading: IconButton(
+          onPressed: () {
+            Get.back(result: controller.user.value);
+          },
+          icon: Icon(
+            Icons.arrow_back_ios_outlined,
+            color: AppTheme.darkColor,
+          ),
+        ),
         title: 'Modifier mon profil',
       ),
-      body: Container(
-        child: ListView(
+      body: Obx(
+        () => ListView(
           scrollDirection: Axis.vertical,
           children: [
             const SizedBox(
@@ -40,8 +44,8 @@ class EditProfileScreen extends StatelessWidget {
                     height: 100,
                     child: CircleAvatar(
                       backgroundColor: AppTheme.backgroundColor,
-                      backgroundImage: AssetImage(
-                        seller.image,
+                      backgroundImage: NetworkImage(
+                        "${controller.user.value.photo}",
                       ),
                     ),
                   ),
@@ -52,25 +56,104 @@ class EditProfileScreen extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       TextButton(
-                        onPressed: () => Get.back(),
+                        onPressed: () async {
+                          final ImagePicker _picker = ImagePicker();
+                          final XFile? image = await showDialog<XFile?>(
+                            context: context,
+                            barrierDismissible: false,
+                            builder: (BuildContext context) => SimpleDialog(
+                              backgroundColor: AppTheme.light,
+                              insetPadding:
+                                  EdgeInsets.only(top: Get.width / 0.8),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(15.0),
+                              ),
+                              children: [
+                                ListTile(
+                                  onTap: () async {
+                                    // Pick an image
+                                    final XFile? image =
+                                        await _picker.pickImage(
+                                      source: ImageSource.gallery,
+                                      imageQuality: 50,
+                                    );
+                                    Get.back(result: image);
+                                  },
+                                  title: Text(
+                                    textAlign: TextAlign.center,
+                                    "Importer une photo",
+                                    style: TextStyle(
+                                        color: AppTheme.darkColor,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                ),
+                                Divider(
+                                    thickness: 1.0, color: AppTheme.darkColor),
+                                ListTile(
+                                  onTap: () async {
+                                    // capture an image
+                                    final XFile? image =
+                                        await _picker.pickImage(
+                                      source: ImageSource.camera,
+                                      imageQuality: 50,
+                                    );
+                                    Get.back(result: image);
+                                  },
+                                  title: Text(
+                                    textAlign: TextAlign.center,
+                                    "Prendre une photo",
+                                    style: TextStyle(
+                                        color: AppTheme.darkColor,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                ),
+                                Divider(
+                                    thickness: 1.0, color: AppTheme.darkColor),
+                                ListTile(
+                                  onTap: () async {
+                                    Get.back();
+                                  },
+                                  title: Text(
+                                    textAlign: TextAlign.center,
+                                    "Annuler",
+                                    style: TextStyle(
+                                        color: AppTheme.darkColor,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          );
+                          if (image != null) {
+                            final file = File(image.path);
+                            controller.uploadProfilePicture(file: file);
+                          }
+                        },
                         style: ButtonStyle(
                           overlayColor:
-                          MaterialStateProperty.all(Colors.transparent),
-                          shape: MaterialStateProperty.all(
-                              RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(30.0),
-                              )),
+                              MaterialStateProperty.all(Colors.transparent),
+                          shape:
+                              MaterialStateProperty.all(RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(30.0),
+                          )),
                         ),
                         child: Container(
                           height: 20,
                           width: Get.width / 1.5,
                           child: Center(
-                            child: Text('Changer la photo de profil', style: Theme.of(context).textTheme.bodyText2!.copyWith(
-                              fontWeight: FontWeight.w900,
-                              fontSize: 14,
-                              decoration: TextDecoration.underline,
-                              color: AppTheme.darkColor,
-                            ),),
+                            child: Text(
+                              'Changer la photo de profil',
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .bodyText2!
+                                  .copyWith(
+                                    fontWeight: FontWeight.w900,
+                                    fontSize: 14,
+                                    decoration: TextDecoration.underline,
+                                    decorationThickness: 2.0,
+                                    color: AppTheme.darkColor,
+                                  ),
+                            ),
                           ),
                         ),
                       ),
@@ -94,55 +177,57 @@ class EditProfileScreen extends StatelessWidget {
                   Container(
                     height: Get.height / 4,
                     width: Get.width - 50,
-                    padding: const EdgeInsets.symmetric(
-                        vertical: 14, horizontal: 14),
+                    padding:
+                        const EdgeInsets.symmetric(vertical: 6, horizontal: 8),
                     decoration: BoxDecoration(
                       borderRadius: const BorderRadius.all(Radius.circular(20)),
                       color: AppTheme.light,
                     ),
-                    child: Center(
-                      child: Column(
-                        children: [
-                          Text(seller.description,
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .bodyText2!
-                                  .copyWith(
-                                  color: AppTheme.darkColor,
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w700)),
-                        ],
+                    child: TextFormField(
+                      onChanged: (value) {
+                        controller.numberTextDescription.value = value.length;
+                      },
+                      maxLength: 255,
+                      controller: controller.descriptionController,
+                      maxLines: 15,
+                      style: TextStyle(color: AppTheme.darkColor),
+                      decoration: InputDecoration(
+                        filled: true,
+                        fillColor: AppTheme.light,
+                        labelStyle:
+                            Theme.of(context).textTheme.bodyText2!.copyWith(
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: 18,
+                                  overflow: TextOverflow.visible,
+                                  color: AppTheme.darkColor.withOpacity(0.5),
+                                ),
+                        border: const OutlineInputBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(30.0)),
+                        ),
                       ),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(right: 15.0, top: 5.0),
+                    child: Align(
+                      alignment: Alignment.topRight,
+                      child: Text(
+                          "${controller.numberTextDescription.value} / 255",
+                          style: TextStyle(color: AppTheme.darkColor)),
                     ),
                   ),
                   const SizedBox(
                     height: 50,
                   ),
-                  TextButton(
-                    onPressed: () => Get.back(),
-                    style: ButtonStyle(
-                      backgroundColor: MaterialStateProperty.resolveWith<Color>(
-                            (Set<MaterialState> states) =>
-                         AppTheme.primaryColor,
-                      ),
-                      overlayColor:
-                      MaterialStateProperty.all(Colors.transparent),
-                      shape: MaterialStateProperty.all(
-                          RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(30.0),
-                          )),
-                    ),
-                    child: Container(
-                      height: 30,
-                      width: Get.width / 1.5,
-                      child: Center(
-                        child: Text('Valider'.toUpperCase(), style: Theme.of(context).textTheme.bodyText2!.copyWith(
-                          fontWeight: FontWeight.w900,
-                          fontSize: 16,
-                          color: AppTheme.light,
-                        ),),
-                      ),
-                    ),
+                  SubmitWithLoadingButton(
+                    text: 'Enregistrer',
+                    onPressed: () async {
+                      await controller.editNameAndDescription();
+                      if (controller.isSuccess.value) {
+                        Navigator.of(context).pop(controller.user.value);
+                      }
+                    },
+                    isLoading: controller.isLoading.value,
                   ),
                   const SizedBox(
                     height: 50,
@@ -157,29 +242,34 @@ class EditProfileScreen extends StatelessWidget {
   }
 
   List<Widget> _buildTextField(BuildContext context) => [
-    CustomTextFormField(
-      controller: c.nameController.value,
-      keyboardType: TextInputType.text,
-      enabled: true,
-      formatter: [],
-      validator: (value) {
-        if (value!.trim().isEmpty) {
-          return "Nom is Required";
-        }
-      }, hintText: 'Nom', onChanged: (String) {  }, onSaved: (String) {  },
-    ),
-    const SizedBox(height: 20),
-    CustomTextFormField(
-      controller: c.firstnameController.value,
-      keyboardType: TextInputType.text,
-      enabled: true,
-      formatter: [],
-      validator: (value) {
-        if (value!.trim().isEmpty) {
-          return "Prénom is Required";
-        }
-      }, hintText: 'Prénom', onChanged: (String) {  }, onSaved: (String) {  },
-    ),
-  ];
-
+        CustomTextFormField(
+          controller: controller.firstNameController,
+          keyboardType: TextInputType.text,
+          enabled: true,
+          formatter: [],
+          validator: (value) {
+            if (value!.trim().isEmpty) {
+              return "Nom is Required";
+            }
+          },
+          hintText: "",
+          onChanged: (String) {},
+          onSaved: (String) {},
+        ),
+        const SizedBox(height: 20),
+        CustomTextFormField(
+          controller: controller.lastNameController,
+          keyboardType: TextInputType.text,
+          enabled: true,
+          formatter: [],
+          validator: (value) {
+            if (value!.trim().isEmpty) {
+              return "Prénom is Required";
+            }
+          },
+          hintText: "",
+          onChanged: (String) {},
+          onSaved: (String) {},
+        ),
+      ];
 }
