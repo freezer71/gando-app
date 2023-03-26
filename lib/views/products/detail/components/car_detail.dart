@@ -872,16 +872,6 @@ class _CarDetailPageState extends State<CarDetailPage> {
       ExpandableText(
         """
         ${car.description}
-        lorem ipsum dolor sit amet, consectetur adipiscing elit.
-        lorem ipsum dolor sit amet, consectetur adipiscing elit.
-        lorem ipsum dolor sit amet, consectetur adipiscing elit.
-        lorem ipsum dolor sit amet, consectetur adipiscing elit.
-        
-        lorem ipsum dolor sit amet, consectetur adipiscing elit.
-        lorem ipsum dolor sit amet, consectetur adipiscing elit.
-        lorem ipsum dolor sit amet, consectetur adipiscing elit.
-        lorem ipsum dolor sit amet, consectetur adipiscing elit.
-        
         """,
         expandText: ' Voir plus',
         style: Theme
