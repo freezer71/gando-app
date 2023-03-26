@@ -131,30 +131,30 @@ class Step4State extends State<Step4> {
             ],
           ),
         ),
-        Container(
-          child: Row(
-            children: [
-              Container(
-                  height: 18,
-                  width: 18,
-                  decoration: BoxDecoration(
-                    color: AppTheme.primaryColor,
-                    borderRadius: BorderRadius.circular(5),
-                  )
-              ),
-              SizedBox(width: 10,),
-              Text('En location', style: Theme
-                  .of(context)
-                  .textTheme
-                  .bodyText2!
-                  .copyWith(
-                fontWeight: FontWeight.w600,
-                fontSize: 12,
-                color: AppTheme.darkColor,
-              ),)
-            ],
-          ),
-        ),
+        // Container(
+        //   child: Row(
+        //     children: [
+        //       Container(
+        //           height: 18,
+        //           width: 18,
+        //           decoration: BoxDecoration(
+        //             color: AppTheme.primaryColor,
+        //             borderRadius: BorderRadius.circular(5),
+        //           )
+        //       ),
+        //       SizedBox(width: 10,),
+        //       Text('En location', style: Theme
+        //           .of(context)
+        //           .textTheme
+        //           .bodyText2!
+        //           .copyWith(
+        //         fontWeight: FontWeight.w600,
+        //         fontSize: 12,
+        //         color: AppTheme.darkColor,
+        //       ),)
+        //     ],
+        //   ),
+        // ),
       ];
 
   Widget _buildCalender() {

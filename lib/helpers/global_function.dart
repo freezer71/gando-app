@@ -17,6 +17,13 @@ import '../generated/assets.dart';
 class GlobalFunction {
   final box = GetStorage();
 
+  // is valid number plate
+  bool isValidNumberPlate(String numberPlate) {
+    final reg = RegExp(r'^[A-HJ-NP-TV-Z]{2}[\s-]?[0-9]{1,3}[\s-]?[A-HJ-NP-TV-Z]{0,2}$|^[0-9]{2,4}[\s-]?[A-Z]{1,3}[\s-]?[0-9]{1,2}$', caseSensitive: true, multiLine: true, unicode: true);
+    final RegExp regex = reg;
+    return regex.hasMatch(numberPlate);
+  }
+
   // check validation of email
   bool isEmail(String email) {
     final RegExp regex = RegExp(

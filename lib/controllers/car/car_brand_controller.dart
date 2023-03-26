@@ -38,7 +38,8 @@ class CarBrandController extends GetxController {
       if (response.statusCode == STATUS_OK) {
         final carBrands = body.map<CarBrand>((json) => CarBrand.fromJson(json)).toList();
         _carBrandList.assignAll(carBrands);
-        printInfo(info: 'CAR BRANDS ========>  : ${carBrandList.first.toJson()}');
+        selectedBrand.value = carBrandList.first.name;
+        selectedModel.value = carBrandList.first.models.first.name;
         return carBrandList;
       }
       return <CarBrand>[];
@@ -50,11 +51,36 @@ class CarBrandController extends GetxController {
   }
 
   List<String> getBrandNames(List<CarBrand> data) {
-    return data.map((brand) => brand.name).toList();
+    if(data.isNotEmpty) {
+      return data.map((brand) => brand.name.toString()).toList();
+    }else{
+      return <String>[
+        'No data brand'
+      ];
+    }
   }
 
-  List<String> getModelNames(List<CarBrand> data) {
-    final brand = data.firstWhere((brand) => brand.name == selectedBrand.value);
-    return brand.models.map((model) => model.name).toList();
+  List<String> getModelNames() {
+    if (selectedBrand.value.isNotEmpty) {
+      final brand = carBrandList.firstWhere((brand) => brand.name == selectedBrand.value);
+      final model = brand.models.map((model) => model.name.toString()).toList();
+      return model;
+    }else{
+      return <String>[
+        'No data model'
+      ];
+    }
+  }
+
+  void changeBrand(String value) {
+    selectedBrand(value);
+    selectedModel.value = carBrandList.firstWhere((brand) => brand.name == selectedBrand.value).models.first.name;
+    update();
+  }
+
+  void changeModel(String value) {
+
+    selectedModel(value);
+    update();
   }
 }

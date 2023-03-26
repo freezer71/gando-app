@@ -279,7 +279,7 @@ class ApiProvider {
         } else if (statusCode == STATUS_INTERNAL_ERROR) {
           throw "Internal Server Error ${e.toString()}";
         } else {
-          throw e.response!.data.toString();
+          throw e.response!.data['message'].toString();
         }
       } else if (e.type == DioErrorType.connectTimeout) {
         throw e.message.toString();

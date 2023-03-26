@@ -14,10 +14,10 @@ const String MAP_URL_DARK =
     "https://api.mapbox.com/styles/v1/caviaros/clc1oz5yc001p14ox3uvw1ynu/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1IjoiY2F2aWFyb3MiLCJhIjoiY2xjMW90MWx3MTFhajNwbXpmaXlreHI5diJ9.mPwJumFFjJCjq45E-17_QQ";
 const String MAP_STYLE = 'mapbox://styles/caviaros/clc1oz5yc001p14ox3uvw1ynu';
 
-//API PROVIDER ----------------------
+//----------API PROVIDER -------------
 const String APP_URL = 'https://mygando.com';
 const String API_URL =
-    !kDebugMode ? 'https://dev.mygando.com' : 'https://api.mygando.com';
+    kDebugMode ? 'https://dev.mygando.com' : 'https://api.mygando.com';
 const String APP_FILE = 'https://mygando.com/file/public/';
 
 const int STATUS_OK = 200;
