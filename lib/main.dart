@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:country_code_picker/country_code_picker.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
@@ -103,8 +104,11 @@ class _MyAppState extends State<MyApp> {
       locale: Get.deviceLocale,
       supportedLocales: listSupportedtLocale,
       localizationsDelegates: [
-        CountryLocalizations.delegate,
-      ],
+        FallbackLocalizationDelegate(),
+        //https://stackoverflow.com/questions/70066318/flutterios-no-cupertinolocalizations-found-how-fix-it
+        DefaultCupertinoLocalizations.delegate,
+        DefaultMaterialLocalizations.delegate,
+      ], // <- append here
       translations: LocaleString(),
       fallbackLocale: Get.fallbackLocale,
       theme: AppTheme.getTheme(),
@@ -115,4 +119,16 @@ class _MyAppState extends State<MyApp> {
           .INITIAL, // This is the page that should be rendered on app launch
     );
   }
+}
+
+//https://stackoverflow.com/questions/57902361/flutter-app-crashes-building-the-appbar-with-multi-language-using-i18n-jetbrains
+class FallbackLocalizationDelegate
+    extends LocalizationsDelegate<MaterialLocalizations> {
+  @override
+  bool isSupported(Locale locale) => true;
+  @override
+  Future<MaterialLocalizations> load(Locale locale) async =>
+      DefaultMaterialLocalizations();
+  @override
+  bool shouldReload(_) => false;
 }

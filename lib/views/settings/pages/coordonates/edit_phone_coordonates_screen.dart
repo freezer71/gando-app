@@ -33,9 +33,9 @@ class EditPhoneCoordonateScreen extends GetView<UserController> {
       ),
       body: Obx(
         () => Padding(
-          padding: const EdgeInsets.symmetric(vertical: 50.0, horizontal: 30.0),
+          padding: const EdgeInsets.symmetric(vertical: 15.0, horizontal: 20.0),
           child: Container(
-            height: Get.height / 2.5,
+            height: Get.height / 2,
             padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 18),
             child: Form(
               key: _formKey,
