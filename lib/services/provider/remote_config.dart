@@ -1,0 +1,13 @@
+import 'package:gando/config/constants.dart';
+
+abstract class RemoteEndpoint {
+  static String getUserById({required String id}) => "/user/getUserById?id=$id";
+  static String uploadSingleFile = "$API_URL/file/upload";
+  static String editPictureUser = "/user/editPicture";
+  static String editNameAndDescriptionUser = "/user/editNameAndDesc";
+  static String deleteUser = "/user/deleteUser";
+  static String editPasswordUser = "/user/editPassword";
+  static String initEditMailUser = "/user/initEditEmail";
+  static String verifyMailUser = "/user/verifyEmail";
+  static String verifyOwner = "verifyOwner";
+}

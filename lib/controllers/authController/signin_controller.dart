@@ -52,7 +52,10 @@ class SignInController extends GetxController {
       if (res.statusCode == STATUS_OK) {
         printInfo(info: '${body}');
         checkAuth.authentication(token: body['token']);
-        return Get.offNamed(Routes.home, arguments: InitBindings(),);
+        return Get.offNamed(
+          Routes.home,
+          arguments: InitBindings(),
+        );
       }
     } catch (e) {
       // split error message

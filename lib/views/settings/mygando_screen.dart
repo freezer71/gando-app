@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:gando/config/textstyle.dart';
+import 'package:gando/controllers/user/user_controller.dart';
 import 'package:gando/models/ProfileSeller.dart';
+import 'package:gando/navigation.dart';
+import 'package:gando/services/auth/auth_services.dart';
 import 'package:gando/views/home/home.dart';
 import 'package:gando/views/settings/pages/profile_screen.dart';
 import 'package:get/get.dart';
@@ -16,7 +19,9 @@ class MyGandoScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppTheme.backgroundColor,
-      appBar: CustomAppBar(title: 'Mon Gando',),
+      appBar: CustomAppBar(
+        title: 'Mon Gando',
+      ),
       body: ListView(
         padding: const EdgeInsets.all(16),
         children: [
@@ -25,11 +30,10 @@ class MyGandoScreen extends StatelessWidget {
             height: Get.height / 12,
             color: AppTheme.darkColor,
           ),
-          _createListMenu('Centre d\'aide', HomeScreen(),
-              Icons.help_outline),
-          _createListMenu('Nous contactez', HomeScreen(),
-              Icons.phone),
-          _createListMenu('Conditions d\'utilisation', HomeScreen(), Icons.inventory),
+          _createListMenu('Centre d\'aide', HomeScreen(), Icons.help_outline),
+          _createListMenu('Nous contactez', HomeScreen(), Icons.phone),
+          _createListMenu(
+              'Conditions d\'utilisation', HomeScreen(), Icons.inventory),
         ],
       ),
     );
@@ -54,7 +58,9 @@ class MyGandoScreen extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           GestureDetector(
-            onTap: () => Get.to(() => ProfileScreen(seller: seller)),
+            onTap: () {
+              Get.toNamed(Routes.profile, arguments: seller);
+            },
             child: Container(
               decoration: BoxDecoration(
                 color: AppTheme.darkColor,
@@ -68,8 +74,13 @@ class MyGandoScreen extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: const [
-                  Icon(Icons.person_pin, size: 80,),
-                  SizedBox(height: 10,),
+                  Icon(
+                    Icons.person_pin,
+                    size: 80,
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
                   Text(
                     'Mon profil',
                   )
@@ -92,8 +103,13 @@ class MyGandoScreen extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: const [
-                  Icon(Icons.settings_outlined, size: 80,),
-                  SizedBox(height: 10,),
+                  Icon(
+                    Icons.settings_outlined,
+                    size: 80,
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
                   Text(
                     'Parametres',
                   )

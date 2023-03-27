@@ -1,16 +1,12 @@
-
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import '../config/textstyle.dart';
 
 class CustomTextFormField extends StatelessWidget {
-
   final BuildContext? context;
   final TextInputType? keyboardType;
   final controller;
-  String? initialValue = '';
   String? hintText = '';
   final String? Function(String?)? validator;
   final List<TextInputFormatter>? formatter;
@@ -23,7 +19,8 @@ class CustomTextFormField extends StatelessWidget {
   bool enabled;
   double shape;
 
-  CustomTextFormField({Key? key,
+  CustomTextFormField({
+    Key? key,
     this.context,
     required this.keyboardType,
     this.controller,
@@ -45,22 +42,17 @@ class CustomTextFormField extends StatelessWidget {
     return TextFormField(
       key: key,
       controller: controller,
-      // initialValue: initialValue,
       obscureText: obscureText,
       keyboardType: keyboardType!, //TextInputType.emailAddress
       cursorColor: AppTheme.primaryColor,
       cursorRadius: const Radius.circular(50),
       cursorWidth: 3,
-      style: Theme
-          .of(context)
-          .textTheme
-          .bodyText2!
-          .copyWith(
-        fontWeight: FontWeight.w500,
-        fontSize: 16,
-        overflow: TextOverflow.ellipsis,
-        color: HexColor(AppTheme.primaryColorString!),
-      ),
+      style: Theme.of(context).textTheme.bodyText2!.copyWith(
+            fontWeight: FontWeight.w500,
+            fontSize: 16,
+            overflow: TextOverflow.ellipsis,
+            color: HexColor(AppTheme.primaryColorString!),
+          ),
       enabled: enabled,
       decoration: InputDecoration(
         filled: true,
@@ -79,26 +71,18 @@ class CustomTextFormField extends StatelessWidget {
           gapPadding: 4.0,
         ),
         hintText: hintText,
-        labelStyle: Theme
-            .of(context)
-            .textTheme
-            .bodyText2!
-            .copyWith(
-          fontWeight: FontWeight.w400,
-          fontSize: 16,
-          overflow: TextOverflow.ellipsis,
-          color: HexColor(AppTheme.primaryColorString!),
-        ),
-        hintStyle: Theme
-            .of(context)
-            .textTheme
-            .bodyText2!
-            .copyWith(
-          fontWeight: FontWeight.w400,
-          fontSize: 16,
-          overflow: TextOverflow.ellipsis,
-          color: AppTheme.darkColor,
-        ),
+        labelStyle: Theme.of(context).textTheme.bodyText2!.copyWith(
+              fontWeight: FontWeight.w400,
+              fontSize: 16,
+              overflow: TextOverflow.ellipsis,
+              color: HexColor(AppTheme.primaryColorString!),
+            ),
+        hintStyle: Theme.of(context).textTheme.bodyText2!.copyWith(
+              fontWeight: FontWeight.w400,
+              fontSize: 16,
+              overflow: TextOverflow.ellipsis,
+              color: AppTheme.darkColor,
+            ),
         errorMaxLines: 1,
         focusedErrorBorder: OutlineInputBorder(
             borderSide: BorderSide(
