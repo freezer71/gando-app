@@ -61,9 +61,7 @@ class Step1State extends State<Step1> {
     return [
       GetBuilder<CarBrandController>(
         assignId: true,
-        didUpdateWidget: (oldWidget, newWidget) {
-          printInfo(info: "DID UPDATE WIDGET");
-        },
+
         init: CarBrandController(),
         builder: (CarBrandController controller) {
           return FutureBuilder(
@@ -76,8 +74,6 @@ class Step1State extends State<Step1> {
                 } else if (snapshot.hasError) {
                   return Center(child: Text('Error: ${snapshot.error}'));
                 } else {
-                  printInfo(info: "SNAP DATA ===> ${snapshot.data}");
-
                   if (snapshot.data != null) {
                     return Obx(() {
                       return Column(
@@ -142,7 +138,7 @@ class Step1State extends State<Step1> {
       //     keyboardType: TextInputType.text,
       //     validator: (value) {
       //       if (!value!.isNotEmpty) {
-      //         return "Marque invalid";
+      //         return "Marque invalide";
       //         // return 'amount Is not valid';
       //       }
       //       return null;
@@ -165,7 +161,7 @@ class Step1State extends State<Step1> {
       //     keyboardType: TextInputType.text,
       //     validator: (value) {
       //       if (!value!.isNotEmpty) {
-      //         return "Modèle invalid";
+      //         return "Modèle invalide";
       //         // return 'amount Is not valid';
       //       }
       //       return null;
@@ -188,7 +184,7 @@ class Step1State extends State<Step1> {
           keyboardType: TextInputType.text,
           validator: (value) {
             if (!value!.isNotEmpty) {
-              return "Type invalid";
+              return "Type invalide";
               // return 'amount Is not valid';
             }
             return null;
