@@ -17,9 +17,15 @@ class ContactScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: AppTheme.backgroundColor,
       appBar: CustomAppBar(
-        leading: IconButton(onPressed: (){
-          Get.back();
-        }, icon: Icon(Icons.arrow_back_ios_outlined, color: AppTheme.darkColor,),),
+        leading: IconButton(
+          onPressed: () {
+            Get.back();
+          },
+          icon: Icon(
+            Icons.arrow_back_ios_outlined,
+            color: AppTheme.darkColor,
+          ),
+        ),
         title: 'Mon Profil',
       ),
       body: Container(
@@ -50,36 +56,41 @@ class ContactScreen extends StatelessWidget {
                           color: AppTheme.darkColor,
                           fontSize: 22,
                           fontWeight: FontWeight.w900)),
-
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       TextButton(
-                        onPressed: () => Get.to(() => EditProfileScreen(seller: seller,)),
+                        onPressed: () => Get.to(() => EditProfileScreen()),
                         style: ButtonStyle(
                           backgroundColor:
-                          MaterialStateProperty.resolveWith<Color>(
-                                (Set<MaterialState> states) =>
-                            states.contains(MaterialState.disabled)
-                                ? AppTheme.primaryColor
-                                : AppTheme.redColor,
+                              MaterialStateProperty.resolveWith<Color>(
+                            (Set<MaterialState> states) =>
+                                states.contains(MaterialState.disabled)
+                                    ? AppTheme.primaryColor
+                                    : AppTheme.redColor,
                           ),
                           overlayColor:
-                          MaterialStateProperty.all(Colors.transparent),
-                          shape: MaterialStateProperty.all(
-                              RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(30.0),
-                              )),
+                              MaterialStateProperty.all(Colors.transparent),
+                          shape:
+                              MaterialStateProperty.all(RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(30.0),
+                          )),
                         ),
                         child: Container(
                           height: 30,
                           width: Get.width / 1.5,
                           child: Center(
-                            child: Text('Modifier le profil', style: Theme.of(context).textTheme.bodyText2!.copyWith(
-                              fontWeight: FontWeight.w900,
-                              fontSize: 16,
-                              color: AppTheme.light,
-                            ),),
+                            child: Text(
+                              'Modifier le profil',
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .bodyText2!
+                                  .copyWith(
+                                    fontWeight: FontWeight.w900,
+                                    fontSize: 16,
+                                    color: AppTheme.light,
+                                  ),
+                            ),
                           ),
                         ),
                       ),
@@ -105,9 +116,9 @@ class ContactScreen extends StatelessWidget {
                                   .textTheme
                                   .bodyText2!
                                   .copyWith(
-                                  color: AppTheme.darkColor,
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w700)),
+                                      color: AppTheme.darkColor,
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w700)),
                         ],
                       ),
                     ),
@@ -116,28 +127,26 @@ class ContactScreen extends StatelessWidget {
                     height: 40,
                     color: AppTheme.darkColor,
                   ),
-                  _createListMenu('Mes coordonnées', EditProfileScreen(seller: seller,)),
-                  _createListMenu('Porte-monnaie', EditProfileScreen(seller: seller,)),
-                  _createListMenu('Mes réseaux sociaux', EditProfileScreen(seller: seller,)),
+                  _createListMenu('Mes coordonnées', EditProfileScreen()),
+                  _createListMenu('Porte-monnaie', EditProfileScreen()),
+                  _createListMenu('Mes réseaux sociaux', EditProfileScreen()),
                   const SizedBox(
                     height: 120,
                   ),
                   TextButton(
                     onPressed: () => Get.back(),
                     style: ButtonStyle(
-                      backgroundColor:
-                      MaterialStateProperty.resolveWith<Color>(
-                            (Set<MaterialState> states) =>
-                        states.contains(MaterialState.disabled)
-                            ? AppTheme.primaryColor
-                            : AppTheme.redColor,
+                      backgroundColor: MaterialStateProperty.resolveWith<Color>(
+                        (Set<MaterialState> states) =>
+                            states.contains(MaterialState.disabled)
+                                ? AppTheme.primaryColor
+                                : AppTheme.redColor,
                       ),
                       overlayColor:
-                      MaterialStateProperty.all(Colors.transparent),
-                      shape: MaterialStateProperty.all(
-                          RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(30.0),
-                          )),
+                          MaterialStateProperty.all(Colors.transparent),
+                      shape: MaterialStateProperty.all(RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(30.0),
+                      )),
                     ),
                     child: Container(
                       height: 30,
@@ -147,11 +156,17 @@ class ContactScreen extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.center,
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Text('Deconnexion', style: Theme.of(context).textTheme.bodyText2!.copyWith(
-                              fontWeight: FontWeight.w900,
-                              fontSize: 16,
-                              color: AppTheme.light,
-                            ),),
+                            Text(
+                              'Deconnexion',
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .bodyText2!
+                                  .copyWith(
+                                    fontWeight: FontWeight.w900,
+                                    fontSize: 16,
+                                    color: AppTheme.light,
+                                  ),
+                            ),
                             const SizedBox(
                               width: 20,
                             ),
@@ -184,10 +199,10 @@ class ContactScreen extends StatelessWidget {
             ElevatedButton(
                 style: ButtonStyle(
                   backgroundColor: MaterialStateProperty.resolveWith<Color>(
-                        (Set<MaterialState> states) =>
-                    states.contains(MaterialState.disabled)
-                        ? AppTheme.primaryColor
-                        : AppTheme.light,
+                    (Set<MaterialState> states) =>
+                        states.contains(MaterialState.disabled)
+                            ? AppTheme.primaryColor
+                            : AppTheme.light,
                   ),
                   overlayColor: MaterialStateProperty.all(Colors.transparent),
                   shape: MaterialStateProperty.all(RoundedRectangleBorder(

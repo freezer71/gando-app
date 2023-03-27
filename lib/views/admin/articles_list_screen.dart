@@ -1,23 +1,15 @@
-import 'dart:convert';
-
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:gando/config/textstyle.dart';
 import 'package:gando/views/admin/add_articles_screen.dart';
 import 'package:gando/views/admin/calendar_screen.dart';
 import 'package:get/get.dart';
-import 'package:latlong2/latlong.dart';
 import 'package:lottie/lottie.dart';
 
-import '../../config/constants.dart';
 import '../../controllers/user/user_controller.dart';
 import '../../generated/assets.dart';
 import '../../models/Car.dart';
-import '../../models/ProfileSeller.dart';
-import '../../models/UserCar.dart';
-import '../../services/auth/get_user_car.dart';
 import '../../widget/appBarWidget.dart';
-import 'components/add_articles_stepper.dart';
 import 'edit_article_screen.dart';
 
 class ArticleListScreen extends GetView<UserController> {
@@ -76,9 +68,9 @@ class ArticleListScreen extends GetView<UserController> {
                                       .textTheme
                                       .headline6!
                                       .copyWith(
-                                      color:
-                                      AppTheme.darkColor.withOpacity(.5),
-                                      fontWeight: FontWeight.normal),
+                                          color: AppTheme.darkColor
+                                              .withOpacity(.5),
+                                          fontWeight: FontWeight.normal),
                                 ),
                               ],
                             ),
@@ -104,7 +96,9 @@ class ArticleListScreen extends GetView<UserController> {
                                       repeat: ImageRepeat.noRepeat,
                                       alignment: Alignment.center,
                                       fit: BoxFit.cover,
-                                      image: CachedNetworkImageProvider(userCarList[index].images!.avant34!,),
+                                      image: CachedNetworkImageProvider(
+                                        userCarList[index].images!.avant34!,
+                                      ),
                                     ),
                                     color: AppTheme.redColor,
                                     borderRadius: const BorderRadius.only(
@@ -127,24 +121,28 @@ class ArticleListScreen extends GetView<UserController> {
                                           decoration: BoxDecoration(
                                               color: AppTheme.darkColor,
                                               borderRadius:
-                                              const BorderRadius.only(
-                                                  topRight:
-                                                  Radius.circular(20),
-                                                  bottomRight:
-                                                  Radius.circular(20))),
+                                                  const BorderRadius.only(
+                                                      topRight:
+                                                          Radius.circular(20),
+                                                      bottomRight:
+                                                          Radius.circular(20))),
                                           child: Column(
                                             mainAxisAlignment:
-                                            MainAxisAlignment.spaceAround,
+                                                MainAxisAlignment.spaceAround,
                                             children: [
                                               IconButton(
                                                   onPressed: () {
-                                                    Get.to(() => EditArticleScreen(car: userCarList[index],));
+                                                    Get.to(
+                                                        () => EditArticleScreen(
+                                                              car: userCarList[
+                                                                  index],
+                                                            ));
                                                   },
                                                   icon: const Icon(Icons.edit)),
                                               IconButton(
                                                   onPressed: () {
                                                     Get.to(
-                                                            () => CalendarScreen());
+                                                        () => CalendarScreen());
                                                   },
                                                   icon: const Icon(
                                                       Icons.calendar_month)),
@@ -174,11 +172,12 @@ class ArticleListScreen extends GetView<UserController> {
                                       .textTheme
                                       .bodyText2!
                                       .copyWith(
-                                    fontWeight: FontWeight.w900,
-                                    fontSize: 16,
-                                    overflow: TextOverflow.fade,
-                                    color: AppTheme.darkColor.withOpacity(.3),
-                                  ),
+                                        fontWeight: FontWeight.w900,
+                                        fontSize: 16,
+                                        overflow: TextOverflow.fade,
+                                        color:
+                                            AppTheme.darkColor.withOpacity(.3),
+                                      ),
                                   textAlign: TextAlign.center,
                                   maxLines: 2,
                                 ),
@@ -202,11 +201,11 @@ class ArticleListScreen extends GetView<UserController> {
                                     .textTheme
                                     .bodyText2!
                                     .copyWith(
-                                  fontWeight: FontWeight.w900,
-                                  fontSize: 16,
-                                  overflow: TextOverflow.fade,
-                                  color: AppTheme.darkColor.withOpacity(.3),
-                                ),
+                                      fontWeight: FontWeight.w900,
+                                      fontSize: 16,
+                                      overflow: TextOverflow.fade,
+                                      color: AppTheme.darkColor.withOpacity(.3),
+                                    ),
                                 textAlign: TextAlign.center,
                                 maxLines: 2,
                               ),

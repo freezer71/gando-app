@@ -3,14 +3,16 @@ import 'package:datepicker_dropdown/datepicker_dropdown.dart';
 import 'package:flutter/material.dart';
 import 'package:gando/config/textstyle.dart';
 import 'package:gando/controllers/settings_controller/account_setting_controller.dart';
+import 'package:gando/controllers/user/user_controller.dart';
+import 'package:gando/navigation.dart';
 import 'package:gando/views/home/home.dart';
 import 'package:get/get.dart';
 import 'package:get/get_rx/src/rx_typedefs/rx_typedefs.dart';
 
-import '../../../widget/appBarWidget.dart';
-import '../../../widget/customTextFormField.dart';
+import '../../../../widget/appBarWidget.dart';
+import '../../../../widget/customTextFormField.dart';
 
-class MyContactDetailScreen extends StatelessWidget {
+class MyContactDetailScreen extends GetView<UserController> {
   MyContactDetailScreen({Key? key}) : super(key: key);
 
   final c = Get.put(AccountSettingController());
@@ -21,9 +23,18 @@ class MyContactDetailScreen extends StatelessWidget {
       return Scaffold(
         backgroundColor: AppTheme.backgroundColor,
         appBar: CustomAppBar(
-          leading: IconButton(onPressed: (){
-            Get.back();
-          }, icon: Icon(Icons.arrow_back_ios_outlined, color: AppTheme.darkColor,),),
+          leading: IconButton(
+            onPressed: () {
+              Get.back();
+              Get.back();
+              Get.back();
+              Get.back();
+            },
+            icon: Icon(
+              Icons.arrow_back_ios_outlined,
+              color: AppTheme.darkColor,
+            ),
+          ),
           title: 'Mes coordonnées',
         ),
         body: ListView(
@@ -46,44 +57,41 @@ class MyContactDetailScreen extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           SizedBox(
-            child: Text(menuTitle, style: Theme
-                .of(context)
-                .textTheme
-                .bodyText2!
-                .copyWith(
-              fontWeight: FontWeight.w700,
-              fontSize: 18,
-              overflow: TextOverflow.visible,
-              color: AppTheme.darkColor.withOpacity(0.7),
-            )),
+            child: Text(menuTitle,
+                style: Theme.of(context).textTheme.bodyText2!.copyWith(
+                      fontWeight: FontWeight.w700,
+                      fontSize: 18,
+                      overflow: TextOverflow.visible,
+                      color: AppTheme.darkColor.withOpacity(0.7),
+                    )),
           ),
-          Container(width: Get.width / 4,
-              child: Divider(indent: 2,
+          Container(
+              width: Get.width / 4,
+              child: Divider(
+                indent: 2,
                 thickness: 2,
                 height: 20,
-                color: AppTheme.darkColor.withOpacity(0.2),))
+                color: AppTheme.darkColor.withOpacity(0.2),
+              ))
           // Icon(Icons.chevron_right, size: 20, color: AppTheme.secondaryColor),
         ],
       ),
     );
   }
 
-  List<Widget> _buildBodyTextField(BuildContext context) =>
-      [
+  List<Widget> _buildBodyTextField(BuildContext context) => [
         Row(
           children: [
             Expanded(
                 child: ElevatedButton(
                     style: ButtonStyle(
-                      backgroundColor:
-                      MaterialStateProperty.resolveWith<Color>(
-                            (Set<MaterialState> states) =>
-                        c.gearboxValue.value
+                      backgroundColor: MaterialStateProperty.resolveWith<Color>(
+                        (Set<MaterialState> states) => c.gearboxValue.value
                             ? AppTheme.light
                             : AppTheme.primaryColor,
                       ),
                       overlayColor:
-                      MaterialStateProperty.all(Colors.transparent),
+                          MaterialStateProperty.all(Colors.transparent),
                       shape: MaterialStateProperty.all(RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(20.0),
                       )),
@@ -106,19 +114,19 @@ class MyContactDetailScreen extends StatelessWidget {
                         ],
                       ),
                     ))),
-            const SizedBox(width: 20,),
+            const SizedBox(
+              width: 20,
+            ),
             Expanded(
                 child: ElevatedButton(
                     style: ButtonStyle(
-                      backgroundColor:
-                      MaterialStateProperty.resolveWith<Color>(
-                            (Set<MaterialState> states) =>
-                        !c.gearboxValue.value
+                      backgroundColor: MaterialStateProperty.resolveWith<Color>(
+                        (Set<MaterialState> states) => !c.gearboxValue.value
                             ? AppTheme.light
                             : AppTheme.primaryColor,
                       ),
                       overlayColor:
-                      MaterialStateProperty.all(Colors.transparent),
+                          MaterialStateProperty.all(Colors.transparent),
                       shape: MaterialStateProperty.all(RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(20.0),
                       )),
@@ -152,10 +160,7 @@ class MyContactDetailScreen extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text('Numéro de téléphone',
-                  style: Theme.of(context)
-                      .textTheme
-                      .bodyText2!
-                      .copyWith(
+                  style: Theme.of(context).textTheme.bodyText2!.copyWith(
                       color: AppTheme.darkColor,
                       fontSize: 16,
                       fontWeight: FontWeight.w500)),
@@ -166,9 +171,14 @@ class MyContactDetailScreen extends StatelessWidget {
                 controller: c.phoneNumber.value,
                 keyboardType: TextInputType.phone,
                 autofocus: false,
-                validator: (v) { return null;  },
-                onChanged: (v) {  },
-                onSaved: (v) {  }, hintText: 'Numéro de téléphone', formatter: [],
+                validator: (v) {
+                  return null;
+                },
+                onChanged: (v) {},
+                onSaved: (v) {},
+                hintText: controller.phoneNumber,
+                formatter: [],
+                enabled: false,
               ),
             ],
           ),
@@ -178,10 +188,7 @@ class MyContactDetailScreen extends StatelessWidget {
         ),
         //
         Text('date de naissance',
-            style: Theme.of(context)
-                .textTheme
-                .bodyText2!
-                .copyWith(
+            style: Theme.of(context).textTheme.bodyText2!.copyWith(
                 color: AppTheme.darkColor,
                 fontSize: 16,
                 fontWeight: FontWeight.w500)),
@@ -212,8 +219,7 @@ class MyContactDetailScreen extends StatelessWidget {
           // optional
           isFormValidator: true,
           // optional
-          startYear:
-          DateTime.parse('1969-07-20 20:18:04Z').year,
+          startYear: DateTime.parse('1969-07-20 20:18:04Z').year,
           // optional
           endYear: DateTime.now().year,
           // optional
@@ -226,28 +232,24 @@ class MyContactDetailScreen extends StatelessWidget {
           selectedMonth: DateTime.now().month,
           showMonth: true,
           // optional
-          onChangedDay: (value) =>
-              print('onChangedDay: $value'),
-          onChangedMonth: (value) =>
-              print('onChangedMonth: $value'),
-          onChangedYear: (value) =>
-              print('onChangedYear: $value'),
+          onChangedDay: (value) => print('onChangedDay: $value'),
+          onChangedMonth: (value) => print('onChangedMonth: $value'),
+          onChangedYear: (value) => print('onChangedYear: $value'),
           boxDecoration: BoxDecoration(
-              border: Border.all(color: Colors.transparent, width: 0.0)), // optional
-          showDay: true,// optional
+              border: Border.all(
+                  color: Colors.transparent, width: 0.0)), // optional
+          showDay: true, // optional
           dayFlex: 2,
-          locale: "en",// optional
+          locale: "en", // optional
           hintDay: 'Jour', // optional
           hintMonth: 'Mois', // optional
           hintYear: 'Année', // optional
-          hintTextStyle: TextStyle(color: AppTheme.redColor, fontSize: 9), // optional
+          hintTextStyle:
+              TextStyle(color: AppTheme.redColor, fontSize: 9), // optional
         ),
         const SizedBox(height: 20),
         Text('Lieu de naissance',
-            style: Theme.of(context)
-                .textTheme
-                .bodyText2!
-                .copyWith(
+            style: Theme.of(context).textTheme.bodyText2!.copyWith(
                 color: AppTheme.darkColor,
                 fontSize: 16,
                 fontWeight: FontWeight.w500)),
@@ -258,18 +260,19 @@ class MyContactDetailScreen extends StatelessWidget {
           controller: c.phoneNumber.value,
           keyboardType: TextInputType.phone,
           autofocus: false,
-          validator: (v) { return null;  },
-          onChanged: (v) {  },
-          onSaved: (v) {  }, hintText: 'Lieu de naissance', formatter: [],
+          validator: (v) {
+            return null;
+          },
+          onChanged: (v) {},
+          onSaved: (v) {},
+          hintText: 'Lieu de naissance',
+          formatter: [],
         ),
         SizedBox(
           height: 10,
         ),
         Text('Adresse',
-            style: Theme.of(context)
-                .textTheme
-                .bodyText2!
-                .copyWith(
+            style: Theme.of(context).textTheme.bodyText2!.copyWith(
                 color: AppTheme.darkColor,
                 fontSize: 16,
                 fontWeight: FontWeight.w500)),
@@ -280,18 +283,19 @@ class MyContactDetailScreen extends StatelessWidget {
           controller: c.phoneNumber.value,
           keyboardType: TextInputType.streetAddress,
           autofocus: false,
-          validator: (v) { return null;  },
-          onChanged: (v) {  },
-          onSaved: (v) {  }, hintText: 'Adresse', formatter: [],
+          validator: (v) {
+            return null;
+          },
+          onChanged: (v) {},
+          onSaved: (v) {},
+          hintText: 'Adresse',
+          formatter: [],
         ),
         SizedBox(
           height: 10,
         ),
         Text('Complément d\'adresse',
-            style: Theme.of(context)
-                .textTheme
-                .bodyText2!
-                .copyWith(
+            style: Theme.of(context).textTheme.bodyText2!.copyWith(
                 color: AppTheme.darkColor,
                 fontSize: 16,
                 fontWeight: FontWeight.w500)),
@@ -302,18 +306,19 @@ class MyContactDetailScreen extends StatelessWidget {
           controller: c.phoneNumber.value,
           keyboardType: TextInputType.streetAddress,
           autofocus: false,
-          validator: (v) { return null;  },
-          onChanged: (v) {  },
-          onSaved: (v) {  }, hintText: 'Complément d\'adresse', formatter: [],
+          validator: (v) {
+            return null;
+          },
+          onChanged: (v) {},
+          onSaved: (v) {},
+          hintText: 'Complément d\'adresse',
+          formatter: [],
         ),
         const SizedBox(
           height: 10,
         ),
         Text('Pays',
-            style: Theme.of(context)
-                .textTheme
-                .bodyText2!
-                .copyWith(
+            style: Theme.of(context).textTheme.bodyText2!.copyWith(
                 color: AppTheme.darkColor,
                 fontSize: 16,
                 fontWeight: FontWeight.w500)),
@@ -328,31 +333,23 @@ class MyContactDetailScreen extends StatelessWidget {
             countryDropdownLabel: c.country.value,
             defaultCountry: CscCountry.France,
             flagState: CountryFlag.DISABLE,
-            selectedItemStyle: Theme.of(context)
-                .textTheme
-                .bodyText2!
-                .copyWith(
+            selectedItemStyle: Theme.of(context).textTheme.bodyText2!.copyWith(
                 color: AppTheme.darkColor,
                 fontSize: 18,
                 fontWeight: FontWeight.w500),
             dropdownDecoration: BoxDecoration(
-                borderRadius:
-                const BorderRadius.all(Radius.circular(30)),
+                borderRadius: const BorderRadius.all(Radius.circular(30)),
                 color: AppTheme.light,
-                border: Border.all(
-                    color: AppTheme.darkColor, width: .5)),
+                border: Border.all(color: AppTheme.darkColor, width: .5)),
             countrySearchPlaceholder: "Selectionner un Pays",
+
             ///Disabled Dropdown box decoration to style your dropdown selector [OPTIONAL PARAMETER]  (USE with disabled dropdownDecoration)
             disabledDropdownDecoration: BoxDecoration(
-                borderRadius:
-                const BorderRadius.all(Radius.circular(30)),
+                borderRadius: const BorderRadius.all(Radius.circular(30)),
                 color: Colors.grey.shade300,
                 border: Border.all(
                     color: AppTheme.darkColor.withOpacity(0.4), width: 1)),
-            dropdownItemStyle: Theme.of(context)
-                .textTheme
-                .bodyText2!
-                .copyWith(
+            dropdownItemStyle: Theme.of(context).textTheme.bodyText2!.copyWith(
                 color: AppTheme.backgroundColor,
                 fontSize: 14,
                 fontWeight: FontWeight.w500),
@@ -366,27 +363,35 @@ class MyContactDetailScreen extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
             Container(
-              width: Get.width /2.3,
+              width: Get.width / 2.3,
               child: CustomTextFormField(
                 controller: c.postalCodeController.value,
                 keyboardType: TextInputType.number,
                 autofocus: false,
                 enabled: true,
-                validator: (v) { return null;  },
-                onChanged: (v) {  },
-                onSaved: (v) {  }, hintText: 'Code Postale', formatter: [],
+                validator: (v) {
+                  return null;
+                },
+                onChanged: (v) {},
+                onSaved: (v) {},
+                hintText: 'Code Postale',
+                formatter: [],
               ),
             ),
             Container(
-              width: Get.width /2.3,
+              width: Get.width / 2.3,
               child: CustomTextFormField(
                 controller: c.cityController.value,
                 keyboardType: TextInputType.text,
                 autofocus: false,
                 enabled: true,
-                validator: (v) { return null;  },
-                onChanged: (v) {  },
-                onSaved: (v) {  }, hintText: 'Ville', formatter: [],
+                validator: (v) {
+                  return null;
+                },
+                onChanged: (v) {},
+                onSaved: (v) {},
+                hintText: 'Ville',
+                formatter: [],
               ),
             ),
           ],
@@ -400,36 +405,33 @@ class MyContactDetailScreen extends StatelessWidget {
 
   Widget _buildSubmitButton(BuildContext context, Callback func, {delete}) {
     return TextButton(
-      onPressed: func,
+      onPressed: () => Get.toNamed(Routes.summaryCoordonate),
       style: ButtonStyle(
-        backgroundColor:
-        MaterialStateProperty.resolveWith<Color>(
-              (Set<MaterialState> states) =>
-          states.contains(MaterialState.disabled)
+        backgroundColor: MaterialStateProperty.resolveWith<Color>(
+          (Set<MaterialState> states) => states.contains(MaterialState.disabled)
               ? AppTheme.primaryColor
-              : delete! ? AppTheme.redColor : AppTheme.primaryColor,
+              : delete!
+                  ? AppTheme.redColor
+                  : AppTheme.primaryColor,
         ),
-        overlayColor:
-        MaterialStateProperty.all(Colors.transparent),
-        shape: MaterialStateProperty.all(
-            RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(30.0),
-            )),
+        overlayColor: MaterialStateProperty.all(Colors.transparent),
+        shape: MaterialStateProperty.all(RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(30.0),
+        )),
       ),
       child: Container(
         height: 40,
         width: Get.width / 1.3,
         padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 10),
         child: Center(
-          child: Text('Enregistrer', style: Theme
-              .of(context)
-              .textTheme
-              .bodyText2!
-              .copyWith(
-            fontWeight: FontWeight.w900,
-            fontSize: 16,
-            color: AppTheme.backgroundColor,
-          ),),
+          child: Text(
+            'Confirmer'.toUpperCase(),
+            style: Theme.of(context).textTheme.bodyText2!.copyWith(
+                  fontWeight: FontWeight.w900,
+                  fontSize: 16,
+                  color: AppTheme.backgroundColor,
+                ),
+          ),
         ),
       ),
     );

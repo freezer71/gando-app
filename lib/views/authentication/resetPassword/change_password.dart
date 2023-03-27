@@ -10,7 +10,6 @@ import 'package:pinput/pinput.dart';
 import '../../../controllers/authController/auth_controller.dart';
 import '../../../widget/customTextFormField.dart';
 
-
 class ChangePasswordScreen extends StatelessWidget {
   ChangePasswordScreen({Key? key}) : super(key: key);
 
@@ -29,7 +28,10 @@ class ChangePasswordScreen extends StatelessWidget {
           elevation: 0,
           backgroundColor: Colors.transparent,
           leading: IconButton(
-            icon: Icon(Icons.arrow_back, color: AppTheme.darkColor,),
+            icon: Icon(
+              Icons.arrow_back,
+              color: AppTheme.darkColor,
+            ),
             onPressed: () {
               Get.back();
             },
@@ -43,56 +45,61 @@ class ChangePasswordScreen extends StatelessWidget {
           onTap: () {
             FocusScope.of(context).requestFocus(FocusNode());
           },
-          child: ListView(
-            physics: const ClampingScrollPhysics(),
-            padding: EdgeInsets.only(
-              left: 20,
-              right: 20,
-              top: AppBar().preferredSize.height + 50,
-            ),
+          child: Column(
             children: [
-              Hero(
-                  tag: 'logo',
-                  child: Image.asset(
-                      'assets/images/gando-logo.png', height: 140)),
-              const SizedBox(
-                height: 35,
-              ),
-              Center(
-                child: Text(
-                  "Changer votre mot de passe",
-                  style: Theme
-                      .of(context)
-                      .textTheme
-                      .bodyText2!
-                      .copyWith(
-                    fontWeight: FontWeight.w900,
-                    fontSize: 18,
-                    overflow: TextOverflow.ellipsis,
-                    color: HexColor(AppTheme.primaryColorString!),
+              Expanded(
+                child: ListView(
+                  physics: const ClampingScrollPhysics(),
+                  padding: EdgeInsets.only(
+                    left: 20,
+                    right: 20,
+                    top: AppBar().preferredSize.height + 50,
                   ),
-                ),
-              ),
-              Center(
-                child: Padding(
-                  padding: const EdgeInsets.all(18.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      const SizedBox(height: 20,),
-                      buildInput(context),
-                      const SizedBox(height: 40,),
-                      SubmitWithLoadingButton(
-                        text: 'Valider'.toUpperCase(),
-                        onPressed: () {
-                          controller.changePassword();
-                        },
-                        isLoading: controller.isLoading.value,
+                  children: [
+                    Hero(
+                        tag: 'logo',
+                        child: Image.asset('assets/images/gando-logo.png',
+                            height: 140)),
+                    const SizedBox(
+                      height: 35,
+                    ),
+                    Center(
+                      child: Text(
+                        "Changer votre mot de passe",
+                        style: Theme.of(context).textTheme.bodyText2!.copyWith(
+                              fontWeight: FontWeight.w900,
+                              fontSize: 18,
+                              overflow: TextOverflow.ellipsis,
+                              color: HexColor(AppTheme.primaryColorString!),
+                            ),
                       ),
-
-                    ],
-                  ),
+                    ),
+                    Center(
+                      child: Padding(
+                        padding: const EdgeInsets.all(18.0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            const SizedBox(
+                              height: 20,
+                            ),
+                            buildInput(context),
+                            const SizedBox(
+                              height: 40,
+                            ),
+                            SubmitWithLoadingButton(
+                              text: 'Valider'.toUpperCase(),
+                              onPressed: () {
+                                controller.changePassword();
+                              },
+                              isLoading: controller.isLoading.value,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ],
@@ -106,30 +113,25 @@ class ChangePasswordScreen extends StatelessWidget {
     return TextButton(
       onPressed: () => Get.toNamed(Routes.resetPwd),
       style: ButtonStyle(
-        backgroundColor:
-        MaterialStateProperty.resolveWith<Color>(
-                (Set<MaterialState> states) => AppTheme.primaryColor
-        ),
-        overlayColor:
-        MaterialStateProperty.all(Colors.transparent),
-        shape: MaterialStateProperty.all(
-            RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(30.0),
-            )),
+        backgroundColor: MaterialStateProperty.resolveWith<Color>(
+            (Set<MaterialState> states) => AppTheme.primaryColor),
+        overlayColor: MaterialStateProperty.all(Colors.transparent),
+        shape: MaterialStateProperty.all(RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(30.0),
+        )),
       ),
       child: Container(
         width: Get.width / 1.3,
         padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 10),
         child: Center(
-          child: Text('Valider'.toUpperCase(), style: Theme
-              .of(context)
-              .textTheme
-              .bodyText2!
-              .copyWith(
-            fontWeight: FontWeight.w900,
-            fontSize: 18,
-            color: AppTheme.light,
-          ),),
+          child: Text(
+            'Valider'.toUpperCase(),
+            style: Theme.of(context).textTheme.bodyText2!.copyWith(
+                  fontWeight: FontWeight.w900,
+                  fontSize: 18,
+                  color: AppTheme.light,
+                ),
+          ),
         ),
       ),
     );
@@ -160,7 +162,9 @@ class ChangePasswordScreen extends StatelessWidget {
               print('saved $p');
             },
             hintText: 'Nouveau mot de passe'),
-        const SizedBox(height: 15,),
+        const SizedBox(
+          height: 15,
+        ),
         CustomTextFormField(
             key: Get.keys[8],
             obscureText: true,
