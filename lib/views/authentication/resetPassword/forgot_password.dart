@@ -112,7 +112,7 @@ class ForgotPasswordScreen extends StatelessWidget {
             controller: controller.forgotEmailController.value,
             validator: (value) {
               if (!value!.isEmail) {
-                return "Email invalid";
+                return "Email invalide";
                 // return 'amount Is not valid';
               }
               return null;

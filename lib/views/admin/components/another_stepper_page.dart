@@ -300,7 +300,7 @@ class _StepperArticlesState extends State<StepperArticles> {
         now.difference(_currentBackPressTime!) > const Duration(seconds: 2)) {
       _currentBackPressTime = now;
       Get.defaultDialog(
-        title: 'Voulez vous vraiment quitter l\'ajout de l\'annonce',
+        title: "",
         titlePadding: const EdgeInsets.all(18.0),
         backgroundColor: AppTheme.light,
         titleStyle: TextStyle(
@@ -309,14 +309,41 @@ class _StepperArticlesState extends State<StepperArticles> {
           fontWeight: FontWeight.w900,
         ),
         content: Container(
-          child: Column(
+          height: 100,
+          child: Stack(
+            clipBehavior: Clip.none,
+            alignment: Alignment.center,
             children: [
-              LottieBuilder.asset(Assets.zip15144AttentionSign,
-                  width: 180, fit: BoxFit.contain),
-              // Text(
-              //   'Voulez vous vraiment quitter la création de votre boutique?',
-              //   style: GlobalStyle.appBarTitle.copyWith(color: PRIMARY_COLOR),
-              // ),
+              Positioned(
+                top: -150,
+                child: LottieBuilder.asset(Assets.zip15144AttentionSign,
+                    width: 120, fit: BoxFit.contain),
+              ),
+              Positioned(
+                top: -50,
+                child: SizedBox(
+                  width: Get.width * 0.7,
+                  child: Column(
+                    children: [
+                      const SizedBox(height: 10,),
+                      Text('Voulez vous vraiment quitter l\'ajout de l\'annonce',
+                        style: TextStyle(
+                          color: AppTheme.darkColor,
+                          fontSize: 18,
+                          fontWeight: FontWeight.w900,
+                        ), textAlign: TextAlign.center,),
+                      const SizedBox(height: 10,),
+                      Text(
+                        'Cette action va annuler l\'ajout de l\'annonce en cours et vous allez être redirigé vers la page d\'accueil',
+                        style: TextStyle(
+                          color: AppTheme.darkColor,
+                          fontSize: 14,
+                          fontWeight: FontWeight.w400,
+                        ), textAlign: TextAlign.center,),
+                    ],
+                  ),
+                ),
+              ),
             ],
           ),
         ),

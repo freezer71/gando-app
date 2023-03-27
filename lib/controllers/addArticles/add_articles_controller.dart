@@ -409,7 +409,6 @@ class AddArticlesController extends GetxController {
         );
       }
     } catch (e) {
-      printInfo(info: "ERROR UPLOAD DATA ======>>>: ${e.runtimeType}");
       Get.defaultDialog(
         title: 'Erreur',
         titleStyle: Theme.of(Get.context!).textTheme.bodyText1!.copyWith(
@@ -424,7 +423,7 @@ class AddArticlesController extends GetxController {
           children: [
             Padding(
               padding: const EdgeInsets.all(8.0),
-              child: Text('Une erreur est survenue, veuillez réessayer\n$e', style:
+              child: Text('${e}', style:
                 Theme.of(Get.context!).textTheme.bodyLarge!.copyWith(
                   color: AppTheme.darkColor,
                   fontSize: 18,
@@ -499,7 +498,6 @@ class AddArticlesController extends GetxController {
 
       if (res.statusCode == STATUS_OK) {
         itemsZipCode.value = body.map<String>((e) => e.toString()).toList();
-        printInfo(info: "ZIP CODE: ${itemsZipCode.toString()}");
         return itemsZipCode;
       }else {
         return itemsZipCode.value = [];

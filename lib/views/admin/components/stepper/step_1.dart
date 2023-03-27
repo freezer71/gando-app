@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:gando/controllers/addArticles/add_articles_controller.dart';
 import 'package:gando/controllers/car/car_brand_controller.dart';
+import 'package:gando/helpers/global_function.dart';
 import 'package:gando/models/CarBrandModel.dart';
 import 'package:gando/models/Equipment.dart';
 import 'package:get/get.dart';
@@ -60,8 +61,9 @@ class Step1State extends State<Step1> {
     return [
       GetBuilder<CarBrandController>(
         assignId: true,
+
         init: CarBrandController(),
-        builder: (controller) {
+        builder: (CarBrandController controller) {
           return FutureBuilder(
               future: controller.futureGetCarBrands,
               initialData: null,
@@ -72,8 +74,6 @@ class Step1State extends State<Step1> {
                 } else if (snapshot.hasError) {
                   return Center(child: Text('Error: ${snapshot.error}'));
                 } else {
-                  printInfo(info: "SNAP DATA ===> ${snapshot.data}");
-
                   if (snapshot.data != null) {
                     return Obx(() {
                       return Column(
@@ -96,9 +96,8 @@ class Step1State extends State<Step1> {
                             value: controller.selectedBrand.value,
                             // value: selectedEquipment,
                             onChanged: (value) {
-                              controller.selectedBrand(value);
-                              // update state
-                              print('selected BRAND = $value');
+                              controller.changeBrand(value!);
+                              c.brandController.value.text = value;
                             },
                           ),
                           const SizedBox(height: 20),
@@ -116,12 +115,11 @@ class Step1State extends State<Step1> {
                             buttonDecoration: BoxDecoration(
                                 color: AppTheme.darkColor.withOpacity(0.8),
                                 borderRadius: BorderRadius.circular(30)),
-                            dropdownItems: controller.getModelNames(snapshot.data),
+                            dropdownItems: controller.getModelNames(),
                             value: controller.selectedModel.value,
-                            // value: selectedEquipment,
                             onChanged: (value) {
-                              controller.selectedModel(value);
-                              print('selected MODEL = $value');
+                              controller.changeModel(value!);
+                              c.modelController.value.text = value;
                             },
                           ),
                         ],
@@ -140,7 +138,7 @@ class Step1State extends State<Step1> {
       //     keyboardType: TextInputType.text,
       //     validator: (value) {
       //       if (!value!.isNotEmpty) {
-      //         return "Marque invalid";
+      //         return "Marque invalide";
       //         // return 'amount Is not valid';
       //       }
       //       return null;
@@ -163,7 +161,7 @@ class Step1State extends State<Step1> {
       //     keyboardType: TextInputType.text,
       //     validator: (value) {
       //       if (!value!.isNotEmpty) {
-      //         return "Modèle invalid";
+      //         return "Modèle invalide";
       //         // return 'amount Is not valid';
       //       }
       //       return null;
@@ -186,7 +184,7 @@ class Step1State extends State<Step1> {
           keyboardType: TextInputType.text,
           validator: (value) {
             if (!value!.isNotEmpty) {
-              return "Type invalid";
+              return "Type invalide";
               // return 'amount Is not valid';
             }
             return null;
@@ -324,14 +322,14 @@ class Step1State extends State<Step1> {
               controller: c.numberplateController.value,
               keyboardType: TextInputType.text,
               validator: (value) {
-                if (!value!.isNotEmpty) {
-                  return "Plaque d\'immatriculation invalid";
+                if (!GlobalFunction().isValidNumberPlate(value!)) {
+                  return "Plaque d\'immatriculation invalide";
                   // return amount Is not valid';
                 }
                 return null;
               },
               formatter: [
-                LengthLimitingTextInputFormatter(60),
+                LengthLimitingTextInputFormatter(20),
                 FilteringTextInputFormatter.singleLineFormatter
               ],
               onChanged: (p) {
