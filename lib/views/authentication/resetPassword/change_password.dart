@@ -144,7 +144,7 @@ class ChangePasswordScreen extends StatelessWidget {
             controller: controller.recoverPassword.value,
             validator: (value) {
               if (gf.isPassword(value!)) {
-                return "Mot de passe invalid";
+                return "Mot de passe invalide";
               }
               return null;
             },
@@ -172,7 +172,7 @@ class ChangePasswordScreen extends StatelessWidget {
                 if (value != controller.recoverPassword.value.text) {
                   return "Les mots de passe ne correspondent pas";
                 }
-                return "Confirmer mot de passe invalid";
+                return "Confirmer mot de passe invalide";
                 // return 'amount Is not valid';
               }
               return null;

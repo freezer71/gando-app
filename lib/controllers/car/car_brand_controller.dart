@@ -79,7 +79,6 @@ class CarBrandController extends GetxController {
   }
 
   void changeModel(String value) {
-
     selectedModel(value);
     update();
   }
