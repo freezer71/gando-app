@@ -300,6 +300,8 @@ class Step1State extends State<Step1> {
   }
 
   Widget _buildNumberPlate() {
+
+
     return Container(
       padding: EdgeInsets.zero,
       child: Column(
@@ -330,7 +332,8 @@ class Step1State extends State<Step1> {
               },
               formatter: [
                 LengthLimitingTextInputFormatter(20),
-                FilteringTextInputFormatter.singleLineFormatter
+                FilteringTextInputFormatter.singleLineFormatter,
+
               ],
               onChanged: (p) {
                 print('saved $p');
@@ -1148,4 +1151,14 @@ class CustomDropdownDatePicker {
     );
   }
 
+}
+
+class UpperCaseTextFormatter extends TextInputFormatter {
+  @override
+  TextEditingValue formatEditUpdate(TextEditingValue oldValue, TextEditingValue newValue) {
+    return TextEditingValue(
+      text: newValue.text.toUpperCase(),
+      selection: newValue.selection,
+    );
+  }
 }

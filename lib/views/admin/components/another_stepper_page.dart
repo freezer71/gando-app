@@ -322,7 +322,7 @@ class _StepperArticlesState extends State<StepperArticles> {
               Positioned(
                 top: -50,
                 child: SizedBox(
-                  width: Get.width * 0.7,
+                  width: Get.width - 50,
                   child: Column(
                     children: [
                       const SizedBox(height: 10,),
