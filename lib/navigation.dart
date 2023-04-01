@@ -133,7 +133,10 @@ class AppPages {
         page: () => EditPhoneCoordonateScreen(),
         binding: ProfileBinding()),
     GetPage(
-        name: Routes.summaryCoordonate, page: () => SummaryCoordonateView()),
+      name: Routes.summaryCoordonate,
+      page: () => const SummaryCoordonateView(),
+      binding: InitBindings(),
+    ),
     GetPage(name: Routes.homeCordonate, page: () => HomeCordonatesView()),
     GetPage(
       name: Routes.detailCordonate,

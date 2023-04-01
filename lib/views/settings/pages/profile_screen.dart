@@ -22,7 +22,6 @@ class ProfileScreen extends GetView<UserController> {
 
   @override
   Widget build(BuildContext context) {
-    print("controllerato ${controller.user.value.lastname}");
     return Scaffold(
         backgroundColor: AppTheme.backgroundColor,
         appBar: CustomAppBar(
@@ -88,9 +87,7 @@ class ProfileScreen extends GetView<UserController> {
                                   children: [
                                     TextButton(
                                       onPressed: () async {
-                                        User response = await Get.to(
-                                            () => EditProfileScreen());
-                                        controller.user.value = response;
+                                        await Get.to(() => EditProfileScreen());
                                         controller.setState();
                                       },
                                       style: ButtonStyle(
@@ -151,6 +148,8 @@ class ProfileScreen extends GetView<UserController> {
                                     maxLines: 15,
                                     style: TextStyle(color: AppTheme.darkColor),
                                     decoration: InputDecoration(
+                                      contentPadding: EdgeInsets.symmetric(
+                                          horizontal: 4.0, vertical: 3.0),
                                       filled: true,
                                       fillColor: AppTheme.light,
                                       labelStyle: Theme.of(context)

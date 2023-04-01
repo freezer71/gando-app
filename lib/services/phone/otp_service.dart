@@ -15,27 +15,19 @@ class OtpService {
 
   Stream<dynamic> verifyPhoneNumber(String? phoneNumber) {
     final streamController = StreamController<dynamic>();
-    print("ato amin verifyPhoneNumber");
     _auth.verifyPhoneNumber(
       phoneNumber: phoneNumber!,
       timeout: const Duration(seconds: 30),
       verificationCompleted: (PhoneAuthCredential phoneAuthCredential) {
-        print("ato amin verificationCompleted");
-
         streamController.add(VerificationCompleted(phoneAuthCredential));
       },
       verificationFailed: (FirebaseAuthException firebaseAuthException) {
-        print("ato amin verificationFailed");
-
         streamController.add(VerificationFailedAction(firebaseAuthException));
       },
       codeSent: (String verificationId, int? b) {
-        print("ato amin codesent");
         streamController.add(OtpCodeSentAction(verificationId));
       },
       codeAutoRetrievalTimeout: (String phoneAuthCredential) {
-        print("ato amin codeAutoRetrievalTimeout");
-
         streamController.add(CodeAutoRetrievalTimeout(phoneAuthCredential));
       },
     );

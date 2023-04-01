@@ -117,35 +117,34 @@ class VerifyMailOtpScreen extends GetView<AccountSettingController> {
   }
 
   Widget buildInput(BuildContext context) {
-    return Pinput(
-      autofocus: false,
-      key: Get.keys[0],
-      validator: (val) {
-        if (!gf.isOtp(val!)) {
-          return "Code invalide";
-        }
-        return null;
-      },
-      errorPinTheme: gf.defaultPinTheme.copyWith(
-          textStyle: Theme.of(context).textTheme.bodyText2!.copyWith(
-                fontWeight: FontWeight.w900,
-                fontSize: 42,
-                color: AppTheme.darkColor,
-              ),
-          decoration: BoxDecoration(
-              color: AppTheme.redColor,
-              border: Border.all(
-                color: AppTheme.redColor,
-              ),
-              borderRadius: BorderRadius.circular(30))),
-      enabled: true,
-      textInputAction: TextInputAction.go,
-      pinputAutovalidateMode: PinputAutovalidateMode.onSubmit,
-      length: 6,
-      useNativeKeyboard: true,
-      keyboardType: TextInputType.number,
-      controller: controller.pinController.value,
-      defaultPinTheme: gf.defaultPinTheme,
+    return Container(
+      height: 100,
+      decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(20), border: Border.all()),
+      child: Pinput(
+        key: Get.keys[10],
+        useNativeKeyboard: true,
+        validator: (val) {
+          if (!gf.isOtp(val!)) {
+            return "Code invalide";
+          }
+          return null;
+        },
+        keyboardType: TextInputType.number,
+        length: 6,
+        androidSmsAutofillMethod: AndroidSmsAutofillMethod.none,
+        controller: controller.pinController.value,
+        preFilledWidget: Container(
+          width: 12,
+          decoration:
+              BoxDecoration(color: AppTheme.darkColor, shape: BoxShape.circle),
+        ),
+        defaultPinTheme: gf.myDefaultPinTheme,
+        onCompleted: (pin) {},
+        focusedPinTheme: gf.myDefaultPinTheme,
+        showCursor: false,
+        errorPinTheme: gf.myDefaultPinTheme,
+      ),
     );
   }
 }

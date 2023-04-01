@@ -6,7 +6,7 @@ import '../config/textstyle.dart';
 class CustomTextFormField extends StatelessWidget {
   final BuildContext? context;
   final TextInputType? keyboardType;
-  final controller;
+  final TextEditingController controller;
   String? hintText = '';
   final String? Function(String?)? validator;
   final List<TextInputFormatter>? formatter;
@@ -23,7 +23,7 @@ class CustomTextFormField extends StatelessWidget {
     Key? key,
     this.context,
     required this.keyboardType,
-    this.controller,
+    required this.controller,
     required this.validator,
     required this.formatter,
     required this.onChanged,
