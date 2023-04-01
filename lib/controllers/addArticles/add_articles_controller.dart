@@ -498,7 +498,6 @@ class AddArticlesController extends GetxController {
 
       if (res.statusCode == STATUS_OK) {
         itemsZipCode.value = body.map<String>((e) => e.toString()).toList();
-        printInfo(info: "ZIP CODE: ${itemsZipCode.toString()}");
         return itemsZipCode;
       }else {
         return itemsZipCode.value = [];
