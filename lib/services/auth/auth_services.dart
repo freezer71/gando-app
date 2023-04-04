@@ -1,6 +1,8 @@
 import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
+import 'package:gando/controllers/user/edit_profile_controller.dart';
+import 'package:gando/controllers/user/user_controller.dart';
 import 'package:gando/services/provider/api_provider.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
@@ -74,6 +76,10 @@ class AuthService extends GetxService {
 
       if (res.statusCode == 200) {
         user.value = client.User.fromJson(body);
+        Get.delete<EditProfilController>();
+        Get.put(EditProfilController());
+        Get.delete<UserController>();
+        Get.put(UserController());
       } else {
         user.value = client.User();
       }

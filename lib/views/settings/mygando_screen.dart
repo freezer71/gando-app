@@ -59,7 +59,7 @@ class MyGandoScreen extends StatelessWidget {
         children: [
           GestureDetector(
             onTap: () {
-              Get.toNamed(Routes.profile, arguments: seller);
+              Get.toNamed(Routes.profile);
             },
             child: Container(
               decoration: BoxDecoration(

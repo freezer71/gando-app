@@ -62,63 +62,82 @@ class EditProfileScreen extends GetView<EditProfilController> {
                             context: context,
                             barrierDismissible: false,
                             builder: (BuildContext context) => SimpleDialog(
-                              backgroundColor: AppTheme.light,
+                              backgroundColor:
+                                  Colors.transparent.withOpacity(0.05),
                               insetPadding:
                                   EdgeInsets.only(top: Get.width / 0.8),
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(15.0),
                               ),
                               children: [
-                                ListTile(
-                                  onTap: () async {
-                                    // Pick an image
-                                    final XFile? image =
-                                        await _picker.pickImage(
-                                      source: ImageSource.gallery,
-                                      imageQuality: 50,
-                                    );
-                                    Get.back(result: image);
-                                  },
-                                  title: Text(
-                                    textAlign: TextAlign.center,
-                                    "Importer une photo",
-                                    style: TextStyle(
-                                        color: AppTheme.darkColor,
-                                        fontWeight: FontWeight.bold),
+                                Container(
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(15.0),
+                                      color: Colors.white),
+                                  child: Column(
+                                    children: [
+                                      ListTile(
+                                        onTap: () async {
+                                          // Pick an image
+                                          final XFile? image =
+                                              await _picker.pickImage(
+                                            source: ImageSource.gallery,
+                                            imageQuality: 50,
+                                          );
+                                          Get.back(result: image);
+                                        },
+                                        title: Text(
+                                          textAlign: TextAlign.center,
+                                          "Importer une photo",
+                                          style: TextStyle(
+                                              color: AppTheme.darkColor,
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                      ),
+                                      Divider(
+                                          thickness: 1.0,
+                                          color: AppTheme.darkColor),
+                                      ListTile(
+                                        onTap: () async {
+                                          // capture an image
+                                          final XFile? image =
+                                              await _picker.pickImage(
+                                            source: ImageSource.camera,
+                                            imageQuality: 50,
+                                          );
+                                          Get.back(result: image);
+                                        },
+                                        title: Text(
+                                          textAlign: TextAlign.center,
+                                          "Prendre une photo",
+                                          style: TextStyle(
+                                              color: AppTheme.darkColor,
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                      ),
+                                    ],
                                   ),
                                 ),
-                                Divider(
-                                    thickness: 1.0, color: AppTheme.darkColor),
-                                ListTile(
-                                  onTap: () async {
-                                    // capture an image
-                                    final XFile? image =
-                                        await _picker.pickImage(
-                                      source: ImageSource.camera,
-                                      imageQuality: 50,
-                                    );
-                                    Get.back(result: image);
-                                  },
-                                  title: Text(
-                                    textAlign: TextAlign.center,
-                                    "Prendre une photo",
-                                    style: TextStyle(
-                                        color: AppTheme.darkColor,
-                                        fontWeight: FontWeight.bold),
-                                  ),
+                                SizedBox(
+                                  height: 12.0,
                                 ),
-                                Divider(
-                                    thickness: 1.0, color: AppTheme.darkColor),
-                                ListTile(
-                                  onTap: () async {
-                                    Get.back();
-                                  },
-                                  title: Text(
-                                    textAlign: TextAlign.center,
-                                    "Annuler",
-                                    style: TextStyle(
-                                        color: AppTheme.darkColor,
-                                        fontWeight: FontWeight.bold),
+                                /*Divider(
+                                    thickness: 1.0, color: AppTheme.darkColor),*/
+                                Container(
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(15.0),
+                                      color: Colors.white),
+                                  child: ListTile(
+                                    onTap: () async {
+                                      Get.back();
+                                    },
+                                    title: Text(
+                                      textAlign: TextAlign.center,
+                                      "Annuler",
+                                      style: TextStyle(
+                                          color: AppTheme.darkColor,
+                                          fontWeight: FontWeight.bold),
+                                    ),
                                   ),
                                 ),
                               ],
@@ -174,24 +193,19 @@ class EditProfileScreen extends GetView<EditProfilController> {
                     height: 40,
                     color: AppTheme.darkColor,
                   ),
-                  Container(
-                    height: Get.height / 4,
-                    width: Get.width - 50,
-                    padding:
-                        const EdgeInsets.symmetric(vertical: 6, horizontal: 8),
-                    decoration: BoxDecoration(
-                      borderRadius: const BorderRadius.all(Radius.circular(20)),
-                      color: AppTheme.light,
-                    ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 18.0),
                     child: TextFormField(
                       onChanged: (value) {
                         controller.numberTextDescription.value = value.length;
                       },
                       maxLength: 255,
-                      controller: controller.descriptionController,
-                      maxLines: 15,
+                      controller: controller.descriptionController.value,
+                      maxLines: 7,
                       style: TextStyle(color: AppTheme.darkColor),
                       decoration: InputDecoration(
+                        contentPadding: EdgeInsets.symmetric(
+                            horizontal: 10.0, vertical: 5.0),
                         filled: true,
                         fillColor: AppTheme.light,
                         labelStyle:
@@ -208,7 +222,7 @@ class EditProfileScreen extends GetView<EditProfilController> {
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.only(right: 15.0, top: 5.0),
+                    padding: const EdgeInsets.only(right: 15.0),
                     child: Align(
                       alignment: Alignment.topRight,
                       child: Text(
@@ -224,7 +238,7 @@ class EditProfileScreen extends GetView<EditProfilController> {
                     onPressed: () async {
                       await controller.editNameAndDescription();
                       if (controller.isSuccess.value) {
-                        Navigator.of(context).pop(controller.user.value);
+                        Navigator.of(context).pop();
                       }
                     },
                     isLoading: controller.isLoading.value,
@@ -243,7 +257,7 @@ class EditProfileScreen extends GetView<EditProfilController> {
 
   List<Widget> _buildTextField(BuildContext context) => [
         CustomTextFormField(
-          controller: controller.firstNameController,
+          controller: controller.firstNameController.value,
           keyboardType: TextInputType.text,
           enabled: true,
           formatter: [],
@@ -258,7 +272,7 @@ class EditProfileScreen extends GetView<EditProfilController> {
         ),
         const SizedBox(height: 20),
         CustomTextFormField(
-          controller: controller.lastNameController,
+          controller: controller.lastNameController.value,
           keyboardType: TextInputType.text,
           enabled: true,
           formatter: [],

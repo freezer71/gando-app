@@ -61,40 +61,40 @@ class EditPhoneCoordonateScreen extends GetView<UserController> {
                       height: 10,
                     ),
                     Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
-                        Expanded(
-                          child: Container(
-                            width: Get.width / 3,
-                            height: 60,
-                            decoration: BoxDecoration(
-                                color: AppTheme.light,
-                                borderRadius:
-                                    const BorderRadius.all(Radius.circular(30)),
-                                border: Border.all(
-                                    color: AppTheme.darkColor, width: .5)),
-                            child: CountryCodePicker(
-                              onChanged: controller
-                                  .onCountryCodePicked, // Initial selection and favorite can be one of code ('IT') OR dial_code('+39')
-                              initialSelection: 'FR',
-                              favorite: ['+33', 'FR'],
-                              // optional. Shows only country name and flag
-                              showCountryOnly: false,
-                              // optional. Shows only country name and flag when popup is closed.
-                              showOnlyCountryWhenClosed: false,
-                              // optional. aligns the flag and the Text left
-                              alignLeft: false,
-                              textStyle: TextStyle(color: Colors.black),
-                              dialogTextStyle: TextStyle(color: Colors.black),
-                              searchStyle: TextStyle(color: Colors.black),
-                            ),
+                        Container(
+                          width: Get.width / 4.0,
+                          height: 60,
+                          decoration: BoxDecoration(
+                              color: AppTheme.light,
+                              borderRadius:
+                                  const BorderRadius.all(Radius.circular(30)),
+                              border: Border.all(
+                                  color: AppTheme.darkColor, width: .5)),
+                          child: CountryCodePicker(
+                            onChanged: controller.onCountryCodePicked, //
+                            onInit: (s) {
+                              controller.onCountryCodePicked(s!);
+                            },
+                            // Initial selection and favorite can be one of code ('IT') OR dial_code('+39')
+                            initialSelection:
+                                controller.initialSelectionCountry.value,
+                            favorite: ['+33', 'FR'],
+                            // optional. Shows only country name and flag
+                            // optional. Shows only country name and flag when popup is closed.
+                            hideMainText: true,
+                            // optional. aligns the flag and the Text left
+                            showDropDownButton: true,
+                            padding: const EdgeInsets.only(left: 5.0),
+                            textStyle: TextStyle(color: Colors.black),
+                            dialogTextStyle: TextStyle(color: Colors.black),
+                            searchStyle: TextStyle(color: Colors.black),
                           ),
                         ),
-                        const SizedBox(width: 10.0),
                         Padding(
-                          padding: const EdgeInsets.only(top: 35.0),
+                          padding: const EdgeInsets.only(top: 35.0, left: 8.0),
                           child: SizedBox(
-                            width: Get.width / 2.3,
+                            width: Get.width / 1.9,
                             height: 100,
                             child: CustomTextFormField(
                               keyboardType: TextInputType.phone,
@@ -102,12 +102,12 @@ class EditPhoneCoordonateScreen extends GetView<UserController> {
                               enabled: true,
                               validator: (value) {
                                 if (value!.trim().isEmpty) {
-                                  return "Numé";
+                                  return "Numéro obligatoire";
                                 }
                               },
                               onChanged: (v) {},
                               onSaved: (v) {},
-                              hintText: '07 . 14 . 19 . 20 . 04',
+                              hintText: 'numéro téléphone',
                               formatter: [],
                               controller: controller.phoneTxtController,
                             ),
