@@ -120,8 +120,7 @@ class _MyAppState extends State<MyApp> {
       debugShowCheckedModeBanner: false,
       getPages: AppPages.appPages,
       // I add my list of pages here
-      initialRoute: AppPages
-          .INITIAL, // This is the page that should be rendered on app launch
+      initialRoute: AppPages.INITIAL // This is the page that should be rendered on app launch
     );
   }
 }

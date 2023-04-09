@@ -51,7 +51,9 @@ class SignInController extends GetxController {
       final body = res.data['data'];
       if (res.statusCode == STATUS_OK) {
         printInfo(info: '${body}');
-        checkAuth.authentication(token: body['token']);
+
+        await checkAuth.authentication(token: body['token']);
+
         return Get.offNamed(
           Routes.home,
           arguments: InitBindings(),
