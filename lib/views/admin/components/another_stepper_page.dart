@@ -230,13 +230,17 @@ class _StepperArticlesState extends State<StepperArticles> {
                     Step4State.form4.currentState!.validate()) {
                   Step4State.form4.currentState!.save();
                   c.currentStep.value = c.currentStep.value + 1;
-                  printInfo(info: "mapData: ${mapData.toString()}");
+                  // printInfo(info: "mapData: ${mapData.toString()}");
                   printInfo(
                       info: "FINAL STEP CALLLL =====>>>: ${c.currentStep.value}");
                 } else if (c.currentStep.value == steps.length - 1 &&
                     UploadState.finalForm.currentState!.validate()) {
                   // upload data
-                  await c.uploadData();
+                  if(c.terms.value){
+                    await c.uploadData();
+                  }else{
+                    _showErrorDialog("Veuillez accepter les conditions d'utilisation");
+                  }
                 } else {
                   // show modal error:
                   _showErrorDialog("Veuillez remplir tous les champs");
@@ -309,7 +313,7 @@ class _StepperArticlesState extends State<StepperArticles> {
           fontWeight: FontWeight.w900,
         ),
         content: Container(
-          height: 100,
+          height: 120,
           child: Stack(
             clipBehavior: Clip.none,
             alignment: Alignment.center,
@@ -322,7 +326,7 @@ class _StepperArticlesState extends State<StepperArticles> {
               Positioned(
                 top: -50,
                 child: SizedBox(
-                  width: Get.width - 50,
+                  width: Get.width / 2,
                   child: Column(
                     children: [
                       const SizedBox(height: 10,),

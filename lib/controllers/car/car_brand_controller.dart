@@ -17,12 +17,29 @@ class CarBrandController extends GetxController {
 
   final selectedBrand = "".obs;
   final selectedModel = "".obs;
+  final selectedType = "".obs;
   final brands = <CarBrand>[].obs;
+
+  final listType = [
+    'Citadine',
+    'Cabriolet',
+    '4x4',
+    'Familiale',
+    'Berline',
+    'Coupé',
+    'Minibus'
+  ];
 
   @override
   void onInit() {
     super.onInit();
     futureGetCarBrands = getCarBrands();
+    selectedType.value = listType.first;
+  }
+
+  @override
+  void onReady() {
+    super.onReady();
   }
 
   @override
