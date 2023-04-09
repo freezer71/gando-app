@@ -394,7 +394,53 @@ class UploadState extends State<Upload> {
                   .copyWith(
                   color: AppTheme.darkColor,
                   fontSize: 12,
-                  fontWeight: FontWeight.w400))
+                  fontWeight: FontWeight.w400)),
+          const SizedBox(
+            height: 30,
+          ),
+          Align(
+            alignment: Alignment.center,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                Transform.scale(
+                  scale: 1.5,
+                  child: Checkbox(
+                      fillColor: MaterialStateProperty.resolveWith<Color>(
+                            (Set<MaterialState> states) =>
+                        states.contains(MaterialState.disabled)
+                            ? AppTheme.darkColor
+                            : AppTheme.primaryColor,
+                      ),
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(5)
+                      ),
+                      checkColor: AppTheme.darkColor,
+                      value: c.terms.value,
+                      onChanged: (value) {
+                        c.terms.value = !c.terms.value;
+                      }),
+                ),
+                Container(
+                  width: Get.width / 1.4,
+                  child: Text(
+                    'Je certifie que les informations fournies sont exactes et véridiques à ma connaissance, et que je suis responsable de l\'exactitude de ces informations.',
+                    style: Theme
+                        .of(context)
+                        .textTheme
+                        .bodyText2!
+                        .copyWith(
+                      fontWeight: FontWeight.w900,
+                      fontSize: 12,
+                      overflow: TextOverflow.ellipsis,
+                      color: AppTheme.darkColor.withOpacity(0.7)
+                    ),
+                    maxLines: 5,
+                  ),
+                ),
+              ],
+            ),
+          ),
         ],
       ),
     );

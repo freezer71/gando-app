@@ -7,6 +7,7 @@ import 'package:gando/models/Car.dart';
 import 'package:gando/models/ProfileSeller.dart';
 import 'package:gando/views/products/booking/booking_screen.dart';
 import 'package:gando/views/seller/profile_screen.dart';
+import 'package:gando/widget/loading_dialog.dart';
 import 'package:gando/widget/reusable/cache_image_network.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -98,6 +99,11 @@ class _CarDetailPageState extends State<CarDetailPage> {
   void initState() {
     super.initState();
     car = widget.car;
+    controller.getCarById(car.id!).then((value) {
+      setState(() {
+        car = value;
+      });
+    });
     _carImagesList.addAll([
       car.images!.supplementaire.toString(),
       car.images!.avant34.toString(),
@@ -124,118 +130,91 @@ class _CarDetailPageState extends State<CarDetailPage> {
       body: GetBuilder<CarController>(
         assignId: true,
         builder: (logic) {
-          return FutureBuilder(
-            future: logic.getCarById(car.id!),
-            builder: (context, snapshot) {
-              // state
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return Center(
-                  child: CircularProgressIndicator(),
-                );
-              }
-              // error
-              else if (snapshot.hasError) {
-                return Center(
-                  child: Text('Une erreur est survenue !'),
-                );
-              }
-              // success
-              else if (snapshot.hasData){
-                if (snapshot.data != null){
-                  car = snapshot.data as Car;
-                  return Stack(
-                    children: [
-                      CustomScrollView(
-                        slivers: [
-                          SliverAppBar(
-                            pinned: true,
-                            automaticallyImplyLeading: true,
-                            backgroundColor: AppTheme.backgroundColor,
-                            expandedHeight: Get.height / 3.5,
-                            leading: IconButton(
-                              icon: Icon(
-                                Icons.arrow_back_ios_outlined,
-                                color: AppTheme.light,
-                              ),
-                              onPressed: () => Navigator.pop(context),
-                            ),
-                            flexibleSpace: FlexibleSpaceBar(
-                              centerTitle: false,
-                              // title: Container(
-                              //   child: Text("${car.brand}", style: Theme.of(context).textTheme.bodyText2!.copyWith(
-                              //       color: AppTheme.darkColor,
-                              //       fontSize: 18,
-                              //       fontWeight: FontWeight.w900),),
-                              // ),
-                              background: CarouselSlider(
-                                items: _carImagesList
-                                    .map((item) {
-                                  return Container(
-                                    width: Get.width,
-                                    height: Get.height,
-                                    child: buildCacheNetworkImage(
-                                        width: 0, height: 0, url: item),
-                                  );
-                                })
-                                    .toList(),
-                                options: CarouselOptions(
-                                    initialPage: 0,
-                                    aspectRatio: 1,
-                                    viewportFraction: 1.0,
-                                    enableInfiniteScroll: true,
-                                    autoPlay: false,
-                                    enlargeCenterPage: false,
-                                    onPageChanged: (index, reason) {
-                                      setState(() {
-                                        _currentImageSlider = index;
-                                      });
-                                    }),
-                              ),
-                            ),
-                          ),
-                          SliverToBoxAdapter(
-                            child: Padding(
-                              padding: const EdgeInsets.symmetric(
-                                  vertical: 24.0, horizontal: 15),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  ..._buildTitle(),
-                                  const SizedBox(height: 20),
-                                  ..._buildDescriptionPlanKilometer(),
-                                  _buildSpacerHeight(),
-                                  _buildSeller(snapshot.data!.owner!),
-                                  _buildSpacerHeight(),
-                                  ..._buildDescription(snapshot.data!),
-                                  _buildSpacerHeight(),
-                                  ..._buildCarCondition(snapshot.data!),
-                                  _buildSpacerHeight(),
-                                  ..._buildEquipment(snapshot.data!),
-                                  _buildSpacerHeight(),
-                                  ..._buildFeatures(snapshot.data!),
-                                  _buildSpacerHeight(),
-                                  ..._buildReviews(snapshot.data!),
-                                  const SizedBox(height: 200),
-                                ],
-                              ),
-                            ),
-                          ),
+          if(logic.isLoading.value){
+            return LoadingDialog();
+          }
+          return Stack(
+            children: [
+              CustomScrollView(
+                slivers: [
+                  SliverAppBar(
+                    pinned: true,
+                    automaticallyImplyLeading: true,
+                    backgroundColor: AppTheme.backgroundColor,
+                    expandedHeight: Get.height / 3.5,
+                    leading: IconButton(
+                      icon: Icon(
+                        Icons.arrow_back_ios_outlined,
+                        color: AppTheme.light,
+                      ),
+                      onPressed: () => Navigator.pop(context),
+                    ),
+                    flexibleSpace: FlexibleSpaceBar(
+                      centerTitle: false,
+                      // title: Container(
+                      //   child: Text("${car.brand}", style: Theme.of(context).textTheme.bodyText2!.copyWith(
+                      //       color: AppTheme.darkColor,
+                      //       fontSize: 18,
+                      //       fontWeight: FontWeight.w900),),
+                      // ),
+                      background: CarouselSlider(
+                        carouselController: CarouselController(),
+                        items: _carImagesList
+                            .map((item) {
+                          return Container(
+                            width: Get.width,
+                            height: Get.height,
+                            child: buildCacheNetworkImage(
+                                width: 0, height: 0, url: item),
+                          );
+                        })
+                            .toList(),
+                        options: CarouselOptions(
+                            initialPage: 0,
+                            aspectRatio: 1,
+                            viewportFraction: 1.0,
+                            enableInfiniteScroll: true,
+                            autoPlay: false,
+                            enlargeCenterPage: false,
+                            onPageChanged: (index, reason) {
+                              setState(() {
+                                _currentImageSlider = index;
+                              });
+                            }),
+                      ),
+                    ),
+                  ),
+                  SliverToBoxAdapter(
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 24.0, horizontal: 15),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          ..._buildTitle(),
+                          const SizedBox(height: 20),
+                          ..._buildDescriptionPlanKilometer(),
+                          _buildSpacerHeight(),
+                          _buildSeller(car.owner!),
+                          _buildSpacerHeight(),
+                          ..._buildDescription(car),
+                          _buildSpacerHeight(),
+                          ..._buildCarCondition(car),
+                          _buildSpacerHeight(),
+                          ..._buildEquipment(car),
+                          _buildSpacerHeight(),
+                          ..._buildFeatures(car),
+                          _buildSpacerHeight(),
+                          ..._buildReviews(car),
+                          const SizedBox(height: 200),
                         ],
                       ),
-                      _buldFloatBar()
-                    ],
-                  );
-                }else{
-                  return Center(
-                    child: Text('Une erreur est survenue'),
-                  );
-                }
-              }
-
-              return Center(
-                child: Text('Une erreur est survenue'),
-              );
-            }
+                    ),
+                  ),
+                ],
+              ),
+              _buldFloatBar()
+            ],
           );
         },
       ),
@@ -472,14 +451,14 @@ class _CarDetailPageState extends State<CarDetailPage> {
                     ),
                     _buildSpacerWidth(10.0),
                     Text("${car.advice![index].note}/5",
-                        style: Theme
-                            .of(context)
-                            .textTheme
-                            .bodyText2!
-                            .copyWith(
-                            color: AppTheme.darkColor,
-                            fontSize: 12,
-                            fontWeight: FontWeight.w500),)
+                      style: Theme
+                          .of(context)
+                          .textTheme
+                          .bodyText2!
+                          .copyWith(
+                          color: AppTheme.darkColor,
+                          fontSize: 12,
+                          fontWeight: FontWeight.w500),)
                   ],
                 )
               ],
@@ -526,7 +505,8 @@ class _CarDetailPageState extends State<CarDetailPage> {
       car.advice!.isNotEmpty ? Container(
         height: Get.height / 1.6,
         child: Column(
-          children: List.generate(car.advice!.length, (index) => buildBox(index)),
+          children: List.generate(
+              car.advice!.length, (index) => buildBox(index)),
         ),
       ) : Container(
         height: Get.height / 5.6,
@@ -747,17 +727,18 @@ class _CarDetailPageState extends State<CarDetailPage> {
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            ...List.generate(car.options!.length, (index) => Text(
-              '• ${car.options![index]}',
-              style: Theme
-                  .of(context)
-                  .textTheme
-                  .bodyText2!
-                  .copyWith(
-                  color: AppTheme.darkColor,
-                  fontSize: 12,
-                  fontWeight: FontWeight.w500),
-            )),
+            ...List.generate(car.options!.length, (index) =>
+                Text(
+                  '• ${car.options![index]}',
+                  style: Theme
+                      .of(context)
+                      .textTheme
+                      .bodyText2!
+                      .copyWith(
+                      color: AppTheme.darkColor,
+                      fontSize: 12,
+                      fontWeight: FontWeight.w500),
+                )),
           ],
         ),
       ),

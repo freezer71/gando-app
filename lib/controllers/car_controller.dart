@@ -18,7 +18,7 @@ class CarController extends GetxController {
   final carId = ''.obs;
 
   late final Future futureGetCar;
-  late final Future<List<Car>> futureGetCarById;
+  late final Future<Car> futureGetCarById;
 
   /// initialize loading
   final RxBool isLoading = false.obs;

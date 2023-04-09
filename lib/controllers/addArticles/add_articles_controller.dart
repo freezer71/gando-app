@@ -6,10 +6,12 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:gando/config/constants.dart';
 import 'package:gando/config/textstyle.dart';
+import 'package:gando/controllers/car/car_brand_controller.dart';
 import 'package:gando/services/provider/api_provider.dart';
 import 'package:get/get_rx/get_rx.dart';
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 import 'package:get/get_utils/get_utils.dart';
+import 'package:get/instance_manager.dart';
 import 'package:get/route_manager.dart';
 import 'package:http_parser/http_parser.dart';
 import 'package:image_cropper/image_cropper.dart';
@@ -36,6 +38,7 @@ class AddArticlesController extends GetxController {
   RxInt currentStep = 0.obs;
   RxBool inProcess = false.obs;
   RxBool isLoading = false.obs;
+  RxBool terms = false.obs;
   List<MultipartFile> multipartImageList = <MultipartFile>[];
 
   Rx<File?> selectedFile = Rx<File?>(null);
@@ -445,11 +448,11 @@ class AddArticlesController extends GetxController {
   }
 
   //----------Final step -----------//
-
   @override
   void onInit() {
     super.onInit();
     fetchZipCode = getZipCode();
+    Get.put(CarBrandController());
     items.value = equipmentsList
         .map((data) => MultiSelectItem<Equipment>(data, data.name))
         .toList();
