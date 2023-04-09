@@ -14,8 +14,4 @@ class Storage extends GetxService {
       rethrow;
     }
   }
-
-
-
-
 }

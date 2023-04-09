@@ -12,27 +12,39 @@ import 'package:get_it/get_it.dart';
 import '../../models/User.dart' as client;
 
 class EditProfilController extends GetxController {
-  TextEditingController firstNameController =
-      TextEditingController(text: Get.find<AuthService>().user.value.firstname);
-  TextEditingController lastNameController =
-      TextEditingController(text: Get.find<AuthService>().user.value.lastname);
-  TextEditingController descriptionController = TextEditingController(
-      text: Get.find<AuthService>().user.value.description);
+  Rx<TextEditingController> firstNameController = TextEditingController().obs;
+  Rx<TextEditingController> lastNameController = TextEditingController().obs;
+  Rx<TextEditingController> descriptionController = TextEditingController().obs;
   Rx<int> numberTextDescription = 0.obs;
   Rx<client.User> user = Get.find<AuthService>().user;
   final Rx<bool> isLoading = false.obs;
   final Rx<bool> isSuccess = false.obs;
   final UserRepository repository = GetIt.instance.get<UserRepository>();
 
+  @override
+  Future<void> onInit() async {
+    firstNameController = TextEditingController(
+            text:user.value.firstname)
+        .obs;
+    lastNameController =
+        TextEditingController(text: user.value.lastname)
+            .obs;
+    descriptionController = TextEditingController(
+            text: user.value.description)
+        .obs;
+    super.onInit();
+  }
+
   //edit first name, lastname and description
   Future<void> editNameAndDescription() async {
     isLoading(true);
-    String description =
-        descriptionController.text.isEmpty ? " " : descriptionController.text;
+    String description = descriptionController.value.text.isEmpty
+        ? " "
+        : descriptionController.value.text;
     try {
       Map<String, dynamic> data = {
-        "firstname": firstNameController.text,
-        "lastname": lastNameController.text,
+        "firstname": firstNameController.value.text,
+        "lastname": lastNameController.value.text,
         "description": description,
       };
       user.value = await repository.editNameAndDescription(data: data);
@@ -47,6 +59,7 @@ class EditProfilController extends GetxController {
     } catch (e) {
       Get.snackbar('Error', e.toString(),
           snackPosition: SnackPosition.TOP,
+          backgroundColor: AppTheme.redColor,
           margin: const EdgeInsets.only(
             top: 20,
           ),
@@ -94,6 +107,7 @@ class EditProfilController extends GetxController {
     } catch (e) {
       Get.snackbar('Error', e.toString(),
           snackPosition: SnackPosition.TOP,
+          backgroundColor: AppTheme.redColor,
           margin: const EdgeInsets.only(
             top: 20,
           ),

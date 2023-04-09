@@ -1,13 +1,10 @@
-import 'package:csc_picker/csc_picker.dart';
+import 'package:country_code_picker/country_code_picker.dart';
 import 'package:datepicker_dropdown/datepicker_dropdown.dart';
 import 'package:flutter/material.dart';
 import 'package:gando/config/textstyle.dart';
-import 'package:gando/controllers/settings_controller/account_setting_controller.dart';
 import 'package:gando/controllers/user/user_controller.dart';
-import 'package:gando/navigation.dart';
-import 'package:gando/views/home/home.dart';
+import 'package:gando/widget/submit_with_loading_button.dart';
 import 'package:get/get.dart';
-import 'package:get/get_rx/src/rx_typedefs/rx_typedefs.dart';
 
 import '../../../../widget/appBarWidget.dart';
 import '../../../../widget/customTextFormField.dart';
@@ -15,7 +12,7 @@ import '../../../../widget/customTextFormField.dart';
 class MyContactDetailScreen extends GetView<UserController> {
   MyContactDetailScreen({Key? key}) : super(key: key);
 
-  final c = Get.put(AccountSettingController());
+  static final now = DateTime.now();
 
   @override
   Widget build(BuildContext context) {
@@ -40,43 +37,23 @@ class MyContactDetailScreen extends GetView<UserController> {
         body: ListView(
           padding: const EdgeInsets.all(16),
           children: [
-            _createListMenu('Civilité', context),
+            Text("Complétez mes coordonnées",
+                style: Theme.of(context).textTheme.bodyText2!.copyWith(
+                    color: AppTheme.darkColor,
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold)),
+            const SizedBox(height: 10),
+            Text('Civilité',
+                style: Theme.of(context).textTheme.bodyText2!.copyWith(
+                    color: AppTheme.darkColor,
+                    fontSize: 16,
+                    fontWeight: FontWeight.w500)),
+            const SizedBox(height: 10),
             ..._buildBodyTextField(context),
           ],
         ),
       );
     });
-  }
-
-  Widget _createListMenu(String menuTitle, context) {
-    return Container(
-      width: Get.width / 2,
-      margin: const EdgeInsets.fromLTRB(0, 20, 0, 28),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          SizedBox(
-            child: Text(menuTitle,
-                style: Theme.of(context).textTheme.bodyText2!.copyWith(
-                      fontWeight: FontWeight.w700,
-                      fontSize: 18,
-                      overflow: TextOverflow.visible,
-                      color: AppTheme.darkColor.withOpacity(0.7),
-                    )),
-          ),
-          Container(
-              width: Get.width / 4,
-              child: Divider(
-                indent: 2,
-                thickness: 2,
-                height: 20,
-                color: AppTheme.darkColor.withOpacity(0.2),
-              ))
-          // Icon(Icons.chevron_right, size: 20, color: AppTheme.secondaryColor),
-        ],
-      ),
-    );
   }
 
   List<Widget> _buildBodyTextField(BuildContext context) => [
@@ -86,9 +63,10 @@ class MyContactDetailScreen extends GetView<UserController> {
                 child: ElevatedButton(
                     style: ButtonStyle(
                       backgroundColor: MaterialStateProperty.resolveWith<Color>(
-                        (Set<MaterialState> states) => c.gearboxValue.value
-                            ? AppTheme.light
-                            : AppTheme.primaryColor,
+                        (Set<MaterialState> states) =>
+                            controller.gearboxValue.value
+                                ? AppTheme.light
+                                : AppTheme.primaryColor,
                       ),
                       overlayColor:
                           MaterialStateProperty.all(Colors.transparent),
@@ -97,7 +75,8 @@ class MyContactDetailScreen extends GetView<UserController> {
                       )),
                     ),
                     onPressed: () {
-                      c.gearboxValue.value = !c.gearboxValue.value;
+                      controller.gearboxValue.value =
+                          !controller.gearboxValue.value;
                     },
                     child: SizedBox(
                       width: Get.width / 1.5,
@@ -108,7 +87,7 @@ class MyContactDetailScreen extends GetView<UserController> {
                           Text("Monsieur",
                               style: TextStyle(
                                   fontSize: 15,
-                                  color: c.gearboxValue.value
+                                  color: controller.gearboxValue.value
                                       ? AppTheme.darkColor
                                       : AppTheme.light)),
                         ],
@@ -121,9 +100,10 @@ class MyContactDetailScreen extends GetView<UserController> {
                 child: ElevatedButton(
                     style: ButtonStyle(
                       backgroundColor: MaterialStateProperty.resolveWith<Color>(
-                        (Set<MaterialState> states) => !c.gearboxValue.value
-                            ? AppTheme.light
-                            : AppTheme.primaryColor,
+                        (Set<MaterialState> states) =>
+                            !controller.gearboxValue.value
+                                ? AppTheme.light
+                                : AppTheme.primaryColor,
                       ),
                       overlayColor:
                           MaterialStateProperty.all(Colors.transparent),
@@ -132,7 +112,8 @@ class MyContactDetailScreen extends GetView<UserController> {
                       )),
                     ),
                     onPressed: () {
-                      c.gearboxValue.value = !c.gearboxValue.value;
+                      controller.gearboxValue.value =
+                          !controller.gearboxValue.value;
                     },
                     child: SizedBox(
                       width: Get.width / 1.5,
@@ -143,7 +124,7 @@ class MyContactDetailScreen extends GetView<UserController> {
                           Text("Madame",
                               style: TextStyle(
                                   fontSize: 15,
-                                  color: !c.gearboxValue.value
+                                  color: !controller.gearboxValue.value
                                       ? AppTheme.darkColor
                                       : AppTheme.light)),
                         ],
@@ -152,47 +133,12 @@ class MyContactDetailScreen extends GetView<UserController> {
           ],
         ),
         const SizedBox(height: 20),
-        Container(
-          width: Get.width - 40,
-          padding: EdgeInsets.only(bottom: 10),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text('Numéro de téléphone',
-                  style: Theme.of(context).textTheme.bodyText2!.copyWith(
-                      color: AppTheme.darkColor,
-                      fontSize: 16,
-                      fontWeight: FontWeight.w500)),
-              SizedBox(
-                height: 10,
-              ),
-              CustomTextFormField(
-                controller: c.phoneNumber.value,
-                keyboardType: TextInputType.phone,
-                autofocus: false,
-                validator: (v) {
-                  return null;
-                },
-                onChanged: (v) {},
-                onSaved: (v) {},
-                hintText: controller.phoneNumber,
-                formatter: [],
-                enabled: false,
-              ),
-            ],
-          ),
-        ),
-        const SizedBox(
-          height: 10,
-        ),
-        //
-        Text('date de naissance',
+        Text('Date de naissance',
             style: Theme.of(context).textTheme.bodyText2!.copyWith(
                 color: AppTheme.darkColor,
                 fontSize: 16,
                 fontWeight: FontWeight.w500)),
-        SizedBox(
+        const SizedBox(
           height: 10,
         ),
         DropdownDatePicker(
@@ -225,16 +171,29 @@ class MyContactDetailScreen extends GetView<UserController> {
           // optional
           width: 2,
           // optional
-          selectedDay: DateTime.now().day,
+          selectedDay:
+              controller.user.value.dayOfBirth?.day ?? DateTime.now().day,
           // optional
           // selectedMonth: 12, // optional
-          selectedYear: DateTime.now().year,
-          selectedMonth: DateTime.now().month,
+          selectedYear:
+              controller.user.value.dayOfBirth?.year ?? DateTime.now().year,
+          selectedMonth:
+              controller.user.value.dayOfBirth?.month ?? DateTime.now().month,
           showMonth: true,
+          monthFlex: 2,
           // optional
-          onChangedDay: (value) => print('onChangedDay: $value'),
-          onChangedMonth: (value) => print('onChangedMonth: $value'),
-          onChangedYear: (value) => print('onChangedYear: $value'),
+          onChangedDay: (value) => controller.onChangedBirthDate(
+              birthDayChanged: value!,
+              birthYearChanged: controller.birthYear,
+              birthMonthChanged: controller.birthMonth),
+          onChangedMonth: (value) => controller.onChangedBirthDate(
+              birthMonthChanged: value!,
+              birthDayChanged: controller.birthDay,
+              birthYearChanged: controller.birthYear),
+          onChangedYear: (value) => controller.onChangedBirthDate(
+              birthYearChanged: value!,
+              birthDayChanged: controller.birthDay,
+              birthMonthChanged: controller.birthMonth),
           boxDecoration: BoxDecoration(
               border: Border.all(
                   color: Colors.transparent, width: 0.0)), // optional
@@ -253,22 +212,24 @@ class MyContactDetailScreen extends GetView<UserController> {
                 color: AppTheme.darkColor,
                 fontSize: 16,
                 fontWeight: FontWeight.w500)),
-        SizedBox(
+        const SizedBox(
           height: 10,
         ),
         CustomTextFormField(
-          controller: c.phoneNumber.value,
-          keyboardType: TextInputType.phone,
+          controller: controller.birthPlaceController.value,
+          keyboardType: TextInputType.text,
           autofocus: false,
           validator: (v) {
-            return null;
+            if (v!.trim().isEmpty) {
+              return "Lieu de naissance obligatoire";
+            }
           },
           onChanged: (v) {},
           onSaved: (v) {},
-          hintText: 'Lieu de naissance',
+          hintText: ' ',
           formatter: [],
         ),
-        SizedBox(
+        const SizedBox(
           height: 10,
         ),
         Text('Adresse',
@@ -276,22 +237,24 @@ class MyContactDetailScreen extends GetView<UserController> {
                 color: AppTheme.darkColor,
                 fontSize: 16,
                 fontWeight: FontWeight.w500)),
-        SizedBox(
+        const SizedBox(
           height: 10,
         ),
         CustomTextFormField(
-          controller: c.phoneNumber.value,
+          controller: controller.addressController.value,
           keyboardType: TextInputType.streetAddress,
           autofocus: false,
           validator: (v) {
-            return null;
+            if (v!.trim().isEmpty) {
+              return "Addresse obligatoire";
+            }
           },
           onChanged: (v) {},
           onSaved: (v) {},
-          hintText: 'Adresse',
+          hintText: ' ',
           formatter: [],
         ),
-        SizedBox(
+        const SizedBox(
           height: 10,
         ),
         Text('Complément d\'adresse',
@@ -299,19 +262,21 @@ class MyContactDetailScreen extends GetView<UserController> {
                 color: AppTheme.darkColor,
                 fontSize: 16,
                 fontWeight: FontWeight.w500)),
-        SizedBox(
+        const SizedBox(
           height: 10,
         ),
         CustomTextFormField(
-          controller: c.phoneNumber.value,
+          controller: controller.complementController.value,
           keyboardType: TextInputType.streetAddress,
           autofocus: false,
           validator: (v) {
-            return null;
+            if (v!.trim().isEmpty) {
+              return "Complement d'addresse obligatoire";
+            }
           },
           onChanged: (v) {},
           onSaved: (v) {},
-          hintText: 'Complément d\'adresse',
+          hintText: ' ',
           formatter: [],
         ),
         const SizedBox(
@@ -322,118 +287,113 @@ class MyContactDetailScreen extends GetView<UserController> {
                 color: AppTheme.darkColor,
                 fontSize: 16,
                 fontWeight: FontWeight.w500)),
-        SizedBox(
-          height: 20,
+        const SizedBox(
+          height: 10,
         ),
-        SizedBox(
-          height: 80,
-          child: CSCPicker(
-            showCities: false,
-            showStates: false,
-            countryDropdownLabel: c.country.value,
-            defaultCountry: CscCountry.France,
-            flagState: CountryFlag.DISABLE,
-            selectedItemStyle: Theme.of(context).textTheme.bodyText2!.copyWith(
-                color: AppTheme.darkColor,
-                fontSize: 18,
-                fontWeight: FontWeight.w500),
-            dropdownDecoration: BoxDecoration(
-                borderRadius: const BorderRadius.all(Radius.circular(30)),
-                color: AppTheme.light,
-                border: Border.all(color: AppTheme.darkColor, width: .5)),
-            countrySearchPlaceholder: "Selectionner un Pays",
-
-            ///Disabled Dropdown box decoration to style your dropdown selector [OPTIONAL PARAMETER]  (USE with disabled dropdownDecoration)
-            disabledDropdownDecoration: BoxDecoration(
-                borderRadius: const BorderRadius.all(Radius.circular(30)),
-                color: Colors.grey.shade300,
-                border: Border.all(
-                    color: AppTheme.darkColor.withOpacity(0.4), width: 1)),
-            dropdownItemStyle: Theme.of(context).textTheme.bodyText2!.copyWith(
-                color: AppTheme.backgroundColor,
-                fontSize: 14,
-                fontWeight: FontWeight.w500),
-            onCountryChanged: (value) {
-              c.country(value);
-            },
+        Container(
+          height: 60,
+          decoration: BoxDecoration(
+              color: AppTheme.light,
+              borderRadius: const BorderRadius.all(Radius.circular(60)),
+              border: Border.all(width: 1.0)),
+          child: CountryCodePicker(
+            onChanged: controller
+                .onCountryCodePicked, // Initial selection and favorite can be one of code ('IT') OR dial_code('+39')
+            initialSelection: controller.initialSelectionCountry.value,
+            favorite: const ['+33', 'FR'],
+            showFlag: false,
+            showOnlyCountryWhenClosed: true,
+            showCountryOnly: true,
+            alignLeft: true,
+            padding: const EdgeInsets.only(left: 15.0),
+            textStyle: TextStyle(color: AppTheme.darkColor, fontSize: 16),
+            dialogTextStyle: TextStyle(color: AppTheme.darkColor),
+            searchStyle: TextStyle(color: AppTheme.darkColor),
           ),
+        ),
+        const SizedBox(
+          height: 10,
         ),
         Row(
           verticalDirection: VerticalDirection.down,
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
-            Container(
-              width: Get.width / 2.3,
-              child: CustomTextFormField(
-                controller: c.postalCodeController.value,
-                keyboardType: TextInputType.number,
-                autofocus: false,
-                enabled: true,
-                validator: (v) {
-                  return null;
-                },
-                onChanged: (v) {},
-                onSaved: (v) {},
-                hintText: 'Code Postale',
-                formatter: [],
-              ),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text('Code postal',
+                    style: Theme.of(context).textTheme.bodyText2!.copyWith(
+                        color: AppTheme.darkColor,
+                        fontSize: 16,
+                        fontWeight: FontWeight.w500)),
+                const SizedBox(height: 10),
+                SizedBox(
+                  width: Get.width / 2.3,
+                  child: CustomTextFormField(
+                    controller: controller.postalCodeController.value,
+                    keyboardType: TextInputType.number,
+                    autofocus: false,
+                    enabled: true,
+                    validator: (v) {
+                      if (v!.trim().isEmpty) {
+                        return "Code postal obligatoire";
+                      }
+                    },
+                    onChanged: (v) {},
+                    onSaved: (v) {},
+                    hintText: ' ',
+                    formatter: [],
+                  ),
+                ),
+              ],
             ),
-            Container(
-              width: Get.width / 2.3,
-              child: CustomTextFormField(
-                controller: c.cityController.value,
-                keyboardType: TextInputType.text,
-                autofocus: false,
-                enabled: true,
-                validator: (v) {
-                  return null;
-                },
-                onChanged: (v) {},
-                onSaved: (v) {},
-                hintText: 'Ville',
-                formatter: [],
-              ),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text('Ville',
+                    style: Theme.of(context).textTheme.bodyText2!.copyWith(
+                        color: AppTheme.darkColor,
+                        fontSize: 16,
+                        fontWeight: FontWeight.w500)),
+                const SizedBox(height: 10),
+                SizedBox(
+                  width: Get.width / 2.3,
+                  child: CustomTextFormField(
+                    controller: controller.cityController.value,
+                    keyboardType: TextInputType.text,
+                    autofocus: false,
+                    enabled: true,
+                    validator: (v) {
+                      if (v!.trim().isEmpty) {
+                        return "Ville obligatoire";
+                      }
+                    },
+                    onChanged: (v) {},
+                    onSaved: (v) {},
+                    hintText: ' ',
+                    formatter: [],
+                  ),
+                ),
+              ],
             ),
           ],
         ),
         const SizedBox(
           height: 30,
         ),
-
-        _buildSubmitButton(context, () {}, delete: false),
+        SubmitWithLoadingButton(
+          text: 'Confirmer'.toUpperCase(),
+          onPressed: () async {
+            Get.focusScope!.unfocus();
+            await controller.editCoordonates();
+            if (controller.isSuccess.value) {
+              Navigator.pop(context);
+              Navigator.pop(context);
+              Navigator.pop(context);
+              Navigator.pop(context);
+            }
+          },
+          isLoading: controller.isLoading.value,
+        ),
       ];
-
-  Widget _buildSubmitButton(BuildContext context, Callback func, {delete}) {
-    return TextButton(
-      onPressed: () => Get.toNamed(Routes.summaryCoordonate),
-      style: ButtonStyle(
-        backgroundColor: MaterialStateProperty.resolveWith<Color>(
-          (Set<MaterialState> states) => states.contains(MaterialState.disabled)
-              ? AppTheme.primaryColor
-              : delete!
-                  ? AppTheme.redColor
-                  : AppTheme.primaryColor,
-        ),
-        overlayColor: MaterialStateProperty.all(Colors.transparent),
-        shape: MaterialStateProperty.all(RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(30.0),
-        )),
-      ),
-      child: Container(
-        height: 40,
-        width: Get.width / 1.3,
-        padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 10),
-        child: Center(
-          child: Text(
-            'Confirmer'.toUpperCase(),
-            style: Theme.of(context).textTheme.bodyText2!.copyWith(
-                  fontWeight: FontWeight.w900,
-                  fontSize: 16,
-                  color: AppTheme.backgroundColor,
-                ),
-          ),
-        ),
-      ),
-    );
-  }
 }

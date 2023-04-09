@@ -3,9 +3,13 @@ import 'dart:io';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/services.dart';
 import 'package:gando/constants.dart';
 import 'package:gando/models/User.dart';
+import 'package:gando/models/chat/chat_detail.dart';
+import 'package:gando/models/chat/discussion.dart';
 import 'package:gando/services/provider/remote_config.dart';
+import 'package:gando/views/chat/components/chat_detail.dart';
 import 'package:get/utils.dart';
 import 'package:get_storage/get_storage.dart';
 
@@ -27,7 +31,6 @@ class ApiProvider {
   Future<void> _getToken() async {
     if (box.hasData('token') && box.read('token') != null) {
       token = await box.read('token');
-      printInfo(info: 'TOKEN============> : $token');
     }
   }
 
@@ -139,6 +142,66 @@ class ApiProvider {
     }
   }
 
+  Future<User> editCoordonates({required Map<String, dynamic> data}) async {
+    http.Response response =
+        await putData1(apiUrl: RemoteEndpoint.editCoordonates, data: data);
+    if (response.statusCode == 200) {
+      final res = await getData('/user');
+      final body = jsonDecode(res.body)['data'];
+      if (res.statusCode == 200) {
+        return User.fromJson(body);
+      } else {
+        return User();
+      }
+    } else {
+      throw "${_parseBody(response.body)["message"]}";
+    }
+  }
+
+  Future<List<Discussion>> getListMessage({required String idUser}) async {
+    http.Response response =
+        await getData(RemoteEndpoint.getListMessage(id: idUser))
+            .timeout(Duration(seconds: 30));
+    if (response.statusCode == 200) {
+      Map<String, dynamic> map = _parseBody(response.body);
+      try {
+        return List.from(map['data']).map((x) {
+          return Discussion.fromJson(x);
+        }).toList();
+      } catch (e) {
+        rethrow;
+      }
+    } else {
+      throw _parseBody(response.body);
+    }
+  }
+
+  Future<ChatDetailModel> getMessageDetail(
+      {required String discussionId}) async {
+    http.Response response = await getData(
+        RemoteEndpoint.getMessageDetail(discussionId: discussionId));
+    if (response.statusCode == 200) {
+      Map<String, dynamic> map = _parseBody(response.body);
+      try {
+        return ChatDetailModel.fromJson(_parseBody(response.body)["data"][0]);
+      } catch (e) {
+        rethrow;
+      }
+    } else {
+      throw _parseBody(response.body);
+    }
+  }
+
+  Future<bool> sendMessage({required Map<String, dynamic> data}) async {
+    http.Response response =
+        await postData(apiUrl: RemoteEndpoint.sendMessage, data: data);
+    if (response.statusCode == 200) {
+      return true;
+    } else {
+      throw "${_parseBody(response.body)["message"]}";
+    }
+  }
+
   Future<void> verifyOwner({required Map<String, dynamic> data}) async {
     http.Response response =
         await postData(apiUrl: RemoteEndpoint.verifyOwner, data: data);
@@ -179,7 +242,7 @@ class ApiProvider {
       'Content-Type': 'application/json; charset=UTF-8',
     };
     return await http.post(Uri.parse(API_URL + apiUrl),
-        body: data, headers: headers);
+        body: jsonEncode(data), headers: headers);
   }
 
   Future<Response> dioConnect(url, data) async {

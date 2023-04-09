@@ -67,6 +67,17 @@ class _HomeScreenState extends State<HomeScreen>
     LatLng(13.17, 77.55),
   ];
 
+  Widget _priceMarker(price) {
+    return Text(
+      '${price} €',
+      style: TextStyle(
+        color: AppTheme.primaryColor,
+        fontSize: 18,
+        fontWeight: FontWeight.bold,
+      ),
+    );
+  }
+
   List<Marker> _buildMarkers(carList) {
     final markers = <Marker>[];
     for (var i = 0; i < carList.length; i++) {
@@ -77,7 +88,7 @@ class _HomeScreenState extends State<HomeScreen>
           height: 60,
           point: LatLng(
               mapItem.location.coordinates[1], mapItem.location.coordinates[0]),
-          builder: (context) => GlobalFunction.lottieFile,
+          builder: (context) => _priceMarker(carList[i].pricePerDay),
         ),
       );
     }

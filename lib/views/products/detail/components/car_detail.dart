@@ -1,12 +1,14 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:expandable_text/expandable_text.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:gando/config/constants.dart';
 import 'package:gando/config/textstyle.dart';
 import 'package:gando/models/Car.dart';
 import 'package:gando/models/ProfileSeller.dart';
 import 'package:gando/views/products/booking/booking_screen.dart';
 import 'package:gando/views/seller/profile_screen.dart';
+import 'package:gando/widget/loading_dialog.dart';
 import 'package:gando/widget/reusable/cache_image_network.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -98,6 +100,11 @@ class _CarDetailPageState extends State<CarDetailPage> {
   void initState() {
     super.initState();
     car = widget.car;
+    controller.getCarById(car.id!).then((value) {
+      setState(() {
+        car = value;
+      });
+    });
     _carImagesList.addAll([
       car.images!.supplementaire.toString(),
       car.images!.avant34.toString(),
@@ -124,118 +131,91 @@ class _CarDetailPageState extends State<CarDetailPage> {
       body: GetBuilder<CarController>(
         assignId: true,
         builder: (logic) {
-          return FutureBuilder(
-            future: logic.getCarById(car.id!),
-            builder: (context, snapshot) {
-              // state
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return Center(
-                  child: CircularProgressIndicator(),
-                );
-              }
-              // error
-              else if (snapshot.hasError) {
-                return Center(
-                  child: Text('Une erreur est survenue !'),
-                );
-              }
-              // success
-              else if (snapshot.hasData){
-                if (snapshot.data != null){
-                  car = snapshot.data as Car;
-                  return Stack(
-                    children: [
-                      CustomScrollView(
-                        slivers: [
-                          SliverAppBar(
-                            pinned: true,
-                            automaticallyImplyLeading: true,
-                            backgroundColor: AppTheme.backgroundColor,
-                            expandedHeight: Get.height / 3.5,
-                            leading: IconButton(
-                              icon: Icon(
-                                Icons.arrow_back_ios_outlined,
-                                color: AppTheme.light,
-                              ),
-                              onPressed: () => Navigator.pop(context),
-                            ),
-                            flexibleSpace: FlexibleSpaceBar(
-                              centerTitle: false,
-                              // title: Container(
-                              //   child: Text("${car.brand}", style: Theme.of(context).textTheme.bodyText2!.copyWith(
-                              //       color: AppTheme.darkColor,
-                              //       fontSize: 18,
-                              //       fontWeight: FontWeight.w900),),
-                              // ),
-                              background: CarouselSlider(
-                                items: _carImagesList
-                                    .map((item) {
-                                  return Container(
-                                    width: Get.width,
-                                    height: Get.height,
-                                    child: buildCacheNetworkImage(
-                                        width: 0, height: 0, url: item),
-                                  );
-                                })
-                                    .toList(),
-                                options: CarouselOptions(
-                                    initialPage: 0,
-                                    aspectRatio: 1,
-                                    viewportFraction: 1.0,
-                                    enableInfiniteScroll: true,
-                                    autoPlay: false,
-                                    enlargeCenterPage: false,
-                                    onPageChanged: (index, reason) {
-                                      setState(() {
-                                        _currentImageSlider = index;
-                                      });
-                                    }),
-                              ),
-                            ),
-                          ),
-                          SliverToBoxAdapter(
-                            child: Padding(
-                              padding: const EdgeInsets.symmetric(
-                                  vertical: 24.0, horizontal: 15),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  ..._buildTitle(),
-                                  const SizedBox(height: 20),
-                                  ..._buildDescriptionPlanKilometer(),
-                                  _buildSpacerHeight(),
-                                  _buildSeller(snapshot.data!.owner!),
-                                  _buildSpacerHeight(),
-                                  ..._buildDescription(snapshot.data!),
-                                  _buildSpacerHeight(),
-                                  ..._buildCarCondition(snapshot.data!),
-                                  _buildSpacerHeight(),
-                                  ..._buildEquipment(snapshot.data!),
-                                  _buildSpacerHeight(),
-                                  ..._buildFeatures(snapshot.data!),
-                                  _buildSpacerHeight(),
-                                  ..._buildReviews(snapshot.data!),
-                                  const SizedBox(height: 200),
-                                ],
-                              ),
-                            ),
-                          ),
+          if (logic.isLoading.value) {
+            return const LoadingDialog();
+          }
+          return Stack(
+            children: [
+              CustomScrollView(
+                slivers: [
+                  SliverAppBar(
+                    pinned: true,
+                    automaticallyImplyLeading: true,
+                    backgroundColor: AppTheme.backgroundColor,
+                    expandedHeight: Get.height / 3.5,
+                    leading: IconButton(
+                      icon: Icon(
+                        Icons.arrow_back_ios_outlined,
+                        color: AppTheme.light,
+                      ),
+                      onPressed: () => Navigator.pop(context),
+                    ),
+                    flexibleSpace: FlexibleSpaceBar(
+                      centerTitle: false,
+                      // title: Container(
+                      //   child: Text("${car.brand}", style: Theme.of(context).textTheme.bodyText2!.copyWith(
+                      //       color: AppTheme.darkColor,
+                      //       fontSize: 18,
+                      //       fontWeight: FontWeight.w900),),
+                      // ),
+                      background: CarouselSlider(
+                        carouselController: CarouselController(),
+                        items: _carImagesList
+                            .map((item) {
+                          return Container(
+                            width: Get.width,
+                            height: Get.height,
+                            child: buildCacheNetworkImage(
+                                width: 0, height: 0, url: item),
+                          );
+                        })
+                            .toList(),
+                        options: CarouselOptions(
+                            initialPage: 0,
+                            aspectRatio: 1,
+                            viewportFraction: 1.0,
+                            enableInfiniteScroll: true,
+                            autoPlay: false,
+                            enlargeCenterPage: false,
+                            onPageChanged: (index, reason) {
+                              setState(() {
+                                _currentImageSlider = index;
+                              });
+                            }),
+                      ),
+                    ),
+                  ),
+                  SliverToBoxAdapter(
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 24.0, horizontal: 15),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          ..._buildTitle(),
+                          const SizedBox(height: 20),
+                          ..._buildDescriptionPlanKilometer(),
+                          _buildSpacerHeight(),
+                          _buildSeller(car.owner!),
+                          _buildSpacerHeight(),
+                          ..._buildDescription(car),
+                          _buildSpacerHeight(),
+                          ..._buildCarCondition(car),
+                          _buildSpacerHeight(),
+                          ..._buildEquipment(car),
+                          _buildSpacerHeight(),
+                          ..._buildFeatures(car),
+                          _buildSpacerHeight(),
+                          ..._buildReviews(car),
+                          const SizedBox(height: 200),
                         ],
                       ),
-                      _buldFloatBar()
-                    ],
-                  );
-                }else{
-                  return Center(
-                    child: Text('Une erreur est survenue'),
-                  );
-                }
-              }
-
-              return Center(
-                child: Text('Une erreur est survenue'),
-              );
-            }
+                    ),
+                  ),
+                ],
+              ),
+              _buldFloatBar()
+            ],
           );
         },
       ),
@@ -472,14 +452,14 @@ class _CarDetailPageState extends State<CarDetailPage> {
                     ),
                     _buildSpacerWidth(10.0),
                     Text("${car.advice![index].note}/5",
-                        style: Theme
-                            .of(context)
-                            .textTheme
-                            .bodyText2!
-                            .copyWith(
-                            color: AppTheme.darkColor,
-                            fontSize: 12,
-                            fontWeight: FontWeight.w500),)
+                      style: Theme
+                          .of(context)
+                          .textTheme
+                          .bodyText2!
+                          .copyWith(
+                          color: AppTheme.darkColor,
+                          fontSize: 12,
+                          fontWeight: FontWeight.w500),)
                   ],
                 )
               ],
@@ -526,7 +506,8 @@ class _CarDetailPageState extends State<CarDetailPage> {
       car.advice!.isNotEmpty ? Container(
         height: Get.height / 1.6,
         child: Column(
-          children: List.generate(car.advice!.length, (index) => buildBox(index)),
+          children: List.generate(
+              car.advice!.length, (index) => buildBox(index)),
         ),
       ) : Container(
         height: Get.height / 5.6,
@@ -747,17 +728,18 @@ class _CarDetailPageState extends State<CarDetailPage> {
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            ...List.generate(car.options!.length, (index) => Text(
-              '• ${car.options![index]}',
-              style: Theme
-                  .of(context)
-                  .textTheme
-                  .bodyText2!
-                  .copyWith(
-                  color: AppTheme.darkColor,
-                  fontSize: 12,
-                  fontWeight: FontWeight.w500),
-            )),
+            ...List.generate(car.options!.length, (index) =>
+                Text(
+                  '• ${car.options![index]}',
+                  style: Theme
+                      .of(context)
+                      .textTheme
+                      .bodyText2!
+                      .copyWith(
+                      color: AppTheme.darkColor,
+                      fontSize: 12,
+                      fontWeight: FontWeight.w500),
+                )),
           ],
         ),
       ),
@@ -1006,7 +988,20 @@ class _CarDetailPageState extends State<CarDetailPage> {
               children: [
                 InkWell(
                   onTap: () {
-                    // go to signalisation page
+                    // go to report page
+                    Get.dialog(
+                      WillPopScope(
+                          onWillPop: () {
+                            Get.back();
+                            controller.isReportActive.value = false;
+                            controller.reportController.value.clear();
+                            return Future.value(false);
+                          },
+                          child: reportDialog()
+                      ),
+                      barrierDismissible: true,
+
+                    );
                   },
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -1030,5 +1025,145 @@ class _CarDetailPageState extends State<CarDetailPage> {
         ),
       ),
     );
+  }
+
+  Widget reportDialog() {
+    return Obx(() {
+      return Dialog(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10),
+        ),
+        elevation: 0,
+        backgroundColor: Colors.transparent,
+        child: Container(
+          height: Get.height / 2.7,
+          padding: const EdgeInsets.only(top: 20, left: 20, right: 20),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            shape: BoxShape.rectangle,
+            borderRadius: BorderRadius.circular(10),
+            boxShadow: const [
+              BoxShadow(
+                color: Colors.black26,
+                blurRadius: 10.0,
+                offset: Offset(0.0, 10.0),
+              ),
+            ],
+          ),
+          child: Column(
+            children: [
+              const SizedBox(height: 20),
+              Text(
+                'Signaler l\'annonce',
+                style: Theme
+                    .of(context)
+                    .textTheme
+                    .bodyText2!
+                    .copyWith(
+                    color: AppTheme.darkColor,
+                    fontSize: 18,
+                    fontWeight: FontWeight.w900),
+              ),
+              const SizedBox(height: 20),
+              Text(
+                'Veuillez nous indiquer la raison de votre signalement',
+                style: Theme
+                    .of(context)
+                    .textTheme
+                    .bodyText2!
+                    .copyWith(
+                    color: AppTheme.darkColor,
+                    fontSize: 14,
+                    fontWeight: FontWeight.w600),
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: 20),
+              Container(
+                height: 100,
+                width: Get.width / 1.2,
+                padding: const EdgeInsets.symmetric(horizontal: 10),
+                decoration: BoxDecoration(
+                  borderRadius: const BorderRadius.all(Radius.circular(10)),
+                  color: AppTheme.backgroundColor,
+                ),
+                child: Form(
+                  key: controller.reportFormKey,
+                  child: TextFormField(
+                    controller: controller.reportController.value,
+                    maxLines: 5,
+                    onChanged: (value) {
+                      if (value.isEmpty || value.length < 10) {
+                        controller.isReportActive.value = false;
+                      } else {
+                        controller.isReportActive.value = true;
+                      }
+                    },
+                    validator: (value) {
+                      if (value!.isEmpty) {
+                        return 'Veuillez remplir ce champ';
+                      } else if (value.length < 10) {
+                        return 'Veuillez entrer au moins 10 caractères';
+                      }
+                      return null;
+                    },
+                    inputFormatters: [
+                      LengthLimitingTextInputFormatter(1000),
+                    ],
+                    decoration: InputDecoration(
+                      border: InputBorder.none,
+                      labelText: 'Raison du signalement',
+                      labelStyle: Theme
+                          .of(context)
+                          .textTheme
+                          .bodyText2!
+                          .copyWith(
+                          color: AppTheme.darkColor.withOpacity(0.5),
+                          fontSize: 14,
+                          fontWeight: FontWeight.w600),
+                    ),
+                    style: Theme
+                        .of(context)
+                        .textTheme
+                        .bodyText2!
+                        .copyWith(
+                        color: AppTheme.darkColor,
+                        fontSize: 14,
+                        fontWeight: FontWeight.w300),
+                  ),
+                ),
+              ),
+              const SizedBox(height: 20),
+              SizedBox(
+                width: Get.width,
+                height: 50,
+                child: ElevatedButton(
+                    style: ButtonStyle(
+                        backgroundColor:
+                        MaterialStateProperty.all(controller.isReportActive.value ? AppTheme.redColor : AppTheme.darkColor.withOpacity(0.5)),
+                        shape: MaterialStateProperty.all(RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10)))),
+                    onPressed: () async{
+                       if(controller.reportFormKey.currentState!.validate()){
+                         controller.reportFormKey.currentState!.save();
+                         await controller.reportCar(car.id.toString(), controller.reportController.value.text);
+                       }
+                    },
+                    child: !controller.isLoading.value ? Text(
+                      'Signaler',
+                      style: Theme
+                          .of(context)
+                          .textTheme
+                          .bodyText2!
+                          .copyWith(
+                          color: controller.isReportActive.value ? AppTheme.light : AppTheme.darkColor,
+                          fontSize: 14,
+                          fontWeight: FontWeight.w600),
+                    ) : const LoadingDialog()),
+              )
+            ],
+          ),
+        ),
+      );
+    });
   }
 }

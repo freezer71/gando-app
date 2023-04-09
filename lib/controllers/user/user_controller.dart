@@ -14,10 +14,8 @@ import 'package:gando/services/repositories/user_repository.dart';
 import 'package:get/get.dart';
 import 'package:get_it/get_it.dart';
 
-import '../../config/constants.dart';
 import '../../models/Car.dart';
 import '../../models/User.dart' as client;
-import '../../models/UserCar.dart';
 import '../../services/auth/get_user_car.dart';
 
 class UserController extends GetxController {
@@ -30,23 +28,57 @@ class UserController extends GetxController {
   Rx<client.User> user = Get.find<AuthService>().user;
   String countryCode = "+33";
   String? phoneNumber;
-
   String? idUser;
-
   final userID = ''.obs;
-
   final isLoading = false.obs;
   final UserRepository repository = GetIt.instance.get<UserRepository>();
   final OtpService otpService = GetIt.instance.get<OtpService>();
+  String countryName = "France";
+  DateTime currentDate = DateTime.now();
+  String birthYear = DateTime.now().year.toString();
+  String birthDay = DateTime.now().day.toString();
+  String birthMonth = DateTime.now().month.toString();
+  RxBool gearboxValue = false.obs;
+
+  // detail contact screen
+  Rx<TextEditingController> birthPlaceController = TextEditingController().obs;
+  Rx<TextEditingController> addressController = TextEditingController().obs;
+  Rx<TextEditingController> complementController = TextEditingController().obs;
+
+  Rx<TextEditingController> postalCodeController = TextEditingController().obs;
+  Rx<TextEditingController> cityController = TextEditingController().obs;
+  final Rx<bool> isSuccess = false.obs;
+  Rx<String> initialSelectionCountry = "+33".obs;
 
   @override
   Future<void> onInit() async {
-    super.onInit();
     // check if called route == annonce
     // userID(Get.parameters['id']!);
     getCarList = getUserCarList();
+    birthPlaceController =
+        TextEditingController(text: user.value.birthplace ?? "").obs;
+    addressController =
+        TextEditingController(text: user.value.address?.address ?? "").obs;
+    complementController =
+        TextEditingController(text: user.value.address?.complement ?? "").obs;
+    postalCodeController =
+        TextEditingController(text: user.value.address?.zipCode ?? "").obs;
+    cityController =
+        TextEditingController(text: user.value.address?.city ?? "").obs;
+    initialSelectionCountry.value =
+        user.value.phone == null || user.value.phone == ""
+            ? "+33"
+            : user.value.phone!.split(" ").first;
+    countryCode = user.value.phone == null || user.value.phone == ""
+        ? "+33"
+        : user.value.phone!.split(" ").first;
+    gearboxValue.value = user.value.civility == null ||
+            user.value.civility == "" ||
+            user.value.civility == "Mr"
+        ? false
+        : true;
     setState();
-    // check called route name and get user id
+    super.onInit();
   }
 
   @override
@@ -57,7 +89,6 @@ class UserController extends GetxController {
   }
 
   void setState() {
-    print("user.value.description ${user.value.description}");
     descriptionController.text =
         user.value.description == null || user.value.description == " "
             ? "Aucun biographie"
@@ -77,7 +108,7 @@ class UserController extends GetxController {
           margin: const EdgeInsets.only(
             top: 20,
           ),
-          duration: const Duration(seconds: 5));
+          duration: const Duration(seconds: 3));
       return client.User();
     }
   }
@@ -130,6 +161,7 @@ class UserController extends GetxController {
     if (action is OtpCodeSentAction) {
       print('Ack OtpCodeSentAction');
       isLoading(false);
+      otpEventSubsc.cancel();
       Get.snackbar("Code envoyé par sms", "Veuillez verifié.",
           snackPosition: SnackPosition.TOP,
           backgroundColor: AppTheme.secondaryColor,
@@ -137,10 +169,12 @@ class UserController extends GetxController {
             top: 20,
           ),
           duration: const Duration(seconds: 2));
+      phoneTxtController.text = "";
       Get.toNamed(Routes.verifyPhoneCoordonate);
     } else if (action is VerificationFailedAction) {
       print('Otp Failed again');
       isLoading(false);
+      otpEventSubsc.cancel();
       Get.snackbar("La vérification du numéro de téléphone a échoué.",
           "Code: ${action.authException.code}.",
           snackPosition: SnackPosition.TOP,
@@ -152,6 +186,7 @@ class UserController extends GetxController {
     } else if (action is VerificationAutoSuccess) {
       print('$logTrace Verified automatically');
       isLoading(false);
+      otpEventSubsc.cancel();
     }
   }
 
@@ -161,6 +196,7 @@ class UserController extends GetxController {
     bool isVerifyCode =
         await otpService.verifyCode(smsCode: pinController.value.text);
     if (isVerifyCode) {
+      otpEventSubsc.cancel();
       Get.snackbar('Code OK', "",
           snackPosition: SnackPosition.TOP,
           backgroundColor: AppTheme.secondaryColor,
@@ -169,6 +205,7 @@ class UserController extends GetxController {
           ),
           duration: const Duration(seconds: 3));
       isLoading(false);
+      pinController.value.text = "";
       Get.toNamed(Routes.detailCordonate);
       return;
     }
@@ -185,5 +222,54 @@ class UserController extends GetxController {
   void onCountryCodePicked(CountryCode s) {
     print('$logTrace Country code changed ${s.dialCode}');
     countryCode = s.dialCode!;
+    countryName = s.name!;
+  }
+
+  Future<void> editCoordonates() async {
+    isLoading(true);
+    print(
+        "brithdate $birthYear-${birthMonth.padLeft(2, "0")}-${birthDay.padLeft(2, "0")}");
+    try {
+      Map<String, dynamic> data = {
+        "civility": gearboxValue.value ? "Mme" : "Mr",
+        "birthPlace": birthPlaceController.value.text,
+        "birthDate":
+            "$birthYear-${birthMonth.padLeft(2, "0")}-${birthDay.padLeft(2, "0")}",
+        "address": addressController.value.text,
+        "complement": complementController.value.text,
+        "city": cityController.value.text,
+        "country": countryName,
+        "zipCode": postalCodeController.value.text,
+        "phone": phoneNumber,
+      };
+      user.value = await repository.editCoordonates(data: data);
+      Get.snackbar('Mise à jour', "Modification réussi.",
+          snackPosition: SnackPosition.TOP,
+          backgroundColor: AppTheme.secondaryColor,
+          margin: const EdgeInsets.only(
+            top: 20,
+          ),
+          duration: const Duration(seconds: 3));
+      isLoading(false);
+      isSuccess(true);
+    } catch (e) {
+      Get.snackbar('Error', e.toString(),
+          snackPosition: SnackPosition.TOP,
+          margin: const EdgeInsets.only(
+            top: 20,
+          ),
+          duration: const Duration(seconds: 3));
+      isLoading(false);
+      isSuccess(false);
+    }
+  }
+
+  void onChangedBirthDate(
+      {required String birthDayChanged,
+      required String birthMonthChanged,
+      required String birthYearChanged}) {
+    birthDay = birthDayChanged;
+    birthMonth = birthMonthChanged;
+    birthYear = birthYearChanged;
   }
 }

@@ -5,6 +5,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:gando/config/textstyle.dart';
 import 'package:gando/constants.dart';
@@ -108,6 +109,10 @@ class _MyAppState extends State<MyApp> {
         //https://stackoverflow.com/questions/70066318/flutterios-no-cupertinolocalizations-found-how-fix-it
         DefaultCupertinoLocalizations.delegate,
         DefaultMaterialLocalizations.delegate,
+        DefaultWidgetsLocalizations.delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
       ], // <- append here
       translations: LocaleString(),
       fallbackLocale: Get.fallbackLocale,
@@ -115,8 +120,7 @@ class _MyAppState extends State<MyApp> {
       debugShowCheckedModeBanner: false,
       getPages: AppPages.appPages,
       // I add my list of pages here
-      initialRoute: AppPages
-          .INITIAL, // This is the page that should be rendered on app launch
+      initialRoute: AppPages.INITIAL // This is the page that should be rendered on app launch
     );
   }
 }

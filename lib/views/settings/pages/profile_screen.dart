@@ -22,7 +22,6 @@ class ProfileScreen extends GetView<UserController> {
 
   @override
   Widget build(BuildContext context) {
-    print("controllerato ${controller.user.value.lastname}");
     return Scaffold(
         backgroundColor: AppTheme.backgroundColor,
         appBar: CustomAppBar(
@@ -44,8 +43,27 @@ class ProfileScreen extends GetView<UserController> {
                 ? const LoadingDialog()
                 : controller.user.value.id == null
                     ? Center(
-                        child: Text("Aucune donnée",
-                            style: TextStyle(color: AppTheme.darkColor)),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text("Aucune donnée, veuillez vous connecter",
+                                style: TextStyle(color: AppTheme.darkColor)),
+                            const SizedBox(
+                              height: 20,
+                            ),
+                            // logout button
+                            ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                primary: AppTheme.redColor,
+                              ),
+                              onPressed: () async {
+                                await AuthService().logout();
+                              },
+                              child: const Text('Déconnexion'),
+                            ),
+                          ],
+                        ),
                       )
                     : ListView(
                         scrollDirection: Axis.vertical,
@@ -88,9 +106,7 @@ class ProfileScreen extends GetView<UserController> {
                                   children: [
                                     TextButton(
                                       onPressed: () async {
-                                        User response = await Get.to(
-                                            () => EditProfileScreen());
-                                        controller.user.value = response;
+                                        await Get.to(() => EditProfileScreen());
                                         controller.setState();
                                       },
                                       style: ButtonStyle(
@@ -151,6 +167,8 @@ class ProfileScreen extends GetView<UserController> {
                                     maxLines: 15,
                                     style: TextStyle(color: AppTheme.darkColor),
                                     decoration: InputDecoration(
+                                      contentPadding: EdgeInsets.symmetric(
+                                          horizontal: 4.0, vertical: 3.0),
                                       filled: true,
                                       fillColor: AppTheme.light,
                                       labelStyle: Theme.of(context)

@@ -9,5 +9,11 @@ abstract class RemoteEndpoint {
   static String editPasswordUser = "/user/editPassword";
   static String initEditMailUser = "/user/initEditEmail";
   static String verifyMailUser = "/user/verifyEmail";
+  static String editCoordonates = "/user/editCoordonates";
   static String verifyOwner = "verifyOwner";
+  static String getMessageDetail({required String discussionId}) =>
+      "/discussion/getMessageInDiscussion?discussionId=$discussionId";
+  static String getListMessage({required String id}) =>
+      "/discussion/discussionOfUser?userId=$id";
+  static String sendMessage = "/discussion";
 }

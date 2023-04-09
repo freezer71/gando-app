@@ -1,6 +1,8 @@
 import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
+import 'package:gando/controllers/user/edit_profile_controller.dart';
+import 'package:gando/controllers/user/user_controller.dart';
 import 'package:gando/services/provider/api_provider.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
@@ -12,40 +14,31 @@ import '../../navigation.dart';
 class AuthService extends GetxService {
   Future<AuthService> init() async => this;
 
+  static AuthService get to => Get.find();
+
   final RxBool isLoggedIn = false.obs;
   final GetStorage box = GetStorage();
   Rx<client.User> user = client.User().obs;
 
   @override
-  void onReady() async {
+  void onReady() async{
     super.onReady();
-    // check onboarding status
-    if (box.hasData('onboarding') && box.read('onboarding') != null) {
-      if (box.read('onboarding')) {
-        //check authentication status
-        if (box.hasData('token') && box.read('token') != null) {
-          box.write('authenticated', true);
-          if (box.read('authenticated')) {
-            isLoggedIn(true);
-            printInfo(info: 'AuthService is ready ${user.value.id}');
-            printInfo(
-                info: 'User is authenticated : ${box.read('authenticated')}');
-            printInfo(info: 'User token : ${box.read('token')}');
-          }
-          if (user.value.id == null) {
-            await getUser();
-          }
-        } else {
-          await logout();
-        }
-      } else {
-        printInfo(info: 'User has not seen onboarding');
-        Get.offAllNamed(Routes.welcome);
+    //check authentication status
+    if (box.hasData('token') && box.read('token') != null) {
+      await box.write('authenticated', true);
+      if (await box.read('authenticated')) {
+        isLoggedIn(true);
+        printInfo(info: 'AuthService is ready ${user.value.id}');
+        printInfo(
+            info: 'User is authenticated : ${box.read('authenticated')}');
+        printInfo(info: 'User token : ${box.read('token')}');
+      }
+      if (user.value.id == null) {
+        await getUser();
       }
     } else {
-      box.writeIfNull('onboarding', false);
-      printInfo(info: 'User has not seen onboarding');
-      Get.offAllNamed(Routes.welcome);
+      printInfo(info: 'User is not authenticated');
+      isLoggedIn(false);
     }
   }
 
@@ -74,6 +67,11 @@ class AuthService extends GetxService {
 
       if (res.statusCode == 200) {
         user.value = client.User.fromJson(body);
+        box.write('authenticated', true).then((value) => isLoggedIn(true));
+        Get.delete<EditProfilController>();
+        Get.put(EditProfilController());
+        Get.delete<UserController>();
+        Get.put(UserController());
       } else {
         user.value = client.User();
       }

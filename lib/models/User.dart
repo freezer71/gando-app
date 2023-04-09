@@ -24,7 +24,7 @@ class User {
   final String? phone;
   final String? nextPhone;
   final int? v;
-  final String? dayOfBirth;
+  final DateTime? dayOfBirth;
   final String? birthplace;
   final Address? address;
   final String? civility;

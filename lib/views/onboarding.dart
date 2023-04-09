@@ -17,8 +17,6 @@ class OnboardingScreen extends StatelessWidget {
   OnboardingScreen({Key? key}) : super(key: key);
 
 
-  final controller = Get.put(OnboardingService());
-
   @override
   Widget build(BuildContext context) {
       return Scaffold(
@@ -42,14 +40,13 @@ class OnboardingScreen extends StatelessWidget {
               fontWeight: FontWeight.w900),
           // skipTextButton: Text('Suivant'),
           // trailing: Text('Login'),
-          onFinish: () async {
-            await GetStorage().write('onboarding', true).then((value) {
-              controller.isFirstOpen.value = true;
+          onFinish: () async =>
+            await GetStorage().write('onboarding', false).then((value) {
+              OnboardingService.to.isFirstOpen.value = false;
               // printInfo(info: 'ONBOARDING +++++++++++============----${GetStorage().read('onboarding')}');
               return Get.offNamed(
-                  Routes.preLogin, arguments: {'isFirstOpen': true});
-            });
-          },
+                  Routes.preLogin, arguments: {'isFirstOpen': false});
+          }),
           background: [
             Container(
               width: Get.width,
