@@ -7,6 +7,8 @@ import 'package:get_storage/get_storage.dart';
 import 'package:provider/single_child_widget.dart';
 
 import '../../navigation.dart';
+import '../../services/auth/auth_services.dart';
+import '../../services/onboarding_services.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({Key? key}) : super(key: key);
@@ -29,32 +31,26 @@ class _SplashScreenState extends State<SplashScreen>
   @override
   void initState() {
     super.initState();
-    //like fetching login data in serveur or check token validite
-    Future<void>.delayed(const Duration(milliseconds: 3000), () {
-      try{
-        // box.erase();
-        if(box.hasData('onboarding')){
-          isViewed = box.read('onboarding');
-        }else{
-          box.writeIfNull('onboarding', false);
-          isViewed = false;
-        }
-        isViewed ? Get.offAllNamed(Routes.preLogin) : Get.offAllNamed(Routes.welcome) ;
-      }catch(e){
-        printError(info: '$e');
+
+    Future.delayed(const Duration(milliseconds: 3000), () async{
+      // init app
+      if(!OnboardingService.to.isFirstOpen.value) {
+        Get.offAllNamed(Routes.home);
+      } else {
+        Get.offAllNamed(Routes.welcome);
       }
     });
+
     Future.delayed(const Duration(milliseconds: 1000), () {
       setState(() {
         brandingLogoPosition = 0.30;
         _visible = true;
       });
     });
-    controller = AnimationController(
-        vsync: this, duration: const Duration(milliseconds: 1000));
+    //like fetching login data in serveur or check token validite
+    controller = AnimationController(vsync: this, duration: const Duration(milliseconds: 1000));
 
     // setRotation(90);
-
     controller.addStatusListener((status) async {
       if (status == AnimationStatus.completed) {
         await Future.delayed(const Duration(seconds: 3));
@@ -82,7 +78,7 @@ class _SplashScreenState extends State<SplashScreen>
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        color: const Color(0xFFEBEBEB),
+        color: Colors.white,
         alignment: Alignment.center,
         child: Stack(
           alignment: Alignment.center,
@@ -100,9 +96,9 @@ class _SplashScreenState extends State<SplashScreen>
                 child: Container(
                   width: 298,
                   height: 298,
-                  decoration: BoxDecoration(
+                  decoration: const BoxDecoration(
                     image: DecorationImage(
-                      image: const AssetImage("assets/images/branding-icon.png"),
+                      image: AssetImage("assets/images/branding-icon.png"),
                     ),
                   ),
                 ),

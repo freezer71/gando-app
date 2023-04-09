@@ -1,6 +1,7 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:expandable_text/expandable_text.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:gando/config/constants.dart';
 import 'package:gando/config/textstyle.dart';
 import 'package:gando/models/Car.dart';
@@ -130,8 +131,8 @@ class _CarDetailPageState extends State<CarDetailPage> {
       body: GetBuilder<CarController>(
         assignId: true,
         builder: (logic) {
-          if(logic.isLoading.value){
-            return LoadingDialog();
+          if (logic.isLoading.value) {
+            return const LoadingDialog();
           }
           return Stack(
             children: [
@@ -987,7 +988,20 @@ class _CarDetailPageState extends State<CarDetailPage> {
               children: [
                 InkWell(
                   onTap: () {
-                    // go to signalisation page
+                    // go to report page
+                    Get.dialog(
+                      WillPopScope(
+                          onWillPop: () {
+                            Get.back();
+                            controller.isReportActive.value = false;
+                            controller.reportController.value.clear();
+                            return Future.value(false);
+                          },
+                          child: reportDialog()
+                      ),
+                      barrierDismissible: true,
+
+                    );
                   },
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -1011,5 +1025,145 @@ class _CarDetailPageState extends State<CarDetailPage> {
         ),
       ),
     );
+  }
+
+  Widget reportDialog() {
+    return Obx(() {
+      return Dialog(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10),
+        ),
+        elevation: 0,
+        backgroundColor: Colors.transparent,
+        child: Container(
+          height: Get.height / 2.7,
+          padding: const EdgeInsets.only(top: 20, left: 20, right: 20),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            shape: BoxShape.rectangle,
+            borderRadius: BorderRadius.circular(10),
+            boxShadow: const [
+              BoxShadow(
+                color: Colors.black26,
+                blurRadius: 10.0,
+                offset: Offset(0.0, 10.0),
+              ),
+            ],
+          ),
+          child: Column(
+            children: [
+              const SizedBox(height: 20),
+              Text(
+                'Signaler l\'annonce',
+                style: Theme
+                    .of(context)
+                    .textTheme
+                    .bodyText2!
+                    .copyWith(
+                    color: AppTheme.darkColor,
+                    fontSize: 18,
+                    fontWeight: FontWeight.w900),
+              ),
+              const SizedBox(height: 20),
+              Text(
+                'Veuillez nous indiquer la raison de votre signalement',
+                style: Theme
+                    .of(context)
+                    .textTheme
+                    .bodyText2!
+                    .copyWith(
+                    color: AppTheme.darkColor,
+                    fontSize: 14,
+                    fontWeight: FontWeight.w600),
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: 20),
+              Container(
+                height: 100,
+                width: Get.width / 1.2,
+                padding: const EdgeInsets.symmetric(horizontal: 10),
+                decoration: BoxDecoration(
+                  borderRadius: const BorderRadius.all(Radius.circular(10)),
+                  color: AppTheme.backgroundColor,
+                ),
+                child: Form(
+                  key: controller.reportFormKey,
+                  child: TextFormField(
+                    controller: controller.reportController.value,
+                    maxLines: 5,
+                    onChanged: (value) {
+                      if (value.isEmpty || value.length < 10) {
+                        controller.isReportActive.value = false;
+                      } else {
+                        controller.isReportActive.value = true;
+                      }
+                    },
+                    validator: (value) {
+                      if (value!.isEmpty) {
+                        return 'Veuillez remplir ce champ';
+                      } else if (value.length < 10) {
+                        return 'Veuillez entrer au moins 10 caractères';
+                      }
+                      return null;
+                    },
+                    inputFormatters: [
+                      LengthLimitingTextInputFormatter(1000),
+                    ],
+                    decoration: InputDecoration(
+                      border: InputBorder.none,
+                      labelText: 'Raison du signalement',
+                      labelStyle: Theme
+                          .of(context)
+                          .textTheme
+                          .bodyText2!
+                          .copyWith(
+                          color: AppTheme.darkColor.withOpacity(0.5),
+                          fontSize: 14,
+                          fontWeight: FontWeight.w600),
+                    ),
+                    style: Theme
+                        .of(context)
+                        .textTheme
+                        .bodyText2!
+                        .copyWith(
+                        color: AppTheme.darkColor,
+                        fontSize: 14,
+                        fontWeight: FontWeight.w300),
+                  ),
+                ),
+              ),
+              const SizedBox(height: 20),
+              SizedBox(
+                width: Get.width,
+                height: 50,
+                child: ElevatedButton(
+                    style: ButtonStyle(
+                        backgroundColor:
+                        MaterialStateProperty.all(controller.isReportActive.value ? AppTheme.redColor : AppTheme.darkColor.withOpacity(0.5)),
+                        shape: MaterialStateProperty.all(RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10)))),
+                    onPressed: () async{
+                       if(controller.reportFormKey.currentState!.validate()){
+                         controller.reportFormKey.currentState!.save();
+                         await controller.reportCar(car.id.toString(), controller.reportController.value.text);
+                       }
+                    },
+                    child: !controller.isLoading.value ? Text(
+                      'Signaler',
+                      style: Theme
+                          .of(context)
+                          .textTheme
+                          .bodyText2!
+                          .copyWith(
+                          color: controller.isReportActive.value ? AppTheme.light : AppTheme.darkColor,
+                          fontSize: 14,
+                          fontWeight: FontWeight.w600),
+                    ) : const LoadingDialog()),
+              )
+            ],
+          ),
+        ),
+      );
+    });
   }
 }
