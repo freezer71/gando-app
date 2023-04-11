@@ -1,7 +1,9 @@
 import 'dart:io';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:gando/config/textstyle.dart';
+import 'package:gando/constants.dart';
 import 'package:gando/controllers/user/edit_profile_controller.dart';
 import 'package:gando/widget/customTextFormField.dart';
 import 'package:gando/widget/submit_with_loading_button.dart';
@@ -42,10 +44,13 @@ class EditProfileScreen extends GetView<EditProfilController> {
                   SizedBox(
                     width: 100,
                     height: 100,
-                    child: CircleAvatar(
-                      backgroundColor: AppTheme.backgroundColor,
-                      backgroundImage: NetworkImage(
-                        "${controller.user.value.photo}",
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(60),
+                      child: CachedNetworkImage(
+                        fit: BoxFit.cover,
+                        imageUrl: "${controller.user.value.photo}",
+                        errorWidget: (context, url, error) =>
+                            Image.asset("$assetsImages/defaultImage.png"),
                       ),
                     ),
                   ),

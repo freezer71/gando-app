@@ -182,7 +182,6 @@ class ApiProvider {
     http.Response response = await getData(
         RemoteEndpoint.getMessageDetail(discussionId: discussionId));
     if (response.statusCode == 200) {
-      Map<String, dynamic> map = _parseBody(response.body);
       try {
         return ChatDetailModel.fromJson(_parseBody(response.body)["data"][0]);
       } catch (e) {
@@ -198,6 +197,19 @@ class ApiProvider {
         await postData(apiUrl: RemoteEndpoint.sendMessage, data: data);
     if (response.statusCode == 200) {
       return true;
+    } else {
+      throw "${_parseBody(response.body)["message"]}";
+    }
+  }
+
+  Future<String> onBoardingAccount({required Map<String, dynamic> data}) async {
+    http.Response response =
+        await postData(apiUrl: RemoteEndpoint.onBoardingAccount, data: data);
+    if (response.statusCode == 200) {
+      print("code 200");
+      var test = _parseBody(response.body);
+      print("test");
+      return "true";
     } else {
       throw "${_parseBody(response.body)["message"]}";
     }

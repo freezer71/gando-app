@@ -15,6 +15,7 @@ abstract class UserRepository {
   Future<bool> delete({required Map<String, dynamic> data});
   Future<bool> editPassword({required Map<String, dynamic> data});
   Future<User> editCoordonates({required Map<String, dynamic> data});
+  Future<String> onBoardingAccount({required Map<String, dynamic> data});
 }
 
 class UserRepositoryImpl implements UserRepository {
@@ -68,5 +69,10 @@ class UserRepositoryImpl implements UserRepository {
   @override
   Future<User> editCoordonates({required Map<String, dynamic> data}) {
     return apiProvider.editCoordonates(data: data);
+  }
+
+  @override
+  Future<String> onBoardingAccount({required Map<String, dynamic> data}) {
+    return apiProvider.onBoardingAccount(data: data);
   }
 }

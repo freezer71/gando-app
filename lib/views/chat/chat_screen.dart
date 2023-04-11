@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:gando/config/textstyle.dart';
+import 'package:gando/services/socket/socket_client.dart';
 import 'package:gando/views/chat/components/chat.dart';
 import 'package:get/get.dart';
+import 'package:get_it/get_it.dart';
+import 'package:get_storage/get_storage.dart';
 
 import 'components/demand.dart';
 
@@ -12,18 +15,34 @@ class ChatScreen extends StatefulWidget {
   State<ChatScreen> createState() => _ChatScreenState();
 }
 
-class _ChatScreenState extends State<ChatScreen> with SingleTickerProviderStateMixin{
+class _ChatScreenState extends State<ChatScreen>
+    with SingleTickerProviderStateMixin {
   late TabController _tabController;
   final List<Tab> myTabs = <Tab>[
     const Tab(text: 'Messages'),
     const Tab(text: 'Demandes'),
   ];
   int _activeTabIndex = 0;
+  SocketClient socketClient = GetIt.instance.get<SocketClient>();
+  String userId = "";
+  final box = GetStorage();
 
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      await _getUserId();
+    });
     _tabController = TabController(length: 2, vsync: this);
+  }
+
+  Future<void> _getUserId() async {
+    if (box.hasData('userId') && box.read('userId') != null) {
+      userId = await box.read('userId');
+      printInfo(info: 'userId============> : $userId');
+      socketClient.setClientId(userId);
+      socketClient.connectAndListen();
+    }
   }
 
   @override
@@ -31,7 +50,6 @@ class _ChatScreenState extends State<ChatScreen> with SingleTickerProviderStateM
     super.dispose();
     _tabController.dispose();
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -66,49 +84,66 @@ class _ChatScreenState extends State<ChatScreen> with SingleTickerProviderStateM
               ),
               tabs: myTabs
                   .map<Widget>((myTab) => Tab(
-                child: Container(
-                  width: Get.width,
-                  //     10, // - 10 is used to make compensate horizontal padding
-                  // decoration: BoxDecoration(
-                  //   borderRadius: BorderRadius.circular(10.0),
-                  //   color:
-                  //   _activeTabIndex == myTabs.indexOf(myTab)
-                  //       ? Colors.transparent
-                  //       : Color(0xffA4BDD4),
-                  // ),
-                  // padding: const EdgeInsets.symmetric(horizontal: 25.0),
-                  margin: const EdgeInsets.symmetric(horizontal: 5.0, vertical: 5.0),
-                  child: Align(
-                    alignment: Alignment.center,
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          myTab.text.toString(),
-                          style: Theme.of(context).textTheme.bodyText2!.copyWith(
-                              fontWeight: FontWeight.w900,
-                              fontSize: 18,
-                              color: _activeTabIndex == myTabs.indexOf(myTab) ? AppTheme.light : AppTheme.darkColor),
-                        ),
-                        myTab.text == 'Demandes' ? Container(
-                          width: 20,
-                          height: 20,
-                          margin: const  EdgeInsets.only(left: 10),
-                          decoration: BoxDecoration(
-                              color: AppTheme.redColor,
-                              borderRadius: BorderRadius.circular(50)
+                        child: Container(
+                          width: Get.width,
+                          //     10, // - 10 is used to make compensate horizontal padding
+                          // decoration: BoxDecoration(
+                          //   borderRadius: BorderRadius.circular(10.0),
+                          //   color:
+                          //   _activeTabIndex == myTabs.indexOf(myTab)
+                          //       ? Colors.transparent
+                          //       : Color(0xffA4BDD4),
+                          // ),
+                          // padding: const EdgeInsets.symmetric(horizontal: 25.0),
+                          margin: const EdgeInsets.symmetric(
+                              horizontal: 5.0, vertical: 5.0),
+                          child: Align(
+                            alignment: Alignment.center,
+                            child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                  myTab.text.toString(),
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .bodyText2!
+                                      .copyWith(
+                                          fontWeight: FontWeight.w900,
+                                          fontSize: 18,
+                                          color: _activeTabIndex ==
+                                                  myTabs.indexOf(myTab)
+                                              ? AppTheme.light
+                                              : AppTheme.darkColor),
+                                ),
+                                myTab.text == 'Demandes'
+                                    ? Container(
+                                        width: 20,
+                                        height: 20,
+                                        margin: const EdgeInsets.only(left: 10),
+                                        decoration: BoxDecoration(
+                                            color: AppTheme.redColor,
+                                            borderRadius:
+                                                BorderRadius.circular(50)),
+                                        child: Text(
+                                          '2',
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .bodyText2!
+                                              .copyWith(
+                                                  color: AppTheme.light,
+                                                  fontSize: 13,
+                                                  fontWeight: FontWeight.w900),
+                                          textAlign: TextAlign.center,
+                                        ),
+                                      )
+                                    : Container()
+                              ],
+                            ),
                           ),
-                          child: Text('2', style: Theme.of(context).textTheme.bodyText2!.copyWith(
-                              color: AppTheme.light,
-                              fontSize: 13,
-                              fontWeight: FontWeight.w900), textAlign: TextAlign.center,),
-                        ) : Container()
-                      ],
-                    ),
-                  ),
-                ),
-              )).toList(),
+                        ),
+                      ))
+                  .toList(),
             ),
           ),
         ),
@@ -122,5 +157,4 @@ class _ChatScreenState extends State<ChatScreen> with SingleTickerProviderStateM
       ),
     );
   }
-
 }

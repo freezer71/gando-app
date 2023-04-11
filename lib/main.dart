@@ -6,6 +6,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
+import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:gando/config/textstyle.dart';
 import 'package:gando/constants.dart';
 import 'package:gando/navigation.dart';
@@ -20,6 +21,9 @@ import 'firebase_options.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  Stripe.publishableKey =
+      "pk_test_51MYvuaCvgEqGijXi0Fdlia0jzotkhbczrrOW7Q4YrXE8cQJ0kwjtiScnfW1hbj4uH79iW5tqmX0pQm12VoQHtZZH003PvMJIZI";
+  await Stripe.instance.applySettings();
   await GetStorage.init();
   await di.init();
   await Firebase.initializeApp(
@@ -60,7 +64,7 @@ class MyApp extends StatefulWidget {
   _MyAppState createState() => _MyAppState();
 }
 
-class _MyAppState extends State<MyApp> {
+class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
   final box = GetStorage();
 
   // final controller = Get.put(OnboardingServices());

@@ -1,6 +1,8 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:gando/config/config.dart';
 import 'package:gando/config/textstyle.dart';
+import 'package:gando/constants.dart';
 import 'package:gando/controllers/user/user_controller.dart';
 import 'package:gando/models/ProfileSeller.dart';
 import 'package:gando/models/User.dart';
@@ -58,10 +60,15 @@ class ProfileScreen extends GetView<UserController> {
                                 SizedBox(
                                   width: 100,
                                   height: 100,
-                                  child: CircleAvatar(
-                                    backgroundColor: AppTheme.darkColor,
-                                    backgroundImage: NetworkImage(
-                                      "${controller.user.value.photo}",
+                                  child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(60),
+                                    child: CachedNetworkImage(
+                                      fit: BoxFit.cover,
+                                      imageUrl:
+                                          "${controller.user.value.photo}",
+                                      errorWidget: (context, url, error) =>
+                                          Image.asset(
+                                              "$assetsImages/defaultImage.png"),
                                     ),
                                   ),
                                 ),
@@ -178,7 +185,7 @@ class ProfileScreen extends GetView<UserController> {
                                 ),
                                 _createListMenu('Mes coordonnées',
                                     Routes.summaryCoordonate),
-                                // _createListMenu('Porte-monnaie', MyContactDetailScreen()),
+                                _createListMenu('Porte-monnaie', Routes.wallet),
                                 /*_createListMenu('Mes réseaux sociaux',
                                     SocialNetworkScreen()),*/
                                 const SizedBox(

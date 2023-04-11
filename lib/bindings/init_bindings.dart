@@ -1,8 +1,10 @@
 import 'package:gando/controllers/authController/owner_controller.dart';
 import 'package:gando/controllers/chat/chat_controller.dart';
+import 'package:gando/controllers/payment/payment_controller.dart';
 import 'package:gando/controllers/settings_controller/account_setting_controller.dart';
 import 'package:gando/controllers/user/edit_profile_controller.dart';
 import 'package:gando/controllers/user/user_controller.dart';
+import 'package:gando/controllers/wallet/wallet_controller.dart';
 import 'package:get/get.dart';
 
 import '../controllers/car_controller.dart';
@@ -27,5 +29,7 @@ class InitBindings extends Bindings {
     Get.lazyPut<AccountSettingController>(() => AccountSettingController());
     Get.lazyPut<UserController>(() => UserController());
     Get.lazyPut<ChatController>(() => ChatController());
+    Get.lazyPut<PaymentController>(() => PaymentController());
+    Get.lazyPut<WalletController>(() => WalletController());
   }
 }

@@ -16,4 +16,5 @@ abstract class RemoteEndpoint {
   static String getListMessage({required String id}) =>
       "/discussion/discussionOfUser?userId=$id";
   static String sendMessage = "/discussion";
+  static String onBoardingAccount = "/payment/on-boarding-account";
 }

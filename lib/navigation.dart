@@ -19,6 +19,7 @@ import 'package:gando/views/authentication/signin/signin_screen.dart';
 import 'package:gando/views/authentication/signup/signup_screen.dart';
 import 'package:gando/views/bottom_navigation_bar.dart';
 import 'package:gando/views/onboarding.dart';
+import 'package:gando/views/products/booking/payment/payment_stripe_screen.dart';
 import 'package:gando/views/settings/notification_screen.dart';
 import 'package:gando/views/settings/pages/coordonates/edit_phone_coordonates_screen.dart';
 import 'package:gando/views/settings/pages/coordonates/home_coordonates_screen.dart';
@@ -28,6 +29,8 @@ import 'package:gando/views/settings/pages/coordonates/verify_phone_coordonate_s
 import 'package:gando/views/settings/pages/edit_profile_screen.dart';
 import 'package:gando/views/settings/pages/profile_screen.dart';
 import 'package:gando/views/settings/pages/verify_mail_screen.dart';
+import 'package:gando/views/settings/pages/wallet/verify_identity_user_screen.dart';
+import 'package:gando/views/settings/pages/wallet/wallet_screen.dart';
 import 'package:gando/views/settings/settings_account.dart';
 import 'package:gando/views/products/detail/components/car_detail.dart';
 import 'package:gando/views/splashscreen/splash_screen.dart';
@@ -162,6 +165,21 @@ class AppPages {
       name: Routes.notification,
       page: () => NotificationScreen(),
     ),
+    GetPage(
+      name: Routes.paymentStripe,
+      page: () => const PaymentStripeScreen(),
+      binding: InitBindings(),
+    ),
+    GetPage(
+      name: Routes.wallet,
+      page: () => const WalletScreen(),
+      binding: InitBindings(),
+    ),
+    GetPage(
+      name: Routes.verifyIdentity,
+      page: () => const VerifyIdentityUserScreen(),
+      binding: InitBindings(),
+    ),
   ];
 }
 
@@ -191,4 +209,7 @@ abstract class Routes {
   static const notification = "/notification";
   static const settingAccount = "/setting-account";
   static const verifyMail = "/verify-mail";
+  static const paymentStripe = "/payment-stripe";
+  static const wallet = "/wallet";
+  static const verifyIdentity = "/verify_identity_user";
 }
