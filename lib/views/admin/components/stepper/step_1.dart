@@ -9,6 +9,7 @@ import 'package:gando/models/CarBrandModel.dart';
 import 'package:gando/models/Equipment.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:multi_select_flutter/dialog/multi_select_dialog_field.dart';
 
 import '../../../../config/textstyle.dart';
@@ -32,17 +33,6 @@ class Step1State extends State<Step1> {
   final brandController = Get.put(CarBrandController());
 
   @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    // c.onClose();
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return Obx(() {
       return Container(
@@ -57,81 +47,98 @@ class Step1State extends State<Step1> {
   }
 
   List<Widget> _buildBodyTextField(BuildContext context) {
-
     return [
-      GetBuilder<CarBrandController>(
-        assignId: true,
+      GetBuilder<CarBrandController>(builder: (brandController) {
+        return FutureBuilder(
+            future: brandController.futureGetCarBrands,
+            builder: (context, snapshot) {
+             // state
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const Center(child: CircularProgressIndicator());
+              }
+              if (snapshot.hasError) {
+                return const Center(child: Text('Une erreur est survenue, pas de connexion internet'));
+              }
+              if (snapshot.hasData) {
+                return Obx(() {
 
-        init: CarBrandController(),
-        builder: (CarBrandController controller) {
-          return FutureBuilder(
-              future: controller.futureGetCarBrands,
-              initialData: null,
-              builder: (BuildContext context, snapshot) {
-                // state
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return const Center(child: CircularProgressIndicator());
-                } else if (snapshot.hasError) {
-                  return Center(child: Text('Error: ${snapshot.error}'));
-                } else {
-                  if (snapshot.data != null) {
-                    return Obx(() {
-                      return Column(
-                        children: [
-                          CustomDropdownButton2(
-                            key: Get.keys[0],
-                            hint: 'Marque',
-                            // dropdownPadding: const EdgeInsets.symmetric(horizontal: 10),
-                            dropdownDecoration: BoxDecoration(
-                              color: AppTheme.darkColor,
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                            dropdownWidth: Get.width - 40,
-                            buttonWidth: Get.width,
-                            buttonHeight: 60,
-                            buttonDecoration: BoxDecoration(
-                                color: AppTheme.darkColor.withOpacity(0.8),
-                                borderRadius: BorderRadius.circular(30)),
-                            dropdownItems: controller.getBrandNames(snapshot.data),
-                            value: controller.selectedBrand.value,
-                            // value: selectedEquipment,
-                            onChanged: (value) {
-                              controller.changeBrand(value!);
-                              c.brandController.value.text = value;
-                            },
-                          ),
-                          const SizedBox(height: 20),
-                          CustomDropdownButton2(
-                            key: Get.keys[1],
-                            hint: 'Model',
-                            // dropdownPadding: const EdgeInsets.symmetric(horizontal: 10),
-                            dropdownDecoration: BoxDecoration(
-                              color: AppTheme.darkColor,
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                            dropdownWidth: Get.width - 40,
-                            buttonWidth: Get.width,
-                            buttonHeight: 60,
-                            buttonDecoration: BoxDecoration(
-                                color: AppTheme.darkColor.withOpacity(0.8),
-                                borderRadius: BorderRadius.circular(30)),
-                            dropdownItems: controller.getModelNames(),
-                            value: controller.selectedModel.value,
-                            onChanged: (value) {
-                              controller.changeModel(value!);
-                              c.modelController.value.text = value;
-                            },
-                          ),
-                        ],
-                      );
-                    });
-                  } else {
-                    return Container();
-                  }
-                }
-              });
-        },
-      ),
+                  return Column(
+                    children: [
+                      CustomDropdownButton2(
+                        key: Get.keys[0],
+                        hint: 'Marque',
+                        // dropdownPadding: const EdgeInsets.symmetric(horizontal: 10),
+                        dropdownDecoration: BoxDecoration(
+                          color: AppTheme.darkColor,
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        dropdownWidth: Get.width - 40,
+                        buttonWidth: Get.width,
+                        buttonHeight: 60,
+                        buttonDecoration: BoxDecoration(
+                            color: AppTheme.darkColor.withOpacity(0.8),
+                            borderRadius: BorderRadius.circular(30)),
+                        dropdownItems: brandController.getBrandNames(
+                            brandController.carBrandList),
+                        value: brandController.selectedBrand.value,
+                        // value: selectedEquipment,
+                        onChanged: (value) {
+                          brandController.changeBrand(value!);
+                          c.brandController.value.text = value;
+                        },
+                      ),
+                      const SizedBox(height: 20),
+                      CustomDropdownButton2(
+                        key: Get.keys[1],
+                        hint: 'Model',
+                        // dropdownPadding: const EdgeInsets.symmetric(horizontal: 10),
+                        dropdownDecoration: BoxDecoration(
+                          color: AppTheme.darkColor,
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        dropdownWidth: Get.width - 40,
+                        buttonWidth: Get.width,
+                        buttonHeight: 60,
+                        buttonDecoration: BoxDecoration(
+                            color: AppTheme.darkColor.withOpacity(0.8),
+                            borderRadius: BorderRadius.circular(30)),
+                        dropdownItems: brandController.getModelNames(),
+                        value: brandController.selectedModel.value,
+                        onChanged: (value) {
+                          brandController.changeModel(value!);
+                          c.modelController.value.text = value;
+                        },
+                      ),
+                      const SizedBox(height: 20),
+                      CustomDropdownButton2(
+                        key: Get.keys[2],
+                        hint: 'Type',
+                        // dropdownPadding: const EdgeInsets.symmetric(horizontal: 10),
+                        dropdownDecoration: BoxDecoration(
+                          color: AppTheme.darkColor,
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        dropdownWidth: Get.width - 40,
+                        buttonWidth: Get.width,
+                        buttonHeight: 60,
+                        buttonDecoration: BoxDecoration(
+                            color: AppTheme.darkColor.withOpacity(0.8),
+                            borderRadius: BorderRadius.circular(30)),
+                        dropdownItems: brandController.listType,
+                        value: brandController.selectedType.value,
+                        onChanged: (value) {
+                          brandController.selectedType(value!);
+                          c.typeController.value.text = value;
+                        },
+                      ),
+                    ],
+                  );
+                });
+              }
+              return const Center(child: Text('Une erreur est survenue'));
+            }
+        );
+      }),
       // CustomTextFormField(
       //     key: Get.keys[0],
       //     controller: c.brandController.value,
@@ -177,29 +184,29 @@ class Step1State extends State<Step1> {
       //       print('saved $p');
       //     },
       //     hintText: 'Modèle'),
-      const SizedBox(height: 20),
-      CustomTextFormField(
-          key: Get.keys[2],
-          controller: c.typeController.value,
-          keyboardType: TextInputType.text,
-          validator: (value) {
-            if (!value!.isNotEmpty) {
-              return "Type invalide";
-              // return 'amount Is not valid';
-            }
-            return null;
-          },
-          formatter: [
-            LengthLimitingTextInputFormatter(60),
-            FilteringTextInputFormatter.singleLineFormatter
-          ],
-          onChanged: (p) {
-            print('saved $p');
-          },
-          onSaved: (p) {
-            print('saved $p');
-          },
-          hintText: 'Type'),
+
+      // CustomTextFormField(
+      //     key: Get.keys[2],
+      //     controller: c.typeController.value,
+      //     keyboardType: TextInputType.text,
+      //     validator: (value) {
+      //       if (!value!.isNotEmpty) {
+      //         return "Type invalide";
+      //         // return 'amount Is not valid';
+      //       }
+      //       return null;
+      //     },
+      //     formatter: [
+      //       LengthLimitingTextInputFormatter(60),
+      //       FilteringTextInputFormatter.singleLineFormatter
+      //     ],
+      //     onChanged: (p) {
+      //       print('saved $p');
+      //     },
+      //     onSaved: (p) {
+      //       print('saved $p');
+      //     },
+      //     hintText: 'Type'),
       const SizedBox(height: 20),
       _buildKilometer(context),
       const SizedBox(height: 20),
@@ -300,6 +307,9 @@ class Step1State extends State<Step1> {
   }
 
   Widget _buildNumberPlate() {
+    final mask = MaskTextInputFormatter(
+        mask: '##-###-##', filter: {"#": RegExp(r'[A-Za-z0-9]')});
+
     return Container(
       padding: EdgeInsets.zero,
       child: Column(
@@ -330,7 +340,10 @@ class Step1State extends State<Step1> {
               },
               formatter: [
                 LengthLimitingTextInputFormatter(20),
-                FilteringTextInputFormatter.singleLineFormatter
+                FilteringTextInputFormatter.singleLineFormatter,
+                mask,
+                // text uppercase
+                UpperCaseTextFormatter()
               ],
               onChanged: (p) {
                 print('saved $p');
@@ -1148,4 +1161,15 @@ class CustomDropdownDatePicker {
     );
   }
 
+}
+
+class UpperCaseTextFormatter extends TextInputFormatter {
+  @override
+  TextEditingValue formatEditUpdate(TextEditingValue oldValue,
+      TextEditingValue newValue) {
+    return TextEditingValue(
+      text: newValue.text.toUpperCase(),
+      selection: newValue.selection,
+    );
+  }
 }

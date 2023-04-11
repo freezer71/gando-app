@@ -160,7 +160,7 @@ class Step4State extends State<Step4> {
   Widget _buildCalender() {
     return Obx(() {
       return Column(
-        mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           // Container(
           //   margin: const EdgeInsets.symmetric(vertical: 20),
@@ -264,17 +264,16 @@ class Step4State extends State<Step4> {
                 )
             ),
           ),
-          Container(
-            child: Center(
-              child: FloatingActionButton(
-                backgroundColor: AppTheme.redColor,
-                onPressed: () {
-                  c.selectedAvailability!.clear();
-                  c.dateRangePickerController2.value.selectedRange = PickerDateRange(null, null);
-                  c.update();
-                },
-                child: Icon(Icons.clear, color: AppTheme.light,),
-              ),
+          SizedBox(height: Get.height / 16,),
+          Center(
+            child: FloatingActionButton(
+              backgroundColor: AppTheme.redColor,
+              onPressed: () {
+                c.selectedAvailability!.clear();
+                c.dateRangePickerController2.value.selectedRange = PickerDateRange(null, null);
+                c.update();
+              },
+              child: Icon(Icons.clear, color: AppTheme.light,),
             ),
           )
         ],

@@ -3,6 +3,7 @@
 import 'dart:convert';
 
 import 'package:dio/dio.dart';
+import 'package:flutter/material.dart';
 import 'package:gando/config/constants.dart';
 import 'package:gando/services/provider/api_provider.dart';
 import 'package:get/get.dart';
@@ -18,10 +19,17 @@ class CarController extends GetxController {
   final carId = ''.obs;
 
   late final Future futureGetCar;
-  late final Future<List<Car>> futureGetCarById;
+  late final Future<Car> futureGetCarById;
 
   /// initialize loading
   final RxBool isLoading = false.obs;
+  final Rx<TextEditingController> reportController = TextEditingController().obs;
+
+  // is report button active
+  final RxBool isReportActive = false.obs;
+
+  // is report formkey
+  final GlobalKey<FormState> reportFormKey = GlobalKey<FormState>();
 
   // init car List
   late RxList<Car> carList = <Car>[].obs;
@@ -41,7 +49,30 @@ class CarController extends GetxController {
   void onClose() {
     cancelToken.cancel();
     carList.clear();
+    reportFormKey.currentState?.dispose();
+    reportController.value.dispose();
+
     super.onClose();
+  }
+
+  Future reportCar(String id, message) async {
+    try {
+      isLoading(true);
+      final data = {
+        "carId": id.toString(),
+        "description": message.toString(),
+      };
+      final res = await ApiProvider().dioConnect('/report/car', data);
+
+      if (res.statusCode == STATUS_OK) {
+        Get.snackbar('Success', 'Annonce reported');
+      }
+    } catch (e) {
+      printError(info: e.toString());
+      Get.snackbar('Error', e.toString());
+    }finally{
+      isLoading(false);
+    }
   }
 
   Future getAnnonceByLocation(double lat, double long, int range) async {

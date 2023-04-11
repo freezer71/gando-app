@@ -45,8 +45,27 @@ class ProfileScreen extends GetView<UserController> {
                 ? const LoadingDialog()
                 : controller.user.value.id == null
                     ? Center(
-                        child: Text("Aucune donnée",
-                            style: TextStyle(color: AppTheme.darkColor)),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text("Aucune donnée, veuillez vous connecter",
+                                style: TextStyle(color: AppTheme.darkColor)),
+                            const SizedBox(
+                              height: 20,
+                            ),
+                            // logout button
+                            ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                primary: AppTheme.redColor,
+                              ),
+                              onPressed: () async {
+                                await AuthService().logout();
+                              },
+                              child: const Text('Déconnexion'),
+                            ),
+                          ],
+                        ),
                       )
                     : ListView(
                         scrollDirection: Axis.vertical,

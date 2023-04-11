@@ -49,13 +49,13 @@ class AppPages {
       name: Routes.preLogin,
       page: () => PreLogin(),
       binding: InitBindings(),
-      middlewares: [IsFirstOpen(), RequireVisitor()],
+      middlewares: [RequireVisitor()],
       // binding: SplashScreenBinding(),
     ),
     GetPage(
       name: Routes.forgotPwd,
       page: () => ForgotPasswordScreen(),
-      middlewares: [IsFirstOpen(), RequireVisitor()],
+      middlewares: [RequireVisitor()],
     ),
     GetPage(
       name: Routes.resetPwd,
@@ -66,12 +66,13 @@ class AppPages {
     GetPage(
       name: Routes.newPwd,
       page: () => ChangePasswordScreen(),
-      middlewares: [IsFirstOpen(), RequireVisitor()],
+      middlewares: [RequireVisitor()],
       // binding: SplashScreenBinding(),
     ),
     GetPage(
       name: Routes.splashScreen,
       page: () => const SplashScreen(),
+      // binding: InitBindings(),
       // binding: SplashScreenBinding(),
     ),
     GetPage(
@@ -84,9 +85,7 @@ class AppPages {
     GetPage(
       name: Routes.welcome,
       page: () => OnboardingScreen(),
-      middlewares: [
-        // RequireVisitor()
-      ],
+      binding: InitBindings(),
       // middlewares: [
       //   IsFirstGuard(),
       //   // My middlewares here

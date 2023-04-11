@@ -31,7 +31,6 @@ class ApiProvider {
   Future<void> _getToken() async {
     if (box.hasData('token') && box.read('token') != null) {
       token = await box.read('token');
-      printInfo(info: 'TOKEN============> : $token');
     }
   }
 
