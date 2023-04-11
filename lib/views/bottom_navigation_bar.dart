@@ -2,6 +2,7 @@
 import 'dart:convert';
 
 import 'package:gando/config/textstyle.dart';
+import 'package:gando/controllers/chat/chat_controller.dart';
 import 'package:gando/controllers/home/home_controller.dart';
 import 'package:gando/controllers/home/tabs/tab_controller.dart';
 import 'package:gando/services/provider/api_provider.dart';
@@ -23,7 +24,7 @@ class BottomNavigationBarPage extends StatefulWidget {
 
 class _BottomNavigationBarPage extends State<BottomNavigationBarPage> {
   final tabController = Get.put(TabScreenController());
-  // final homeController = Get.put(HomeController());
+  final chatController = Get.put(ChatController());
   late ScrollController controller;
 
   @override
@@ -84,6 +85,9 @@ class _BottomNavigationBarPage extends State<BottomNavigationBarPage> {
 
   @override
   Widget build(BuildContext context) {
+    if (tabController.pageIndex.value == 2) {
+      chatController.getListMessage();
+    }
     return Scaffold(
       extendBody: true,
       extendBodyBehindAppBar: true,
