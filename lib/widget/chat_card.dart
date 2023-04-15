@@ -36,7 +36,7 @@ class ChatCard extends StatelessWidget {
                           fit: BoxFit.cover,
                           imageUrl: "${discussion.anotherUser?.first.photo}",
                           errorWidget: (context, url, error) =>
-                              Image.asset("$assetsImages/defaultImage.png"),
+                              Image.asset("${assetsImages}defaultImage.png"),
                         ),
                       ),
                     ),

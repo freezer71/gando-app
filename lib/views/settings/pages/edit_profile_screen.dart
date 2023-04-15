@@ -50,7 +50,7 @@ class EditProfileScreen extends GetView<EditProfilController> {
                         fit: BoxFit.cover,
                         imageUrl: "${controller.user.value.photo}",
                         errorWidget: (context, url, error) =>
-                            Image.asset("$assetsImages/defaultImage.png"),
+                            Image.asset("${assetsImages}defaultImage.png"),
                       ),
                     ),
                   ),
@@ -210,7 +210,7 @@ class EditProfileScreen extends GetView<EditProfilController> {
                       style: TextStyle(color: AppTheme.darkColor),
                       decoration: InputDecoration(
                         contentPadding: EdgeInsets.symmetric(
-                            horizontal: 10.0, vertical: 5.0),
+                            horizontal: 16.0, vertical: 10.0),
                         filled: true,
                         fillColor: AppTheme.light,
                         labelStyle:

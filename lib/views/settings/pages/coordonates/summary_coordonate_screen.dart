@@ -51,10 +51,10 @@ class SummaryCoordonateView extends GetView<UserController> {
                     header: "Lieu de naissance",
                     value: controller.user.value.birthplace),
                 DetailScreen(
-                    header: "Addresse",
+                    header: "Adresse",
                     value: controller.user.value.address?.address),
                 DetailScreen(
-                    header: "Complément d|addresse",
+                    header: "Complément d'adresse",
                     value: controller.user.value.address?.complement),
                 DetailScreen(
                     header: "Pays",
@@ -102,7 +102,7 @@ class SummaryCoordonateView extends GetView<UserController> {
                         style: Theme.of(context).textTheme.bodyText2!.copyWith(
                               fontWeight: FontWeight.w900,
                               fontSize: 16,
-                              color: AppTheme.backgroundColor,
+                              color: AppTheme.light,
                             ),
                       ),
                     ),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gando/config/textstyle.dart';
+import 'package:gando/controllers/settings_controller/account_setting_controller.dart';
 import 'package:gando/navigation.dart';
 import 'package:get/get.dart';
 
@@ -30,18 +31,24 @@ class SettingsScreen extends StatelessWidget {
         padding: const EdgeInsets.all(16),
         children: [
           _createListMenu('Parametres du Compte', Routes.settingAccount,
-              Icons.account_circle_outlined),
+              Icons.account_circle_outlined, 0),
           _createListMenu('Notifications', Routes.notification,
-              Icons.notifications_active_outlined),
+              Icons.notifications_active_outlined, 1),
         ],
       ),
     );
   }
 
-  Widget _createListMenu(String menuTitle, String route, IconData icon) {
+  Widget _createListMenu(
+      String menuTitle, String route, IconData icon, int index) {
     return GestureDetector(
       behavior: HitTestBehavior.translucent,
-      onTap: () => Get.toNamed(route),
+      onTap: () {
+        if (index == 1) {
+          Get.put(AccountSettingController()).initListCheckBox();
+        }
+        Get.toNamed(route);
+      },
       child: Container(
         margin: const EdgeInsets.fromLTRB(0, 18, 0, 8),
         child: Row(

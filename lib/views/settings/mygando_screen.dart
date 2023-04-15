@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gando/config/textstyle.dart';
+import 'package:gando/controllers/user/information_controller.dart';
 import 'package:gando/controllers/user/user_controller.dart';
 import 'package:gando/models/ProfileSeller.dart';
 import 'package:gando/navigation.dart';
@@ -30,10 +31,10 @@ class MyGandoScreen extends StatelessWidget {
             height: Get.height / 12,
             color: AppTheme.darkColor,
           ),
-          _createListMenu('Centre d\'aide', HomeScreen(), Icons.help_outline),
-          _createListMenu('Nous contactez', HomeScreen(), Icons.phone),
+          _createListMenu('Centre d\'aide', Routes.help, Icons.help_outline, 0),
+          _createListMenu('Nous contactez', Routes.home, Icons.phone, 1),
           _createListMenu(
-              'Conditions d\'utilisation', HomeScreen(), Icons.inventory),
+              'Conditions d\'utilisation', Routes.cgu, Icons.inventory, 2),
         ],
       ),
     );
@@ -122,50 +123,53 @@ class MyGandoScreen extends StatelessWidget {
     );
   }
 
-  Widget _createListMenu(String menuTitle, page, IconData icon) {
-    return GestureDetector(
-      behavior: HitTestBehavior.translucent,
-      onTap: () {
-        Get.to(() => page);
-      },
-      child: Container(
-        margin: const EdgeInsets.fromLTRB(0, 18, 0, 8),
-        child: Center(
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              ElevatedButton(
-                  style: ButtonStyle(
-                    backgroundColor: MaterialStateProperty.resolveWith<Color>(
-                      (Set<MaterialState> states) =>
-                          states.contains(MaterialState.disabled)
-                              ? AppTheme.primaryColor
-                              : AppTheme.darkColor,
-                    ),
-                    overlayColor: MaterialStateProperty.all(Colors.transparent),
-                    shape: MaterialStateProperty.all(RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20.0),
-                    )),
+  Widget _createListMenu(
+      String menuTitle, String page, IconData icon, int index) {
+    return Container(
+      margin: const EdgeInsets.fromLTRB(0, 18, 0, 8),
+      child: Center(
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            ElevatedButton(
+                style: ButtonStyle(
+                  backgroundColor: MaterialStateProperty.resolveWith<Color>(
+                    (Set<MaterialState> states) =>
+                        states.contains(MaterialState.disabled)
+                            ? AppTheme.primaryColor
+                            : AppTheme.darkColor,
                   ),
-                  onPressed: () {},
-                  child: SizedBox(
-                    width: Get.width / 1.5,
-                    height: 50,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        Icon(icon,
-                            color: AppTheme.backgroundColor.withOpacity(0.9)),
-                        Text(menuTitle,
-                            style: TextStyle(
-                                fontSize: 15, color: AppTheme.backgroundColor)),
-                      ],
-                    ),
-                  ))
+                  overlayColor: MaterialStateProperty.all(Colors.transparent),
+                  shape: MaterialStateProperty.all(RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20.0),
+                  )),
+                ),
+                onPressed: () {
+                  if (index == 0) {
+                    Get.put(InformationController())
+                        .initControllerWebViewHelp();
+                  } else if (index == 1) {
+                    return;
+                  }
+                  Get.toNamed(page);
+                },
+                child: SizedBox(
+                  width: Get.width / 1.5,
+                  height: 50,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      Icon(icon,
+                          color: AppTheme.backgroundColor.withOpacity(0.9)),
+                      Text(menuTitle,
+                          style: TextStyle(
+                              fontSize: 15, color: AppTheme.backgroundColor)),
+                    ],
+                  ),
+                ))
 
-              // Icon(Icons.chevron_right, size: 20, color: AppTheme.secondaryColor),
-            ],
-          ),
+            // Icon(Icons.chevron_right, size: 20, color: AppTheme.secondaryColor),
+          ],
         ),
       ),
     );

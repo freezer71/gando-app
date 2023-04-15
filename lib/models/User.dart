@@ -1,5 +1,4 @@
-import 'dart:convert';
-
+import 'package:gando/models/notification/notification_type.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 import 'Address.dart';
@@ -33,7 +32,9 @@ class User {
   final bool? askingForValidation;
   final List<dynamic>? favouriteCar;
   final int? money;
-
+  final String? isBankInfoComplete;
+  final String? stripeVerificationLink;
+  final NotificationType? notification;
   User({
     this.id,
     this.firstname,
@@ -59,6 +60,9 @@ class User {
     this.askingForValidation,
     this.favouriteCar,
     this.money,
+    this.isBankInfoComplete,
+    this.stripeVerificationLink,
+    this.notification,
   });
 
   factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);

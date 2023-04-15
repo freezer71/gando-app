@@ -204,7 +204,67 @@ class ProfileScreen extends GetView<UserController> {
                                 ),
                                 _createListMenu('Mes coordonnées',
                                     Routes.summaryCoordonate),
-                                _createListMenu('Porte-monnaie', Routes.wallet),
+                                //  _createListMenu('Porte-monnaie', Routes.wallet),
+                                Container(
+                                  margin:
+                                      const EdgeInsets.fromLTRB(0, 18, 0, 8),
+                                  child: Center(
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        ElevatedButton(
+                                            style: ButtonStyle(
+                                              backgroundColor:
+                                                  MaterialStateProperty
+                                                      .resolveWith<Color>(
+                                                (Set<MaterialState> states) =>
+                                                    states.contains(
+                                                            MaterialState
+                                                                .disabled)
+                                                        ? AppTheme.primaryColor
+                                                        : AppTheme.light,
+                                              ),
+                                              overlayColor:
+                                                  MaterialStateProperty.all(
+                                                      Colors.transparent),
+                                              shape: MaterialStateProperty.all(
+                                                  RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(20.0),
+                                              )),
+                                            ),
+                                            onPressed: () async {
+                                              await controller.getUser();
+                                              // Get.toNamed(Routes.wallet);
+                                            },
+                                            child: SizedBox(
+                                              width: Get.width / 1.5,
+                                              height: 50,
+                                              child: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                children: [
+                                                  Text("Porte-monnaie",
+                                                      style: TextStyle(
+                                                          fontSize: 15,
+                                                          color: AppTheme
+                                                              .darkColor)),
+                                                  Icon(
+                                                      Icons
+                                                          .arrow_forward_ios_outlined,
+                                                      color: AppTheme.darkColor
+                                                          .withOpacity(0.9)),
+                                                ],
+                                              ),
+                                            ))
+
+                                        // Icon(Icons.chevron_right, size: 20, color: AppTheme.secondaryColor),
+                                      ],
+                                    ),
+                                  ),
+                                ),
                                 /*_createListMenu('Mes réseaux sociaux',
                                     SocialNetworkScreen()),*/
                                 const SizedBox(

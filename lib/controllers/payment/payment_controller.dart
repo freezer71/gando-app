@@ -8,6 +8,9 @@ class PaymentController extends GetxController {
   Rx<CardFormEditController> cardFormController = CardFormEditController().obs;
   Rx<bool> isLoading = false.obs;
   bool isCardComplete = false;
+  Rx<TextEditingController> emailController = TextEditingController().obs;
+  Rx<TextEditingController> nomTitulaireController =
+      TextEditingController().obs;
 
   void updateCard({CardFieldInputDetails? cardFieldInputDetails}) {
     isCardComplete = cardFieldInputDetails!.complete;
@@ -28,7 +31,8 @@ class PaymentController extends GetxController {
     try {
       // Gather customer billing information (ex. email)
       final billingDetails = BillingDetails(
-        email: 'hobisoa@gmail.com',
+        email: emailController.value.text,
+        name: nomTitulaireController.value.text,
       );
 
       //  Confirm setup intent

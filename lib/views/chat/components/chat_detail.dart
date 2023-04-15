@@ -40,7 +40,7 @@ class ChatDetail extends GetView<ChatController> {
                   fit: BoxFit.cover,
                   imageUrl: "${user.photo}",
                   errorWidget: (context, url, error) =>
-                      Image.asset("$assetsImages/defaultImage.png"),
+                      Image.asset("${assetsImages}defaultImage.png"),
                 ),
               ),
             ),

@@ -158,6 +158,22 @@ class ApiProvider {
     }
   }
 
+  Future<User> editNotification({required Map<String, dynamic> data}) async {
+    http.Response response =
+        await putData1(apiUrl: RemoteEndpoint.editNotification, data: data);
+    if (response.statusCode == 200) {
+      final res = await getData('/user');
+      final body = jsonDecode(res.body)['data'];
+      if (res.statusCode == 200) {
+        return User.fromJson(body);
+      } else {
+        return User();
+      }
+    } else {
+      throw "${_parseBody(response.body)["message"]}";
+    }
+  }
+
   Future<List<Discussion>> getListMessage({required String idUser}) async {
     http.Response response =
         await getData(RemoteEndpoint.getListMessage(id: idUser))
@@ -205,10 +221,7 @@ class ApiProvider {
     http.Response response =
         await postData(apiUrl: RemoteEndpoint.onBoardingAccount, data: data);
     if (response.statusCode == 200) {
-      print("code 200");
-      var test = _parseBody(response.body);
-      print("test");
-      return "true";
+      return "${_parseBody(response.body)["data"]["url"]}";
     } else {
       throw "${_parseBody(response.body)["message"]}";
     }

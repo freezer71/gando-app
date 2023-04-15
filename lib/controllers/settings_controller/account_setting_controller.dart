@@ -1,15 +1,15 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:gando/config/textstyle.dart';
+import 'package:gando/models/notification/notification_type.dart';
 import 'package:gando/navigation.dart';
+import 'package:gando/services/auth/auth_services.dart';
 import 'package:gando/services/repositories/user_repository.dart';
 import 'package:gando/config/constants.dart';
 import 'package:get/get.dart';
 import 'package:get_it/get_it.dart';
 import 'package:get_storage/get_storage.dart';
-
-import '../../services/provider/api_provider.dart';
+import 'package:gando/services/provider/api_provider.dart';
+import 'package:gando/models/User.dart' as client;
 
 class AccountSettingController extends GetxController {
   static AccountSettingController get to => Get.find();
@@ -48,6 +48,7 @@ class AccountSettingController extends GetxController {
   Rx<TextEditingController> socialLinkedin = TextEditingController().obs;
   final Rx<TextEditingController> pinController = TextEditingController().obs;
   final UserRepository repository = GetIt.instance.get<UserRepository>();
+  Rx<client.User> user = Get.find<AuthService>().user;
 
   List<String> titleNotificationList = [
     'Demande de locations',
@@ -57,13 +58,28 @@ class AccountSettingController extends GetxController {
     'Contrat de location',
     'Paiement',
   ];
+  RxList<bool> listCheckBoxApp = <bool>[].obs;
+  RxList<bool> listCheckBoxEmail = <bool>[].obs;
 
-  RxList<bool> listCheckBoxApp = [true, true, true, false, false, true].obs;
-  RxList<bool> listCheckBoxEmail = [true, true, false, false, false, true].obs;
-
-  @override
-  void onReady() {
-    super.onReady();
+  void initListCheckBox() {
+    NotificationType? notificationType = user.value.notification;
+    listCheckBoxApp.value = [
+      notificationType!.locationAsk!.app!,
+      notificationType.rentConfirmation!.app!,
+      notificationType.message!.app!,
+      notificationType.rentAbort!.app!,
+      notificationType.contract!.app!,
+      notificationType.pay!.app!,
+    ];
+    listCheckBoxEmail.value = [
+      notificationType.locationAsk!.mail!,
+      notificationType.rentConfirmation!.mail!,
+      notificationType.message!.mail!,
+      notificationType.rentAbort!.mail!,
+      notificationType.contract!.mail!,
+      notificationType.pay!.mail!,
+    ];
+    print("tafiditra  ve 2222");
   }
 
   Future deleteAccount() async {
@@ -211,5 +227,63 @@ class AccountSettingController extends GetxController {
 
   void updateListCheckboxEmail({required bool value, required int index}) {
     listCheckBoxEmail[index] = value;
+  }
+
+  Future<void> editNotification() async {
+    isLoading(true);
+    try {
+      Map<String, dynamic> data = {
+        "notification": {
+          "locationAsk": {
+            "app": listCheckBoxApp[0],
+            "SMS": true,
+            "mail": listCheckBoxEmail[0]
+          },
+          "rentConfirmation": {
+            "app": listCheckBoxApp[1],
+            "SMS": true,
+            "mail": listCheckBoxEmail[1]
+          },
+          "message": {
+            "app": listCheckBoxApp[2],
+            "SMS": false,
+            "mail": listCheckBoxEmail[2]
+          },
+          "rentAbort": {
+            "app": listCheckBoxApp[3],
+            "SMS": true,
+            "mail": listCheckBoxEmail[3]
+          },
+          "contract": {
+            "app": listCheckBoxApp[4],
+            "SMS": true,
+            "mail": listCheckBoxEmail[4]
+          },
+          "pay": {
+            "app": listCheckBoxApp[5],
+            "SMS": false,
+            "mail": listCheckBoxEmail[5]
+          }
+        }
+      };
+      user.value = await repository.editNotification(data: data);
+      Get.snackbar('Mise à jour', "Enregistré avec succés",
+          snackPosition: SnackPosition.TOP,
+          backgroundColor: AppTheme.secondaryColor,
+          margin: const EdgeInsets.only(
+            top: 20,
+          ),
+          duration: const Duration(seconds: 3));
+      isLoading(false);
+    } catch (e) {
+      Get.snackbar('Error', e.toString(),
+          snackPosition: SnackPosition.TOP,
+          backgroundColor: AppTheme.redColor,
+          margin: const EdgeInsets.only(
+            top: 20,
+          ),
+          duration: const Duration(seconds: 3));
+      isLoading(false);
+    }
   }
 }

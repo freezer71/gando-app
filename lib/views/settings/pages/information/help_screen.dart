@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:gando/config/textstyle.dart';
 import 'package:gando/config/tools.dart';
-import 'package:gando/controllers/wallet/wallet_controller.dart';
+import 'package:gando/controllers/user/information_controller.dart';
 import 'package:gando/widget/appBarWidget.dart';
 import 'package:get/get.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
-class VerifyIdentityUserScreen extends GetView<WalletController> {
-  const VerifyIdentityUserScreen({Key? key}) : super(key: key);
+class HelpScreen extends GetView<InformationController> {
+  const HelpScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -18,21 +18,13 @@ class VerifyIdentityUserScreen extends GetView<WalletController> {
             Get.back();
             Get.back();
             Utils.closeLoadingDialog();
-            Get.snackbar(
-                'Vérification identité', "Status annulé par l'utilisateur.",
-                snackPosition: SnackPosition.TOP,
-                backgroundColor: AppTheme.redColor,
-                margin: const EdgeInsets.only(
-                  top: 20,
-                ),
-                duration: const Duration(seconds: 3));
           },
           icon: Icon(
             Icons.arrow_back_ios_outlined,
             color: AppTheme.darkColor,
           ),
         ),
-        title: 'Verification Identity',
+        title: "Centre d'aide",
       ),
       body: Obx(
         () {
@@ -51,7 +43,7 @@ class VerifyIdentityUserScreen extends GetView<WalletController> {
               ),
             );
           }
-          return WebViewWidget(controller: controller.controllerWebView);
+          return WebViewWidget(controller: controller.controllerWebViewHelp);
         },
       ),
     );

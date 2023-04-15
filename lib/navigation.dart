@@ -27,6 +27,8 @@ import 'package:gando/views/settings/pages/coordonates/my_contact_detail_screen.
 import 'package:gando/views/settings/pages/coordonates/summary_coordonate_screen.dart';
 import 'package:gando/views/settings/pages/coordonates/verify_phone_coordonate_screen.dart';
 import 'package:gando/views/settings/pages/edit_profile_screen.dart';
+import 'package:gando/views/settings/pages/information/help_screen.dart';
+import 'package:gando/views/settings/pages/information/pdf_viewer.dart';
 import 'package:gando/views/settings/pages/profile_screen.dart';
 import 'package:gando/views/settings/pages/verify_mail_screen.dart';
 import 'package:gando/views/settings/pages/wallet/verify_identity_user_screen.dart';
@@ -166,7 +168,7 @@ class AppPages {
     ),
     GetPage(
       name: Routes.paymentStripe,
-      page: () => const PaymentStripeScreen(),
+      page: () => PaymentStripeScreen(),
       binding: InitBindings(),
     ),
     GetPage(
@@ -178,6 +180,15 @@ class AppPages {
       name: Routes.verifyIdentity,
       page: () => const VerifyIdentityUserScreen(),
       binding: InitBindings(),
+    ),
+    GetPage(
+      name: Routes.help,
+      page: () => const HelpScreen(),
+      binding: InitBindings(),
+    ),
+    GetPage(
+      name: Routes.cgu,
+      page: () => PdfViewerScreen(),
     ),
   ];
 }
@@ -211,4 +222,6 @@ abstract class Routes {
   static const paymentStripe = "/payment-stripe";
   static const wallet = "/wallet";
   static const verifyIdentity = "/verify_identity_user";
+  static const help = "/help";
+  static const cgu = "/cgu";
 }
