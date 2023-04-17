@@ -1,6 +1,3 @@
-
-
-
 import 'package:flutter/material.dart';
 import 'package:gando/services/auth/auth_services.dart';
 import 'package:gando/services/onboarding_services.dart';
@@ -22,9 +19,7 @@ class AuthMiddlewares extends GetMiddleware {
     }
     return null;
   }
-
 }
-
 
 class IsFirstOpen extends GetMiddleware {
   @override
@@ -41,15 +36,12 @@ class IsFirstOpen extends GetMiddleware {
     }
     return null;
   }
-
 }
-
 
 //create class require visitor
 class RequireVisitor extends GetMiddleware {
   @override
   int? get priority => 6;
-
 
   @override
   RouteSettings? redirect(String? route) {
@@ -62,6 +54,4 @@ class RequireVisitor extends GetMiddleware {
     //if not, redirect to login page
     return null;
   }
-
 }
-

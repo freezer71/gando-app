@@ -104,7 +104,6 @@ class _HomeScreenState extends State<HomeScreen>
     tabController = TabController(length: 2, vsync: this);
   }
 
-
   @override
   void dispose() {
     tabController.dispose();
@@ -145,14 +144,11 @@ class _HomeScreenState extends State<HomeScreen>
                       ),
                       Text(
                         'Plan',
-                        style: Theme
-                            .of(context)
-                            .textTheme
-                            .bodyText2!
-                            .copyWith(
-                            fontWeight: FontWeight.w900,
-                            fontSize: 18,
-                            color: AppTheme.darkColor),
+                        style: Theme.of(context).textTheme.bodyText2!.copyWith(
+                              fontWeight: FontWeight.w900,
+                              fontSize: 18,
+                              color: AppTheme.darkColor,
+                            ),
                       ),
                     ],
                   ),
@@ -170,11 +166,7 @@ class _HomeScreenState extends State<HomeScreen>
                       ),
                       Text(
                         'Liste',
-                        style: Theme
-                            .of(context)
-                            .textTheme
-                            .bodyText2!
-                            .copyWith(
+                        style: Theme.of(context).textTheme.bodyText2!.copyWith(
                             fontWeight: FontWeight.w900,
                             fontSize: 18,
                             color: AppTheme.darkColor),
@@ -187,7 +179,10 @@ class _HomeScreenState extends State<HomeScreen>
           ),
         ),
         body: tabView(context),
-        bottomNavigationBar: Container(height: 50, color: AppTheme.light,),
+        bottomNavigationBar: Container(
+          height: 50,
+          color: AppTheme.light,
+        ),
       ),
     );
   }
@@ -229,8 +224,8 @@ class _HomeScreenState extends State<HomeScreen>
                             keepAlive: true,
                             enableScrollWheel: true,
                             scrollWheelVelocity: 0.003,
-                            onPositionChanged: (MapPosition position,
-                                bool hasGesture) {
+                            onPositionChanged:
+                                (MapPosition position, bool hasGesture) {
                               // Your logic here. `hasGesture` dictates whether the change
                               // was due to a user interaction or something else. `
 
@@ -247,9 +242,8 @@ class _HomeScreenState extends State<HomeScreen>
                                 'accessToken': TOKEN_MAP,
                                 'id': MAP_STYLE
                               },
-                              retinaMode: MediaQuery
-                                  .of(context)
-                                  .devicePixelRatio > 1.0,
+                              retinaMode:
+                                  MediaQuery.of(context).devicePixelRatio > 1.0,
                               // tileBounds: LatLngBounds(
                               //   LatLng(32.2934590056236, 24.328924534719548),
                               //   LatLng(21.792152188247265, 37.19854583903912),
@@ -265,12 +259,14 @@ class _HomeScreenState extends State<HomeScreen>
                         Positioned(
                           child: Container(
                               decoration: BoxDecoration(
-                                  color: AppTheme.light,
-                                  borderRadius: const BorderRadius.only(
-                                      bottomLeft: Radius.circular(20),
-                                      bottomRight: Radius.circular(20))
+                                color: AppTheme.light,
+                                borderRadius: const BorderRadius.only(
+                                  bottomLeft: Radius.circular(20),
+                                  bottomRight: Radius.circular(20),
+                                ),
                               ),
-                              height: Platform.isAndroid ? 160 : 180),),
+                              height: Platform.isAndroid ? 160 : 180),
+                        ),
                         buildAppBar(),
                       ],
                     );
@@ -293,8 +289,8 @@ class _HomeScreenState extends State<HomeScreen>
                             keepAlive: true,
                             enableScrollWheel: true,
                             scrollWheelVelocity: 0.003,
-                            onPositionChanged: (MapPosition position,
-                                bool hasGesture) {
+                            onPositionChanged:
+                                (MapPosition position, bool hasGesture) {
                               // Your logic here. `hasGesture` dictates whether the change
                               // was due to a user interaction or something else. `position` is
                               // the new position of the map.
@@ -312,9 +308,8 @@ class _HomeScreenState extends State<HomeScreen>
                                 'accessToken': TOKEN_MAP,
                                 'id': MAP_STYLE
                               },
-                              retinaMode: MediaQuery
-                                  .of(context)
-                                  .devicePixelRatio > 1.0,
+                              retinaMode:
+                                  MediaQuery.of(context).devicePixelRatio > 1.0,
                               // tileBounds: LatLngBounds(
                               //   LatLng(32.2934590056236, 24.328924534719548),
                               //   LatLng(21.792152188247265, 37.19854583903912),
@@ -335,8 +330,7 @@ class _HomeScreenState extends State<HomeScreen>
                             ),
                             MarkerLayer(
                                 rotate: true,
-                                markers: _buildMarkers(controller.carList)
-                            ),
+                                markers: _buildMarkers(controller.carList)),
                             MarkerLayer(
                               markers: [
                                 Marker(
@@ -346,7 +340,7 @@ class _HomeScreenState extends State<HomeScreen>
                                   width: 50,
                                   height: 50,
                                   builder: (context) =>
-                                  GlobalFunction.myLocationLottieFile,
+                                      GlobalFunction.myLocationLottieFile,
                                 ),
                               ],
                             ),
@@ -382,9 +376,9 @@ class _HomeScreenState extends State<HomeScreen>
                                   color: AppTheme.light,
                                   borderRadius: const BorderRadius.only(
                                       bottomLeft: Radius.circular(20),
-                                      bottomRight: Radius.circular(20))
-                              ),
-                              height: Platform.isAndroid ? 160 : 180),),
+                                      bottomRight: Radius.circular(20))),
+                              height: Platform.isAndroid ? 160 : 180),
+                        ),
                         buildAppBar(),
                       ],
                     );
@@ -410,14 +404,14 @@ class _HomeScreenState extends State<HomeScreen>
                     );
                   }),
                 ),
-                Positioned(child: Container(
-                    decoration: BoxDecoration(
-                        color: AppTheme.light,
-                        borderRadius: const BorderRadius.only(
-                            bottomLeft: Radius.circular(20),
-                            bottomRight: Radius.circular(20))
-                    ),
-                    height: Platform.isAndroid ? 160 : 180)),
+                Positioned(
+                    child: Container(
+                        decoration: BoxDecoration(
+                            color: AppTheme.light,
+                            borderRadius: const BorderRadius.only(
+                                bottomLeft: Radius.circular(20),
+                                bottomRight: Radius.circular(20))),
+                        height: Platform.isAndroid ? 160 : 180)),
                 buildAppBar(),
               ],
             )
@@ -427,131 +421,130 @@ class _HomeScreenState extends State<HomeScreen>
     );
   }
 
-  Widget buildAppBar() =>
-      DefaultTabController(
-          length: 2,
-          initialIndex: 0,
-          child: Positioned(
-              width: Get.width,
-              height: Get.height / 4.5,
-              child: Container(
-                padding: const EdgeInsets.only(top: 90, right: 0, left: 0),
-                decoration: const BoxDecoration(
-                  color: Colors.transparent,
-                  borderRadius: BorderRadius.only(
-                      bottomLeft: Radius.circular(20),
-                      bottomRight: Radius.circular(20)),
-                  // boxShadow: [
-                  //   BoxShadow(
-                  //       color: Colors.transparent,
-                  //       offset: Offset(0.0, 0.0),
-                  //       blurRadius: 10.0,
-                  //       spreadRadius: 5,
-                  //       blurStyle: BlurStyle.normal
-                  //   ),
-                  // ],
-                ),
-                child: SizedBox(
-                  height: Get.height / 6,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      const Expanded(child: const SizedBox()),
-                      SizedBox(
-                        width: Get.width - 90,
-                        child: Card(
-                          elevation: 6,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(30.0),
-                          ),
-                          child: TextButton(
-                              style: ButtonStyle(
-                                padding: MaterialStateProperty.all(
-                                    const EdgeInsets.only(left: 10)),
-                                backgroundColor:
-                                MaterialStateProperty.resolveWith<Color>(
-                                      (Set<MaterialState> states) =>
-                                  AppTheme.darkColor,
-                                ),
-                                overlayColor:
-                                MaterialStateProperty.all(Colors.black),
-                                shape: MaterialStateProperty.all(
-                                    RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(30.0),
-                                    )),
-                              ),
-                              onPressed: () {
-                                // Navigator.push(
-                                //     context,
-                                //     MaterialPageRoute(
-                                //         builder: (context) => SearchPage()));
-                              },
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  const Icon(Icons.location_on_outlined,
-                                      color: Colors.grey),
-                                  SizedBox(
-                                    width: Get.width / 2.3,
-                                    child: Text(
-                                      'Adresse, lieu',
-                                      maxLines: 1,
-                                      style: TextStyle(
-                                          color: Colors.grey[500],
-                                          fontSize: 14,
-                                          overflow: TextOverflow.ellipsis,
-                                          fontWeight: FontWeight.normal),
-
-                                    ),
-                                  ),
-                                  Expanded(child: const SizedBox()),
-                                  Container(
-                                      margin: EdgeInsets.zero,
-                                      padding: EdgeInsets.zero,
-                                      decoration: BoxDecoration(
-                                        color: AppTheme.redColor,
-                                        shape: BoxShape.circle,
-                                      ),
-                                      child: IconButton(
-                                          padding: EdgeInsets.zero,
-                                          onPressed: () {
-                                            Get.bottomSheet(
-                                                showFilterDateBottomSheet(
-                                                    context));
-                                          },
-                                          icon: Icon(Icons.calendar_month,
-                                              size: 25,
-                                              color: AppTheme.backgroundColor
-                                                  .withOpacity(0.9))))
-                                ],
-                              )),
-                        ),
+  Widget buildAppBar() => DefaultTabController(
+      length: 2,
+      initialIndex: 0,
+      child: Positioned(
+          width: Get.width,
+          height: Get.height / 4.5,
+          child: Container(
+            padding: const EdgeInsets.only(top: 90, right: 0, left: 0),
+            decoration: const BoxDecoration(
+              color: Colors.transparent,
+              borderRadius: BorderRadius.only(
+                  bottomLeft: Radius.circular(20),
+                  bottomRight: Radius.circular(20)),
+              // boxShadow: [
+              //   BoxShadow(
+              //       color: Colors.transparent,
+              //       offset: Offset(0.0, 0.0),
+              //       blurRadius: 10.0,
+              //       spreadRadius: 5,
+              //       blurStyle: BlurStyle.normal
+              //   ),
+              // ],
+            ),
+            child: SizedBox(
+              height: Get.height / 6,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  const Expanded(child: const SizedBox()),
+                  SizedBox(
+                    width: Get.width - 90,
+                    child: Card(
+                      elevation: 6,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(30.0),
                       ),
-                      const Expanded(child: const SizedBox(width: 10,)),
-                      IconButton(
-                        // icon: _globalWidget.customNotifIcon(8, AppTheme.secondaryColor.withOpacity(0.5)),
-                          icon: SvgPicture.asset(Assets.svgVector, width: 30,
-                            color: AppTheme.darkColor,),
+                      child: TextButton(
+                          style: ButtonStyle(
+                            padding: MaterialStateProperty.all(
+                                const EdgeInsets.only(left: 10)),
+                            backgroundColor:
+                                MaterialStateProperty.resolveWith<Color>(
+                              (Set<MaterialState> states) => AppTheme.darkColor,
+                            ),
+                            overlayColor:
+                                MaterialStateProperty.all(Colors.black),
+                            shape: MaterialStateProperty.all(
+                                RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(30.0),
+                            )),
+                          ),
                           onPressed: () {
-                            Get.bottomSheet(
-                                showFilterBottomSheet(context));
-                            // Navigator.push(context, MaterialPageRoute(builder: (context) => NotificationPage()));
-                          }),
-                      const Expanded(child: const SizedBox()),
-                    ],
+                            // Navigator.push(
+                            //     context,
+                            //     MaterialPageRoute(
+                            //         builder: (context) => SearchPage()));
+                          },
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              const Icon(Icons.location_on_outlined,
+                                  color: Colors.grey),
+                              SizedBox(
+                                width: Get.width / 2.3,
+                                child: Text(
+                                  'Adresse, lieu',
+                                  maxLines: 1,
+                                  style: TextStyle(
+                                      color: Colors.grey[500],
+                                      fontSize: 14,
+                                      overflow: TextOverflow.ellipsis,
+                                      fontWeight: FontWeight.normal),
+                                ),
+                              ),
+                              Expanded(child: const SizedBox()),
+                              Container(
+                                  margin: EdgeInsets.zero,
+                                  padding: EdgeInsets.zero,
+                                  decoration: BoxDecoration(
+                                    color: AppTheme.redColor,
+                                    shape: BoxShape.circle,
+                                  ),
+                                  child: IconButton(
+                                      padding: EdgeInsets.zero,
+                                      onPressed: () {
+                                        Get.bottomSheet(
+                                            showFilterDateBottomSheet(context));
+                                      },
+                                      icon: Icon(Icons.calendar_month,
+                                          size: 25,
+                                          color: AppTheme.backgroundColor
+                                              .withOpacity(0.9))))
+                            ],
+                          )),
+                    ),
                   ),
-                ),
-              )));
+                  const Expanded(
+                      child: const SizedBox(
+                    width: 10,
+                  )),
+                  IconButton(
+                      // icon: _globalWidget.customNotifIcon(8, AppTheme.secondaryColor.withOpacity(0.5)),
+                      icon: SvgPicture.asset(
+                        Assets.svgVector,
+                        width: 30,
+                        color: AppTheme.darkColor,
+                      ),
+                      onPressed: () {
+                        Get.bottomSheet(showFilterBottomSheet(context));
+                        // Navigator.push(context, MaterialPageRoute(builder: (context) => NotificationPage()));
+                      }),
+                  const Expanded(child: const SizedBox()),
+                ],
+              ),
+            ),
+          )));
 
   Widget buildSearchBox(context) {
     return Positioned(
       //search input bar
       top: 120,
       child: InkWell(
-        onTap: () async {
-
-        },
+        onTap: () async {},
         child: Padding(
           padding: const EdgeInsets.all(15),
           child: Card(
@@ -563,10 +556,7 @@ class _HomeScreenState extends State<HomeScreen>
                   color: AppTheme.secondaryColor,
                   borderRadius: BorderRadius.circular(16),
                 ),
-                width: MediaQuery
-                    .of(context)
-                    .size
-                    .width - 40,
+                width: MediaQuery.of(context).size.width - 40,
                 child: ListTile(
                   title: Text(
                     location,
