@@ -1,5 +1,7 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:gando/config/textstyle.dart';
+import 'package:gando/constants.dart';
 import 'package:gando/models/User.dart';
 import 'package:gando/models/chat/discussion.dart';
 import 'package:get/get.dart';
@@ -14,25 +16,28 @@ class ChatCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      onTap: onTap,
-      child: Container(
-        height: Get.height / 10,
-        width: Get.width,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(30),
-        ),
+    return Container(
+      height: Get.height / 10,
+      width: Get.width,
+      child: InkWell(
+        onTap: onTap,
         child: Column(
           children: [
             Row(
               children: [
                 Row(
                   children: [
-                    Container(
+                    SizedBox(
                       height: 50,
                       width: 50,
-                      child: CircleAvatar(
-                        backgroundImage: AssetImage('assets/images/av.png'),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(40),
+                        child: CachedNetworkImage(
+                          fit: BoxFit.cover,
+                          imageUrl: "${discussion.anotherUser?.first.photo}",
+                          errorWidget: (context, url, error) =>
+                              Image.asset("${assetsImages}defaultImage.png"),
+                        ),
                       ),
                     ),
                     SizedBox(
@@ -84,12 +89,14 @@ class ChatCard extends StatelessWidget {
                     ),
                   ],
                 ),
-                Container(
-                  width: 14,
-                  height: 14,
-                  decoration: BoxDecoration(
-                      color: AppTheme.redColor, shape: BoxShape.circle),
-                ),
+                if (discussion.lastMessage?.first.seen == false) ...[
+                  Container(
+                    width: 14,
+                    height: 14,
+                    decoration: BoxDecoration(
+                        color: AppTheme.redColor, shape: BoxShape.circle),
+                  ),
+                ]
               ],
             ),
           ],

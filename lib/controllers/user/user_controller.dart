@@ -5,11 +5,14 @@ import 'dart:io';
 import 'package:country_code_picker/country_code_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:gando/config/textstyle.dart';
+import 'package:gando/config/tools.dart';
 import 'package:gando/constants.dart';
+import 'package:gando/controllers/wallet/wallet_controller.dart';
 import 'package:gando/navigation.dart';
 import 'package:gando/services/auth/auth_services.dart';
 import 'package:gando/services/phone/actions.dart';
 import 'package:gando/services/phone/otp_service.dart';
+import 'package:gando/services/provider/api_provider.dart';
 import 'package:gando/services/repositories/user_repository.dart';
 import 'package:get/get.dart';
 import 'package:get_it/get_it.dart';
@@ -17,6 +20,7 @@ import 'package:get_it/get_it.dart';
 import '../../models/Car.dart';
 import '../../models/User.dart' as client;
 import '../../services/auth/get_user_car.dart';
+import '../../views/products/booking/payment/stripe_checkout.dart';
 
 class UserController extends GetxController {
   late final Future getCarList;
@@ -119,8 +123,10 @@ class UserController extends GetxController {
       isLoading(true);
       userCarList.value = await CarService().fetchUserCarList();
       if (userCarList.isNotEmpty) {
+        print("atoooo1");
         return userCarList;
       } else {
+        print("atoooo2");
         return <Car>[];
       }
     } catch (e) {
@@ -255,6 +261,7 @@ class UserController extends GetxController {
     } catch (e) {
       Get.snackbar('Error', e.toString(),
           snackPosition: SnackPosition.TOP,
+          backgroundColor: AppTheme.redColor,
           margin: const EdgeInsets.only(
             top: 20,
           ),
@@ -271,5 +278,67 @@ class UserController extends GetxController {
     birthDay = birthDayChanged;
     birthMonth = birthMonthChanged;
     birthYear = birthYearChanged;
+  }
+
+  Future<void> getAccountLinkUrl() async {
+    Map<String, dynamic> data = {
+      "userId": user.value.id,
+    };
+    Utils.showLoadingDialog();
+    Get.snackbar(
+        'Vérification identité', "En attente de l'url de vérification.",
+        snackPosition: SnackPosition.TOP,
+        backgroundColor: AppTheme.secondaryColor,
+        margin: const EdgeInsets.only(
+          top: 20,
+        ),
+        duration: const Duration(seconds: 3));
+    try {
+      String url = await repository.onBoardingAccount(data: data);
+      Utils.closeLoadingDialog();
+      Get.put(WalletController()).url = url;
+      Get.put(WalletController()).initControllerWebView();
+      Get.toNamed(Routes.verifyIdentity);
+      Utils.closeLoadingDialog();
+    } catch (e) {
+      Get.snackbar('Erreur', e.toString(),
+          snackPosition: SnackPosition.TOP,
+          backgroundColor: AppTheme.secondaryColor,
+          margin: const EdgeInsets.only(
+            top: 20,
+          ),
+          duration: const Duration(seconds: 3));
+      Utils.closeLoadingDialog();
+    }
+  }
+
+  Future<void> getUser() async {
+    Utils.showLoadingDialog();
+    try {
+      final res = await ApiProvider().getData('/user');
+      final body = jsonDecode(res.body)['data'];
+      printInfo(info: "USER DAZTA ========>  : ${body}");
+
+      if (res.statusCode == 200) {
+        user.value = client.User.fromJson(body);
+        if (user.value.stripeVerificationLink == null ||
+            user.value.isBankInfoComplete == "inactive") {
+          await getAccountLinkUrl();
+          return;
+        }
+        Utils.closeLoadingDialog();
+        Get.toNamed(Routes.wallet);
+      }
+    } catch (e) {
+      Get.snackbar('Error', e.toString(),
+          snackPosition: SnackPosition.BOTTOM,
+          margin: const EdgeInsets.only(
+            bottom: 20,
+          ),
+          duration: const Duration(seconds: 10));
+      Utils.closeLoadingDialog();
+    } finally {
+      Utils.closeLoadingDialog();
+    }
   }
 }

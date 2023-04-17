@@ -64,7 +64,7 @@ class SubmitWithLoadingButton extends StatelessWidget {
                     style: Theme.of(context).textTheme.bodyText2!.copyWith(
                           fontWeight: FontWeight.w900,
                           fontSize: fontSize ?? 16,
-                          color: AppTheme.backgroundColor,
+                          color: AppTheme.light,
                         ),
                   )
                 : const CircularProgressIndicator.adaptive()),

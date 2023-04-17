@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/foundation/diagnostics.dart';
 
 import '../config/textstyle.dart';
 
-
 class CustomAppBar extends StatefulWidget implements PreferredSizeWidget {
-  CustomAppBar({Key? key,
+  CustomAppBar({
+    Key? key,
     this.context,
     required this.title,
     this.leading,
     this.action,
-  }) : preferredSize = Size.fromHeight(kToolbarHeight), super(key: key);
+  })  : preferredSize = Size.fromHeight(kToolbarHeight),
+        super(key: key);
 
   final BuildContext? context;
   String? title = '';
@@ -24,8 +24,7 @@ class CustomAppBar extends StatefulWidget implements PreferredSizeWidget {
   _CustomAppBarState createState() => _CustomAppBarState();
 }
 
-class _CustomAppBarState extends State<CustomAppBar>{
-
+class _CustomAppBarState extends State<CustomAppBar> {
   @override
   Widget build(BuildContext context) {
     return AppBar(
@@ -41,8 +40,7 @@ class _CustomAppBarState extends State<CustomAppBar>{
             fontWeight: FontWeight.w900,
             fontSize: 18,
             overflow: TextOverflow.ellipsis,
-            color: AppTheme.darkColor
-        ),
+            color: AppTheme.darkColor),
       ),
     );
   }

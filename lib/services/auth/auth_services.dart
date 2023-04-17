@@ -52,6 +52,7 @@ class AuthService extends GetxService {
         isLoggedIn(true);
         printInfo(info: 'User is authenticated '.toLowerCase());
         await getUser();
+        await box.write('userId', user.value.id);
         printInfo(info: 'User.id ${user.value.id} '.toLowerCase());
       });
     } catch (e) {
@@ -89,6 +90,7 @@ class AuthService extends GetxService {
   Future<void> logout() async {
     await box.remove('token');
     await box.remove('authenticated');
+    await box.remove('userId');
     await handleSignOut();
     isLoggedIn(false);
     Get.offAllNamed(Routes.preLogin);

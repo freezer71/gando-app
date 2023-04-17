@@ -4,7 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:gando/config/constants.dart';
 import 'package:gando/config/textstyle.dart';
+import 'package:gando/navigation.dart';
 import 'package:gando/views/home/home.dart';
+import 'package:gando/views/products/booking/payment/payment_stripe_screen.dart';
 import 'package:get/get.dart';
 import 'package:text_form_field_wrapper/text_form_field_wrapper.dart';
 
@@ -54,9 +56,15 @@ class _BookingScreenState extends State<BookingScreen> {
     return Scaffold(
       backgroundColor: AppTheme.backgroundColor.withOpacity(0.9),
       appBar: CustomAppBar(
-        leading: IconButton(onPressed: (){
-          Get.back();
-        }, icon: Icon(Icons.arrow_back_ios_outlined, color: AppTheme.darkColor,),),
+        leading: IconButton(
+          onPressed: () {
+            Get.back();
+          },
+          icon: Icon(
+            Icons.arrow_back_ios_outlined,
+            color: AppTheme.darkColor,
+          ),
+        ),
         title: 'Réserver le véhicule',
       ),
       body: Stack(
@@ -163,76 +171,83 @@ class _BookingScreenState extends State<BookingScreen> {
       ),
     );
   }
-  
+
   Widget _buildBottomSheet(BuildContext context, Car car) {
     bookingButton() => Container(
-      height: 58,
-      margin: EdgeInsets.symmetric(vertical: 10),
-      width: Get.width / 1.2,
-      decoration: BoxDecoration(
-        borderRadius: const BorderRadius.all(Radius.circular(29)),
-        color: AppTheme.primaryColor,
-        boxShadow: [
-          BoxShadow(
-            offset: const Offset(4, 8),
-            blurRadius: 20,
-            color: const Color(0xFF101010).withOpacity(0.25),
+          height: 58,
+          margin: EdgeInsets.symmetric(vertical: 10),
+          width: Get.width / 1.2,
+          decoration: BoxDecoration(
+            borderRadius: const BorderRadius.all(Radius.circular(29)),
+            color: AppTheme.primaryColor,
+            boxShadow: [
+              BoxShadow(
+                offset: const Offset(4, 8),
+                blurRadius: 20,
+                color: const Color(0xFF101010).withOpacity(0.25),
+              ),
+            ],
           ),
-        ],
-      ),
-      child: Material(
-        color: Colors.transparent,
-        child: InkWell(
-          borderRadius: const BorderRadius.all(Radius.circular(29)),
-          // splashColor: const Color(0xFFEEEEEE),
-          onTap: () {
-            //open bottom sheet
-            Get.bottomSheet(_buildPaymentBottomSheet(context, car));
-          },
-          child: Center(
-            child: Text(
-              'Réserver'.toUpperCase(),
-              style: const TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 18,
-                color: Colors.white,
+          child: Material(
+            color: Colors.transparent,
+            child: InkWell(
+              borderRadius: const BorderRadius.all(Radius.circular(29)),
+              // splashColor: const Color(0xFFEEEEEE),
+              onTap: () {
+                //open bottom sheet
+                Get.bottomSheet(_buildPaymentBottomSheet(context, car));
+              },
+              child: Center(
+                child: Text(
+                  'Réserver'.toUpperCase(),
+                  style: const TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 18,
+                    color: Colors.white,
+                  ),
+                ),
               ),
             ),
           ),
-        ),
-      ),
-    );
+        );
 
     return Container(
       width: Get.width,
       height: 350,
       padding: EdgeInsets.symmetric(vertical: 20, horizontal: 20),
       decoration: BoxDecoration(
-        color:  AppTheme.backgroundColor,
-        borderRadius: BorderRadius.only(topLeft: Radius.circular(16), topRight: Radius.circular(16)),
+        color: AppTheme.backgroundColor,
+        borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(16), topRight: Radius.circular(16)),
       ),
       child: Stack(
         children: [
           Container(
             child: Column(
               children: [
-                Text("${car.brand} ${car.model}", style: Theme.of(context).textTheme.bodyText2!.copyWith(
-                  fontWeight: FontWeight.w900,
-                  fontSize: 18,
-                  color: AppTheme.darkColor,
-                  overflow: TextOverflow.ellipsis,
-                )),
-                Divider(color: AppTheme.darkColor.withOpacity(0.3),),
+                Text("${car.brand} ${car.model}",
+                    style: Theme.of(context).textTheme.bodyText2!.copyWith(
+                          fontWeight: FontWeight.w900,
+                          fontSize: 18,
+                          color: AppTheme.darkColor,
+                          overflow: TextOverflow.ellipsis,
+                        )),
+                Divider(
+                  color: AppTheme.darkColor.withOpacity(0.3),
+                ),
                 Container(
                   padding: EdgeInsets.all(22),
-                  child: Text("11 adile maret Sainte Anne, 97180", style: Theme.of(context).textTheme.bodyText2!.copyWith(
-                    fontWeight: FontWeight.w400,
-                    fontSize: 16,
-                    color: AppTheme.darkColor,
-                    overflow: TextOverflow.ellipsis,
-                  )),
+                  child: Text("11 adile maret Sainte Anne, 97180",
+                      style: Theme.of(context).textTheme.bodyText2!.copyWith(
+                            fontWeight: FontWeight.w400,
+                            fontSize: 16,
+                            color: AppTheme.darkColor,
+                            overflow: TextOverflow.ellipsis,
+                          )),
                 ),
-                Divider( color: AppTheme.darkColor.withOpacity(0.3),),
+                Divider(
+                  color: AppTheme.darkColor.withOpacity(0.3),
+                ),
                 Container(
                   width: Get.width / 1.4,
                   child: Row(
@@ -241,49 +256,68 @@ class _BookingScreenState extends State<BookingScreen> {
                     children: [
                       Column(
                         children: [
-                          Text("du 11/09/22", style: Theme.of(context).textTheme.bodyText2!.copyWith(
-                            fontWeight: FontWeight.w900,
-                            fontSize: 18,
-                            color: AppTheme.darkColor,
-                            overflow: TextOverflow.ellipsis,
-                          )),
-                          Text("à 14h30", style: Theme.of(context).textTheme.bodyText2!.copyWith(
-                            fontWeight: FontWeight.w400,
-                            fontSize: 12,
-                            color: AppTheme.darkColor,
-                            overflow: TextOverflow.ellipsis,
-                          )),
+                          Text("du 11/09/22",
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .bodyText2!
+                                  .copyWith(
+                                    fontWeight: FontWeight.w900,
+                                    fontSize: 18,
+                                    color: AppTheme.darkColor,
+                                    overflow: TextOverflow.ellipsis,
+                                  )),
+                          Text("à 14h30",
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .bodyText2!
+                                  .copyWith(
+                                    fontWeight: FontWeight.w400,
+                                    fontSize: 12,
+                                    color: AppTheme.darkColor,
+                                    overflow: TextOverflow.ellipsis,
+                                  )),
                         ],
                       ),
                       Column(
                         children: [
-                          Text("du 02/09/22", style: Theme.of(context).textTheme.bodyText2!.copyWith(
-                            fontWeight: FontWeight.w900,
-                            fontSize: 18,
-                            color: AppTheme.darkColor,
-                            overflow: TextOverflow.ellipsis,
-                          )),
-                          Text("à 14h30", style: Theme.of(context).textTheme.bodyText2!.copyWith(
-                            fontWeight: FontWeight.w400,
-                            fontSize: 12,
-                            color: AppTheme.darkColor,
-                            overflow: TextOverflow.ellipsis,
-                          )),
+                          Text("du 02/09/22",
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .bodyText2!
+                                  .copyWith(
+                                    fontWeight: FontWeight.w900,
+                                    fontSize: 18,
+                                    color: AppTheme.darkColor,
+                                    overflow: TextOverflow.ellipsis,
+                                  )),
+                          Text("à 14h30",
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .bodyText2!
+                                  .copyWith(
+                                    fontWeight: FontWeight.w400,
+                                    fontSize: 12,
+                                    color: AppTheme.darkColor,
+                                    overflow: TextOverflow.ellipsis,
+                                  )),
                         ],
                       ),
                     ],
                   ),
                 ),
-                Divider( color: AppTheme.darkColor.withOpacity(0.3),),
+                Divider(
+                  color: AppTheme.darkColor.withOpacity(0.3),
+                ),
                 bookingButton(),
                 Container(
                   padding: EdgeInsets.all(10),
-                  child: Text("Ajouter un code promotionnel", style: Theme.of(context).textTheme.bodyText2!.copyWith(
-                    fontWeight: FontWeight.w600,
-                    fontSize: 16,
-                    color: AppTheme.primaryColor,
-                    overflow: TextOverflow.ellipsis,
-                  )),
+                  child: Text("Ajouter un code promotionnel",
+                      style: Theme.of(context).textTheme.bodyText2!.copyWith(
+                            fontWeight: FontWeight.w600,
+                            fontSize: 16,
+                            color: AppTheme.primaryColor,
+                            overflow: TextOverflow.ellipsis,
+                          )),
                 ),
               ],
             ),
@@ -291,58 +325,67 @@ class _BookingScreenState extends State<BookingScreen> {
           Positioned(
               top: -15,
               right: -15,
-              child: IconButton(onPressed: (){
-            Get.back();
-          }, icon: Icon(Icons.close, color: AppTheme.darkColor,),))
+              child: IconButton(
+                onPressed: () {
+                  Get.back();
+                },
+                icon: Icon(
+                  Icons.close,
+                  color: AppTheme.darkColor,
+                ),
+              ))
         ],
       ),
     );
-  } 
+  }
+
   Widget _buildPaymentBottomSheet(BuildContext context, Car car) {
     bookingButton() => Container(
-      height: 58,
-      margin: EdgeInsets.symmetric(vertical: 10),
-      width: Get.width / 1.2,
-      decoration: BoxDecoration(
-        borderRadius: const BorderRadius.all(Radius.circular(29)),
-        color: AppTheme.darkColor,
-        boxShadow: [
-          BoxShadow(
-            offset: const Offset(4, 8),
-            blurRadius: 20,
-            color: const Color(0xFF101010).withOpacity(0.25),
+          height: 58,
+          margin: EdgeInsets.symmetric(vertical: 10),
+          width: Get.width / 1.2,
+          decoration: BoxDecoration(
+            borderRadius: const BorderRadius.all(Radius.circular(29)),
+            color: AppTheme.darkColor,
+            boxShadow: [
+              BoxShadow(
+                offset: const Offset(4, 8),
+                blurRadius: 20,
+                color: const Color(0xFF101010).withOpacity(0.25),
+              ),
+            ],
           ),
-        ],
-      ),
-      child: Material(
-        color: Colors.transparent,
-        child: InkWell(
-          borderRadius: const BorderRadius.all(Radius.circular(29)),
-          // splashColor: const Color(0xFFEEEEEE),
-          onTap: () {
-            //open bottom sheet
-            Get.bottomSheet(_buildOtherPaymentBottomSheet(context, car));
-          },
-          child: Center(
-            child: Text(
-              'Paiement'.toUpperCase(),
-              style: const TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 18,
-                color: Colors.white,
+          child: Material(
+            color: Colors.transparent,
+            child: InkWell(
+              borderRadius: const BorderRadius.all(Radius.circular(29)),
+              // splashColor: const Color(0xFFEEEEEE),
+              onTap: () {
+                //open bottom sheet
+                //  Get.bottomSheet(_buildOtherPaymentBottomSheet(context, car));
+                Get.toNamed(Routes.paymentStripe);
+              },
+              child: Center(
+                child: Text(
+                  'Paiement'.toUpperCase(),
+                  style: const TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 18,
+                    color: Colors.white,
+                  ),
+                ),
               ),
             ),
           ),
-        ),
-      ),
-    );
+        );
     return Container(
       width: Get.width,
       height: 450,
       padding: EdgeInsets.symmetric(vertical: 20, horizontal: 20),
       decoration: BoxDecoration(
-        color:  AppTheme.backgroundColor,
-        borderRadius: BorderRadius.only(topLeft: Radius.circular(16), topRight: Radius.circular(16)),
+        color: AppTheme.backgroundColor,
+        borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(16), topRight: Radius.circular(16)),
       ),
       child: Stack(
         fit: StackFit.expand,
@@ -350,19 +393,23 @@ class _BookingScreenState extends State<BookingScreen> {
           Container(
             child: Column(
               children: [
-                Text("${car.brand} ${car.model}", style: Theme.of(context).textTheme.bodyText2!.copyWith(
-                  fontWeight: FontWeight.w900,
-                  fontSize: 18,
-                  color: AppTheme.darkColor,
-                  overflow: TextOverflow.ellipsis,
-                )),
-                Text("Marco DEGARDIO", style: Theme.of(context).textTheme.bodyText2!.copyWith(
-                  fontWeight: FontWeight.w400,
-                  fontSize: 12,
-                  color: AppTheme.darkColor,
-                  overflow: TextOverflow.ellipsis,
-                )),
-                Divider(color: AppTheme.darkColor.withOpacity(0.3),),
+                Text("${car.brand} ${car.model}",
+                    style: Theme.of(context).textTheme.bodyText2!.copyWith(
+                          fontWeight: FontWeight.w900,
+                          fontSize: 18,
+                          color: AppTheme.darkColor,
+                          overflow: TextOverflow.ellipsis,
+                        )),
+                Text("Marco DEGARDIO",
+                    style: Theme.of(context).textTheme.bodyText2!.copyWith(
+                          fontWeight: FontWeight.w400,
+                          fontSize: 12,
+                          color: AppTheme.darkColor,
+                          overflow: TextOverflow.ellipsis,
+                        )),
+                Divider(
+                  color: AppTheme.darkColor.withOpacity(0.3),
+                ),
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 4.0),
                   child: Row(
@@ -370,23 +417,27 @@ class _BookingScreenState extends State<BookingScreen> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text('Prix jour',
-                          style: Theme.of(context).textTheme.bodyText2!.copyWith(
-                            fontWeight: FontWeight.w500,
-                            fontSize: 12,
-                            color: AppTheme.darkColor,
-                            overflow: TextOverflow.ellipsis,
-                          )),
+                          style:
+                              Theme.of(context).textTheme.bodyText2!.copyWith(
+                                    fontWeight: FontWeight.w500,
+                                    fontSize: 12,
+                                    color: AppTheme.darkColor,
+                                    overflow: TextOverflow.ellipsis,
+                                  )),
                       Text('15 €',
-                          style: Theme.of(context).textTheme.bodyText2!.copyWith(
-                            fontWeight: FontWeight.w900,
-                            fontSize: 14,
-                            color: AppTheme.darkColor,
-                            overflow: TextOverflow.ellipsis,
-                          )),
+                          style:
+                              Theme.of(context).textTheme.bodyText2!.copyWith(
+                                    fontWeight: FontWeight.w900,
+                                    fontSize: 14,
+                                    color: AppTheme.darkColor,
+                                    overflow: TextOverflow.ellipsis,
+                                  )),
                     ],
                   ),
                 ),
-                Divider( color: AppTheme.darkColor.withOpacity(0.3),),
+                Divider(
+                  color: AppTheme.darkColor.withOpacity(0.3),
+                ),
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 4.0),
                   child: Row(
@@ -394,23 +445,27 @@ class _BookingScreenState extends State<BookingScreen> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text('Suplément jeune conducteur',
-                          style: Theme.of(context).textTheme.bodyText2!.copyWith(
-                            fontWeight: FontWeight.w500,
-                            fontSize: 12,
-                            color: AppTheme.darkColor,
-                            overflow: TextOverflow.ellipsis,
-                          )),
+                          style:
+                              Theme.of(context).textTheme.bodyText2!.copyWith(
+                                    fontWeight: FontWeight.w500,
+                                    fontSize: 12,
+                                    color: AppTheme.darkColor,
+                                    overflow: TextOverflow.ellipsis,
+                                  )),
                       Text('2,25 €',
-                          style: Theme.of(context).textTheme.bodyText2!.copyWith(
-                            fontWeight: FontWeight.w900,
-                            fontSize: 14,
-                            color: AppTheme.darkColor,
-                            overflow: TextOverflow.ellipsis,
-                          )),
+                          style:
+                              Theme.of(context).textTheme.bodyText2!.copyWith(
+                                    fontWeight: FontWeight.w900,
+                                    fontSize: 14,
+                                    color: AppTheme.darkColor,
+                                    overflow: TextOverflow.ellipsis,
+                                  )),
                     ],
                   ),
                 ),
-                Divider( color: AppTheme.darkColor.withOpacity(0.3),),
+                Divider(
+                  color: AppTheme.darkColor.withOpacity(0.3),
+                ),
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 4.0),
                   child: Row(
@@ -418,23 +473,27 @@ class _BookingScreenState extends State<BookingScreen> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text('Promotion',
-                          style: Theme.of(context).textTheme.bodyText2!.copyWith(
-                            fontWeight: FontWeight.w500,
-                            fontSize: 12,
-                            color: AppTheme.darkColor,
-                            overflow: TextOverflow.ellipsis,
-                          )),
+                          style:
+                              Theme.of(context).textTheme.bodyText2!.copyWith(
+                                    fontWeight: FontWeight.w500,
+                                    fontSize: 12,
+                                    color: AppTheme.darkColor,
+                                    overflow: TextOverflow.ellipsis,
+                                  )),
                       Text('-0,00 €',
-                          style: Theme.of(context).textTheme.bodyText2!.copyWith(
-                            fontWeight: FontWeight.w900,
-                            fontSize: 14,
-                            color: AppTheme.darkColor,
-                            overflow: TextOverflow.ellipsis,
-                          )),
+                          style:
+                              Theme.of(context).textTheme.bodyText2!.copyWith(
+                                    fontWeight: FontWeight.w900,
+                                    fontSize: 14,
+                                    color: AppTheme.darkColor,
+                                    overflow: TextOverflow.ellipsis,
+                                  )),
                     ],
                   ),
                 ),
-                Divider( color: AppTheme.darkColor.withOpacity(0.3),),
+                Divider(
+                  color: AppTheme.darkColor.withOpacity(0.3),
+                ),
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 4.0),
                   child: Row(
@@ -442,97 +501,116 @@ class _BookingScreenState extends State<BookingScreen> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text('Total',
-                          style: Theme.of(context).textTheme.bodyText2!.copyWith(
-                            fontWeight: FontWeight.w900,
-                            fontSize: 14,
-                            color: AppTheme.darkColor,
-                            overflow: TextOverflow.ellipsis,
-                          )),
+                          style:
+                              Theme.of(context).textTheme.bodyText2!.copyWith(
+                                    fontWeight: FontWeight.w900,
+                                    fontSize: 14,
+                                    color: AppTheme.darkColor,
+                                    overflow: TextOverflow.ellipsis,
+                                  )),
                       Text('17,25 €',
-                          style: Theme.of(context).textTheme.bodyText2!.copyWith(
-                            fontWeight: FontWeight.w900,
-                            fontSize: 16,
-                            color: AppTheme.darkColor,
-                            overflow: TextOverflow.ellipsis,
-                          )),
+                          style:
+                              Theme.of(context).textTheme.bodyText2!.copyWith(
+                                    fontWeight: FontWeight.w900,
+                                    fontSize: 16,
+                                    color: AppTheme.darkColor,
+                                    overflow: TextOverflow.ellipsis,
+                                  )),
                     ],
                   ),
                 ),
-                Divider( color: AppTheme.darkColor.withOpacity(0.3),),
-                Text("En reservant  véhicule,vous acceptez les \nconditons générales de Gando", textAlign: TextAlign.center, style: Theme.of(context).textTheme.bodyText2!.copyWith(
-                  fontWeight: FontWeight.w400,
-                  fontSize: 12,
-                  color: AppTheme.darkColor,
-                  overflow: TextOverflow.ellipsis,
-                )),
-                bookingButton(),
-                Container(
-                  padding: EdgeInsets.all(4),
-                  child: Text("Autres moyens de paiement".toUpperCase(), style: Theme.of(context).textTheme.bodyText2!.copyWith(
-                    fontWeight: FontWeight.w900,
-                    fontSize: 18,
-                    color: AppTheme.darkColor,
-                    overflow: TextOverflow.ellipsis,
-                  )),
+                Divider(
+                  color: AppTheme.darkColor.withOpacity(0.3),
                 ),
+                Text(
+                    "En reservant  véhicule,vous acceptez les \nconditons générales de Gando",
+                    textAlign: TextAlign.center,
+                    style: Theme.of(context).textTheme.bodyText2!.copyWith(
+                          fontWeight: FontWeight.w400,
+                          fontSize: 12,
+                          color: AppTheme.darkColor,
+                          overflow: TextOverflow.ellipsis,
+                        )),
+                bookingButton(),
+                /*InkWell(
+                  onTap: () {},
+                  child: Container(
+                    padding: EdgeInsets.all(4),
+                    child: Text("Autres moyens de paiement".toUpperCase(),
+                        style: Theme.of(context).textTheme.bodyText2!.copyWith(
+                              fontWeight: FontWeight.w900,
+                              fontSize: 18,
+                              color: AppTheme.darkColor,
+                              overflow: TextOverflow.ellipsis,
+                            )),
+                  ),
+                ),*/
               ],
             ),
           ),
           Positioned(
               top: -15,
               right: -15,
-              child: IconButton(onPressed: (){
-            Get.back();
-          }, icon: Icon(Icons.close, color: AppTheme.darkColor,),))
+              child: IconButton(
+                onPressed: () {
+                  Get.back();
+                },
+                icon: Icon(
+                  Icons.close,
+                  color: AppTheme.darkColor,
+                ),
+              ))
         ],
       ),
     );
   }
+
   Widget _buildOtherPaymentBottomSheet(BuildContext context, Car car) {
     bookingButton({String? title, Color? color}) => Container(
-      height: 58,
-      margin: EdgeInsets.symmetric(vertical: 10),
-      width: Get.width / 1.2,
-      decoration: BoxDecoration(
-        borderRadius: const BorderRadius.all(Radius.circular(29)),
-        color: color,
-        boxShadow: [
-          BoxShadow(
-            offset: const Offset(4, 8),
-            blurRadius: 20,
-            color: const Color(0xFF101010).withOpacity(0.25),
+          height: 58,
+          margin: EdgeInsets.symmetric(vertical: 10),
+          width: Get.width / 1.2,
+          decoration: BoxDecoration(
+            borderRadius: const BorderRadius.all(Radius.circular(29)),
+            color: color,
+            boxShadow: [
+              BoxShadow(
+                offset: const Offset(4, 8),
+                blurRadius: 20,
+                color: const Color(0xFF101010).withOpacity(0.25),
+              ),
+            ],
           ),
-        ],
-      ),
-      child: Material(
-        color: Colors.transparent,
-        child: InkWell(
-          borderRadius: const BorderRadius.all(Radius.circular(29)),
-          // splashColor: const Color(0xFFEEEEEE),
-          onTap: () {
-            //open bottom sheet
-            Get.to(() => const SuccessBookingScreen());
-          },
-          child: Center(
-            child: Text(
-              title!.toUpperCase(),
-              style: const TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 18,
-                color: Colors.white,
+          child: Material(
+            color: Colors.transparent,
+            child: InkWell(
+              borderRadius: const BorderRadius.all(Radius.circular(29)),
+              // splashColor: const Color(0xFFEEEEEE),
+              onTap: () {
+                //open bottom sheet
+                Get.to(() => const SuccessBookingScreen());
+              },
+              child: Center(
+                child: Text(
+                  title!.toUpperCase(),
+                  style: const TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 18,
+                    color: Colors.white,
+                  ),
+                ),
               ),
             ),
           ),
-        ),
-      ),
-    );
+        );
     return Container(
       width: Get.width,
       height: 250,
       padding: EdgeInsets.symmetric(vertical: 20, horizontal: 20),
       decoration: BoxDecoration(
-        color:  AppTheme.backgroundColor,
-        borderRadius: BorderRadius.only(topLeft: Radius.circular(16), topRight: Radius.circular(16)),
+        color: AppTheme.backgroundColor,
+        borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(16), topRight: Radius.circular(16)),
       ),
       child: Stack(
         fit: StackFit.expand,
@@ -541,7 +619,8 @@ class _BookingScreenState extends State<BookingScreen> {
             padding: const EdgeInsets.only(top: 20.0),
             child: Column(
               children: [
-                bookingButton(title: 'Carte bancaire', color: AppTheme.primaryColor),
+                bookingButton(
+                    title: 'Carte bancaire', color: AppTheme.primaryColor),
                 bookingButton(title: 'PayPal', color: AppTheme.darkColor),
               ],
             ),
@@ -549,9 +628,15 @@ class _BookingScreenState extends State<BookingScreen> {
           Positioned(
               top: -15,
               right: -15,
-              child: IconButton(onPressed: (){
-            Get.back();
-          }, icon: Icon(Icons.close, color: AppTheme.darkColor,),))
+              child: IconButton(
+                onPressed: () {
+                  Get.back();
+                },
+                icon: Icon(
+                  Icons.close,
+                  color: AppTheme.darkColor,
+                ),
+              ))
         ],
       ),
     );
@@ -827,27 +912,35 @@ class _BookingScreenState extends State<BookingScreen> {
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
                       Container(
-                        width: Get.width /2.3,
+                        width: Get.width / 2.3,
                         child: CustomTextFormField(
                           controller: etNameController,
                           keyboardType: TextInputType.text,
                           autofocus: false,
                           enabled: true,
-                          validator: (v) { return null;  },
-                          onChanged: (v) {  },
-                          onSaved: (v) {  }, hintText: 'Nom', formatter: [],
+                          validator: (v) {
+                            return null;
+                          },
+                          onChanged: (v) {},
+                          onSaved: (v) {},
+                          hintText: 'Nom',
+                          formatter: [],
                         ),
                       ),
                       Container(
-                        width: Get.width /2.3,
+                        width: Get.width / 2.3,
                         child: CustomTextFormField(
                           controller: etLastNameController,
                           keyboardType: TextInputType.text,
                           autofocus: false,
                           enabled: true,
-                          validator: (v) { return null;  },
-                          onChanged: (v) {  },
-                          onSaved: (v) {  }, hintText: 'Prénom', formatter: [],
+                          validator: (v) {
+                            return null;
+                          },
+                          onChanged: (v) {},
+                          onSaved: (v) {},
+                          hintText: 'Prénom',
+                          formatter: [],
                         ),
                       ),
                     ],
@@ -893,13 +986,15 @@ class _BookingScreenState extends State<BookingScreen> {
                               border: Border.all(
                                   color: AppTheme.darkColor, width: 0.5)),
                           countrySearchPlaceholder: "Selectionner un Pays",
+
                           ///Disabled Dropdown box decoration to style your dropdown selector [OPTIONAL PARAMETER]  (USE with disabled dropdownDecoration)
                           disabledDropdownDecoration: BoxDecoration(
                               borderRadius:
                                   const BorderRadius.all(Radius.circular(30)),
                               color: Colors.grey.shade300,
                               border: Border.all(
-                                  color: AppTheme.darkColor.withOpacity(0.4), width: 1)),
+                                  color: AppTheme.darkColor.withOpacity(0.4),
+                                  width: 1)),
                           dropdownItemStyle: Theme.of(context)
                               .textTheme
                               .bodyText2!
@@ -940,16 +1035,20 @@ class _BookingScreenState extends State<BookingScreen> {
                           controller: drivingIdController,
                           keyboardType: TextInputType.number,
                           autofocus: false,
-                          validator: (v) { return null;  },
-                          onChanged: (v) {  },
-                          onSaved: (v) {  }, hintText: 'Numero de permis', formatter: [],
+                          validator: (v) {
+                            return null;
+                          },
+                          onChanged: (v) {},
+                          onSaved: (v) {},
+                          hintText: 'Numero de permis',
+                          formatter: [],
                         ),
                       ],
                     ),
                   ),
                   Container(
                     width: Get.width - 40,
-                    padding: const  EdgeInsets.only(bottom: 10, top: 10),
+                    padding: const EdgeInsets.only(bottom: 10, top: 10),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -974,12 +1073,14 @@ class _BookingScreenState extends State<BookingScreen> {
                             filled: true,
                             fillColor: AppTheme.light,
                             disabledBorder: OutlineInputBorder(
-                              borderSide: BorderSide(color: AppTheme.darkColor, width: 1.0),
+                              borderSide: BorderSide(
+                                  color: AppTheme.darkColor, width: 1.0),
                               borderRadius: BorderRadius.circular(30),
                               gapPadding: 0,
                             ),
                             enabledBorder: OutlineInputBorder(
-                              borderSide: BorderSide(color: AppTheme.darkColor, width: 1.0),
+                              borderSide: BorderSide(
+                                  color: AppTheme.darkColor, width: 1.0),
                               borderRadius: BorderRadius.circular(30),
                               gapPadding: 0,
                             ),
@@ -994,7 +1095,7 @@ class _BookingScreenState extends State<BookingScreen> {
                           isFormValidator: true,
                           // optional
                           startYear:
-                          DateTime.parse('1969-07-20 20:18:04Z').year,
+                              DateTime.parse('1969-07-20 20:18:04Z').year,
                           // optional
                           endYear: DateTime.now().year,
                           // optional
@@ -1014,14 +1115,18 @@ class _BookingScreenState extends State<BookingScreen> {
                           onChangedYear: (value) =>
                               print('onChangedYear: $value'),
                           boxDecoration: BoxDecoration(
-                              border: Border.all(color: Colors.transparent, width: 0.0)), // optional
-                          showDay: true,// optional
+                              border: Border.all(
+                                  color: Colors.transparent,
+                                  width: 0.0)), // optional
+                          showDay: true, // optional
                           dayFlex: 2,
-                          locale: "en",// optional
+                          locale: "en", // optional
                           hintDay: 'Jour', // optional
                           hintMonth: 'Mois', // optional
                           hintYear: 'Année', // optional
-                          hintTextStyle: TextStyle(color: AppTheme.redColor, fontSize: 9), // optional
+                          hintTextStyle: TextStyle(
+                              color: AppTheme.redColor,
+                              fontSize: 9), // optional
                         ),
 
                         // TextButton(
@@ -1070,7 +1175,6 @@ class _BookingScreenState extends State<BookingScreen> {
                         //         ],
                         //       ),
                         //     )),
-
                       ],
                     ),
                   ),
@@ -1089,7 +1193,8 @@ class _BookingScreenState extends State<BookingScreen> {
   }
 
   Widget _buildResultForm(BuildContext context) {
-    if (1==1) { // ramplace with current form state validator check
+    if (1 == 1) {
+      // ramplace with current form state validator check
       return Container(
         height: Get.height / 2.2,
         margin: const EdgeInsets.symmetric(vertical: 10),
@@ -1109,11 +1214,11 @@ class _BookingScreenState extends State<BookingScreen> {
           children: [
             Text('Detail de la location ',
                 style: Theme.of(context).textTheme.bodyText2!.copyWith(
-                  fontWeight: FontWeight.w900,
-                  fontSize: 18,
-                  color: AppTheme.darkColor,
-                  overflow: TextOverflow.ellipsis,
-                )),
+                      fontWeight: FontWeight.w900,
+                      fontSize: 18,
+                      color: AppTheme.darkColor,
+                      overflow: TextOverflow.ellipsis,
+                    )),
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 12.0),
               child: Row(
@@ -1149,11 +1254,11 @@ class _BookingScreenState extends State<BookingScreen> {
                 children: [
                   Text('Kilometrage inclus',
                       style: Theme.of(context).textTheme.bodyText2!.copyWith(
-                        fontWeight: FontWeight.w500,
-                        fontSize: 14,
-                        color: AppTheme.darkColor,
-                        overflow: TextOverflow.ellipsis,
-                      )),
+                            fontWeight: FontWeight.w500,
+                            fontSize: 14,
+                            color: AppTheme.darkColor,
+                            overflow: TextOverflow.ellipsis,
+                          )),
                   Text('200 Km',
                       style: Theme.of(context).textTheme.bodyText2!.copyWith(
                             fontWeight: FontWeight.w900,
@@ -1176,18 +1281,18 @@ class _BookingScreenState extends State<BookingScreen> {
                 children: [
                   Text('Montant (hors option)',
                       style: Theme.of(context).textTheme.bodyText2!.copyWith(
-                        fontWeight: FontWeight.w500,
-                        fontSize: 14,
-                        color: AppTheme.darkColor,
-                        overflow: TextOverflow.ellipsis,
-                      )),
+                            fontWeight: FontWeight.w500,
+                            fontSize: 14,
+                            color: AppTheme.darkColor,
+                            overflow: TextOverflow.ellipsis,
+                          )),
                   Text('15 €',
                       style: Theme.of(context).textTheme.bodyText2!.copyWith(
-                        fontWeight: FontWeight.w900,
-                        fontSize: 18,
-                        color: AppTheme.darkColor,
-                        overflow: TextOverflow.ellipsis,
-                      )),
+                            fontWeight: FontWeight.w900,
+                            fontSize: 18,
+                            color: AppTheme.darkColor,
+                            overflow: TextOverflow.ellipsis,
+                          )),
                 ],
               ),
             ),
@@ -1203,18 +1308,18 @@ class _BookingScreenState extends State<BookingScreen> {
                 children: [
                   Text('Suplément jeune conducteur',
                       style: Theme.of(context).textTheme.bodyText2!.copyWith(
-                        fontWeight: FontWeight.w500,
-                        fontSize: 14,
-                        color: AppTheme.darkColor,
-                        overflow: TextOverflow.ellipsis,
-                      )),
+                            fontWeight: FontWeight.w500,
+                            fontSize: 14,
+                            color: AppTheme.darkColor,
+                            overflow: TextOverflow.ellipsis,
+                          )),
                   Text('2.25 €',
                       style: Theme.of(context).textTheme.bodyText2!.copyWith(
-                        fontWeight: FontWeight.w900,
-                        fontSize: 18,
-                        color: AppTheme.darkColor,
-                        overflow: TextOverflow.ellipsis,
-                      )),
+                            fontWeight: FontWeight.w900,
+                            fontSize: 18,
+                            color: AppTheme.darkColor,
+                            overflow: TextOverflow.ellipsis,
+                          )),
                 ],
               ),
             ),
@@ -1226,18 +1331,18 @@ class _BookingScreenState extends State<BookingScreen> {
                 children: [
                   Text('Montant total',
                       style: Theme.of(context).textTheme.bodyText2!.copyWith(
-                        fontWeight: FontWeight.w900,
-                        fontSize: 18,
-                        color: AppTheme.darkColor,
-                        overflow: TextOverflow.ellipsis,
-                      )),
+                            fontWeight: FontWeight.w900,
+                            fontSize: 18,
+                            color: AppTheme.darkColor,
+                            overflow: TextOverflow.ellipsis,
+                          )),
                   Text('17.25 € ',
                       style: Theme.of(context).textTheme.bodyText2!.copyWith(
-                        fontWeight: FontWeight.w900,
-                        fontSize: 22,
-                        color: AppTheme.primaryColor,
-                        overflow: TextOverflow.ellipsis,
-                      )),
+                            fontWeight: FontWeight.w900,
+                            fontSize: 22,
+                            color: AppTheme.primaryColor,
+                            overflow: TextOverflow.ellipsis,
+                          )),
                 ],
               ),
             ),

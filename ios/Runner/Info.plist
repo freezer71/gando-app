@@ -69,5 +69,10 @@
     <string>$(TMPDIR)</string>
     <key>NSPhotoLibraryAddUsageDescription</key>
     <string>Nous demandons l'autorisation d'accéder à l'appareil photo et aux photos de votre appareil afin de vous permettre de prendre et de sauvegarder des photos directement depuis notre application. Vos photos ne seront pas utilisées à des fins autres que celles liées à l'utilisation de l'application, et ne seront jamais partagées avec des tiers sans votre consentement explicite.</string>
+    <key>NSAppTransportSecurity</key>
+    <dict>
+        <key>NSAllowsArbitraryLoads</key>
+        <true/>
+    </dict>
 </dict>
 </plist>

@@ -3,13 +3,11 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:gando/config/textstyle.dart';
 import 'package:gando/config/tools.dart';
-import 'package:gando/controllers/user/user_controller.dart';
-import 'package:gando/navigation.dart';
 import 'package:gando/services/auth/auth_services.dart';
 import 'package:gando/services/repositories/user_repository.dart';
 import 'package:get/get.dart';
 import 'package:get_it/get_it.dart';
-import '../../models/User.dart' as client;
+import 'package:gando/models/User.dart' as client;
 
 class EditProfilController extends GetxController {
   Rx<TextEditingController> firstNameController = TextEditingController().obs;
@@ -23,15 +21,10 @@ class EditProfilController extends GetxController {
 
   @override
   Future<void> onInit() async {
-    firstNameController = TextEditingController(
-            text:user.value.firstname)
-        .obs;
-    lastNameController =
-        TextEditingController(text: user.value.lastname)
-            .obs;
-    descriptionController = TextEditingController(
-            text: user.value.description)
-        .obs;
+    firstNameController = TextEditingController(text: user.value.firstname).obs;
+    lastNameController = TextEditingController(text: user.value.lastname).obs;
+    descriptionController =
+        TextEditingController(text: user.value.description).obs;
     super.onInit();
   }
 
@@ -40,7 +33,7 @@ class EditProfilController extends GetxController {
     isLoading(true);
     String description = descriptionController.value.text.isEmpty
         ? " "
-        : descriptionController.value.text;
+        : descriptionController.value.text.trim();
     try {
       Map<String, dynamic> data = {
         "firstname": firstNameController.value.text,

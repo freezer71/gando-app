@@ -158,6 +158,22 @@ class ApiProvider {
     }
   }
 
+  Future<User> editNotification({required Map<String, dynamic> data}) async {
+    http.Response response =
+        await putData1(apiUrl: RemoteEndpoint.editNotification, data: data);
+    if (response.statusCode == 200) {
+      final res = await getData('/user');
+      final body = jsonDecode(res.body)['data'];
+      if (res.statusCode == 200) {
+        return User.fromJson(body);
+      } else {
+        return User();
+      }
+    } else {
+      throw "${_parseBody(response.body)["message"]}";
+    }
+  }
+
   Future<List<Discussion>> getListMessage({required String idUser}) async {
     http.Response response =
         await getData(RemoteEndpoint.getListMessage(id: idUser))
@@ -181,7 +197,6 @@ class ApiProvider {
     http.Response response = await getData(
         RemoteEndpoint.getMessageDetail(discussionId: discussionId));
     if (response.statusCode == 200) {
-      Map<String, dynamic> map = _parseBody(response.body);
       try {
         return ChatDetailModel.fromJson(_parseBody(response.body)["data"][0]);
       } catch (e) {
@@ -197,6 +212,16 @@ class ApiProvider {
         await postData(apiUrl: RemoteEndpoint.sendMessage, data: data);
     if (response.statusCode == 200) {
       return true;
+    } else {
+      throw "${_parseBody(response.body)["message"]}";
+    }
+  }
+
+  Future<String> onBoardingAccount({required Map<String, dynamic> data}) async {
+    http.Response response =
+        await postData(apiUrl: RemoteEndpoint.onBoardingAccount, data: data);
+    if (response.statusCode == 200) {
+      return "${_parseBody(response.body)["data"]["url"]}";
     } else {
       throw "${_parseBody(response.body)["message"]}";
     }
