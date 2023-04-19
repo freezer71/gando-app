@@ -117,7 +117,11 @@ class ContractStep7 extends StatelessWidget {
                 WidgetsBinding.instance.addPostFrameCallback((t) {
                   // Provider.of<TabScreenController>(context, listen: false)
                   //     .dispose();
-                Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => const SuccessBookingScreen()), (route) => true);
+                  Navigator.pushAndRemoveUntil(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const SuccessBookingScreen()),
+                      (route) => true);
                 });
               },
               child: Center(

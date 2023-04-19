@@ -22,9 +22,15 @@ class SocialNetworkScreen extends StatelessWidget {
       return Scaffold(
         backgroundColor: AppTheme.backgroundColor,
         appBar: CustomAppBar(
-          leading: IconButton(onPressed: (){
-            Get.back();
-          }, icon: Icon(Icons.arrow_back_ios_outlined, color: AppTheme.darkColor,),),
+          leading: IconButton(
+            onPressed: () {
+              Get.back();
+            },
+            icon: Icon(
+              Icons.arrow_back_ios_outlined,
+              color: AppTheme.darkColor,
+            ),
+          ),
           title: 'Mes réseaux sociaux',
         ),
         body: ListView(
@@ -37,8 +43,7 @@ class SocialNetworkScreen extends StatelessWidget {
     });
   }
 
-  List<Widget> _buildBodyTextField(BuildContext context) =>
-      [
+  List<Widget> _buildBodyTextField(BuildContext context) => [
         Container(
           width: Get.width - 40,
           padding: EdgeInsets.symmetric(horizontal: 5, vertical: 10),
@@ -50,21 +55,25 @@ class SocialNetworkScreen extends StatelessWidget {
                 width: 50,
                 height: 50,
                 decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: AppTheme.redColor
-                ),
+                    shape: BoxShape.circle, color: AppTheme.redColor),
                 child: Icon(Icons.facebook),
               ),
-              const SizedBox(width: 20,),
+              const SizedBox(
+                width: 20,
+              ),
               Container(
                 width: Get.width / 1.5,
                 child: CustomTextFormField(
                   controller: c.socialFacebook.value,
                   keyboardType: TextInputType.text,
                   autofocus: false,
-                  validator: (v) { return null;  },
-                  onChanged: (v) {  },
-                  onSaved: (v) {  }, hintText: 'Votre Facebook', formatter: [],
+                  validator: (v) {
+                    return null;
+                  },
+                  onChanged: (v) {},
+                  onSaved: (v) {},
+                  hintText: 'Votre Facebook',
+                  formatter: [],
                 ),
               ),
             ],
@@ -81,21 +90,28 @@ class SocialNetworkScreen extends StatelessWidget {
                 width: 50,
                 height: 50,
                 decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: AppTheme.redColor
+                    shape: BoxShape.circle, color: AppTheme.redColor),
+                child: Image.asset(
+                  Assets.imagesImg7,
+                  scale: 2,
                 ),
-                child: Image.asset(Assets.imagesImg7, scale: 2,),
               ),
-              const SizedBox(width: 20,),
+              const SizedBox(
+                width: 20,
+              ),
               Container(
                 width: Get.width / 1.5,
                 child: CustomTextFormField(
                   controller: c.socialInstagram.value,
                   keyboardType: TextInputType.text,
                   autofocus: false,
-                  validator: (v) { return null;  },
-                  onChanged: (v) {  },
-                  onSaved: (v) {  }, hintText: 'Votre Instagram', formatter: [],
+                  validator: (v) {
+                    return null;
+                  },
+                  onChanged: (v) {},
+                  onSaved: (v) {},
+                  hintText: 'Votre Instagram',
+                  formatter: [],
                 ),
               ),
             ],
@@ -112,21 +128,28 @@ class SocialNetworkScreen extends StatelessWidget {
                 width: 50,
                 height: 50,
                 decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: AppTheme.redColor
+                    shape: BoxShape.circle, color: AppTheme.redColor),
+                child: Image.asset(
+                  Assets.imagesImg6,
+                  scale: 2,
                 ),
-                child: Image.asset(Assets.imagesImg6, scale: 2,),
               ),
-              const SizedBox(width: 20,),
+              const SizedBox(
+                width: 20,
+              ),
               Container(
                 width: Get.width / 1.5,
                 child: CustomTextFormField(
                   controller: c.socialTwitter.value,
                   keyboardType: TextInputType.text,
                   autofocus: false,
-                  validator: (v) { return null;  },
-                  onChanged: (v) {  },
-                  onSaved: (v) {  }, hintText: 'Votre Twitter', formatter: [],
+                  validator: (v) {
+                    return null;
+                  },
+                  onChanged: (v) {},
+                  onSaved: (v) {},
+                  hintText: 'Votre Twitter',
+                  formatter: [],
                 ),
               ),
             ],
@@ -143,35 +166,43 @@ class SocialNetworkScreen extends StatelessWidget {
                 width: 50,
                 height: 50,
                 decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: AppTheme.redColor
+                    shape: BoxShape.circle, color: AppTheme.redColor),
+                child: Image.asset(
+                  Assets.imagesImg5,
+                  scale: 2,
                 ),
-                child: Image.asset(Assets.imagesImg5, scale: 2,),
               ),
-              const SizedBox(width: 20,),
+              const SizedBox(
+                width: 20,
+              ),
               Container(
                 width: Get.width / 1.5,
                 child: CustomTextFormField(
                   controller: c.socialLinkedin.value,
                   keyboardType: TextInputType.phone,
                   autofocus: false,
-                  validator: (v) { return null;  },
-                  onChanged: (v) {  },
-                  onSaved: (v) {  }, hintText: 'Votre LinkedIn', formatter: [],
+                  validator: (v) {
+                    return null;
+                  },
+                  onChanged: (v) {},
+                  onSaved: (v) {},
+                  hintText: 'Votre LinkedIn',
+                  formatter: [],
                 ),
               ),
             ],
           ),
         ),
-
         const SizedBox(
           height: 30,
         ),
-
         _buildBottomImage(),
       ];
 
   Widget _buildBottomImage() {
-    return Image.asset(Assets.imagesImg4, scale: 3,);
+    return Image.asset(
+      Assets.imagesImg4,
+      scale: 3,
+    );
   }
 }

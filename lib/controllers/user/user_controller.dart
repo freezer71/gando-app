@@ -20,7 +20,7 @@ import 'package:get_it/get_it.dart';
 import '../../models/Car.dart';
 import '../../models/User.dart' as client;
 import '../../services/auth/get_user_car.dart';
-import '../../views/products/booking/payment/stripe_checkout.dart';
+// import '../../views/products/booking/payment/stripe_checkout.dart';
 
 class UserController extends GetxController {
   late final Future getCarList;

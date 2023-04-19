@@ -19,7 +19,7 @@ double fileSize(File? file) {
 /// assets
 const assetsImages = "assets/images/";
 
-List<Locale> listSupportedtLocale = [
+List<Locale> listSupportedtLocale = const [
   Locale("af"),
   Locale("am"),
   Locale("ar"),
