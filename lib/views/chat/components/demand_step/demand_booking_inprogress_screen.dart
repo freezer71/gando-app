@@ -19,15 +19,15 @@ import '../../../products/booking/contract/contract_step_2.dart';
 import '../../../products/booking/success_booking_screen.dart';
 
 class DemandBookingInProgressScreen extends StatefulWidget {
-
   DemandBookingInProgressScreen({Key? key}) : super(key: key);
 
   @override
-  State<DemandBookingInProgressScreen> createState() => _DemandBookingInProgressScreenState();
+  State<DemandBookingInProgressScreen> createState() =>
+      _DemandBookingInProgressScreenState();
 }
 
-class _DemandBookingInProgressScreenState extends State<DemandBookingInProgressScreen> {
-
+class _DemandBookingInProgressScreenState
+    extends State<DemandBookingInProgressScreen> {
   late Car car;
 
   @override
@@ -35,19 +35,19 @@ class _DemandBookingInProgressScreenState extends State<DemandBookingInProgressS
     super.initState();
     //init fake car
     car = Car(
-      brand: 'BMW',
-      model: 'X5',
-      pricePerDay: 100,
-      images: Images(
-        avant34: 'assets/images/car1.png',
-        ariere34: 'assets/images/car2.png',
-        lateral: 'assets/images/car3.png',
-        supplementaire: 'assets/images/car4.png',
-      ),
-      fuel: 'Essence',
-      year: 2021,
-      description: 'Lorem ipsum dolor sit amet, nisl. Sed euismod, nunc sit amet aliquam'
-    );
+        brand: 'BMW',
+        model: 'X5',
+        pricePerDay: 100,
+        images: Images(
+          avant34: 'assets/images/car1.png',
+          ariere34: 'assets/images/car2.png',
+          lateral: 'assets/images/car3.png',
+          supplementaire: 'assets/images/car4.png',
+        ),
+        fuel: 'Essence',
+        year: 2021,
+        description:
+            'Lorem ipsum dolor sit amet, nisl. Sed euismod, nunc sit amet aliquam');
   }
 
   @override
@@ -65,21 +65,29 @@ class _DemandBookingInProgressScreenState extends State<DemandBookingInProgressS
           children: [
             Positioned(
               left: 0,
-              child: IconButton(onPressed: (){
-              Get.back();
-            }, icon: Icon(Icons.arrow_back_ios_outlined, color: AppTheme.darkColor,),),),
+              child: IconButton(
+                onPressed: () {
+                  Get.back();
+                },
+                icon: Icon(
+                  Icons.arrow_back_ios_outlined,
+                  color: AppTheme.darkColor,
+                ),
+              ),
+            ),
             const Positioned(
               right: -40,
               top: 8,
               child: CircleAvatar(
-              backgroundImage: AssetImage('assets/images/av.png'),
-            ),)
+                backgroundImage: AssetImage('assets/images/av.png'),
+              ),
+            )
           ],
         ),
         title: 'Laure Manida',
         action: [
           InkWell(
-            onTap: (){
+            onTap: () {
               Get.bottomSheet(_buildBottomSheet(car));
             },
             child: Container(
@@ -88,9 +96,12 @@ class _DemandBookingInProgressScreenState extends State<DemandBookingInProgressS
               margin: const EdgeInsets.only(top: 8, bottom: 8, right: 18),
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(8),
-                  color: AppTheme.light.withOpacity(0.4)
-              ),
-              child: Center(child: Icon(Icons.more_vert_outlined, color: AppTheme.darkColor,)),
+                  color: AppTheme.light.withOpacity(0.4)),
+              child: Center(
+                  child: Icon(
+                Icons.more_vert_outlined,
+                color: AppTheme.darkColor,
+              )),
             ),
           ),
         ],
@@ -102,13 +113,13 @@ class _DemandBookingInProgressScreenState extends State<DemandBookingInProgressS
               padding: const EdgeInsets.all(16),
               children: [
                 Text(
-                  '${car.brand} ${car.model}' ,
+                  '${car.brand} ${car.model}',
                   style: Theme.of(context).textTheme.bodyText2!.copyWith(
-                    fontWeight: FontWeight.w900,
-                    fontSize: 18,
-                    color: AppTheme.darkColor,
-                    overflow: TextOverflow.ellipsis,
-                  ),
+                        fontWeight: FontWeight.w900,
+                        fontSize: 18,
+                        color: AppTheme.darkColor,
+                        overflow: TextOverflow.ellipsis,
+                      ),
                   textAlign: TextAlign.center,
                 ),
                 Divider(
@@ -121,25 +132,24 @@ class _DemandBookingInProgressScreenState extends State<DemandBookingInProgressS
                   color: AppTheme.darkColor,
                 ),
                 ..._buildBody(),
-
                 Text(
                   'Le montant de la location est de ',
                   style: Theme.of(context).textTheme.bodyText2!.copyWith(
-                    fontWeight: FontWeight.w900,
-                    fontSize: 18,
-                    color: AppTheme.darkColor,
-                    overflow: TextOverflow.ellipsis,
-                  ),
+                        fontWeight: FontWeight.w900,
+                        fontSize: 18,
+                        color: AppTheme.darkColor,
+                        overflow: TextOverflow.ellipsis,
+                      ),
                   textAlign: TextAlign.center,
                 ),
                 Text(
                   '${car.pricePerDay! * 30 / 100} €'.toUpperCase(),
                   style: Theme.of(context).textTheme.bodyText2!.copyWith(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 50,
-                    color: AppTheme.darkColor,
-                    overflow: TextOverflow.ellipsis,
-                  ),
+                        fontWeight: FontWeight.bold,
+                        fontSize: 50,
+                        color: AppTheme.darkColor,
+                        overflow: TextOverflow.ellipsis,
+                      ),
                   textAlign: TextAlign.center,
                 ),
                 Container(
@@ -147,13 +157,12 @@ class _DemandBookingInProgressScreenState extends State<DemandBookingInProgressS
                   // padding: const EdgeInsets.all(10),
                   margin: EdgeInsets.only(top: 40),
                   decoration: BoxDecoration(
-                    color: AppTheme.light.withOpacity(0.5),
-                    borderRadius: BorderRadius.circular(30)
-                  ),
+                      color: AppTheme.light.withOpacity(0.5),
+                      borderRadius: BorderRadius.circular(30)),
                   child: InkWell(
                     onTap: () {
                       // open file in pdf viewer;
-                      Get.to(()=> const ContractStep1());
+                      Get.to(() => const ContractStep1());
                     },
                     splashColor: AppTheme.primaryColor,
                     highlightColor: AppTheme.primaryColor,
@@ -162,31 +171,38 @@ class _DemandBookingInProgressScreenState extends State<DemandBookingInProgressS
                       crossAxisAlignment: CrossAxisAlignment.center,
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-
                         Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: SizedBox(
                             height: Get.height / 28,
                             child: Text(
                               'Ouvrir le contrat de location',
-                              style: Theme.of(context).textTheme.bodyText2!.copyWith(
-                                fontWeight: FontWeight.w900,
-                                fontSize: 16,
-                                color: AppTheme.darkColor,
-                                overflow: TextOverflow.ellipsis,
-                              ),
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .bodyText2!
+                                  .copyWith(
+                                    fontWeight: FontWeight.w900,
+                                    fontSize: 16,
+                                    color: AppTheme.darkColor,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
                               maxLines: 3,
                               textAlign: TextAlign.center,
                             ),
                           ),
                         ),
-                        Icon(Icons.assignment,size: 40, color: AppTheme.darkColor.withOpacity(0.4),),
-
+                        Icon(
+                          Icons.assignment,
+                          size: 40,
+                          color: AppTheme.darkColor.withOpacity(0.4),
+                        ),
                       ],
                     ),
                   ),
                 ),
-                SizedBox(height: Get.height / 5,)
+                SizedBox(
+                  height: Get.height / 5,
+                )
               ],
             ),
           ),
@@ -203,7 +219,8 @@ class _DemandBookingInProgressScreenState extends State<DemandBookingInProgressS
       right: 0,
       child: Container(
         decoration: BoxDecoration(
-          borderRadius: const BorderRadius.only(topLeft: Radius.circular(30), topRight: Radius.circular(30)),
+          borderRadius: const BorderRadius.only(
+              topLeft: Radius.circular(30), topRight: Radius.circular(30)),
           color: AppTheme.light,
         ),
         height: Platform.isAndroid ? 70 : 90,
@@ -218,8 +235,9 @@ class _DemandBookingInProgressScreenState extends State<DemandBookingInProgressS
       height: 400,
       padding: EdgeInsets.symmetric(vertical: 20, horizontal: 20),
       decoration: BoxDecoration(
-        color:  AppTheme.backgroundColor,
-        borderRadius: BorderRadius.only(topLeft: Radius.circular(16), topRight: Radius.circular(16)),
+        color: AppTheme.backgroundColor,
+        borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(16), topRight: Radius.circular(16)),
       ),
       child: Stack(
         children: [
@@ -232,64 +250,90 @@ class _DemandBookingInProgressScreenState extends State<DemandBookingInProgressS
                     crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      Icon(Icons.phone_enabled_rounded, color: AppTheme.darkColor.withOpacity(0.7),),
-                      Text("Voir le numéro", style: Theme.of(context).textTheme.bodyText2!.copyWith(
-                        fontWeight: FontWeight.w400,
-                        fontSize: 16,
-                        color: AppTheme.darkColor,
-                        overflow: TextOverflow.ellipsis,
-                      )),
+                      Icon(
+                        Icons.phone_enabled_rounded,
+                        color: AppTheme.darkColor.withOpacity(0.7),
+                      ),
+                      Text("Voir le numéro",
+                          style:
+                              Theme.of(context).textTheme.bodyText2!.copyWith(
+                                    fontWeight: FontWeight.w400,
+                                    fontSize: 16,
+                                    color: AppTheme.darkColor,
+                                    overflow: TextOverflow.ellipsis,
+                                  )),
                     ],
                   ),
                 ),
-                Divider( color: AppTheme.darkColor.withOpacity(0.3),),
+                Divider(
+                  color: AppTheme.darkColor.withOpacity(0.3),
+                ),
                 Container(
                   padding: EdgeInsets.all(22),
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      Icon(Icons.message, color: AppTheme.darkColor.withOpacity(0.7),),
-                      Text("Envoyer un message", style: Theme.of(context).textTheme.bodyText2!.copyWith(
-                        fontWeight: FontWeight.w400,
-                        fontSize: 16,
-                        color: AppTheme.darkColor,
-                        overflow: TextOverflow.ellipsis,
-                      )),
+                      Icon(
+                        Icons.message,
+                        color: AppTheme.darkColor.withOpacity(0.7),
+                      ),
+                      Text("Envoyer un message",
+                          style:
+                              Theme.of(context).textTheme.bodyText2!.copyWith(
+                                    fontWeight: FontWeight.w400,
+                                    fontSize: 16,
+                                    color: AppTheme.darkColor,
+                                    overflow: TextOverflow.ellipsis,
+                                  )),
                     ],
                   ),
                 ),
-                Divider( color: AppTheme.darkColor.withOpacity(0.3),),
+                Divider(
+                  color: AppTheme.darkColor.withOpacity(0.3),
+                ),
                 Container(
                   padding: EdgeInsets.all(22),
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      Icon(Icons.share, color: AppTheme.darkColor.withOpacity(0.7),),
-                      Text("Partager le profile", style: Theme.of(context).textTheme.bodyText2!.copyWith(
-                        fontWeight: FontWeight.w400,
-                        fontSize: 16,
-                        color: AppTheme.darkColor,
-                        overflow: TextOverflow.ellipsis,
-                      )),
+                      Icon(
+                        Icons.share,
+                        color: AppTheme.darkColor.withOpacity(0.7),
+                      ),
+                      Text("Partager le profile",
+                          style:
+                              Theme.of(context).textTheme.bodyText2!.copyWith(
+                                    fontWeight: FontWeight.w400,
+                                    fontSize: 16,
+                                    color: AppTheme.darkColor,
+                                    overflow: TextOverflow.ellipsis,
+                                  )),
                     ],
                   ),
                 ),
-                Divider( color: AppTheme.darkColor.withOpacity(0.3),),
+                Divider(
+                  color: AppTheme.darkColor.withOpacity(0.3),
+                ),
                 Container(
                   padding: EdgeInsets.all(22),
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      Icon(Icons.flag, color: AppTheme.darkColor.withOpacity(0.7),),
-                      Text("Signaler le profil", style: Theme.of(context).textTheme.bodyText2!.copyWith(
-                        fontWeight: FontWeight.w400,
-                        fontSize: 16,
-                        color: AppTheme.darkColor,
-                        overflow: TextOverflow.ellipsis,
-                      )),
+                      Icon(
+                        Icons.flag,
+                        color: AppTheme.darkColor.withOpacity(0.7),
+                      ),
+                      Text("Signaler le profil",
+                          style:
+                              Theme.of(context).textTheme.bodyText2!.copyWith(
+                                    fontWeight: FontWeight.w400,
+                                    fontSize: 16,
+                                    color: AppTheme.darkColor,
+                                    overflow: TextOverflow.ellipsis,
+                                  )),
                     ],
                   ),
                 ),
@@ -299,9 +343,15 @@ class _DemandBookingInProgressScreenState extends State<DemandBookingInProgressS
           Positioned(
               top: -15,
               right: -15,
-              child: IconButton(onPressed: (){
-                Get.back();
-              }, icon: Icon(Icons.close, color: AppTheme.darkColor,),))
+              child: IconButton(
+                onPressed: () {
+                  Get.back();
+                },
+                icon: Icon(
+                  Icons.close,
+                  color: AppTheme.darkColor,
+                ),
+              ))
         ],
       ),
     );
@@ -344,25 +394,25 @@ class _DemandBookingInProgressScreenState extends State<DemandBookingInProgressS
                               .textTheme
                               .bodyText2!
                               .copyWith(
-                              color: AppTheme.darkColor,
-                              fontSize: 16,
-                              fontWeight: FontWeight.w900)),
+                                  color: AppTheme.darkColor,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w900)),
                       Text('09',
                           style: Theme.of(context)
                               .textTheme
                               .bodyText2!
                               .copyWith(
-                              color: AppTheme.darkColor,
-                              fontSize: 32,
-                              fontWeight: FontWeight.w900)),
+                                  color: AppTheme.darkColor,
+                                  fontSize: 32,
+                                  fontWeight: FontWeight.w900)),
                       Text('Septembre',
                           style: Theme.of(context)
                               .textTheme
                               .bodyText2!
                               .copyWith(
-                              color: AppTheme.darkColor,
-                              fontSize: 16,
-                              fontWeight: FontWeight.w900)),
+                                  color: AppTheme.darkColor,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w900)),
                       Container(
                         padding: const EdgeInsets.symmetric(
                             vertical: 4, horizontal: 16),
@@ -375,9 +425,9 @@ class _DemandBookingInProgressScreenState extends State<DemandBookingInProgressS
                                 .textTheme
                                 .bodyText2!
                                 .copyWith(
-                                color: AppTheme.backgroundColor,
-                                fontSize: 20,
-                                fontWeight: FontWeight.w900)),
+                                    color: AppTheme.backgroundColor,
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.w900)),
                       )
                     ],
                   ),
@@ -416,25 +466,25 @@ class _DemandBookingInProgressScreenState extends State<DemandBookingInProgressS
                               .textTheme
                               .bodyText2!
                               .copyWith(
-                              color: AppTheme.darkColor,
-                              fontSize: 16,
-                              fontWeight: FontWeight.w900)),
+                                  color: AppTheme.darkColor,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w900)),
                       Text('XX',
                           style: Theme.of(context)
                               .textTheme
                               .bodyText2!
                               .copyWith(
-                              color: AppTheme.darkColor,
-                              fontSize: 32,
-                              fontWeight: FontWeight.w900)),
+                                  color: AppTheme.darkColor,
+                                  fontSize: 32,
+                                  fontWeight: FontWeight.w900)),
                       Text('Mois',
                           style: Theme.of(context)
                               .textTheme
                               .bodyText2!
                               .copyWith(
-                              color: AppTheme.darkColor,
-                              fontSize: 16,
-                              fontWeight: FontWeight.w900)),
+                                  color: AppTheme.darkColor,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w900)),
                       Container(
                         padding: const EdgeInsets.symmetric(
                             vertical: 4, horizontal: 16),
@@ -447,9 +497,9 @@ class _DemandBookingInProgressScreenState extends State<DemandBookingInProgressS
                                 .textTheme
                                 .bodyText2!
                                 .copyWith(
-                                color: AppTheme.backgroundColor,
-                                fontSize: 20,
-                                fontWeight: FontWeight.w900)),
+                                    color: AppTheme.backgroundColor,
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.w900)),
                       )
                     ],
                   ),
@@ -505,7 +555,6 @@ class _DemandBookingInProgressScreenState extends State<DemandBookingInProgressS
               height: Get.height / 12,
               color: AppTheme.darkColor,
             ),
-
           ],
         ),
       )
@@ -517,11 +566,13 @@ class _DemandBookingInProgressScreenState extends State<DemandBookingInProgressS
       height: 48,
       margin: const EdgeInsets.only(bottom: 18),
       decoration: const BoxDecoration(
-        borderRadius: BorderRadius.only(topLeft: Radius.circular(29), topRight: Radius.circular(29)),
+        borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(29), topRight: Radius.circular(29)),
         color: Colors.transparent,
       ),
       child: InkWell(
-        borderRadius: const BorderRadius.only(topLeft: Radius.circular(29), topRight: Radius.circular(29)),
+        borderRadius: const BorderRadius.only(
+            topLeft: Radius.circular(29), topRight: Radius.circular(29)),
         // splashColor: const Color(0xFFEEEEEE),
         onTap: () => Get.back(),
         child: Center(

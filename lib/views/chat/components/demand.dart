@@ -17,10 +17,8 @@ class DemandTabScreen extends StatelessWidget {
 
   final controller = Get.put(CarController());
 
-
   @override
   Widget build(BuildContext context) {
-
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 30, horizontal: 15),
       child: Column(
@@ -46,14 +44,19 @@ class DemandTabScreen extends StatelessWidget {
   List<Widget> _buildBody(BuildContext context) => [
         InkWell(
           onTap: () {
-            Get.to(() => DemandBookingScreen(car: carList.first,));
+            // Get.to(
+            //   () => DemandBookingScreen(
+            //     car: carList.first,
+            //   ),
+            // );
           },
           highlightColor: AppTheme.light,
           borderRadius: BorderRadius.circular(30),
           child: Container(
             height: Get.height / 6,
             width: Get.width,
-            decoration: BoxDecoration(borderRadius: BorderRadius.circular(30),
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(30),
                 // color: AppTheme.light,
                 boxShadow: [
                   // BoxShadow(
@@ -99,11 +102,10 @@ class DemandTabScreen extends StatelessWidget {
                           Container(
                             width: 10,
                             height: 10,
-                            margin: const  EdgeInsets.only(left: 10),
+                            margin: const EdgeInsets.only(left: 10),
                             decoration: BoxDecoration(
                                 color: AppTheme.redColor,
-                                borderRadius: BorderRadius.circular(50)
-                            ),
+                                borderRadius: BorderRadius.circular(50)),
                           )
                         ],
                       ),
@@ -164,16 +166,20 @@ class DemandTabScreen extends StatelessWidget {
         const SizedBox(
           height: 20,
         ),
-    InkWell(
-      onTap: () {
-        Get.to(()=> DemandBookingPendingScreen(car: carList.first,));
-      },
-      highlightColor: AppTheme.light,
-      borderRadius: BorderRadius.circular(30),
-      child: Container(
-        height: Get.height / 6,
-        width: Get.width,
-        decoration: BoxDecoration(borderRadius: BorderRadius.circular(30),),
+        InkWell(
+          onTap: () {
+            Get.to(() => DemandBookingPendingScreen(
+                  car: carList.first,
+                ));
+          },
+          highlightColor: AppTheme.light,
+          borderRadius: BorderRadius.circular(30),
+          child: Container(
+            height: Get.height / 6,
+            width: Get.width,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(30),
+            ),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
@@ -192,20 +198,26 @@ class DemandTabScreen extends StatelessWidget {
                       width: Get.width / 1.6,
                       child: Text(
                           'Reservation\nen attente de reponse du propriétaire',
-                          style: Theme.of(context).textTheme.bodyText2!.copyWith(
-                              fontWeight: FontWeight.w700,
-                              fontSize: 12,
-                              overflow: TextOverflow.ellipsis,
-                              color: AppTheme.darkColor)),
+                          style: Theme.of(context)
+                              .textTheme
+                              .bodyText2!
+                              .copyWith(
+                                  fontWeight: FontWeight.w700,
+                                  fontSize: 12,
+                                  overflow: TextOverflow.ellipsis,
+                                  color: AppTheme.darkColor)),
                     ),
                     SizedBox(
                       width: Get.width / 1.5,
                       child: Text('[nom prenom] souhaite\nlouer votre véhicule',
-                          style: Theme.of(context).textTheme.bodyText2!.copyWith(
-                              fontWeight: FontWeight.w400,
-                              fontSize: 12,
-                              overflow: TextOverflow.ellipsis,
-                              color: AppTheme.darkColor)),
+                          style: Theme.of(context)
+                              .textTheme
+                              .bodyText2!
+                              .copyWith(
+                                  fontWeight: FontWeight.w400,
+                                  fontSize: 12,
+                                  overflow: TextOverflow.ellipsis,
+                                  color: AppTheme.darkColor)),
                     ),
                     SizedBox(
                       width: Get.width / 1.5,
@@ -269,70 +281,75 @@ class DemandTabScreen extends StatelessWidget {
           child: Container(
             height: Get.height / 8,
             width: Get.width,
-            decoration: BoxDecoration(borderRadius: BorderRadius.circular(30),),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(30),
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                const SizedBox(
+                  height: 50,
+                  width: 50,
+                  child: CircleAvatar(
+                    backgroundImage: AssetImage('assets/images/av.png'),
+                  ),
+                ).marginZero.paddingZero,
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const SizedBox(
-                      height: 50,
-                      width: 50,
-                      child: CircleAvatar(
-                        backgroundImage: AssetImage('assets/images/av.png'),
-                      ),
-                    ).marginZero.paddingZero,
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        SizedBox(
-                          width: Get.width / 1.6,
-                          child: Text('Laure Manida',
-                              style: Theme.of(context).textTheme.bodyText2!.copyWith(
+                    SizedBox(
+                      width: Get.width / 1.6,
+                      child: Text('Laure Manida',
+                          style: Theme.of(context)
+                              .textTheme
+                              .bodyText2!
+                              .copyWith(
                                   fontWeight: FontWeight.w900,
                                   fontSize: 14,
                                   overflow: TextOverflow.ellipsis,
                                   color: AppTheme.darkColor)),
-                        ),
-                        SizedBox(
-                          width: Get.width / 1.5,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text('Du 22/12/2022',
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .bodyText2!
-                                      .copyWith(
-                                          fontWeight: FontWeight.w400,
-                                          fontSize: 12,
-                                          overflow: TextOverflow.ellipsis,
-                                          color: AppTheme.darkColor)),
-                              Text('14/01/2023',
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .bodyText2!
-                                      .copyWith(
-                                          fontWeight: FontWeight.w400,
-                                          fontSize: 12,
-                                          overflow: TextOverflow.ellipsis,
-                                          color: AppTheme.darkColor)),
-                              Text(gf.removeDecimalZeroFormat(300.0),
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .bodyText2!
-                                      .copyWith(
-                                          fontWeight: FontWeight.w900,
-                                          fontSize: 14,
-                                          overflow: TextOverflow.ellipsis,
-                                          color: AppTheme.darkColor)),
-                            ],
-                          ),
-                        ),
-                      ],
+                    ),
+                    SizedBox(
+                      width: Get.width / 1.5,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text('Du 22/12/2022',
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .bodyText2!
+                                  .copyWith(
+                                      fontWeight: FontWeight.w400,
+                                      fontSize: 12,
+                                      overflow: TextOverflow.ellipsis,
+                                      color: AppTheme.darkColor)),
+                          Text('14/01/2023',
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .bodyText2!
+                                  .copyWith(
+                                      fontWeight: FontWeight.w400,
+                                      fontSize: 12,
+                                      overflow: TextOverflow.ellipsis,
+                                      color: AppTheme.darkColor)),
+                          Text(gf.removeDecimalZeroFormat(300.0),
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .bodyText2!
+                                  .copyWith(
+                                      fontWeight: FontWeight.w900,
+                                      fontSize: 14,
+                                      overflow: TextOverflow.ellipsis,
+                                      color: AppTheme.darkColor)),
+                        ],
+                      ),
                     ),
                   ],
                 ),
-              ),
+              ],
             ),
+          ),
+        ),
       ];
 }

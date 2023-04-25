@@ -13,8 +13,8 @@ A new Flutter project.
 ### 2. Run `flutter doctor` to check if everything is ok
 ### 3  Run `flutter clean` to clean the project
 ### 4. Run `flutter pub get` to install dependencies
-### 5. flutter pub run build_runner build --delete-conflicting-outputs
-### 6. flutter run
+### 5. `flutter pub run build_runner build --delete-conflicting-outputs`
+### 6. `flutter run`
 ### 7. Enjoy
 
 
@@ -28,3 +28,9 @@ A few resources to get you started if this is your first Flutter project:
 For help getting started with Flutter development, view the
 [online documentation](https://docs.flutter.dev/), which offers tutorials,
 samples, guidance on mobile development, and a full API reference.
+
+# flutter version 3.7.7
+#### [window 3.7.7](https://storage.googleapis.com/flutter_infra_release/releases/stable/windows/flutter_windows_3.7.7-stable.zip)
+
+# backend 
+- [server](https://github.com/nagulan51/gando-backend)

@@ -30,8 +30,11 @@ class SignUpScreen extends StatelessWidget {
           elevation: 0,
           backgroundColor: Colors.transparent,
           leading: IconButton(
-            icon: Icon(Icons.arrow_back, color: AppTheme.darkColor,),
-            onPressed: (){
+            icon: Icon(
+              Icons.arrow_back,
+              color: AppTheme.darkColor,
+            ),
+            onPressed: () {
               Get.back();
             },
           ),
@@ -66,16 +69,12 @@ class SignUpScreen extends StatelessWidget {
                       alignment: Alignment.center,
                       child: Text(
                         "Bienvenue sur Gando \nInscrivez-vous",
-                        style: Theme
-                            .of(context)
-                            .textTheme
-                            .bodyText2!
-                            .copyWith(
-                          fontWeight: FontWeight.w900,
-                          fontSize: 22,
-                          overflow: TextOverflow.ellipsis,
-                          color: HexColor(AppTheme.primaryColorString!),
-                        ),
+                        style: Theme.of(context).textTheme.bodyText2!.copyWith(
+                              fontWeight: FontWeight.w900,
+                              fontSize: 22,
+                              overflow: TextOverflow.ellipsis,
+                              color: HexColor(AppTheme.primaryColorString!),
+                            ),
                         textAlign: TextAlign.center,
                       ),
                     ),
@@ -99,16 +98,21 @@ class SignUpScreen extends StatelessWidget {
                               text: 'Créer'.toUpperCase(),
                               onPressed: () async {
                                 // if check box is not checked
-                                if(controller.signUpFormKey.currentState!.validate()){
+                                if (controller.signUpFormKey.currentState!
+                                    .validate()) {
                                   if (!controller.terms.value) {
                                     Get.snackbar(
                                       'Erreur',
                                       'Vous devez accepter les conditions d\'utilisation',
                                       snackPosition: SnackPosition.TOP,
-                                      margin: const EdgeInsets.symmetric(vertical: 20, horizontal: 30),
+                                      margin: const EdgeInsets.symmetric(
+                                          vertical: 20, horizontal: 30),
                                       backgroundColor: AppTheme.redColor,
                                       colorText: Colors.white,
-                                      icon: const Icon(Icons.error_outline, color: Colors.white,),
+                                      icon: const Icon(
+                                        Icons.error_outline,
+                                        color: Colors.white,
+                                      ),
                                       duration: Duration(seconds: 3),
                                     );
                                     return;
@@ -126,17 +130,16 @@ class SignUpScreen extends StatelessWidget {
                               children: [
                                 Text(
                                   "Vous avez déjà un compte? ",
-                                  style: Theme
-                                      .of(context)
+                                  style: Theme.of(context)
                                       .textTheme
                                       .bodyText2!
                                       .copyWith(
-                                    fontWeight: FontWeight.w900,
-                                    fontSize: 12,
-                                    overflow: TextOverflow.ellipsis,
-                                    color: HexColor(
-                                        AppTheme.primaryColorString!),
-                                  ),
+                                        fontWeight: FontWeight.w900,
+                                        fontSize: 12,
+                                        overflow: TextOverflow.ellipsis,
+                                        color: HexColor(
+                                            AppTheme.primaryColorString!),
+                                      ),
                                 ),
                                 GestureDetector(
                                   onTap: () {
@@ -144,12 +147,15 @@ class SignUpScreen extends StatelessWidget {
                                   },
                                   child: Text(
                                     "Connectez-vous",
-                                    style: Theme.of(context).textTheme.bodyText2!.copyWith(
-                                      fontWeight: FontWeight.w900,
-                                      fontSize: 16,
-                                      overflow: TextOverflow.ellipsis,
-                                      color: AppTheme.primaryColor,
-                                    ),
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .bodyText2!
+                                        .copyWith(
+                                          fontWeight: FontWeight.w900,
+                                          fontSize: 16,
+                                          overflow: TextOverflow.ellipsis,
+                                          color: AppTheme.primaryColor,
+                                        ),
                                   ),
                                 )
                               ],
@@ -237,8 +243,7 @@ class SignUpScreen extends StatelessWidget {
               print('saved $p');
             },
             // default null
-            onChanged: (p) {
-            }, // default null
+            onChanged: (p) {}, // default null
             // ... + other textfield params
           ),
           const SizedBox(
@@ -278,7 +283,8 @@ class SignUpScreen extends StatelessWidget {
               // } else {
               //   topUpController.buttonDisabled.value = true;
               // }
-            }, shape: 30.0, // default null
+            },
+            shape: 30.0, // default null
             // ... + other textfield params
           ),
           const SizedBox(
@@ -298,7 +304,7 @@ class SignUpScreen extends StatelessWidget {
             ),
             validator: (value) {
               if (!gf.isPassword(value!)) {
-                if(value.length < 8){
+                if (value.length < 8) {
                   return "Mot de passe doit être supérieur à 8 caractères";
                 }
                 return "Mot de passe invalide";
@@ -333,7 +339,8 @@ class SignUpScreen extends StatelessWidget {
               // } else {
               //   topUpController.buttonDisabled.value = true;
               // }
-            }, shape: 30.0, // default null
+            },
+            shape: 30.0, // default null
             // ... + other textfield params
           ),
           const SizedBox(
@@ -347,14 +354,13 @@ class SignUpScreen extends StatelessWidget {
                   scale: 1.5,
                   child: Checkbox(
                       fillColor: MaterialStateProperty.resolveWith<Color>(
-                            (Set<MaterialState> states) =>
-                        states.contains(MaterialState.disabled)
-                            ? AppTheme.darkColor
-                            : AppTheme.primaryColor,
+                        (Set<MaterialState> states) =>
+                            states.contains(MaterialState.disabled)
+                                ? AppTheme.darkColor
+                                : AppTheme.primaryColor,
                       ),
                       shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(5)
-                      ),
+                          borderRadius: BorderRadius.circular(5)),
                       checkColor: AppTheme.darkColor,
                       value: controller.terms.value,
                       onChanged: (value) {
@@ -362,19 +368,15 @@ class SignUpScreen extends StatelessWidget {
                       }),
                 ),
                 Container(
-                  width: Get.width/ 1.6,
+                  width: Get.width / 1.6,
                   child: Text(
                     'En créant un compte, Je reconnais voir pris connaissance des CGU de Gando, de la Politique de Confidentialité et de la chartesur les Cookies et je les accepte.',
-                    style: Theme
-                        .of(context)
-                        .textTheme
-                        .bodyText2!
-                        .copyWith(
-                      fontWeight: FontWeight.w900,
-                      fontSize: 9,
-                      overflow: TextOverflow.ellipsis,
-                      color: AppTheme.darkColor,
-                    ),
+                    style: Theme.of(context).textTheme.bodyText2!.copyWith(
+                          fontWeight: FontWeight.w900,
+                          fontSize: 9,
+                          overflow: TextOverflow.ellipsis,
+                          color: AppTheme.darkColor,
+                        ),
                     maxLines: 5,
                   ),
                 ),

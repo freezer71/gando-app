@@ -62,21 +62,29 @@ class _DemandBookingScreenState extends State<DemandBookingScreen> {
           children: [
             Positioned(
               left: 0,
-              child: IconButton(onPressed: (){
-                Get.back();
-              }, icon: Icon(Icons.arrow_back_ios_outlined, color: AppTheme.darkColor,),),),
+              child: IconButton(
+                onPressed: () {
+                  Get.back();
+                },
+                icon: Icon(
+                  Icons.arrow_back_ios_outlined,
+                  color: AppTheme.darkColor,
+                ),
+              ),
+            ),
             const Positioned(
               right: -40,
               top: 8,
               child: CircleAvatar(
                 backgroundImage: AssetImage('assets/images/av.png'),
-              ),)
+              ),
+            )
           ],
         ),
         title: 'Laure Manida',
         action: [
           InkWell(
-            onTap: (){
+            onTap: () {
               Get.bottomSheet(_buildBottomSheet(car));
             },
             child: Container(
@@ -85,9 +93,12 @@ class _DemandBookingScreenState extends State<DemandBookingScreen> {
               margin: const EdgeInsets.only(top: 8, bottom: 8, right: 18),
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(8),
-                  color: AppTheme.light.withOpacity(0.4)
-              ),
-              child: Center(child: Icon(Icons.more_vert_outlined, color: AppTheme.darkColor,)),
+                  color: AppTheme.light.withOpacity(0.4)),
+              child: Center(
+                  child: Icon(
+                Icons.more_vert_outlined,
+                color: AppTheme.darkColor,
+              )),
             ),
           ),
         ],
@@ -99,13 +110,13 @@ class _DemandBookingScreenState extends State<DemandBookingScreen> {
               padding: const EdgeInsets.all(16),
               children: [
                 Text(
-                  '[Laure Manida] souhaite louer votre véhicule\n${car.brand} ${car.model}' ,
+                  '[Laure Manida] souhaite louer votre véhicule\n${car.brand} ${car.model}',
                   style: Theme.of(context).textTheme.bodyText2!.copyWith(
-                    fontWeight: FontWeight.w900,
-                    fontSize: 16,
-                    color: AppTheme.darkColor,
-                    overflow: TextOverflow.ellipsis,
-                  ),
+                        fontWeight: FontWeight.w900,
+                        fontSize: 16,
+                        color: AppTheme.darkColor,
+                        overflow: TextOverflow.ellipsis,
+                      ),
                   textAlign: TextAlign.center,
                 ),
                 Divider(
@@ -141,7 +152,9 @@ class _DemandBookingScreenState extends State<DemandBookingScreen> {
                       ),
                   textAlign: TextAlign.center,
                 ),
-                SizedBox(height: Get.height / 4,),
+                SizedBox(
+                  height: Get.height / 4,
+                ),
               ],
             ),
           ),
@@ -157,8 +170,9 @@ class _DemandBookingScreenState extends State<DemandBookingScreen> {
       height: 400,
       padding: EdgeInsets.symmetric(vertical: 20, horizontal: 20),
       decoration: BoxDecoration(
-        color:  AppTheme.backgroundColor,
-        borderRadius: BorderRadius.only(topLeft: Radius.circular(16), topRight: Radius.circular(16)),
+        color: AppTheme.backgroundColor,
+        borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(16), topRight: Radius.circular(16)),
       ),
       child: Stack(
         children: [
@@ -171,64 +185,90 @@ class _DemandBookingScreenState extends State<DemandBookingScreen> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      Icon(Icons.phone_enabled_rounded, color: AppTheme.darkColor.withOpacity(0.7),),
-                      Text("Voir le numéro", style: Theme.of(context).textTheme.bodyText2!.copyWith(
-                        fontWeight: FontWeight.w400,
-                        fontSize: 16,
-                        color: AppTheme.darkColor,
-                        overflow: TextOverflow.ellipsis,
-                      )),
+                      Icon(
+                        Icons.phone_enabled_rounded,
+                        color: AppTheme.darkColor.withOpacity(0.7),
+                      ),
+                      Text("Voir le numéro",
+                          style:
+                              Theme.of(context).textTheme.bodyText2!.copyWith(
+                                    fontWeight: FontWeight.w400,
+                                    fontSize: 16,
+                                    color: AppTheme.darkColor,
+                                    overflow: TextOverflow.ellipsis,
+                                  )),
                     ],
                   ),
                 ),
-                Divider( color: AppTheme.darkColor.withOpacity(0.3),),
+                Divider(
+                  color: AppTheme.darkColor.withOpacity(0.3),
+                ),
                 Container(
                   padding: EdgeInsets.all(22),
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      Icon(Icons.message, color: AppTheme.darkColor.withOpacity(0.7),),
-                      Text("Envoyer un message", style: Theme.of(context).textTheme.bodyText2!.copyWith(
-                        fontWeight: FontWeight.w400,
-                        fontSize: 16,
-                        color: AppTheme.darkColor,
-                        overflow: TextOverflow.ellipsis,
-                      )),
+                      Icon(
+                        Icons.message,
+                        color: AppTheme.darkColor.withOpacity(0.7),
+                      ),
+                      Text("Envoyer un message",
+                          style:
+                              Theme.of(context).textTheme.bodyText2!.copyWith(
+                                    fontWeight: FontWeight.w400,
+                                    fontSize: 16,
+                                    color: AppTheme.darkColor,
+                                    overflow: TextOverflow.ellipsis,
+                                  )),
                     ],
                   ),
                 ),
-                Divider( color: AppTheme.darkColor.withOpacity(0.3),),
+                Divider(
+                  color: AppTheme.darkColor.withOpacity(0.3),
+                ),
                 Container(
                   padding: EdgeInsets.all(22),
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      Icon(Icons.share, color: AppTheme.darkColor.withOpacity(0.7),),
-                      Text("Partager le profile", style: Theme.of(context).textTheme.bodyText2!.copyWith(
-                        fontWeight: FontWeight.w400,
-                        fontSize: 16,
-                        color: AppTheme.darkColor,
-                        overflow: TextOverflow.ellipsis,
-                      )),
+                      Icon(
+                        Icons.share,
+                        color: AppTheme.darkColor.withOpacity(0.7),
+                      ),
+                      Text("Partager le profile",
+                          style:
+                              Theme.of(context).textTheme.bodyText2!.copyWith(
+                                    fontWeight: FontWeight.w400,
+                                    fontSize: 16,
+                                    color: AppTheme.darkColor,
+                                    overflow: TextOverflow.ellipsis,
+                                  )),
                     ],
                   ),
                 ),
-                Divider( color: AppTheme.darkColor.withOpacity(0.3),),
+                Divider(
+                  color: AppTheme.darkColor.withOpacity(0.3),
+                ),
                 Container(
                   padding: EdgeInsets.all(22),
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      Icon(Icons.flag, color: AppTheme.darkColor.withOpacity(0.7),),
-                      Text("Signaler le profil", style: Theme.of(context).textTheme.bodyText2!.copyWith(
-                        fontWeight: FontWeight.w400,
-                        fontSize: 16,
-                        color: AppTheme.darkColor,
-                        overflow: TextOverflow.ellipsis,
-                      )),
+                      Icon(
+                        Icons.flag,
+                        color: AppTheme.darkColor.withOpacity(0.7),
+                      ),
+                      Text("Signaler le profil",
+                          style:
+                              Theme.of(context).textTheme.bodyText2!.copyWith(
+                                    fontWeight: FontWeight.w400,
+                                    fontSize: 16,
+                                    color: AppTheme.darkColor,
+                                    overflow: TextOverflow.ellipsis,
+                                  )),
                     ],
                   ),
                 ),
@@ -238,9 +278,15 @@ class _DemandBookingScreenState extends State<DemandBookingScreen> {
           Positioned(
               top: -15,
               right: -15,
-              child: IconButton(onPressed: (){
-                Get.back();
-              }, icon: Icon(Icons.close, color: AppTheme.darkColor,),))
+              child: IconButton(
+                onPressed: () {
+                  Get.back();
+                },
+                icon: Icon(
+                  Icons.close,
+                  color: AppTheme.darkColor,
+                ),
+              ))
         ],
       ),
     );
@@ -253,7 +299,8 @@ class _DemandBookingScreenState extends State<DemandBookingScreen> {
       right: 0,
       child: Container(
         decoration: BoxDecoration(
-          borderRadius: const BorderRadius.only(topLeft: Radius.circular(30), topRight: Radius.circular(30)),
+          borderRadius: const BorderRadius.only(
+              topLeft: Radius.circular(30), topRight: Radius.circular(30)),
           color: AppTheme.light,
         ),
         height: Platform.isAndroid ? 70 : 90,

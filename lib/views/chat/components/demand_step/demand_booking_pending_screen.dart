@@ -21,10 +21,12 @@ class DemandBookingPendingScreen extends StatefulWidget {
   DemandBookingPendingScreen({Key? key, required this.car}) : super(key: key);
 
   @override
-  State<DemandBookingPendingScreen> createState() => _DemandBookingPendingScreenState();
+  State<DemandBookingPendingScreen> createState() =>
+      _DemandBookingPendingScreenState();
 }
 
-class _DemandBookingPendingScreenState extends State<DemandBookingPendingScreen> {
+class _DemandBookingPendingScreenState
+    extends State<DemandBookingPendingScreen> {
   final TextEditingController etNameController = TextEditingController();
 
   final TextEditingController etLastNameController = TextEditingController();
@@ -61,21 +63,29 @@ class _DemandBookingPendingScreenState extends State<DemandBookingPendingScreen>
           children: [
             Positioned(
               left: 0,
-              child: IconButton(onPressed: (){
-                Get.back();
-              }, icon: Icon(Icons.arrow_back_ios_outlined, color: AppTheme.darkColor,),),),
+              child: IconButton(
+                onPressed: () {
+                  Get.back();
+                },
+                icon: Icon(
+                  Icons.arrow_back_ios_outlined,
+                  color: AppTheme.darkColor,
+                ),
+              ),
+            ),
             const Positioned(
               right: -40,
               top: 8,
               child: CircleAvatar(
                 backgroundImage: AssetImage('assets/images/av.png'),
-              ),)
+              ),
+            )
           ],
         ),
         title: 'Laure Manida',
         action: [
           InkWell(
-            onTap: (){
+            onTap: () {
               Get.bottomSheet(_buildBottomSheet(car));
             },
             child: Container(
@@ -84,9 +94,12 @@ class _DemandBookingPendingScreenState extends State<DemandBookingPendingScreen>
               margin: const EdgeInsets.only(top: 8, bottom: 8, right: 18),
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(8),
-                  color: AppTheme.light.withOpacity(0.4)
-              ),
-              child: Center(child: Icon(Icons.more_vert_outlined, color: AppTheme.darkColor,)),
+                  color: AppTheme.light.withOpacity(0.4)),
+              child: Center(
+                  child: Icon(
+                Icons.more_vert_outlined,
+                color: AppTheme.darkColor,
+              )),
             ),
           ),
         ],
@@ -98,13 +111,13 @@ class _DemandBookingPendingScreenState extends State<DemandBookingPendingScreen>
               padding: const EdgeInsets.all(16),
               children: [
                 Text(
-                  '${car.brand} ${car.model}' ,
+                  '${car.brand} ${car.model}',
                   style: Theme.of(context).textTheme.bodyText2!.copyWith(
-                    fontWeight: FontWeight.w900,
-                    fontSize: 18,
-                    color: AppTheme.darkColor,
-                    overflow: TextOverflow.ellipsis,
-                  ),
+                        fontWeight: FontWeight.w900,
+                        fontSize: 18,
+                        color: AppTheme.darkColor,
+                        overflow: TextOverflow.ellipsis,
+                      ),
                   textAlign: TextAlign.center,
                 ),
                 Divider(
@@ -117,25 +130,24 @@ class _DemandBookingPendingScreenState extends State<DemandBookingPendingScreen>
                   color: AppTheme.darkColor,
                 ),
                 ..._buildBody(),
-
                 Text(
                   'Le montant de la location est de ',
                   style: Theme.of(context).textTheme.bodyText2!.copyWith(
-                    fontWeight: FontWeight.w900,
-                    fontSize: 18,
-                    color: AppTheme.darkColor,
-                    overflow: TextOverflow.ellipsis,
-                  ),
+                        fontWeight: FontWeight.w900,
+                        fontSize: 18,
+                        color: AppTheme.darkColor,
+                        overflow: TextOverflow.ellipsis,
+                      ),
                   textAlign: TextAlign.center,
                 ),
                 Text(
                   '${car.pricePerDay! * 30 / 100} €'.toUpperCase(),
                   style: Theme.of(context).textTheme.bodyText2!.copyWith(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 50,
-                    color: AppTheme.darkColor,
-                    overflow: TextOverflow.ellipsis,
-                  ),
+                        fontWeight: FontWeight.bold,
+                        fontSize: 50,
+                        color: AppTheme.darkColor,
+                        overflow: TextOverflow.ellipsis,
+                      ),
                   textAlign: TextAlign.center,
                 ),
                 Container(
@@ -143,26 +155,30 @@ class _DemandBookingPendingScreenState extends State<DemandBookingPendingScreen>
                   padding: const EdgeInsets.all(10),
                   margin: const EdgeInsets.only(top: 20),
                   decoration: BoxDecoration(
-                    color: AppTheme.light,
-                    borderRadius: BorderRadius.circular(30)
-                  ),
+                      color: AppTheme.light,
+                      borderRadius: BorderRadius.circular(30)),
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Icon(Icons.access_time_outlined, color: AppTheme.darkColor.withOpacity(0.4),),
-                  SizedBox(
-                    width: Get.width /20,),
+                      Icon(
+                        Icons.access_time_outlined,
+                        color: AppTheme.darkColor.withOpacity(0.4),
+                      ),
+                      SizedBox(
+                        width: Get.width / 20,
+                      ),
                       SizedBox(
                         width: Get.width / 1.6,
                         child: Text(
                           'Votre demande de location est désormais en attente\n de la réponse du propriétaire.',
-                          style: Theme.of(context).textTheme.bodyText2!.copyWith(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 12,
-                            color: AppTheme.darkColor,
-                            overflow: TextOverflow.ellipsis,
-                          ),
+                          style:
+                              Theme.of(context).textTheme.bodyText2!.copyWith(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 12,
+                                    color: AppTheme.darkColor,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
                           maxLines: 3,
                           textAlign: TextAlign.left,
                         ),
@@ -170,7 +186,9 @@ class _DemandBookingPendingScreenState extends State<DemandBookingPendingScreen>
                     ],
                   ),
                 ),
-                SizedBox(height: Get.height / 5,),
+                SizedBox(
+                  height: Get.height / 5,
+                ),
               ],
             ),
           ),
@@ -186,8 +204,9 @@ class _DemandBookingPendingScreenState extends State<DemandBookingPendingScreen>
       height: 400,
       padding: EdgeInsets.symmetric(vertical: 20, horizontal: 20),
       decoration: BoxDecoration(
-        color:  AppTheme.backgroundColor,
-        borderRadius: BorderRadius.only(topLeft: Radius.circular(16), topRight: Radius.circular(16)),
+        color: AppTheme.backgroundColor,
+        borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(16), topRight: Radius.circular(16)),
       ),
       child: Stack(
         children: [
@@ -200,64 +219,90 @@ class _DemandBookingPendingScreenState extends State<DemandBookingPendingScreen>
                     crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      Icon(Icons.phone_enabled_rounded, color: AppTheme.darkColor.withOpacity(0.7),),
-                      Text("Voir le numéro", style: Theme.of(context).textTheme.bodyText2!.copyWith(
-                        fontWeight: FontWeight.w400,
-                        fontSize: 16,
-                        color: AppTheme.darkColor,
-                        overflow: TextOverflow.ellipsis,
-                      )),
+                      Icon(
+                        Icons.phone_enabled_rounded,
+                        color: AppTheme.darkColor.withOpacity(0.7),
+                      ),
+                      Text("Voir le numéro",
+                          style:
+                              Theme.of(context).textTheme.bodyText2!.copyWith(
+                                    fontWeight: FontWeight.w400,
+                                    fontSize: 16,
+                                    color: AppTheme.darkColor,
+                                    overflow: TextOverflow.ellipsis,
+                                  )),
                     ],
                   ),
                 ),
-                Divider( color: AppTheme.darkColor.withOpacity(0.3),),
+                Divider(
+                  color: AppTheme.darkColor.withOpacity(0.3),
+                ),
                 Container(
                   padding: EdgeInsets.all(22),
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      Icon(Icons.message, color: AppTheme.darkColor.withOpacity(0.7),),
-                      Text("Envoyer un message", style: Theme.of(context).textTheme.bodyText2!.copyWith(
-                        fontWeight: FontWeight.w400,
-                        fontSize: 16,
-                        color: AppTheme.darkColor,
-                        overflow: TextOverflow.ellipsis,
-                      )),
+                      Icon(
+                        Icons.message,
+                        color: AppTheme.darkColor.withOpacity(0.7),
+                      ),
+                      Text("Envoyer un message",
+                          style:
+                              Theme.of(context).textTheme.bodyText2!.copyWith(
+                                    fontWeight: FontWeight.w400,
+                                    fontSize: 16,
+                                    color: AppTheme.darkColor,
+                                    overflow: TextOverflow.ellipsis,
+                                  )),
                     ],
                   ),
                 ),
-                Divider( color: AppTheme.darkColor.withOpacity(0.3),),
+                Divider(
+                  color: AppTheme.darkColor.withOpacity(0.3),
+                ),
                 Container(
                   padding: EdgeInsets.all(22),
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      Icon(Icons.share, color: AppTheme.darkColor.withOpacity(0.7),),
-                      Text("Partager le profile", style: Theme.of(context).textTheme.bodyText2!.copyWith(
-                        fontWeight: FontWeight.w400,
-                        fontSize: 16,
-                        color: AppTheme.darkColor,
-                        overflow: TextOverflow.ellipsis,
-                      )),
+                      Icon(
+                        Icons.share,
+                        color: AppTheme.darkColor.withOpacity(0.7),
+                      ),
+                      Text("Partager le profile",
+                          style:
+                              Theme.of(context).textTheme.bodyText2!.copyWith(
+                                    fontWeight: FontWeight.w400,
+                                    fontSize: 16,
+                                    color: AppTheme.darkColor,
+                                    overflow: TextOverflow.ellipsis,
+                                  )),
                     ],
                   ),
                 ),
-                Divider( color: AppTheme.darkColor.withOpacity(0.3),),
+                Divider(
+                  color: AppTheme.darkColor.withOpacity(0.3),
+                ),
                 Container(
                   padding: EdgeInsets.all(22),
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      Icon(Icons.flag, color: AppTheme.darkColor.withOpacity(0.7),),
-                      Text("Signaler le profil", style: Theme.of(context).textTheme.bodyText2!.copyWith(
-                        fontWeight: FontWeight.w400,
-                        fontSize: 16,
-                        color: AppTheme.darkColor,
-                        overflow: TextOverflow.ellipsis,
-                      )),
+                      Icon(
+                        Icons.flag,
+                        color: AppTheme.darkColor.withOpacity(0.7),
+                      ),
+                      Text("Signaler le profil",
+                          style:
+                              Theme.of(context).textTheme.bodyText2!.copyWith(
+                                    fontWeight: FontWeight.w400,
+                                    fontSize: 16,
+                                    color: AppTheme.darkColor,
+                                    overflow: TextOverflow.ellipsis,
+                                  )),
                     ],
                   ),
                 ),
@@ -267,9 +312,15 @@ class _DemandBookingPendingScreenState extends State<DemandBookingPendingScreen>
           Positioned(
               top: -15,
               right: -15,
-              child: IconButton(onPressed: (){
-                Get.back();
-              }, icon: Icon(Icons.close, color: AppTheme.darkColor,),))
+              child: IconButton(
+                onPressed: () {
+                  Get.back();
+                },
+                icon: Icon(
+                  Icons.close,
+                  color: AppTheme.darkColor,
+                ),
+              ))
         ],
       ),
     );
@@ -282,7 +333,8 @@ class _DemandBookingPendingScreenState extends State<DemandBookingPendingScreen>
       right: 0,
       child: Container(
         decoration: BoxDecoration(
-          borderRadius: const BorderRadius.only(topLeft: Radius.circular(30), topRight: Radius.circular(30)),
+          borderRadius: const BorderRadius.only(
+              topLeft: Radius.circular(30), topRight: Radius.circular(30)),
           color: AppTheme.light,
         ),
         height: Platform.isAndroid ? 70 : 90,
@@ -328,25 +380,25 @@ class _DemandBookingPendingScreenState extends State<DemandBookingPendingScreen>
                               .textTheme
                               .bodyText2!
                               .copyWith(
-                              color: AppTheme.darkColor,
-                              fontSize: 16,
-                              fontWeight: FontWeight.w900)),
+                                  color: AppTheme.darkColor,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w900)),
                       Text('09',
                           style: Theme.of(context)
                               .textTheme
                               .bodyText2!
                               .copyWith(
-                              color: AppTheme.darkColor,
-                              fontSize: 32,
-                              fontWeight: FontWeight.w900)),
+                                  color: AppTheme.darkColor,
+                                  fontSize: 32,
+                                  fontWeight: FontWeight.w900)),
                       Text('Septembre',
                           style: Theme.of(context)
                               .textTheme
                               .bodyText2!
                               .copyWith(
-                              color: AppTheme.darkColor,
-                              fontSize: 16,
-                              fontWeight: FontWeight.w900)),
+                                  color: AppTheme.darkColor,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w900)),
                       Container(
                         padding: const EdgeInsets.symmetric(
                             vertical: 4, horizontal: 16),
@@ -359,9 +411,9 @@ class _DemandBookingPendingScreenState extends State<DemandBookingPendingScreen>
                                 .textTheme
                                 .bodyText2!
                                 .copyWith(
-                                color: AppTheme.backgroundColor,
-                                fontSize: 20,
-                                fontWeight: FontWeight.w900)),
+                                    color: AppTheme.backgroundColor,
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.w900)),
                       )
                     ],
                   ),
@@ -400,25 +452,25 @@ class _DemandBookingPendingScreenState extends State<DemandBookingPendingScreen>
                               .textTheme
                               .bodyText2!
                               .copyWith(
-                              color: AppTheme.darkColor,
-                              fontSize: 16,
-                              fontWeight: FontWeight.w900)),
+                                  color: AppTheme.darkColor,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w900)),
                       Text('XX',
                           style: Theme.of(context)
                               .textTheme
                               .bodyText2!
                               .copyWith(
-                              color: AppTheme.darkColor,
-                              fontSize: 32,
-                              fontWeight: FontWeight.w900)),
+                                  color: AppTheme.darkColor,
+                                  fontSize: 32,
+                                  fontWeight: FontWeight.w900)),
                       Text('Mois',
                           style: Theme.of(context)
                               .textTheme
                               .bodyText2!
                               .copyWith(
-                              color: AppTheme.darkColor,
-                              fontSize: 16,
-                              fontWeight: FontWeight.w900)),
+                                  color: AppTheme.darkColor,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w900)),
                       Container(
                         padding: const EdgeInsets.symmetric(
                             vertical: 4, horizontal: 16),
@@ -431,9 +483,9 @@ class _DemandBookingPendingScreenState extends State<DemandBookingPendingScreen>
                                 .textTheme
                                 .bodyText2!
                                 .copyWith(
-                                color: AppTheme.backgroundColor,
-                                fontSize: 20,
-                                fontWeight: FontWeight.w900)),
+                                    color: AppTheme.backgroundColor,
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.w900)),
                       )
                     ],
                   ),
@@ -489,7 +541,6 @@ class _DemandBookingPendingScreenState extends State<DemandBookingPendingScreen>
               height: Get.height / 22,
               color: AppTheme.darkColor,
             ),
-
           ],
         ),
       )
@@ -544,9 +595,13 @@ class _DemandBookingPendingScreenState extends State<DemandBookingPendingScreen>
                           keyboardType: TextInputType.text,
                           autofocus: false,
                           enabled: true,
-                          validator: (v) { return null;  },
-                          onChanged: (v) {  },
-                          onSaved: (v) {  }, hintText: 'Nom', formatter: [],
+                          validator: (v) {
+                            return null;
+                          },
+                          onChanged: (v) {},
+                          onSaved: (v) {},
+                          hintText: 'Nom',
+                          formatter: [],
                         ),
                       ),
                       Container(
@@ -556,9 +611,13 @@ class _DemandBookingPendingScreenState extends State<DemandBookingPendingScreen>
                           keyboardType: TextInputType.text,
                           autofocus: false,
                           enabled: true,
-                          validator: (v) { return null;  },
-                          onChanged: (v) {  },
-                          onSaved: (v) {  }, hintText: 'Prénom', formatter: [],
+                          validator: (v) {
+                            return null;
+                          },
+                          onChanged: (v) {},
+                          onSaved: (v) {},
+                          hintText: 'Prénom',
+                          formatter: [],
                         ),
                       ),
                     ],
@@ -576,9 +635,9 @@ class _DemandBookingPendingScreenState extends State<DemandBookingPendingScreen>
                               .textTheme
                               .bodyText2!
                               .copyWith(
-                              color: AppTheme.darkColor,
-                              fontSize: 16,
-                              fontWeight: FontWeight.w500),
+                                  color: AppTheme.darkColor,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w500),
                           textAlign: TextAlign.left,
                         ),
                         const SizedBox(
@@ -594,30 +653,32 @@ class _DemandBookingPendingScreenState extends State<DemandBookingPendingScreen>
                               .textTheme
                               .bodyText2!
                               .copyWith(
-                              color: AppTheme.darkColor,
-                              fontSize: 18,
-                              fontWeight: FontWeight.w500),
+                                  color: AppTheme.darkColor,
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.w500),
                           dropdownDecoration: BoxDecoration(
                               borderRadius:
-                              const BorderRadius.all(Radius.circular(30)),
+                                  const BorderRadius.all(Radius.circular(30)),
                               color: AppTheme.light,
                               border: Border.all(
                                   color: AppTheme.darkColor, width: 2)),
                           countrySearchPlaceholder: "Selectionner un Pays",
+
                           ///Disabled Dropdown box decoration to style your dropdown selector [OPTIONAL PARAMETER]  (USE with disabled dropdownDecoration)
                           disabledDropdownDecoration: BoxDecoration(
                               borderRadius:
-                              const BorderRadius.all(Radius.circular(30)),
+                                  const BorderRadius.all(Radius.circular(30)),
                               color: Colors.grey.shade300,
                               border: Border.all(
-                                  color: AppTheme.darkColor.withOpacity(0.4), width: 1)),
+                                  color: AppTheme.darkColor.withOpacity(0.4),
+                                  width: 1)),
                           dropdownItemStyle: Theme.of(context)
                               .textTheme
                               .bodyText2!
                               .copyWith(
-                              color: AppTheme.backgroundColor,
-                              fontSize: 14,
-                              fontWeight: FontWeight.w500),
+                                  color: AppTheme.backgroundColor,
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w500),
                           onCountryChanged: (value) {
                             setState(() {
                               obtainingCountryController = value;
@@ -641,9 +702,9 @@ class _DemandBookingPendingScreenState extends State<DemandBookingPendingScreen>
                                 .textTheme
                                 .bodyText2!
                                 .copyWith(
-                                color: AppTheme.darkColor,
-                                fontSize: 16,
-                                fontWeight: FontWeight.w500)),
+                                    color: AppTheme.darkColor,
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w500)),
                         SizedBox(
                           height: 10,
                         ),
@@ -651,16 +712,20 @@ class _DemandBookingPendingScreenState extends State<DemandBookingPendingScreen>
                           controller: drivingIdController,
                           keyboardType: TextInputType.number,
                           autofocus: false,
-                          validator: (v) { return null;  },
-                          onChanged: (v) {  },
-                          onSaved: (v) {  }, hintText: 'Numero de permis', formatter: [],
+                          validator: (v) {
+                            return null;
+                          },
+                          onChanged: (v) {},
+                          onSaved: (v) {},
+                          hintText: 'Numero de permis',
+                          formatter: [],
                         ),
                       ],
                     ),
                   ),
                   Container(
                     width: Get.width - 40,
-                    padding: const  EdgeInsets.only(bottom: 10, top: 10),
+                    padding: const EdgeInsets.only(bottom: 10, top: 10),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -671,9 +736,9 @@ class _DemandBookingPendingScreenState extends State<DemandBookingPendingScreen>
                               .textTheme
                               .bodyText2!
                               .copyWith(
-                              color: AppTheme.darkColor,
-                              fontSize: 16,
-                              fontWeight: FontWeight.w500),
+                                  color: AppTheme.darkColor,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w500),
                           textAlign: TextAlign.left,
                         ),
                         const SizedBox(
@@ -685,12 +750,14 @@ class _DemandBookingPendingScreenState extends State<DemandBookingPendingScreen>
                             filled: true,
                             fillColor: AppTheme.light,
                             disabledBorder: OutlineInputBorder(
-                              borderSide: BorderSide(color: AppTheme.darkColor, width: 1.0),
+                              borderSide: BorderSide(
+                                  color: AppTheme.darkColor, width: 1.0),
                               borderRadius: BorderRadius.circular(30),
                               gapPadding: 0,
                             ),
                             enabledBorder: OutlineInputBorder(
-                              borderSide: BorderSide(color: AppTheme.darkColor, width: 1.0),
+                              borderSide: BorderSide(
+                                  color: AppTheme.darkColor, width: 1.0),
                               borderRadius: BorderRadius.circular(30),
                               gapPadding: 0,
                             ),
@@ -705,7 +772,7 @@ class _DemandBookingPendingScreenState extends State<DemandBookingPendingScreen>
                           isFormValidator: true,
                           // optional
                           startYear:
-                          DateTime.parse('1969-07-20 20:18:04Z').year,
+                              DateTime.parse('1969-07-20 20:18:04Z').year,
                           // optional
                           endYear: DateTime.now().year,
                           // optional
@@ -725,14 +792,18 @@ class _DemandBookingPendingScreenState extends State<DemandBookingPendingScreen>
                           onChangedYear: (value) =>
                               print('onChangedYear: $value'),
                           boxDecoration: BoxDecoration(
-                              border: Border.all(color: Colors.transparent, width: 0.0)), // optional
-                          showDay: true,// optional
+                              border: Border.all(
+                                  color: Colors.transparent,
+                                  width: 0.0)), // optional
+                          showDay: true, // optional
                           dayFlex: 2,
-                          locale: "en",// optional
+                          locale: "en", // optional
                           hintDay: 'Jour', // optional
                           hintMonth: 'Mois', // optional
                           hintYear: 'Année', // optional
-                          hintTextStyle: TextStyle(color: AppTheme.redColor, fontSize: 9), // optional
+                          hintTextStyle: TextStyle(
+                              color: AppTheme.redColor,
+                              fontSize: 9), // optional
                         ),
 
                         // TextButton(
@@ -781,7 +852,6 @@ class _DemandBookingPendingScreenState extends State<DemandBookingPendingScreen>
                         //         ],
                         //       ),
                         //     )),
-
                       ],
                     ),
                   ),
@@ -800,7 +870,8 @@ class _DemandBookingPendingScreenState extends State<DemandBookingPendingScreen>
   }
 
   Widget _buildResultForm(BuildContext context) {
-    if (1==1) { // ramplace with current form state validator check
+    if (1 == 1) {
+      // ramplace with current form state validator check
       return Container(
         height: Get.height / 2.2,
         margin: const EdgeInsets.symmetric(vertical: 10),
@@ -815,17 +886,16 @@ class _DemandBookingPendingScreenState extends State<DemandBookingPendingScreen>
             ),
           ],
         ),
-
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
         child: Column(
           children: [
             Text('Detail de la location ',
                 style: Theme.of(context).textTheme.bodyText2!.copyWith(
-                  fontWeight: FontWeight.w900,
-                  fontSize: 18,
-                  color: AppTheme.darkColor,
-                  overflow: TextOverflow.ellipsis,
-                )),
+                      fontWeight: FontWeight.w900,
+                      fontSize: 18,
+                      color: AppTheme.darkColor,
+                      overflow: TextOverflow.ellipsis,
+                    )),
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 12.0),
               child: Row(
@@ -834,18 +904,18 @@ class _DemandBookingPendingScreenState extends State<DemandBookingPendingScreen>
                 children: [
                   Text('Durée de la location',
                       style: Theme.of(context).textTheme.bodyText2!.copyWith(
-                        fontWeight: FontWeight.w500,
-                        fontSize: 14,
-                        color: AppTheme.darkColor,
-                        overflow: TextOverflow.ellipsis,
-                      )),
+                            fontWeight: FontWeight.w500,
+                            fontSize: 14,
+                            color: AppTheme.darkColor,
+                            overflow: TextOverflow.ellipsis,
+                          )),
                   Text('1 jour',
                       style: Theme.of(context).textTheme.bodyText2!.copyWith(
-                        fontWeight: FontWeight.w900,
-                        fontSize: 18,
-                        color: AppTheme.darkColor,
-                        overflow: TextOverflow.ellipsis,
-                      )),
+                            fontWeight: FontWeight.w900,
+                            fontSize: 18,
+                            color: AppTheme.darkColor,
+                            overflow: TextOverflow.ellipsis,
+                          )),
                 ],
               ),
             ),
@@ -861,18 +931,18 @@ class _DemandBookingPendingScreenState extends State<DemandBookingPendingScreen>
                 children: [
                   Text('Kilometrage inclus',
                       style: Theme.of(context).textTheme.bodyText2!.copyWith(
-                        fontWeight: FontWeight.w500,
-                        fontSize: 14,
-                        color: AppTheme.darkColor,
-                        overflow: TextOverflow.ellipsis,
-                      )),
+                            fontWeight: FontWeight.w500,
+                            fontSize: 14,
+                            color: AppTheme.darkColor,
+                            overflow: TextOverflow.ellipsis,
+                          )),
                   Text('200 Km',
                       style: Theme.of(context).textTheme.bodyText2!.copyWith(
-                        fontWeight: FontWeight.w900,
-                        fontSize: 18,
-                        color: AppTheme.darkColor,
-                        overflow: TextOverflow.ellipsis,
-                      )),
+                            fontWeight: FontWeight.w900,
+                            fontSize: 18,
+                            color: AppTheme.darkColor,
+                            overflow: TextOverflow.ellipsis,
+                          )),
                 ],
               ),
             ),
@@ -888,18 +958,18 @@ class _DemandBookingPendingScreenState extends State<DemandBookingPendingScreen>
                 children: [
                   Text('Montant (hors option)',
                       style: Theme.of(context).textTheme.bodyText2!.copyWith(
-                        fontWeight: FontWeight.w500,
-                        fontSize: 14,
-                        color: AppTheme.darkColor,
-                        overflow: TextOverflow.ellipsis,
-                      )),
+                            fontWeight: FontWeight.w500,
+                            fontSize: 14,
+                            color: AppTheme.darkColor,
+                            overflow: TextOverflow.ellipsis,
+                          )),
                   Text('15 €',
                       style: Theme.of(context).textTheme.bodyText2!.copyWith(
-                        fontWeight: FontWeight.w900,
-                        fontSize: 18,
-                        color: AppTheme.darkColor,
-                        overflow: TextOverflow.ellipsis,
-                      )),
+                            fontWeight: FontWeight.w900,
+                            fontSize: 18,
+                            color: AppTheme.darkColor,
+                            overflow: TextOverflow.ellipsis,
+                          )),
                 ],
               ),
             ),
@@ -915,18 +985,18 @@ class _DemandBookingPendingScreenState extends State<DemandBookingPendingScreen>
                 children: [
                   Text('Suplément jeune conducteur',
                       style: Theme.of(context).textTheme.bodyText2!.copyWith(
-                        fontWeight: FontWeight.w500,
-                        fontSize: 14,
-                        color: AppTheme.darkColor,
-                        overflow: TextOverflow.ellipsis,
-                      )),
+                            fontWeight: FontWeight.w500,
+                            fontSize: 14,
+                            color: AppTheme.darkColor,
+                            overflow: TextOverflow.ellipsis,
+                          )),
                   Text('2.25 €',
                       style: Theme.of(context).textTheme.bodyText2!.copyWith(
-                        fontWeight: FontWeight.w900,
-                        fontSize: 18,
-                        color: AppTheme.darkColor,
-                        overflow: TextOverflow.ellipsis,
-                      )),
+                            fontWeight: FontWeight.w900,
+                            fontSize: 18,
+                            color: AppTheme.darkColor,
+                            overflow: TextOverflow.ellipsis,
+                          )),
                 ],
               ),
             ),
@@ -938,18 +1008,18 @@ class _DemandBookingPendingScreenState extends State<DemandBookingPendingScreen>
                 children: [
                   Text('Montant total',
                       style: Theme.of(context).textTheme.bodyText2!.copyWith(
-                        fontWeight: FontWeight.w900,
-                        fontSize: 18,
-                        color: AppTheme.darkColor,
-                        overflow: TextOverflow.ellipsis,
-                      )),
+                            fontWeight: FontWeight.w900,
+                            fontSize: 18,
+                            color: AppTheme.darkColor,
+                            overflow: TextOverflow.ellipsis,
+                          )),
                   Text('17.25 € ',
                       style: Theme.of(context).textTheme.bodyText2!.copyWith(
-                        fontWeight: FontWeight.w900,
-                        fontSize: 22,
-                        color: AppTheme.primaryColor,
-                        overflow: TextOverflow.ellipsis,
-                      )),
+                            fontWeight: FontWeight.w900,
+                            fontSize: 22,
+                            color: AppTheme.primaryColor,
+                            overflow: TextOverflow.ellipsis,
+                          )),
                 ],
               ),
             ),

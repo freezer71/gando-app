@@ -1,5 +1,3 @@
-
-
 import 'package:flutter/material.dart';
 import 'package:gando/config/textstyle.dart';
 import 'package:gando/generated/assets.dart';
@@ -19,23 +17,28 @@ class PaymentScreen extends StatelessWidget {
         elevation: 0,
         centerTitle: true,
         automaticallyImplyLeading: true,
-        leading: InkWell(onTap: (){
-          Get.back();
-        },child: Icon(Icons.arrow_back, color: AppTheme.darkColor)),
+        leading: InkWell(
+            onTap: () {
+              Get.back();
+            },
+            child: Icon(Icons.arrow_back, color: AppTheme.darkColor)),
         title: Container(
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Icon(Icons.credit_card,color: AppTheme.darkColor,),
+              Icon(
+                Icons.credit_card,
+                color: AppTheme.darkColor,
+              ),
               const SizedBox(width: 10),
               Text(
                 'Carte bancaire',
                 style: Theme.of(context).textTheme.bodyText2!.copyWith(
-                  fontWeight: FontWeight.w900,
-                  fontSize: 18,
-                  color: AppTheme.darkColor,
-                  overflow: TextOverflow.ellipsis,
-                ),
+                      fontWeight: FontWeight.w900,
+                      fontSize: 18,
+                      color: AppTheme.darkColor,
+                      overflow: TextOverflow.ellipsis,
+                    ),
               ),
             ],
           ),
@@ -56,26 +59,36 @@ class PaymentScreen extends StatelessWidget {
           SizedBox(
               width: 100,
               height: 100,
-              child: Lottie.asset(Assets.lottiesSuccess,)),
+              child: Lottie.asset(
+                Assets.lottiesSuccess,
+              )),
           Container(
             padding: EdgeInsets.all(20),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Text('Félicitations !', textAlign: TextAlign.center,
+                Text('Félicitations !',
+                    textAlign: TextAlign.center,
                     style: Theme.of(context).textTheme.bodyText2!.copyWith(
                         color: AppTheme.darkColor,
                         fontSize: 36,
                         fontWeight: FontWeight.w900)),
-                const SizedBox(height: 20,),
-                Text('Votre demande location est désormais en attente', textAlign: TextAlign.center,
+                const SizedBox(
+                  height: 20,
+                ),
+                Text('Votre demande location est désormais en attente',
+                    textAlign: TextAlign.center,
                     style: Theme.of(context).textTheme.bodyText2!.copyWith(
                         color: AppTheme.darkColor,
                         fontSize: 22,
                         fontWeight: FontWeight.w700)),
-                const SizedBox(height: 20,),
-                Text('Une notifications sera envoyé au propriétaire Marco DEGARDIO.', textAlign: TextAlign.center,
+                const SizedBox(
+                  height: 20,
+                ),
+                Text(
+                    'Une notifications sera envoyé au propriétaire Marco DEGARDIO.',
+                    textAlign: TextAlign.center,
                     style: Theme.of(context).textTheme.bodyText2!.copyWith(
                         color: AppTheme.darkColor,
                         fontSize: 14,
@@ -108,7 +121,9 @@ class PaymentScreen extends StatelessWidget {
               ),
             ],
           ),
-          const SizedBox(height: 30,),
+          const SizedBox(
+            height: 30,
+          ),
           Text('Retour à l\'accueil',
               style: Theme.of(context).textTheme.bodyText2!.copyWith(
                   color: AppTheme.redColor,

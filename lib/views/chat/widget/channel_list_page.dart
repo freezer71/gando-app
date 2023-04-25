@@ -6,17 +6,13 @@ import 'channel_page.dart';
 
 class ChannelListPage extends StatefulWidget {
   final controller;
-  const ChannelListPage({
-    Key? key, required this.controller
-  }) : super(key: key);
+  const ChannelListPage({Key? key, required this.controller}) : super(key: key);
 
   @override
   State<ChannelListPage> createState() => _ChannelListPageState();
 }
 
 class _ChannelListPageState extends State<ChannelListPage> {
-
-
   @override
   void dispose() {
     super.dispose();
@@ -26,14 +22,7 @@ class _ChannelListPageState extends State<ChannelListPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppTheme.backgroundColor,
-      body: Container(
-
-      ),
+      body: Container(),
     );
   }
-
-
 }
-
-
-

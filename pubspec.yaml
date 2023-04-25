@@ -65,6 +65,9 @@ dependencies:
   mask_text_input_formatter: ^2.4.0
   flutter_localizations:
     sdk: flutter
+  flutter_stripe: ^9.0.0+1
+  webview_flutter: ^4.0.7
+  syncfusion_flutter_pdfviewer:
 
 dev_dependencies:
   flutter_test:

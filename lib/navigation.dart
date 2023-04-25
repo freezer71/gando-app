@@ -19,6 +19,7 @@ import 'package:gando/views/authentication/signin/signin_screen.dart';
 import 'package:gando/views/authentication/signup/signup_screen.dart';
 import 'package:gando/views/bottom_navigation_bar.dart';
 import 'package:gando/views/onboarding.dart';
+import 'package:gando/views/products/booking/payment/payment_stripe_screen.dart';
 import 'package:gando/views/settings/notification_screen.dart';
 import 'package:gando/views/settings/pages/coordonates/edit_phone_coordonates_screen.dart';
 import 'package:gando/views/settings/pages/coordonates/home_coordonates_screen.dart';
@@ -26,8 +27,12 @@ import 'package:gando/views/settings/pages/coordonates/my_contact_detail_screen.
 import 'package:gando/views/settings/pages/coordonates/summary_coordonate_screen.dart';
 import 'package:gando/views/settings/pages/coordonates/verify_phone_coordonate_screen.dart';
 import 'package:gando/views/settings/pages/edit_profile_screen.dart';
+import 'package:gando/views/settings/pages/information/help_screen.dart';
+import 'package:gando/views/settings/pages/information/pdf_viewer.dart';
 import 'package:gando/views/settings/pages/profile_screen.dart';
 import 'package:gando/views/settings/pages/verify_mail_screen.dart';
+import 'package:gando/views/settings/pages/wallet/verify_identity_user_screen.dart';
+import 'package:gando/views/settings/pages/wallet/wallet_screen.dart';
 import 'package:gando/views/settings/settings_account.dart';
 import 'package:gando/views/products/detail/components/car_detail.dart';
 import 'package:gando/views/splashscreen/splash_screen.dart';
@@ -161,6 +166,30 @@ class AppPages {
       name: Routes.notification,
       page: () => NotificationScreen(),
     ),
+    GetPage(
+      name: Routes.paymentStripe,
+      page: () => PaymentStripeScreen(),
+      binding: InitBindings(),
+    ),
+    GetPage(
+      name: Routes.wallet,
+      page: () => const WalletScreen(),
+      binding: InitBindings(),
+    ),
+    GetPage(
+      name: Routes.verifyIdentity,
+      page: () => const VerifyIdentityUserScreen(),
+      binding: InitBindings(),
+    ),
+    GetPage(
+      name: Routes.help,
+      page: () => const HelpScreen(),
+      binding: InitBindings(),
+    ),
+    GetPage(
+      name: Routes.cgu,
+      page: () => PdfViewerScreen(),
+    ),
   ];
 }
 
@@ -190,4 +219,9 @@ abstract class Routes {
   static const notification = "/notification";
   static const settingAccount = "/setting-account";
   static const verifyMail = "/verify-mail";
+  static const paymentStripe = "/payment-stripe";
+  static const wallet = "/wallet";
+  static const verifyIdentity = "/verify_identity_user";
+  static const help = "/help";
+  static const cgu = "/cgu";
 }

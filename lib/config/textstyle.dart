@@ -17,7 +17,7 @@ class AppTheme {
   // static Color redColor = Color(0xFFCC5656);
   static Color redColor = Color(0xFFFF6B6B);
   static Color secondaryColor = Color(0xFF203e5a);
-  static Color darkColor = Color(0xff2c2c2c);
+  static Color darkColor = Color(0xff292F36);
 
   static Brightness brightness =
       SchedulerBinding.instance.window.platformBrightness;
@@ -77,7 +77,7 @@ class AppTheme {
 
   static ThemeData lightTheme() {
     Color secondaryColor = HexColor(secondaryColorString!);
-    Color primaryColor  = HexColor(primaryColorString!);
+    Color primaryColor = HexColor(primaryColorString!);
     final ColorScheme colorScheme = const ColorScheme.light().copyWith(
       primary: primaryColor,
       secondary: secondaryColor,
